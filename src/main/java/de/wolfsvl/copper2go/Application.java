@@ -78,7 +78,7 @@ public class Application {
                 if (line1 == null) {
                     throw new NullPointerException("Read a 'null' line. So there seems to be no stdin. Might happen when starting with gradle.");
                 }
-                if (line1.length() == 0) {
+                if ("exit".equals(line1.length())) {
                     throw new ApplicationException("Input canceled by empty line.");
                 }
                 WorkflowInstanceDescr workflowInstanceDescr = new WorkflowInstanceDescr<HelloData>("Hello");
@@ -92,6 +92,7 @@ public class Application {
                 Context context = new Context(line1);
                 contextStore.store(uuid, context);
                 engine.run(workflowInstanceDescr);
+                waitForIdleEngine();
             } catch (Exception e) {
                 throw new ApplicationException("Exception while getting input.", e);
             }
@@ -129,13 +130,14 @@ public class Application {
             protected WorkflowRepository createWorkflowRepository() {
                 try {
                     String workDir = "./.copper";
-                    getWorkflowSourceDirectory().mkdirs();
+                    new File("workDir").mkdirs();
                     GitWorkflowRepository repo = new GitWorkflowRepository();
 
-                    repo.setOriginURI(workflowGitURI);
                     repo.setGitRepositoryDir(getWorkflowSourceDirectory());
                     repo.addSourceDir(getWorkflowSourceDirectory().getAbsolutePath());
                     repo.setTargetDir(workDir + "/target");
+                    repo.setBranch("master");
+                    repo.setOriginURI(workflowGitURI);
                     return repo;
                 } catch (Exception createException) {
                     throw new RuntimeException("Exception while creating workflow rfepository.", createException);
@@ -147,12 +149,16 @@ public class Application {
 
     public void shutdown() throws InstanceNotFoundException, MBeanRegistrationException, IOException {
         log.info("shutdown application");
-        while (engine.getNumberOfWorkflowInstances() > 0) {
-            LockSupport.parkNanos(100000000L);
-        }
+        waitForIdleEngine();
         engine.shutdown();
         statisticsCollector.shutdown();
         exporter.shutdown();
+    }
+
+    private void waitForIdleEngine() {
+        while (engine.getNumberOfWorkflowInstances() > 0) {
+            LockSupport.parkNanos(100000000L);
+        }
     }
 
     private SimpleJmxExporter startJmxExporter() throws Exception {
