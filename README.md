@@ -8,7 +8,7 @@
  As one of the next steps, there might follow a factoryfx integration. This will enable copper2go to make runtime changes in the technical part of the application outside the business workflows.
  
  This picture shows a first overview:
-  TODO
+ (copper2goOverview.png)
  
  ## Release notes
  * 0.1 A first MVP (Minimum Viable Product)
