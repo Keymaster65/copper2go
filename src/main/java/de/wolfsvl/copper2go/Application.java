@@ -38,7 +38,9 @@ import java.util.concurrent.locks.LockSupport;
 
 public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
+    private  String branch = "master";
     private String workflowGitURI = "https://github.com/Keymaster65/copper2go-workflows.git";
+    private String workflowBase = "/src/workflow/java";
 
     private TransientScottyEngine engine;
     private SimpleJmxExporter exporter;
@@ -50,6 +52,12 @@ public class Application {
     public Application(final String[] args) {
         if (args != null && args.length > 0) {
             workflowGitURI = args[0];
+        }
+        if (args != null && args.length > 1) {
+            this.branch = args[1];
+        }
+        if (args != null && args.length > 2) {
+            this.workflowBase = args[2];
         }
     }
 
@@ -78,8 +86,8 @@ public class Application {
                 if (line1 == null) {
                     throw new NullPointerException("Read a 'null' line. So there seems to be no stdin. Might happen when starting with gradle.");
                 }
-                if ("exit".equals(line1.length())) {
-                    throw new ApplicationException("Input canceled by empty line.");
+                if ("exit".equals(line1)) {
+                    throw new ApplicationException("Input canceled by 'exit' line.");
                 }
                 WorkflowInstanceDescr workflowInstanceDescr = new WorkflowInstanceDescr<HelloData>("Hello");
                 log.debug("workflowInstanceDescr=" + workflowInstanceDescr);
@@ -134,9 +142,9 @@ public class Application {
                     GitWorkflowRepository repo = new GitWorkflowRepository();
 
                     repo.setGitRepositoryDir(getWorkflowSourceDirectory());
-                    repo.addSourceDir(getWorkflowSourceDirectory().getAbsolutePath());
+                    repo.addSourceDir(getWorkflowSourceDirectory().getAbsolutePath() + workflowBase);
                     repo.setTargetDir(workDir + "/target");
-                    repo.setBranch("master");
+                    repo.setBranch(Application.this.branch);
                     repo.setOriginURI(workflowGitURI);
                     return repo;
                 } catch (Exception createException) {

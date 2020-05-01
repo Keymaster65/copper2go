@@ -1,6 +1,10 @@
+import org.gradle.kotlin.dsl.codegen.generateApiExtensionsJar
+
 plugins {
     java
     application
+    distribution
+    `maven-publish`
 }
 
 group = "de.wolfsvl"
@@ -14,6 +18,13 @@ repositories {
     mavenCentral()
 }
 
+publishing {
+    publications {
+        create<MavenPublication>("library") {
+            from(components["java"])
+        }
+    }
+}
 dependencies {
     implementation("org.copper-engine:copper-ext:5.2.0")
 
