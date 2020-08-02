@@ -18,6 +18,12 @@ repositories {
     mavenCentral()
 }
 
+tasks.withType<Test> {
+    useJUnitPlatform {
+        includeEngines.add("junit-jupiter")
+    }
+}
+
 publishing {
     publications {
         create<MavenPublication>("library") {
