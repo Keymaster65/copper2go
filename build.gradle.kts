@@ -5,6 +5,7 @@ plugins {
     application
     distribution
     `maven-publish`
+    id("com.github.jk1.dependency-license-report") version "1.14"
 }
 
 group = "de.wolfsvl"
