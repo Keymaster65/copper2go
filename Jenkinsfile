@@ -10,21 +10,20 @@ node() {
         }
 
         stage('Build') {
-            gradle 'clean assemble'
+            _gradle 'clean assemble'
         }
 
         stage('Test') {
             try {
-                gradle 'test'
+                _gradle 'test'
             } finally {
                 junit '**/test-results/test/*.xml'
             }
         }
 }
 
-def _git(String command) {
-    sh "git ${command}"
+def _gradle(String task) {
+    sh "./gradlew ${task}"
 }
-
 
 
