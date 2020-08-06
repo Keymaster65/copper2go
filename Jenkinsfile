@@ -9,6 +9,10 @@ node() {
         checkout(scm)
     }
 
+    stage('License') {
+        _gradle 'generateLicenseReport'
+    }
+
     stage('Build') {
         _gradle 'clean assemble'
     }
@@ -19,9 +23,6 @@ node() {
         } finally {
             junit '**/test-results/test/*.xml'
         }
-    }
-    stage('License') {
-        _gradle 'generateLicenseReport'
     }
 }
 
