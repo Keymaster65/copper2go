@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "de.wolfsvl"
-version = "0.0.2"
+version = "0.1"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
