@@ -24,6 +24,10 @@ node() {
             junit '**/test-results/test/*.xml'
         }
     }
+
+    stage('Test coverage') {
+        jacoco()
+    }
 }
 
 def _gradle(String task) {
