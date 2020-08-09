@@ -5,6 +5,7 @@ plugins {
     application
     distribution
     `maven-publish`
+    jacoco
     id("com.github.jk1.dependency-license-report") version "1.14"
 }
 
@@ -22,6 +23,17 @@ repositories {
 tasks.withType<Test> {
     useJUnitPlatform {
         includeEngines.add("junit-jupiter")
+    }
+}
+
+task<JacocoMerge>("jacocoMerge") {
+    destinationFile = File("$buildDir/jacoco/allTestCoverage.exec")
+    executionData = fileTree("$buildDir/jacoco")
+}
+
+tasks.withType<JacocoReport> {
+    reports {
+        executionData.setFrom("$buildDir/jacoco/allTestCoverage.exec")
     }
 }
 
