@@ -10,7 +10,7 @@ node() {
     }
 
     stage('License') {
-        _gradle 'generateLicenseReport'
+        _gradle 'generateLicenseReport checkLicense'
     }
 
     stage('Build') {

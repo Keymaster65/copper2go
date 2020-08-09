@@ -1,0 +1,13 @@
+{
+  "allowedLicenses": [
+    {"moduleLicense": "Apache License, Version 2.0"},
+    {"moduleLicense": "Apache Software License, Version 1.1"},
+    {"moduleLicense": "Eclipse Public License - v 1.0"},
+    {"moduleLicense": "Revised BSD"},
+    {"moduleLicense": "COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.1"},
+    {"moduleLicense": "COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0"},
+    {"moduleLicense": "MIT License"},
+    {"moduleLicense": "Bouncy Castle Licence"},
+    {"moduleLicense": "Eclipse Distribution License (New BSD License)"}
+  ]
+}

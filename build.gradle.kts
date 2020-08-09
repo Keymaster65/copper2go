@@ -1,4 +1,4 @@
-import org.gradle.kotlin.dsl.codegen.generateApiExtensionsJar
+import com.github.jk1.license.filter.LicenseBundleNormalizer
 
 plugins {
     java
@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "de.wolfsvl"
-version = "0.0.1"
+version = "0.0.2"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -62,4 +62,29 @@ dependencies {
 application {
     mainClassName = "de.wolfsvl.copper2go.Application"
     applicationDefaultJvmArgs = listOf("-Dlogback.configurationFile=src/main/resources/logback.xml")
+}
+
+distributions {
+    main {
+        contents {
+            into("") {
+                from("$buildDir/reports/dependency-license/index.html", "LICENSE")
+                rename {
+                    it.replace(
+                            "index.html",
+                            "licence.html"
+                    )
+                }
+            }
+            into("config") {
+                from("src/main/resources/logback.xml")
+            }
+        }
+    }
+}
+
+licenseReport {
+    excludeOwnGroup = false
+    allowedLicensesFile = File ("$projectDir/allowed-licenses.json")
+    filters = arrayOf<LicenseBundleNormalizer>(LicenseBundleNormalizer("""$projectDir/license-normalizer-bundle.json""", true))
 }
