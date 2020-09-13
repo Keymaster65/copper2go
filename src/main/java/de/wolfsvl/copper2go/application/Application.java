@@ -192,10 +192,10 @@ public class Application {
     }
 
     private void stopEngine() throws MBeanRegistrationException, InstanceNotFoundException {
-        waitForIdleEngine();
         engine.shutdown();
         statisticsCollector.shutdown();
         exporter.shutdown();
+        waitForIdleEngine();
     }
 
     private void waitForIdleEngine() {
