@@ -18,11 +18,19 @@ public class Copper2GoVerticle extends AbstractVerticle {
 
         this.requestHandler = requestHandler;
     }
+
     @Override
-    public synchronized void start(Promise<Void> promise) {
-        promise.complete();
+    public synchronized void start(Promise<Void> promise) throws Exception {
+//        super.start(promise);
         httpServer = vertx.createHttpServer();
         httpServer.requestHandler(requestHandler);
         httpServer.listen(8080);
+        promise.complete();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        httpServer.close();
+        super.stop();
     }
 }

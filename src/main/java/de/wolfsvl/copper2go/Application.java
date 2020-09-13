@@ -18,16 +18,25 @@ package de.wolfsvl.copper2go;
 import de.wolfsvl.copper2go.impl.ContextStoreImpl;
 import de.wolfsvl.copper2go.impl.DefaultDependencyInjector;
 import de.wolfsvl.copper2go.impl.HttpContextImpl;
-import de.wolfsvl.copper2go.workflowapi.Context;
 import de.wolfsvl.copper2go.impl.StdInOutContextImpl;
+import de.wolfsvl.copper2go.workflowapi.Context;
 import de.wolfsvl.copper2go.workflowapi.ContextStore;
 import de.wolfsvl.copper2go.workflowapi.HelloData;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerRequest;
-import org.copperengine.core.*;
-import org.copperengine.core.common.*;
+import org.copperengine.core.CopperException;
+import org.copperengine.core.DependencyInjector;
+import org.copperengine.core.EngineState;
+import org.copperengine.core.WorkflowInstanceDescr;
+import org.copperengine.core.WorkflowVersion;
+import org.copperengine.core.common.DefaultTicketPoolManager;
+import org.copperengine.core.common.SimpleJmxExporter;
+import org.copperengine.core.common.TicketPool;
+import org.copperengine.core.common.TicketPoolManager;
+import org.copperengine.core.common.WorkflowRepository;
 import org.copperengine.core.monitoring.LoggingStatisticCollector;
 import org.copperengine.core.tranzient.TransientEngineFactory;
 import org.copperengine.core.tranzient.TransientScottyEngine;
@@ -36,17 +45,18 @@ import org.copperengine.ext.wfrepo.git.GitWorkflowRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanRegistrationException;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.concurrent.locks.LockSupport;
 
 public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
-    private  String branch = "master";
+    private String branch = "master";
     private String workflowGitURI = "https://github.com/Keymaster65/copper2go-workflows.git";
     private String workflowBase = "/src/workflow/java";
 
@@ -57,6 +67,8 @@ public class Application {
     private ContextStore contextStore;
     private int availableTickets = 10;
     private Copper2GoVerticle verticle;
+    private HttpServer httpServer = null;
+    private Vertx vertx;
 
     public Application(final String[] args) {
         if (args != null && args.length > 0) {
@@ -75,17 +87,16 @@ public class Application {
         try {
             log.info("begin application");
             application = new Application(args);
-            application.start();
-            application.listenLocalStream();
+            application.startup();
         } catch (Exception e) {
-            log.error("Exception in applications main.", e);
+            log.error("Exception in application main.", e);
         } finally {
             application.shutdown();
         }
-        log.info("finished application");
+        log.info("finished application main");
     }
 
-    private void listenLocalStream() throws CopperException, FileNotFoundException {
+    private void listenLocalStream() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (1 == 1) {
             try {
@@ -119,19 +130,20 @@ public class Application {
         engine.run(workflowInstanceDescr);
     }
 
-    public void start() throws Exception {
+    public void startup() throws Exception {
         log.info("start application");
         contextStore = new ContextStoreImpl();
         engine = startEngine(new DefaultDependencyInjector(contextStore));
         while (!engine.getEngineState().equals(EngineState.STARTED)) ;
         startHttpServer();
         exporter = startJmxExporter();
+        listenLocalStream();
     }
 
     private void startHttpServer() throws Exception {
-        Vertx vertx = Vertx.vertx();
-
-        verticle = new Copper2GoVerticle(new Handler<HttpServerRequest>() {
+        vertx = Vertx.vertx();
+        httpServer = vertx.createHttpServer();
+        httpServer.requestHandler(new Handler<HttpServerRequest>() {
             @Override
             public void handle(HttpServerRequest request) {
                 request.handler(new Handler<Buffer>() {
@@ -149,10 +161,7 @@ public class Application {
                 });
             }
         });
-
-
-        vertx.deployVerticle(verticle);
-        verticle.start();
+        httpServer.listen(8080);
     }
 
     private TransientScottyEngine startEngine(DependencyInjector dependencyInjector) throws Exception {
@@ -197,15 +206,21 @@ public class Application {
 
     public void shutdown() throws InstanceNotFoundException, MBeanRegistrationException {
         log.info("shutdown application");
+        try {
+            httpServer.close(e -> System.out.println("e=" + e.succeeded()));
+            vertx.close();
+        } catch (Exception e) {
+            throw new ApplicationException("Can not close HTTP server.", e);
+        }
+       /* Vertx vertx = Vertx.vertx();
+        vertx.deploymentIDs().forEach(vertx::undeploy);
+        vertx.close();
+        */
+
         waitForIdleEngine();
         engine.shutdown();
         statisticsCollector.shutdown();
         exporter.shutdown();
-        try {
-            verticle.stop();
-        } catch (Exception e) {
-            throw new ApplicationException("Can not stop verticle.", e);
-        }
     }
 
     private void waitForIdleEngine() {
