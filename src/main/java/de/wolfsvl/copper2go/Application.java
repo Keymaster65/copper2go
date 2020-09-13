@@ -17,16 +17,11 @@ package de.wolfsvl.copper2go;
 
 import de.wolfsvl.copper2go.impl.ContextStoreImpl;
 import de.wolfsvl.copper2go.impl.DefaultDependencyInjector;
-import de.wolfsvl.copper2go.impl.HttpContextImpl;
 import de.wolfsvl.copper2go.impl.StdInOutContextImpl;
+import de.wolfsvl.copper2go.vertx.VertxHttpServer;
 import de.wolfsvl.copper2go.workflowapi.Context;
 import de.wolfsvl.copper2go.workflowapi.ContextStore;
 import de.wolfsvl.copper2go.workflowapi.HelloData;
-import io.vertx.core.Handler;
-import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpServer;
-import io.vertx.core.http.HttpServerRequest;
 import org.copperengine.core.CopperException;
 import org.copperengine.core.DependencyInjector;
 import org.copperengine.core.EngineState;
@@ -50,7 +45,6 @@ import javax.management.MBeanRegistrationException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.concurrent.locks.LockSupport;
 
@@ -63,12 +57,11 @@ public class Application {
     private TransientScottyEngine engine;
     private SimpleJmxExporter exporter;
     private LoggingStatisticCollector statisticsCollector;
+    private int availableTickets = 10;
 
     private ContextStore contextStore;
-    private int availableTickets = 10;
-    private Copper2GoVerticle verticle;
-    private HttpServer httpServer = null;
-    private Vertx vertx;
+    private Copper2GoHttpServer httpServer;
+
 
     public Application(final String[] args) {
         if (args != null && args.length > 0) {
@@ -117,7 +110,7 @@ public class Application {
         }
     }
 
-    private void callWorkflow(final Context context) throws CopperException {
+    public void callWorkflow(final Context context) throws CopperException {
         WorkflowInstanceDescr workflowInstanceDescr = new WorkflowInstanceDescr<HelloData>("Hello");
         log.debug("workflowInstanceDescr=" + workflowInstanceDescr);
         WorkflowVersion version = engine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), 1, 0);
@@ -130,7 +123,7 @@ public class Application {
         engine.run(workflowInstanceDescr);
     }
 
-    public void startup() throws Exception {
+    public synchronized void startup() throws Exception {
         log.info("start application");
         contextStore = new ContextStoreImpl();
         engine = startEngine(new DefaultDependencyInjector(contextStore));
@@ -141,27 +134,8 @@ public class Application {
     }
 
     private void startHttpServer() throws Exception {
-        vertx = Vertx.vertx();
-        httpServer = vertx.createHttpServer();
-        httpServer.requestHandler(new Handler<HttpServerRequest>() {
-            @Override
-            public void handle(HttpServerRequest request) {
-                request.handler(new Handler<Buffer>() {
-                    @Override
-                    public void handle(Buffer buffer) {
-
-                        final String requestBody = new String(buffer.getBytes(), StandardCharsets.UTF_8);
-                        try {
-                            callWorkflow(new HttpContextImpl(requestBody, request.response()));
-                        } catch (CopperException e) {
-                            // TODO
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        });
-        httpServer.listen(8080);
+        httpServer = new VertxHttpServer(8080, this);
+        httpServer.start();
     }
 
     private TransientScottyEngine startEngine(DependencyInjector dependencyInjector) throws Exception {
@@ -204,19 +178,13 @@ public class Application {
         return factory.create();
     }
 
-    public void shutdown() throws InstanceNotFoundException, MBeanRegistrationException {
+    public synchronized void shutdown() throws InstanceNotFoundException, MBeanRegistrationException {
         log.info("shutdown application");
         try {
-            httpServer.close(e -> System.out.println("e=" + e.succeeded()));
-            vertx.close();
+            httpServer.stop();
         } catch (Exception e) {
-            throw new ApplicationException("Can not close HTTP server.", e);
+            log.warn("Exception while stopping HTTP server.", e);
         }
-       /* Vertx vertx = Vertx.vertx();
-        vertx.deploymentIDs().forEach(vertx::undeploy);
-        vertx.close();
-        */
-
         waitForIdleEngine();
         engine.shutdown();
         statisticsCollector.shutdown();
