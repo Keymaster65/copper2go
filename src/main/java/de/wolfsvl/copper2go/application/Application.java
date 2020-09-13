@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.wolfsvl.copper2go;
+package de.wolfsvl.copper2go.application;
 
 import de.wolfsvl.copper2go.impl.ContextStoreImpl;
 import de.wolfsvl.copper2go.impl.DefaultDependencyInjector;
@@ -126,12 +126,22 @@ public class Application {
     public synchronized void startup() throws Exception {
         log.info("start application");
         contextStore = new ContextStoreImpl();
+
         engine = startEngine(new DefaultDependencyInjector(contextStore));
-        while (!engine.getEngineState().equals(EngineState.STARTED)) ;
         startHttpServer();
-        exporter = startJmxExporter();
         listenLocalStream();
     }
+
+    public synchronized void shutdown() throws InstanceNotFoundException, MBeanRegistrationException {
+        log.info("shutdown application");
+        try {
+            httpServer.stop();
+        } catch (Exception e) {
+            log.warn("Exception while stopping HTTP server.", e);
+        }
+        stopEngine();
+    }
+
 
     private void startHttpServer() throws Exception {
         httpServer = new VertxHttpServer(8080, this);
@@ -175,16 +185,13 @@ public class Application {
                 }
             }
         };
-        return factory.create();
+        final TransientScottyEngine transientScottyEngine = factory.create();
+        while (!transientScottyEngine.getEngineState().equals(EngineState.STARTED)) ;
+        exporter = startJmxExporter(transientScottyEngine);
+        return transientScottyEngine;
     }
 
-    public synchronized void shutdown() throws InstanceNotFoundException, MBeanRegistrationException {
-        log.info("shutdown application");
-        try {
-            httpServer.stop();
-        } catch (Exception e) {
-            log.warn("Exception while stopping HTTP server.", e);
-        }
+    private void stopEngine() throws MBeanRegistrationException, InstanceNotFoundException {
         waitForIdleEngine();
         engine.shutdown();
         statisticsCollector.shutdown();
@@ -197,7 +204,7 @@ public class Application {
         }
     }
 
-    private SimpleJmxExporter startJmxExporter() throws Exception {
+    private SimpleJmxExporter startJmxExporter(TransientScottyEngine engine) throws Exception {
         SimpleJmxExporter exporter = new SimpleJmxExporter();
         exporter.addProcessingEngineMXBean("demo-engine", engine);
         exporter.addWorkflowRepositoryMXBean("demo-workflow-repository", (FileBasedWorkflowRepository) engine.getWfRepository());

@@ -1,12 +1,12 @@
 package de.wolfsvl.copper2go;
 
+import de.wolfsvl.copper2go.application.Application;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 class ApplicationTest {
