@@ -16,18 +16,21 @@
 package de.wolfsvl.copper2go.impl;
 
 import de.wolfsvl.copper2go.workflowapi.Context;
+import io.vertx.core.http.HttpServerResponse;
 
 public class HttpContextImpl implements Context {
     private final String request;
+    private final HttpServerResponse response;
 
-    public HttpContextImpl(String request) {
+    public HttpContextImpl(String request, final HttpServerResponse response) {
         this.request = request;
+        this.response = response;
     }
     public String getRequest() {
         return request;
     }
 
     public void reply(String message) {
-        System.out.println(message);
+        response.end(message);
     }
 }

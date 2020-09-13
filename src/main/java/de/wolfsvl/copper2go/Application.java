@@ -17,6 +17,7 @@ package de.wolfsvl.copper2go;
 
 import de.wolfsvl.copper2go.impl.ContextStoreImpl;
 import de.wolfsvl.copper2go.impl.DefaultDependencyInjector;
+import de.wolfsvl.copper2go.impl.HttpContextImpl;
 import de.wolfsvl.copper2go.workflowapi.Context;
 import de.wolfsvl.copper2go.impl.StdInOutContextImpl;
 import de.wolfsvl.copper2go.workflowapi.ContextStore;
@@ -97,7 +98,7 @@ public class Application {
                 if ("exit".equals(line1)) {
                     throw new ApplicationException("Input canceled by 'exit' line.");
                 }
-                callWorkflow(line1);
+                callWorkflow(new StdInOutContextImpl(line1));
                 waitForIdleEngine();
             } catch (Exception e) {
                 throw new ApplicationException("Exception while getting input.", e);
@@ -105,7 +106,7 @@ public class Application {
         }
     }
 
-    private void callWorkflow(final String requestString) throws CopperException {
+    private void callWorkflow(final Context context) throws CopperException {
         WorkflowInstanceDescr workflowInstanceDescr = new WorkflowInstanceDescr<HelloData>("Hello");
         log.debug("workflowInstanceDescr=" + workflowInstanceDescr);
         WorkflowVersion version = engine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), 1, 0);
@@ -114,7 +115,6 @@ public class Application {
 
         String uuid = engine.createUUID();
         workflowInstanceDescr.setData(new HelloData(uuid));
-        Context context = new StdInOutContextImpl(requestString);
         contextStore.store(uuid, context);
         engine.run(workflowInstanceDescr);
     }
@@ -139,9 +139,8 @@ public class Application {
                     public void handle(Buffer buffer) {
 
                         final String requestBody = new String(buffer.getBytes(), StandardCharsets.UTF_8);
-                        request.response().end("Hello "  + requestBody);
                         try {
-                            callWorkflow(requestBody);
+                            callWorkflow(new HttpContextImpl(requestBody, request.response()));
                         } catch (CopperException e) {
                             // TODO
                             e.printStackTrace();
