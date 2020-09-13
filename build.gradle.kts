@@ -45,6 +45,10 @@ publishing {
     }
 }
 dependencies {
+    implementation("io.vertx:vertx-core:3.8.5")
+    implementation("io.vertx:vertx-web:3.8.5")
+    //implementation("io.vertx:web-examples:3.8.5")
+
     implementation("org.copper-engine:copper-ext:5.2.0")
 
     // needed for exceptions

@@ -18,8 +18,13 @@ package de.wolfsvl.copper2go;
 import de.wolfsvl.copper2go.impl.ContextStoreImpl;
 import de.wolfsvl.copper2go.impl.DefaultDependencyInjector;
 import de.wolfsvl.copper2go.workflowapi.Context;
+import de.wolfsvl.copper2go.impl.StdInOutContextImpl;
 import de.wolfsvl.copper2go.workflowapi.ContextStore;
 import de.wolfsvl.copper2go.workflowapi.HelloData;
+import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpServerRequest;
 import org.copperengine.core.*;
 import org.copperengine.core.common.*;
 import org.copperengine.core.monitoring.LoggingStatisticCollector;
@@ -30,9 +35,11 @@ import org.copperengine.ext.wfrepo.git.GitWorkflowRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanRegistrationException;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.concurrent.locks.LockSupport;
 
@@ -48,6 +55,7 @@ public class Application {
 
     private ContextStore contextStore;
     private int availableTickets = 10;
+    private Copper2GoVerticle verticle;
 
     public Application(final String[] args) {
         if (args != null && args.length > 0) {
@@ -67,7 +75,7 @@ public class Application {
             log.info("begin application");
             application = new Application(args);
             application.start();
-            application.run();
+            application.listenLocalStream();
         } catch (Exception e) {
             log.error("Exception in applications main.", e);
         } finally {
@@ -76,7 +84,7 @@ public class Application {
         log.info("finished application");
     }
 
-    private void run() throws CopperException, FileNotFoundException {
+    private void listenLocalStream() throws CopperException, FileNotFoundException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (1 == 1) {
             try {
@@ -89,17 +97,7 @@ public class Application {
                 if ("exit".equals(line1)) {
                     throw new ApplicationException("Input canceled by 'exit' line.");
                 }
-                WorkflowInstanceDescr workflowInstanceDescr = new WorkflowInstanceDescr<HelloData>("Hello");
-                log.debug("workflowInstanceDescr=" + workflowInstanceDescr);
-                WorkflowVersion version = engine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), 1, 0);
-                log.debug("version=" + version);
-                workflowInstanceDescr.setVersion(version);
-
-                String uuid = engine.createUUID();
-                workflowInstanceDescr.setData(new HelloData(uuid));
-                Context context = new Context(line1);
-                contextStore.store(uuid, context);
-                engine.run(workflowInstanceDescr);
+                callWorkflow(line1);
                 waitForIdleEngine();
             } catch (Exception e) {
                 throw new ApplicationException("Exception while getting input.", e);
@@ -107,12 +105,55 @@ public class Application {
         }
     }
 
+    private void callWorkflow(final String requestString) throws CopperException {
+        WorkflowInstanceDescr workflowInstanceDescr = new WorkflowInstanceDescr<HelloData>("Hello");
+        log.debug("workflowInstanceDescr=" + workflowInstanceDescr);
+        WorkflowVersion version = engine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), 1, 0);
+        log.debug("version=" + version);
+        workflowInstanceDescr.setVersion(version);
+
+        String uuid = engine.createUUID();
+        workflowInstanceDescr.setData(new HelloData(uuid));
+        Context context = new StdInOutContextImpl(requestString);
+        contextStore.store(uuid, context);
+        engine.run(workflowInstanceDescr);
+    }
+
     public void start() throws Exception {
         log.info("start application");
         contextStore = new ContextStoreImpl();
         engine = startEngine(new DefaultDependencyInjector(contextStore));
         while (!engine.getEngineState().equals(EngineState.STARTED)) ;
+        startHttpServer();
         exporter = startJmxExporter();
+    }
+
+    private void startHttpServer() throws Exception {
+        Vertx vertx = Vertx.vertx();
+
+        verticle = new Copper2GoVerticle(new Handler<HttpServerRequest>() {
+            @Override
+            public void handle(HttpServerRequest request) {
+                request.handler(new Handler<Buffer>() {
+                    @Override
+                    public void handle(Buffer buffer) {
+
+                        final String requestBody = new String(buffer.getBytes(), StandardCharsets.UTF_8);
+                        request.response().end("Hello "  + requestBody);
+                        try {
+                            callWorkflow(requestBody);
+                        } catch (CopperException e) {
+                            // TODO
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+
+
+        vertx.deployVerticle(verticle);
+        verticle.start();
     }
 
     private TransientScottyEngine startEngine(DependencyInjector dependencyInjector) throws Exception {
@@ -155,12 +196,17 @@ public class Application {
         return factory.create();
     }
 
-    public void shutdown() throws InstanceNotFoundException, MBeanRegistrationException, IOException {
+    public void shutdown() throws InstanceNotFoundException, MBeanRegistrationException {
         log.info("shutdown application");
         waitForIdleEngine();
         engine.shutdown();
         statisticsCollector.shutdown();
         exporter.shutdown();
+        try {
+            verticle.stop();
+        } catch (Exception e) {
+            throw new ApplicationException("Can not stop verticle.", e);
+        }
     }
 
     private void waitForIdleEngine() {
