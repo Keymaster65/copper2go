@@ -22,6 +22,7 @@
  * docker image distribution
  * Multi workflow support
  * factoryfx integration
+ * Kafka support
  * jms support
  * PostgreSQL for workflow instances
  
