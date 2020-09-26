@@ -23,7 +23,7 @@
  * Multi workflow support
  * factoryfx integration
  * Kafka support
- * jms support
+ * JMS support
  * PostgreSQL for workflow instances
  
  ## Links
