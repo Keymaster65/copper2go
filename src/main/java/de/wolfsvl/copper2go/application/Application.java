@@ -18,6 +18,7 @@ package de.wolfsvl.copper2go.application;
 import de.wolfsvl.copper2go.impl.ContextStoreImpl;
 import de.wolfsvl.copper2go.impl.DefaultDependencyInjector;
 import de.wolfsvl.copper2go.impl.StdInOutContextImpl;
+import de.wolfsvl.copper2go.standardio.StandardInOutListener;
 import de.wolfsvl.copper2go.vertx.VertxHttpServer;
 import de.wolfsvl.copper2go.workflowapi.Context;
 import de.wolfsvl.copper2go.workflowapi.ContextStore;
@@ -62,7 +63,6 @@ public class Application {
     private ContextStore contextStore;
     private Copper2GoHttpServer httpServer;
 
-
     public Application(final String[] args) {
         if (args != null && args.length > 0) {
             workflowGitURI = args[0];
@@ -89,27 +89,6 @@ public class Application {
         log.info("finished application main");
     }
 
-    private void listenLocalStream() {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        while (1 == 1) {
-            try {
-                System.out.println("Enter your name: ");
-                String line1 = reader.readLine();
-                log.debug("line1=" + line1);
-                if (line1 == null) {
-                    throw new NullPointerException("Read a 'null' line. So there seems to be no stdin. Might happen when starting with gradle.");
-                }
-                if ("exit".equals(line1)) {
-                    throw new ApplicationException("Input canceled by 'exit' line.");
-                }
-                callWorkflow(new StdInOutContextImpl(line1));
-                waitForIdleEngine();
-            } catch (Exception e) {
-                throw new ApplicationException("Exception while getting input.", e);
-            }
-        }
-    }
-
     public void callWorkflow(final Context context) throws CopperException {
         WorkflowInstanceDescr workflowInstanceDescr = new WorkflowInstanceDescr<HelloData>("Hello");
         log.debug("workflowInstanceDescr=" + workflowInstanceDescr);
@@ -129,7 +108,7 @@ public class Application {
 
         engine = startEngine(new DefaultDependencyInjector(contextStore));
         startHttpServer();
-        listenLocalStream();
+        new StandardInOutListener().listenLocalStream(this);
     }
 
     public synchronized void shutdown() throws InstanceNotFoundException, MBeanRegistrationException {
@@ -143,7 +122,7 @@ public class Application {
     }
 
 
-    private void startHttpServer() throws Exception {
+    private void startHttpServer() {
         httpServer = new VertxHttpServer(8080, this);
         httpServer.start();
     }
@@ -181,7 +160,7 @@ public class Application {
                     repo.setOriginURI(workflowGitURI);
                     return repo;
                 } catch (Exception createException) {
-                    throw new RuntimeException("Exception while creating workflow rfepository.", createException);
+                    throw new ApplicationException("Exception while creating workflow rfepository.", createException);
                 }
             }
         };
@@ -198,7 +177,7 @@ public class Application {
         waitForIdleEngine();
     }
 
-    private void waitForIdleEngine() {
+    public void waitForIdleEngine() {
         while (engine.getNumberOfWorkflowInstances() > 0) {
             LockSupport.parkNanos(100000000L);
         }
