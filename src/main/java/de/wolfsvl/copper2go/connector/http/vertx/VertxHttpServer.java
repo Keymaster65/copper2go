@@ -1,7 +1,7 @@
-package de.wolfsvl.copper2go.connector.vertx;
+package de.wolfsvl.copper2go.connector.http.vertx;
 
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
-import de.wolfsvl.copper2go.connector.Copper2GoHttpServer;
+import de.wolfsvl.copper2go.connector.http.Copper2GoHttpServer;
 import de.wolfsvl.copper2go.impl.HttpContextImpl;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;

@@ -15,10 +15,10 @@
  */
 package de.wolfsvl.copper2go.application;
 
-import de.wolfsvl.copper2go.connector.Copper2GoHttpServer;
+import de.wolfsvl.copper2go.connector.http.Copper2GoHttpServer;
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutException;
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutListener;
-import de.wolfsvl.copper2go.connector.vertx.VertxHttpServer;
+import de.wolfsvl.copper2go.connector.http.vertx.VertxHttpServer;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import de.wolfsvl.copper2go.engine.Copper2GoEngineImpl;
 import de.wolfsvl.copper2go.engine.EngineException;

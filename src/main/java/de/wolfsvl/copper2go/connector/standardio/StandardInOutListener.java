@@ -14,11 +14,11 @@ public class StandardInOutListener {
 
     public void listenLocalStream(final Copper2GoEngine applicationapplication) throws StandardInOutException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        while (1 == 1) {
+        while (true) {
             try {
                 System.out.println("Enter your name: ");
                 String line1 = reader.readLine();
-                log.debug("line1=" + line1);
+                log.debug("line: {}", line1);
                 if (line1 == null) {
                     throw new NullPointerException("Read a 'null' line. So there seems to be no stdin. Might happen when starting with gradle.");
                 }

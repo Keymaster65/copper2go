@@ -15,8 +15,6 @@
  */
 package de.wolfsvl.copper2go.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import de.wolfsvl.copper2go.workflowapi.Context;
 import de.wolfsvl.copper2go.workflowapi.ContextStore;
 
@@ -25,7 +23,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ContextStoreImpl implements ContextStore {
     private static Map<String, Context> contextMap = new ConcurrentHashMap<>();
-    private static final Logger LOGGER = LoggerFactory.getLogger(ContextStoreImpl.class);
 
     public void store(String id, Context context) {
         contextMap.put(id, context);

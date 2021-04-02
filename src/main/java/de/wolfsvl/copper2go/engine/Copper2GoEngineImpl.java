@@ -23,11 +23,8 @@ import org.copperengine.ext.wfrepo.git.GitWorkflowRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.management.InstanceAlreadyExistsException;
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanRegistrationException;
-import javax.management.MalformedObjectNameException;
-import javax.management.NotCompliantMBeanException;
 import java.io.File;
 import java.util.Collections;
 import java.util.concurrent.locks.LockSupport;
@@ -114,23 +111,23 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         return transientScottyEngine;
     }
 
-    private SimpleJmxExporter startJmxExporter(TransientScottyEngine engine) throws EngineException {
-        SimpleJmxExporter exporter = new SimpleJmxExporter();
-        exporter.addProcessingEngineMXBean("demo-engine", engine);
-        exporter.addWorkflowRepositoryMXBean("demo-workflow-repository", (FileBasedWorkflowRepository) engine.getWfRepository());
-        engine.getProcessorPools().forEach(pool -> exporter.addProcessorPoolMXBean(pool.getId(), pool));
+    private SimpleJmxExporter startJmxExporter(final TransientScottyEngine engine) throws EngineException {
+        SimpleJmxExporter newExporter = new SimpleJmxExporter();
+        newExporter.addProcessingEngineMXBean("demo-engine", engine);
+        newExporter.addWorkflowRepositoryMXBean("demo-workflow-repository", (FileBasedWorkflowRepository) engine.getWfRepository());
+        engine.getProcessorPools().forEach(pool -> newExporter.addProcessorPoolMXBean(pool.getId(), pool));
 
         statisticsCollector = new LoggingStatisticCollector();
         statisticsCollector.start();
         engine.setStatisticsCollector(statisticsCollector);
-        exporter.addStatisticsCollectorMXBean("hello-statistics", statisticsCollector);
+        newExporter.addStatisticsCollectorMXBean("hello-statistics", statisticsCollector);
 
         try {
-            exporter.startup();
+            newExporter.startup();
         } catch (Exception e) {
            throw new EngineException("Failed to start JMX exporter.", e);
         }
-        return exporter;
+        return newExporter;
     }
 
     public void waitForIdleEngine() {
