@@ -1,4 +1,4 @@
-package de.wolfsvl.copper2go.application;
+package de.wolfsvl.copper2go.connector;
 
 public interface Copper2GoHttpServer {
     void start();

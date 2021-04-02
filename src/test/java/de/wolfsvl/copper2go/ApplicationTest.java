@@ -15,11 +15,13 @@ class ApplicationTest {
     void mainTest() throws Exception {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(byteArrayOutputStream));
-        System.setIn(new ByteArrayInputStream("Wolf\r\nexit\r\n".getBytes()));
+        String name = "Wolf" + System.currentTimeMillis();
+        String input = name + " \r\nexit\r\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
         Application.main(null);
-        final String start = "Enter your name: " + "HEllo Wolf! (Fix the bug;-)";
+        final String start = "Enter your name: " + "HEllo " + name + " ! (Fix the bug;-)";
         final String result = byteArrayOutputStream.toString(StandardCharsets.UTF_8).replace("\r", "").replace("\n", "");
         Assertions.assertTrue(result.length() > start.length(), "Longer result.");
-        Assertions.assertEquals(start, result.substring(0,start.length()), "Dialog starts as expected.");
+        Assertions.assertTrue(result.contains(start), "Dialog contains as expected.");
     }
 }

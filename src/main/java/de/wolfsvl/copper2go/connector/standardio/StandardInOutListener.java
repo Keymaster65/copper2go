@@ -1,6 +1,6 @@
-package de.wolfsvl.copper2go.standardio;
+package de.wolfsvl.copper2go.connector.standardio;
 
-import de.wolfsvl.copper2go.application.Application;
+import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import de.wolfsvl.copper2go.impl.StdInOutContextImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,8 @@ import java.io.InputStreamReader;
 public class StandardInOutListener {
 
     private static final Logger log = LoggerFactory.getLogger(StandardInOutListener.class);
-    public void listenLocalStream(final Application applicationapplication) {
+
+    public void listenLocalStream(final Copper2GoEngine applicationapplication) throws StandardInOutException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (1 == 1) {
             try {
@@ -22,12 +23,12 @@ public class StandardInOutListener {
                     throw new NullPointerException("Read a 'null' line. So there seems to be no stdin. Might happen when starting with gradle.");
                 }
                 if ("exit".equals(line1)) {
-                    throw new Application.ApplicationException("Input canceled by 'exit' line.");
+                    throw new StandardInOutException("Input canceled by 'exit' line.");
                 }
                 applicationapplication.callWorkflow(new StdInOutContextImpl(line1));
                 applicationapplication.waitForIdleEngine();
             } catch (Exception e) {
-                throw new Application.ApplicationException("Exception while getting input.", e);
+                throw new StandardInOutException("Exception while getting input.", e);
             }
         }
     }

@@ -1,7 +1,7 @@
-package de.wolfsvl.copper2go.vertx;
+package de.wolfsvl.copper2go.connector.vertx;
 
-import de.wolfsvl.copper2go.application.Application;
-import de.wolfsvl.copper2go.application.Copper2GoHttpServer;
+import de.wolfsvl.copper2go.engine.Copper2GoEngine;
+import de.wolfsvl.copper2go.connector.Copper2GoHttpServer;
 import de.wolfsvl.copper2go.impl.HttpContextImpl;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
@@ -20,15 +20,15 @@ public class VertxHttpServer implements Copper2GoHttpServer {
     private final int port;
 
 
-    public VertxHttpServer(final int port, final Application application) {
-        this(port, application, Vertx.vertx());
+    public VertxHttpServer(final int port, final Copper2GoEngine copper2GoEngine) {
+        this(port, copper2GoEngine, Vertx.vertx());
     }
 
-    VertxHttpServer(final int port, final Application application, final Vertx vertx) {
-        this(port, application, vertx, vertx.createHttpServer());
+    VertxHttpServer(final int port, final Copper2GoEngine copper2GoEngine, final Vertx vertx) {
+        this(port, copper2GoEngine, vertx, vertx.createHttpServer());
     }
 
-    VertxHttpServer(final int port, final Application application, final Vertx vertx, final HttpServer httpServer) {
+    VertxHttpServer(final int port, final Copper2GoEngine copper2GoEngine, final Vertx vertx, final HttpServer httpServer) {
         this.port = port;
         this.vertx = vertx;
         this.httpServer = httpServer;
@@ -37,7 +37,7 @@ public class VertxHttpServer implements Copper2GoHttpServer {
                     final String requestBody;
                     requestBody = new String(buffer.getBytes(), StandardCharsets.UTF_8);
                     try {
-                        application.callWorkflow(new HttpContextImpl(requestBody, request.response()));
+                        copper2GoEngine.callWorkflow(new HttpContextImpl(requestBody, request.response()));
                     } catch (CopperException e) {
                         request.response().end(String.format("Exception: %s", e.getMessage()));
                         log.warn("Exception while calling workflow.", e);
