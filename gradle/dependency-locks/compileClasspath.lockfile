@@ -9,8 +9,8 @@ com.jcraft:jzlib:1.1.1
 org.bouncycastle:bcpg-jdk15on:1.64
 org.bouncycastle:bcpkix-jdk15on:1.64
 org.bouncycastle:bcprov-jdk15on:1.64
-org.copper-engine:copper-coreengine:5.2.0
-org.copper-engine:copper-ext:5.2.0
-org.copper-engine:copper-jmx-interface:5.2.0
+org.copper-engine:copper-coreengine:5.3.0
+org.copper-engine:copper-ext:5.3.0
+org.copper-engine:copper-jmx-interface:5.3.0
 org.eclipse.jgit:org.eclipse.jgit:5.7.0.202003110725-r
 org.slf4j:slf4j-api:1.8.0-beta4

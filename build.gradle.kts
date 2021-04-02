@@ -49,18 +49,18 @@ publishing {
     }
 }
 dependencies {
-    implementation("org.copper-engine:copper-ext:5.2.0")
+    implementation("org.copper-engine:copper-ext:5+")
 
     // needed for exceptions
     implementation("org.eclipse.jgit:org.eclipse.jgit:5.7.0.202003110725-r")
 
-    implementation("org.copper-engine:copper-coreengine:5.2.0")
-    implementation("org.copper-engine:copper-jmx-interface:5.2.0")
+    implementation("org.copper-engine:copper-coreengine:5+")
+    implementation("org.copper-engine:copper-jmx-interface:5+")
 
     implementation("org.slf4j:slf4j-api:1.8.0-beta2")
     implementation("ch.qos.logback:logback-classic:1.3.0-alpha4")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5+")
 }
 
 application {
