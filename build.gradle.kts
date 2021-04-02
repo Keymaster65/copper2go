@@ -16,6 +16,10 @@ java {
     sourceCompatibility = JavaVersion.VERSION_11
 }
 
+dependencyLocking {
+    lockAllConfigurations()
+}
+
 repositories {
     mavenCentral()
 }
