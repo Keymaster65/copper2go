@@ -15,7 +15,7 @@ node() {
         }
 
         stage('Build') {
-            _gradle 'clean assemble'
+            _gradle 'assemble'
         }
 
         stage('Test') {

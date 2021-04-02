@@ -10,8 +10,9 @@
  This picture shows a first overview:
  ![This picture shows a first overview](copper2goOverview.svg)
  
- ## Release plan
-  * 0.2 http support
+ ## Release plan 0.2
+  * http support
+  * publish to public artifact repository
   
 ## Release notes
  * 0.1 A first MVP (Minimum Viable Product)
@@ -21,7 +22,8 @@
  * docker image distribution
  * Multi workflow support
  * factoryfx integration
- * jms support
+ * Kafka support
+ * JMS support 
  * PostgreSQL for workflow instances
  
  ## Links
