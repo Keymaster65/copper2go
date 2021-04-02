@@ -6,6 +6,6 @@ import org.copperengine.core.CopperException;
 public interface Copper2GoEngine {
     void start() throws EngineException;
     void stop() throws EngineException;
-    void callWorkflow(final Context context) throws CopperException;
+    void callWorkflow(final Context context) throws EngineRuntimeException;
     void waitForIdleEngine();
 }

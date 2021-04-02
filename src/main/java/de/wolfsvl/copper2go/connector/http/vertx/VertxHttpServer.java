@@ -6,6 +6,7 @@ import de.wolfsvl.copper2go.impl.HttpContextImpl;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import org.copperengine.core.CopperException;
+import org.copperengine.core.CopperRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,7 @@ public class VertxHttpServer implements Copper2GoHttpServer {
                     requestBody = new String(buffer.getBytes(), StandardCharsets.UTF_8);
                     try {
                         copper2GoEngine.callWorkflow(new HttpContextImpl(requestBody, request.response()));
-                    } catch (CopperException e) {
+                    } catch (CopperRuntimeException e) {
                         request.response().end(String.format("Exception: %s", e.getMessage()));
                         log.warn("Exception while calling workflow.", e);
                     }

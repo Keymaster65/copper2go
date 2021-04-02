@@ -55,7 +55,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         }
     }
 
-    public void callWorkflow(final Context context) throws CopperException {
+    public void callWorkflow(final Context context) throws EngineRuntimeException {
         WorkflowInstanceDescr<HelloData> workflowInstanceDescr = new WorkflowInstanceDescr<>("Hello");
         WorkflowVersion version = engine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), 1, 0);
         workflowInstanceDescr.setVersion(version);
@@ -63,7 +63,11 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         String uuid = engine.createUUID();
         workflowInstanceDescr.setData(new HelloData(uuid));
         contextStore.store(uuid, context);
-        engine.run(workflowInstanceDescr);
+        try {
+            engine.run(workflowInstanceDescr);
+        } catch (CopperException e) {
+            throw new EngineRuntimeException("Exception while running workflow. ", e);
+        }
     }
 
     public TransientScottyEngine start(DependencyInjector dependencyInjector) throws EngineException {
