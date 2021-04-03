@@ -47,7 +47,6 @@ public class VertxHttpServer implements Copper2GoHttpServer {
                 }));
     }
 
-
     @Override
     public void start() {
         httpServer.listen(port);
