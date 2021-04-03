@@ -1,12 +1,12 @@
 package de.wolfsvl.copper2go.connector.http.vertx;
 
-import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import de.wolfsvl.copper2go.connector.http.Copper2GoHttpServer;
+import de.wolfsvl.copper2go.engine.Copper2GoEngine;
+import de.wolfsvl.copper2go.engine.EngineException;
 import de.wolfsvl.copper2go.impl.HttpContextImpl;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
-import org.copperengine.core.CopperException;
-import org.copperengine.core.CopperRuntimeException;
+import io.vertx.core.http.HttpServerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,20 +37,23 @@ public class VertxHttpServer implements Copper2GoHttpServer {
                 request -> request.handler(buffer -> {
                     final String requestBody;
                     requestBody = new String(buffer.getBytes(), StandardCharsets.UTF_8);
+                    final HttpServerResponse response = request.response();
                     try {
-                        copper2GoEngine.callWorkflow(new HttpContextImpl(requestBody, request.response()));
-                    } catch (CopperRuntimeException e) {
-                        request.response().end(String.format("Exception: %s", e.getMessage()));
+                        copper2GoEngine.callWorkflow(new HttpContextImpl(requestBody, response));
+                    } catch (EngineException e) {
+                        response.end(String.format("Exception: %s", e.getMessage()));
                         log.warn("Exception while calling workflow.", e);
                     }
                 }));
     }
 
 
+    @Override
     public void start() {
         httpServer.listen(port);
     }
 
+    @Override
     public void stop() {
         httpServer.close(e -> log.info("Server stopped. e={}", e.succeeded()));
         vertx.close();

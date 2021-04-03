@@ -49,8 +49,9 @@ publishing {
     }
 }
 dependencies {
-    implementation("io.vertx:vertx-core:3.8.5")
-    implementation("io.vertx:vertx-web:3.8.5")
+    implementation("io.vertx:vertx-core:4+")
+    implementation("io.vertx:vertx-web:4+")
+    implementation("io.vertx:vertx-web-client:4+")
     //implementation("io.vertx:web-examples:3.8.5")
 
     implementation("org.copper-engine:copper-ext:5+")
@@ -65,6 +66,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.3.0-alpha4")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5+")
+    testImplementation("org.mockito:mockito-core:3+")
 }
 
 application {
