@@ -32,12 +32,14 @@ class VertxHttpServerTest {
     @Test
     void post() throws InterruptedException, EngineException {
         Copper2GoEngine engine = mock(Copper2GoEngine.class);
+
+        // Exception should lead to normal response.end() ig no workflow does
         doThrow(new EngineException("Simulated exception.")).when(engine).callWorkflow(any());
 
         final int port = 8024;
         final Vertx vertx = Vertx.vertx();
         final VertxHttpServer vertxHttpServer = new VertxHttpServer(port, engine, vertx);
-        BlockingQueue<Throwable> blockingQueue = new SynchronousQueue();
+        BlockingQueue<Throwable> blockingQueue = new SynchronousQueue<>();
         WebClient client = WebClient.create(vertx);
         vertxHttpServer.start();
 
