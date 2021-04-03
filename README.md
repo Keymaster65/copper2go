@@ -11,13 +11,14 @@
  ![This picture shows a first overview](copper2goOverview.svg)
  
  ## Release plan 0.2
-  * http support
-  * publish to public artifact repository
+  * http server support
+  * http client support
   
 ## Release notes
  * 0.1 A first MVP (Minimum Viable Product)
  
  ## Possible features
+ * publish to public artifact repository
  * quick start
  * docker image distribution
  * Multi workflow support
