@@ -18,10 +18,10 @@
  * 0.1 A first MVP (Minimum Viable Product)
  
  ## Possible features
+ * Multi workflow support
  * publish to public artifact repository
  * quick start
  * docker image distribution
- * Multi workflow support
  * factoryfx integration
  * Kafka support
  * JMS support 
