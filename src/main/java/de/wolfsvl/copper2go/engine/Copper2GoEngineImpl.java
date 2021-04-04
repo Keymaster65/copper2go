@@ -31,15 +31,16 @@ import java.util.concurrent.locks.LockSupport;
 
 public class Copper2GoEngineImpl implements Copper2GoEngine {
 
-    private String branch = "master";
-    private String workflowGitURI = "https://github.com/Keymaster65/copper2go-workflows.git";
+    private String branch = "feature/1.mapping";
+    private String workflowGitURI = "git://github.com/Keymaster65/copper2go-workflows.git";
     private String workflowBase = "/src/workflow/java";
+    private int availableTickets = 10;
+
     private static final Logger log = LoggerFactory.getLogger(Copper2GoEngineImpl.class);
 
     private TransientScottyEngine engine;
     private SimpleJmxExporter exporter;
     private LoggingStatisticCollector statisticsCollector;
-    private int availableTickets = 10;
 
     private ContextStore contextStore;
 
@@ -110,21 +111,23 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
             }
         };
         final TransientScottyEngine transientScottyEngine = factory.create();
-        while (!transientScottyEngine.getEngineState().equals(EngineState.STARTED)) ;
+        while (!transientScottyEngine.getEngineState().equals(EngineState.STARTED)){
+            LockSupport.parkNanos(10000000);
+        }
         exporter = startJmxExporter(transientScottyEngine);
         return transientScottyEngine;
     }
 
     private SimpleJmxExporter startJmxExporter(final TransientScottyEngine engine) throws EngineException {
         SimpleJmxExporter newExporter = new SimpleJmxExporter();
-        newExporter.addProcessingEngineMXBean("demo-engine", engine);
-        newExporter.addWorkflowRepositoryMXBean("demo-workflow-repository", (FileBasedWorkflowRepository) engine.getWfRepository());
+        newExporter.addProcessingEngineMXBean("copper2go-engine", engine);
+        newExporter.addWorkflowRepositoryMXBean("copper2go-workflow-repository", (FileBasedWorkflowRepository) engine.getWfRepository());
         engine.getProcessorPools().forEach(pool -> newExporter.addProcessorPoolMXBean(pool.getId(), pool));
 
         statisticsCollector = new LoggingStatisticCollector();
         statisticsCollector.start();
         engine.setStatisticsCollector(statisticsCollector);
-        newExporter.addStatisticsCollectorMXBean("hello-statistics", statisticsCollector);
+        newExporter.addStatisticsCollectorMXBean("copper2go-statistics", statisticsCollector);
 
         try {
             newExporter.startup();
