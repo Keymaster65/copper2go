@@ -15,11 +15,19 @@
  */
 package de.wolfsvl.copper2go.impl;
 
+import de.wolfsvl.copper2go.workflowapi.EventChannelStore;
+import de.wolfsvl.copper2go.workflowapi.RequestChannelStore;
 import org.copperengine.core.util.PojoDependencyInjector;
 import de.wolfsvl.copper2go.workflowapi.ContextStore;
 
 public class DefaultDependencyInjector extends PojoDependencyInjector {
-    public DefaultDependencyInjector(ContextStore contextStore) {
+    public DefaultDependencyInjector(
+            ContextStore contextStore,
+            final EventChannelStore eventChannelStore,
+            final RequestChannelStore requestChannelStore
+    ) {
         this.register("contextStore", contextStore);
+        this.register("eventChannelStore", eventChannelStore);
+        this.register("requestChannelStore", requestChannelStore);
     }
 }

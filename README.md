@@ -18,16 +18,18 @@
  * 0.1 A first MVP (Minimum Viable Product)
  
  ## Possible features
- * Multi workflow support
- * publish to public artifact repository
- * quick start
  * docker image distribution
- * factoryfx integration
- * Kafka support
+ * Multi workflow and non-business config
+ * Multi workflow support and REST level
+ * Kafka support and choreography example
+ * quick start
+ * publish to public artifact repository
  * JMS support 
  * PostgreSQL for workflow instances
+ * factoryfx integration
  
  ## Links
+ * https://github.com/Keymaster65/copper2go/releases
  * https://github.com/copper-engine
  * https://copper-engine.org/blog/2019-12-09-/copper-5.1-released/
  * https://github.com/factoryfx

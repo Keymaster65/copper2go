@@ -16,12 +16,18 @@
 package de.wolfsvl.copper2go.application;
 
 import de.wolfsvl.copper2go.connector.http.Copper2GoHttpServer;
+import de.wolfsvl.copper2go.connector.http.vertx.VertxHttpServer;
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutException;
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutListener;
-import de.wolfsvl.copper2go.connector.http.vertx.VertxHttpServer;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import de.wolfsvl.copper2go.engine.Copper2GoEngineImpl;
 import de.wolfsvl.copper2go.engine.EngineException;
+import de.wolfsvl.copper2go.impl.ContextStoreImpl;
+import de.wolfsvl.copper2go.impl.DefaultDependencyInjector;
+import de.wolfsvl.copper2go.impl.EventChannelStoreImpl;
+import de.wolfsvl.copper2go.impl.RequestChannelStoreImpl;
+import de.wolfsvl.copper2go.workflowapi.ContextStore;
+import org.copperengine.core.DependencyInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +36,7 @@ public class Application {
 
     private final Copper2GoEngine copper2GoEngine;
     private final Copper2GoHttpServer httpServer;
+    private final ContextStoreImpl contextStore;
 
     public static void main(String[] args) throws Exception {
         Application application = null;
@@ -48,13 +55,15 @@ public class Application {
     }
 
     public Application(final String[] args) {
-        copper2GoEngine = new Copper2GoEngineImpl(args);
+        contextStore = new ContextStoreImpl();
+        copper2GoEngine = new Copper2GoEngineImpl(args, contextStore);
         httpServer = new VertxHttpServer(8080, copper2GoEngine);
     }
 
     public synchronized void start() throws EngineException, StandardInOutException {
         log.info("start application");
-        copper2GoEngine.start();
+        DependencyInjector dependencyInjector = new DefaultDependencyInjector(contextStore, new EventChannelStoreImpl(), new RequestChannelStoreImpl(copper2GoEngine));
+        copper2GoEngine.start(dependencyInjector);
         httpServer.start();
         final StandardInOutListener standardInOutListener = new StandardInOutListener();
         standardInOutListener.listenLocalStream(copper2GoEngine);

@@ -18,10 +18,12 @@ import static org.mockito.Mockito.verify;
 
 class VertxHttpServerTest {
 
+    public static final int SERVER_PORT = 8024;
+
     @Test
     void startStop() {
         Copper2GoEngine engine = mock(Copper2GoEngine.class);
-        final VertxHttpServer vertxHttpServer = new VertxHttpServer(8023, engine);
+        final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, engine);
         try {
             vertxHttpServer.start();
         } finally {
@@ -36,7 +38,7 @@ class VertxHttpServerTest {
         // Exception should lead to normal response.end() ig no workflow does
         doThrow(new EngineException("Simulated exception.")).when(engine).callWorkflow(any());
 
-        final int port = 8024;
+        final int port = SERVER_PORT;
         final Vertx vertx = Vertx.vertx();
         final VertxHttpServer vertxHttpServer = new VertxHttpServer(port, engine, vertx);
         BlockingQueue<Throwable> blockingQueue = new SynchronousQueue<>();

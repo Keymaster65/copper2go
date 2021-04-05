@@ -1,13 +1,13 @@
 package de.wolfsvl.copper2go.engine;
 
-import de.wolfsvl.copper2go.impl.ContextStoreImpl;
-import de.wolfsvl.copper2go.impl.DefaultDependencyInjector;
 import de.wolfsvl.copper2go.workflowapi.Context;
 import de.wolfsvl.copper2go.workflowapi.ContextStore;
 import de.wolfsvl.copper2go.workflowapi.HelloData;
+import org.copperengine.core.Acknowledge;
 import org.copperengine.core.CopperException;
 import org.copperengine.core.DependencyInjector;
 import org.copperengine.core.EngineState;
+import org.copperengine.core.Response;
 import org.copperengine.core.WorkflowInstanceDescr;
 import org.copperengine.core.WorkflowVersion;
 import org.copperengine.core.common.DefaultTicketPoolManager;
@@ -44,15 +44,18 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
 
     private ContextStore contextStore;
 
-    public Copper2GoEngineImpl(final String[] args) {
+    public Copper2GoEngineImpl(final String[] args, final ContextStore contextStore) {
+        this.contextStore = contextStore;
+
         if (args != null && args.length > 0) {
-            workflowGitURI = args[0];
+            this.branch = args[0];
         }
         if (args != null && args.length > 1) {
-            this.branch = args[1];
+            this.workflowBase = args[1];
         }
+
         if (args != null && args.length > 2) {
-            this.workflowBase = args[2];
+            workflowGitURI = args[2];
         }
     }
 
@@ -71,7 +74,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         }
     }
 
-    public TransientScottyEngine start(DependencyInjector dependencyInjector) throws EngineException {
+    public TransientScottyEngine startScotty(DependencyInjector dependencyInjector) throws EngineException {
         var factory = new TransientEngineFactory() {
             @Override
             protected File getWorkflowSourceDirectory() {
@@ -111,7 +114,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
             }
         };
         final TransientScottyEngine transientScottyEngine = factory.create();
-        while (!transientScottyEngine.getEngineState().equals(EngineState.STARTED)){
+        while (!transientScottyEngine.getEngineState().equals(EngineState.STARTED)) {
             LockSupport.parkNanos(10000000);
         }
         exporter = startJmxExporter(transientScottyEngine);
@@ -132,7 +135,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         try {
             newExporter.startup();
         } catch (Exception e) {
-           throw new EngineException("Failed to start JMX exporter.", e);
+            throw new EngineException("Failed to start JMX exporter.", e);
         }
         return newExporter;
     }
@@ -143,18 +146,33 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         }
     }
 
-    public synchronized void start() throws EngineException {
+    @Override
+    public void notify(final String correlationId, final String response) {
+        Response<String> copperResponse = new Response<>(correlationId, response, null);
+        engine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
+    }
+
+    @Override
+    public void notifyError(final String correlationId, final String response) {
+        Response<String> copperResponse = new Response<>(correlationId, response, new RuntimeException(response));
+        engine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
+    }
+
+    public synchronized void start(final DependencyInjector dependencyInjector) throws EngineException {
         log.info("start engine");
-        contextStore = new ContextStoreImpl();
-        engine = start(new DefaultDependencyInjector(contextStore));
+        engine = startScotty(dependencyInjector);
     }
 
     public void stop() throws EngineException {
-        engine.shutdown();
-        statisticsCollector.shutdown();
+        if (engine != null) {
+            engine.shutdown();
+        }
+        if (statisticsCollector != null) {
+            statisticsCollector.shutdown();
+        }
         try {
             exporter.shutdown();
-        } catch (MBeanRegistrationException | InstanceNotFoundException e) {
+        } catch (Exception e) {
             throw new EngineException("Could not stop engine.", e);
         }
         waitForIdleEngine();
