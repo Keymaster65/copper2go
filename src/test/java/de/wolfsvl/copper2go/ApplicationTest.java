@@ -13,29 +13,26 @@ class ApplicationTest {
 
     @Test()
     void masterTest() throws Exception {
-        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(byteArrayOutputStream));
         String name = "Wolf" + System.currentTimeMillis();
-        String input = name + " \r\nexit\r\n";
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
-        Application.main(new String[]{"master"});
         final String start = "Enter your name: " + "HEllo " + name + " ! (Fix the bug;-)";
-        final String result = byteArrayOutputStream.toString(StandardCharsets.UTF_8).replace("\r", "").replace("\n", "");
-        Assertions.assertTrue(result.length() > start.length(), "Longer result.");
+        final String result = stdinTest(name, "master");
         Assertions.assertTrue(result.contains(start), "Dialog contains as expected.");
     }
 
     @Test()
     void mappingBranchTest() throws Exception {
+        String name = "Wolf" + System.currentTimeMillis();
+        final String result = stdinTest(name, "feature/1.mapping");
+        final String start = "Hello " + name + "! Please transfer";
+        Assertions.assertTrue(result.contains(start), "Dialog contains as expected.");
+    }
+
+    private String stdinTest(final String name, final String branch) throws Exception {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(byteArrayOutputStream));
-        String name = "Wolf" + System.currentTimeMillis();
         String input = name + " \r\nexit\r\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
-        Application.main(new String[]{"feature/1.mapping"});
-        final String start = "Hello " + name + "! Please transfer";
-        final String result = byteArrayOutputStream.toString(StandardCharsets.UTF_8).replace("\r", "").replace("\n", "");
-        Assertions.assertTrue(result.length() > start.length(), "Longer result.");
-        Assertions.assertTrue(result.contains(start), "Dialog contains as expected.");
+        Application.main(new String[]{branch});
+        return byteArrayOutputStream.toString(StandardCharsets.UTF_8).replace("\r", "").replace("\n", "");
     }
 }
