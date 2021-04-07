@@ -8,6 +8,8 @@ import io.vertx.core.http.HttpServerResponse;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -48,7 +50,7 @@ class VertxHttpClientTest {
         final VertxHttpClient vertxHttpClient = new VertxHttpClient("localhost", SERVER_PORT, "/", engine);
         vertxHttpClient.request(HttpMethod.GET,"Fault test.", CORRELATION_ID);
         Thread.sleep(5 * 1000); // connection refused max time
-        verify(engine).notifyError(CORRELATION_ID, "Connection refused: no further information: localhost/127.0.0.1:8023");
+        verify(engine).notifyError(eq(CORRELATION_ID), anyString());
         verify(engine, times(0)).notify(any(), any());
     }
 
