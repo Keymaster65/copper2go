@@ -26,56 +26,50 @@ import de.wolfsvl.copper2go.impl.ContextStoreImpl;
 import de.wolfsvl.copper2go.impl.DefaultDependencyInjector;
 import de.wolfsvl.copper2go.impl.EventChannelStoreImpl;
 import de.wolfsvl.copper2go.impl.RequestChannelStoreImpl;
-import de.wolfsvl.copper2go.workflowapi.ContextStore;
 import org.copperengine.core.DependencyInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
+    public static final int HTTP_SERVER_PORT = 8080;
 
     private final Copper2GoEngine copper2GoEngine;
     private final Copper2GoHttpServer httpServer;
     private final ContextStoreImpl contextStore;
-
-    public static void main(String[] args) throws Exception {
-        Application application = null;
-        try {
-            log.info("Begin of Main.");
-            application = new Application(args);
-            application.start();
-        } catch (Exception e) {
-            log.error("Exception in application main.", e);
-        } finally {
-            if (application != null) {
-                application.stop();
-            }
-            log.info("End of Main.");
-        }
-    }
+    private boolean stopRequested;
 
     public Application(final String[] args) {
         contextStore = new ContextStoreImpl();
         copper2GoEngine = new Copper2GoEngineImpl(args, contextStore);
-        httpServer = new VertxHttpServer(8080, copper2GoEngine);
+        httpServer = new VertxHttpServer(HTTP_SERVER_PORT, copper2GoEngine);
     }
 
-    public synchronized void start() throws EngineException, StandardInOutException {
+    public synchronized void start() throws EngineException {
         log.info("start application");
         DependencyInjector dependencyInjector = new DefaultDependencyInjector(contextStore, new EventChannelStoreImpl(), new RequestChannelStoreImpl(copper2GoEngine));
         copper2GoEngine.start(dependencyInjector);
         httpServer.start();
+    }
+
+    public synchronized void startWithStdInOut() throws EngineException, StandardInOutException {
+        start();
         final StandardInOutListener standardInOutListener = new StandardInOutListener();
         standardInOutListener.listenLocalStream(copper2GoEngine);
     }
 
     public synchronized void stop() throws EngineException {
         log.info("stop application");
+        stopRequested = true;
         try {
             httpServer.stop();
         } catch (Exception e) {
             log.warn("Exception while stopping HTTP server.", e);
         }
         copper2GoEngine.stop();
+    }
+
+    public synchronized boolean isStopRequested() {
+        return this.stopRequested;
     }
 }

@@ -7,10 +7,6 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.TimeUnit;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -30,7 +26,7 @@ class VertxHttpClientTest {
         httpServer.requestHandler(
                 request -> request.handler(buffer -> {
                             final HttpServerResponse response = request.response();
-                            response.end(String.format(successResponse));
+                            response.end(successResponse);
                         }
                 ));
         VertxHttpClient vertxHttpClient = new VertxHttpClient("localhost", SERVER_PORT, "/", engine);
