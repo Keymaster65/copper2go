@@ -13,7 +13,7 @@ public class Main {
         Application application = null;
         try {
             log.info("Begin of Main.");
-            application = new Application(args);
+            application = new Application();
             application.start();
         } catch (Exception e) {
             log.error("Exception in application main. Try to stop application.", e);

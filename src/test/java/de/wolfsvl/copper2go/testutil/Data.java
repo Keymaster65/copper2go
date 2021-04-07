@@ -6,6 +6,7 @@ public class Data {
         return "Wolf" + System.currentTimeMillis();
     }
 
+    private Data() {}
     public static String getExpectedPartMappingBranch(final String name) {
         return  "Hello " + name + "! Please transfer";
     }

@@ -21,6 +21,7 @@ import de.wolfsvl.copper2go.connector.standardio.StandardInOutException;
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutListener;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import de.wolfsvl.copper2go.engine.Copper2GoEngineImpl;
+import de.wolfsvl.copper2go.engine.Copper2GoWorkflowRepository;
 import de.wolfsvl.copper2go.engine.EngineException;
 import de.wolfsvl.copper2go.impl.ContextStoreImpl;
 import de.wolfsvl.copper2go.impl.DefaultDependencyInjector;
@@ -39,9 +40,29 @@ public class Application {
     private final ContextStoreImpl contextStore;
     private boolean stopRequested;
 
-    public Application(final String[] args) {
+    public Application(final String branch) {
+        this(
+                branch,
+                "git://github.com/Keymaster65/copper2go-workflows.git",
+                "/src/workflow/java"
+        );
+    }
+
+    public Application() {
+        this("feature/1.mapping");
+    }
+
+    public Application(
+            final String branch,
+            final String workflowGitURI,
+            final String workflowBase
+            ) {
         contextStore = new ContextStoreImpl();
-        copper2GoEngine = new Copper2GoEngineImpl(args, contextStore);
+        copper2GoEngine = new Copper2GoEngineImpl(new Copper2GoWorkflowRepository(
+                branch,
+                workflowGitURI,
+                workflowBase
+        ), contextStore);
         httpServer = new VertxHttpServer(HTTP_SERVER_PORT, copper2GoEngine);
     }
 

@@ -6,9 +6,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
-import static de.wolfsvl.copper2go.application.Application.HTTP_SERVER_PORT;
-
 public class TestHttpClient {
+
+    private TestHttpClient() {}
+
     public static HttpResponse<String> post(final URI uri, final String name) throws java.io.IOException, InterruptedException {
         HttpClient client = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)

@@ -22,7 +22,7 @@ class ApplicationHttpTest {
     @Test()
     void masterTest() throws Exception {
         String name = Data.getName();
-        Application application = new Application(new String[]{"master"});
+        Application application = new Application("master");
         application.start();
         HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT), name);
         application.stop();
@@ -32,7 +32,7 @@ class ApplicationHttpTest {
     @Test()
     void mappingBranchTest() throws Exception {
         String name = Data.getName();
-        Application application = new Application(new String[]{"feature/1.mapping"});
+        Application application = new Application("feature/1.mapping");
         application.start();
         HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT), name);
         application.stop();

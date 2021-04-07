@@ -23,17 +23,13 @@ import org.copperengine.ext.wfrepo.git.GitWorkflowRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanRegistrationException;
 import java.io.File;
 import java.util.Collections;
 import java.util.concurrent.locks.LockSupport;
 
 public class Copper2GoEngineImpl implements Copper2GoEngine {
 
-    private String branch = "feature/1.mapping";
-    private String workflowGitURI = "git://github.com/Keymaster65/copper2go-workflows.git";
-    private String workflowBase = "/src/workflow/java";
+
     private int availableTickets = 10;
 
     private static final Logger log = LoggerFactory.getLogger(Copper2GoEngineImpl.class);
@@ -41,23 +37,13 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
     private TransientScottyEngine engine;
     private SimpleJmxExporter exporter;
     private LoggingStatisticCollector statisticsCollector;
-
+    private final Copper2GoWorkflowRepository copper2GoWorkflowRepository;
     private ContextStore contextStore;
 
-    public Copper2GoEngineImpl(final String[] args, final ContextStore contextStore) {
+    public Copper2GoEngineImpl(Copper2GoWorkflowRepository copper2GoWorkflowRepository, final ContextStore contextStore) {
+        this.copper2GoWorkflowRepository = copper2GoWorkflowRepository;
         this.contextStore = contextStore;
-
-        if (args != null && args.length > 0) {
-            this.branch = args[0];
-        }
-        if (args != null && args.length > 1) {
-            this.workflowBase = args[1];
-        }
-
-        if (args != null && args.length > 2) {
-            workflowGitURI = args[2];
-        }
-    }
+ }
 
     public void callWorkflow(final Context context) throws EngineException {
         WorkflowInstanceDescr<HelloData> workflowInstanceDescr = new WorkflowInstanceDescr<>("Hello");
@@ -103,10 +89,10 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
                     GitWorkflowRepository repo = new GitWorkflowRepository();
 
                     repo.setGitRepositoryDir(getWorkflowSourceDirectory());
-                    repo.addSourceDir(getWorkflowSourceDirectory().getAbsolutePath() + workflowBase);
+                    repo.addSourceDir(getWorkflowSourceDirectory().getAbsolutePath() + copper2GoWorkflowRepository.workflowBase);
                     repo.setTargetDir(workDir + "/target");
-                    repo.setBranch(Copper2GoEngineImpl.this.branch);
-                    repo.setOriginURI(workflowGitURI);
+                    repo.setBranch(copper2GoWorkflowRepository.branch);
+                    repo.setOriginURI(copper2GoWorkflowRepository.workflowGitURI);
                     return repo;
                 } catch (Exception createException) {
                     throw new EngineRuntimeException("Exception while creating workflow rfepository.", createException);
@@ -163,7 +149,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         engine = startScotty(dependencyInjector);
     }
 
-    public void stop() throws EngineException {
+    public synchronized void stop() throws EngineException {
         if (engine != null) {
             engine.shutdown();
         }

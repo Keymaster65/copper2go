@@ -38,7 +38,7 @@ class ApplicationApplicationTestInOutTest {
         System.setOut(new PrintStream(byteArrayOutputStream));
         String input = name + "\r\nexit\r\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
-        Application application = new Application(new String[]{branch});
+        Application application = new Application(branch);
         Assertions.assertThatExceptionOfType(StandardInOutException.class).isThrownBy(application::startWithStdInOut);
         application.stop();
         return byteArrayOutputStream.toString(StandardCharsets.UTF_8).replace("\r", "").replace("\n", "");
