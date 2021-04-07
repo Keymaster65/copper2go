@@ -40,9 +40,10 @@ class VertxHttpClientTest {
             httpServer.listen(SERVER_PORT);
             vertxHttpClient.request(HttpMethod.POST, "Fault test.", CORRELATION_ID);
             latch.await();
+            Thread.sleep(1000); // give client time for async processing
         } finally {
-            vertxHttpClient.stop();
             httpServer.close();
+            vertxHttpClient.stop();
             vertx.close();
         }
 
