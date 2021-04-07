@@ -13,13 +13,13 @@
  ## Release plan 0.2
   * http server support
   * http client support
+  * non-business config
   
 ## Release notes
  * 0.1 A first MVP (Minimum Viable Product)
  
  ## Possible features
  * docker image distribution
- * Multi workflow and non-business config
  * Multi workflow support and REST level
  * Kafka support and choreography example
  * quick start
