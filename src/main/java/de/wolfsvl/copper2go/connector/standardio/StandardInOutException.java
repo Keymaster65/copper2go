@@ -1,6 +1,8 @@
 package de.wolfsvl.copper2go.connector.standardio;
 
 public class StandardInOutException extends Exception {
+    private static final long serialVersionUID = 1;
+
     public StandardInOutException(final String message) {
         super(message);
     }
