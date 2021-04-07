@@ -9,7 +9,7 @@ import java.time.Duration;
 import static de.wolfsvl.copper2go.application.Application.HTTP_SERVER_PORT;
 
 public class TestHttpClient {
-    public static HttpResponse<String> post(final String name) throws java.io.IOException, InterruptedException {
+    public static HttpResponse<String> post(final URI uri, final String name) throws java.io.IOException, InterruptedException {
         HttpClient client = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
                 .followRedirects(HttpClient.Redirect.NORMAL)
@@ -18,7 +18,7 @@ public class TestHttpClient {
         HttpRequest httpRequest =
                 HttpRequest.newBuilder()
                         .timeout(Duration.ofMillis(3000))
-                        .uri(URI.create("http://localhost:" + HTTP_SERVER_PORT))
+                        .uri(uri)
                         .POST(HttpRequest.BodyPublishers.ofString(name))
                         .build();
         return client.send(httpRequest, HttpResponse.BodyHandlers.ofString());

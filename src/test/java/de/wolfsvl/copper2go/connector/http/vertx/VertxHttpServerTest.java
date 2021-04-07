@@ -2,14 +2,12 @@ package de.wolfsvl.copper2go.connector.http.vertx;
 
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import de.wolfsvl.copper2go.engine.EngineException;
+import de.wolfsvl.copper2go.testutil.TestHttpClient;
 import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.ext.web.client.WebClient;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.SynchronousQueue;
+import java.io.IOException;
+import java.net.URI;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -32,49 +30,18 @@ class VertxHttpServerTest {
     }
 
     @Test
-    void post() throws InterruptedException, EngineException {
+    void post() throws InterruptedException, EngineException, IOException {
         Copper2GoEngine engine = mock(Copper2GoEngine.class);
 
         // Exception should lead to normal response.end() ig no workflow does
         doThrow(new EngineException("Simulated exception.")).when(engine).callWorkflow(any());
 
-        final int port = SERVER_PORT;
         final Vertx vertx = Vertx.vertx();
-        final VertxHttpServer vertxHttpServer = new VertxHttpServer(port, engine, vertx);
-        BlockingQueue<Throwable> blockingQueue = new SynchronousQueue<>();
-        WebClient client = WebClient.create(vertx);
+        final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, engine, vertx);
         vertxHttpServer.start();
+        TestHttpClient.post(URI.create("http://localhost:" + SERVER_PORT), "Wolf\r\n");
+        vertxHttpServer.stop();
 
-        client
-                .post(port, "localhost", "/hello")
-                .sendBuffer(Buffer.buffer("Wolf\r\n"))
-                .onFailure(err -> {
-                    try {
-                        System.out.println("Failure=" + err.getMessage());
-                        blockingQueue.add(new RuntimeException(err.getMessage()));
-                    } finally {
-                        vertxHttpServer.stop();
-                        client.close();
-                    }
-                })
-                .onSuccess(result -> {
-                    try {
-                        System.out.println("Result=" + result.bodyAsString());
-                        verify(engine).callWorkflow(any());
-                        blockingQueue.add(new PositivResult());
-                    } catch (Throwable e) {
-                        blockingQueue.add(e);
-                    } finally {
-                        vertxHttpServer.stop();
-                        client.close();
-                    }
-                });
-        Throwable result = blockingQueue.take();
-        Assertions.assertThatExceptionOfType(PositivResult.class).isThrownBy(() -> {
-            throw result;
-        });
-    }
-
-    private static class PositivResult extends Throwable {
+        verify(engine).callWorkflow(any());
     }
 }

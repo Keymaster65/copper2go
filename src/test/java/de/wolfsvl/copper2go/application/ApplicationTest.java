@@ -9,11 +9,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 
 import static de.wolfsvl.copper2go.application.Application.HTTP_SERVER_PORT;
 
@@ -41,7 +38,7 @@ class ApplicationTest {
         final String start = "HEllo " + name + "! (Fix the bug;-)";
         Application application = new Application(new String[]{"master"});
         application.start();
-        HttpResponse<String> response = TestHttpClient.post(name);
+        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT), name);
         application.stop();
         assertResponse(start, response.body());
     }
