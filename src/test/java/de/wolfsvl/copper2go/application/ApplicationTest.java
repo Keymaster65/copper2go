@@ -1,6 +1,7 @@
 package de.wolfsvl.copper2go.application;
 
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutException;
+import de.wolfsvl.copper2go.testutil.TestHttpClient;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -38,24 +39,9 @@ class ApplicationTest {
     void masterHttpTest() throws Exception {
         String name = "Wolf" + System.currentTimeMillis();
         final String start = "HEllo " + name + "! (Fix the bug;-)";
-        //Application.main(new String[]{"master"});
-        //Thread.sleep(5000);
         Application application = new Application(new String[]{"master"});
         application.start();
-        HttpClient client = HttpClient.newBuilder()
-                .version(HttpClient.Version.HTTP_1_1)
-                .followRedirects(HttpClient.Redirect.NORMAL)
-                .connectTimeout(Duration.ofSeconds(20))
-                //.proxy(ProxySelector.of(new InetSocketAddress("proxy.example.com", 80)))
-                //.authenticator(Authenticator.getDefault())
-                .build();
-        HttpRequest httpRequest =
-                HttpRequest.newBuilder()
-                        .timeout(Duration.ofMillis(3000))
-                        .uri(URI.create("http://localhost:" + HTTP_SERVER_PORT))
-                        .POST(HttpRequest.BodyPublishers.ofString(name))
-                        .build();
-        HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = TestHttpClient.post(name);
         application.stop();
         assertResponse(start, response.body());
     }
