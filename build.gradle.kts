@@ -6,7 +6,7 @@ plugins {
     distribution
     `maven-publish`
     jacoco
-    id("com.github.jk1.dependency-license-report") version "1.14"
+    id("com.github.jk1.dependency-license-report") version "1.16"
 }
 
 group = "de.wolfsvl"
@@ -50,6 +50,7 @@ publishing {
 }
 dependencies {
 
+    implementation("com.fasterxml.jackson:jackson-bom:2+")
     implementation("com.fasterxml.jackson.core:jackson-databind:2+")
 
     implementation("io.vertx:vertx-core:4+")
@@ -97,8 +98,10 @@ distributions {
     }
 }
 
+// visit https://github.com/jk1/Gradle-License-Report for help
 licenseReport {
     excludeOwnGroup = false
-    allowedLicensesFile = File ("$projectDir/allowed-licenses.json")
+    allowedLicensesFile = File("$projectDir/allowed-licenses.json")
+    excludes = arrayOf<String>("com.fasterxml.jackson:jackson-bom") // is apache 2.0 but license tool say "null"
     filters = arrayOf<LicenseBundleNormalizer>(LicenseBundleNormalizer("""$projectDir/license-normalizer-bundle.json""", true))
 }
