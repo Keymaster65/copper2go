@@ -10,10 +10,6 @@ node() {
             checkout(scm)
         }
 
-        stage('License') {
-            _gradle 'generateLicenseReport checkLicense'
-        }
-
         stage('Build') {
             _gradle 'assemble'
         }
@@ -29,6 +25,11 @@ node() {
         stage('Test coverage') {
             jacoco()
         }
+
+        stage('License') {
+            _gradle 'generateLicenseReport checkLicense'
+        }
+
         currentBuild.result = 'SUCCESS'
     } catch (Exception exception) {
         currentBuild.result = 'FAILURE'
