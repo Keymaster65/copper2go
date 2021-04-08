@@ -1,28 +1,35 @@
 package de.wolfsvl.copper2go.impl;
 
+import de.wolfsvl.copper2go.config.HttpRequestChannelConfig;
 import de.wolfsvl.copper2go.connector.http.vertx.VertxHttpClient;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import de.wolfsvl.copper2go.workflowapi.RequestChannel;
 import de.wolfsvl.copper2go.workflowapi.RequestChannelStore;
-import io.vertx.core.http.HttpMethod;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RequestChannelStoreImpl implements RequestChannelStore {
-    private static Map<String, RequestChannel> eventChannelMap = new ConcurrentHashMap<>();
+    private static Map<String, RequestChannel> requestChannelMap = new ConcurrentHashMap<>();
 
-    public RequestChannelStoreImpl(final Copper2GoEngine engine) {
-        store("Pricing.centPerMinute", new HttpChannelImpl(HttpMethod.GET, new VertxHttpClient("raw.githubusercontent.com", 80, "/Keymaster65/copper2go-workflows/feature/1.mapping/src/workflow/resources/1.txt", engine)));
-    }
-
-    public void store(String name, RequestChannel requestChannel) {
-        eventChannelMap.put(name, requestChannel);
+    public RequestChannelStoreImpl(final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs, final Copper2GoEngine engine) {
+        for (String name : httpRequestChannelConfigs.keySet()) {
+            HttpRequestChannelConfig config = httpRequestChannelConfigs.get(name);
+            requestChannelMap.put(name,
+                    new HttpChannelImpl(
+                            config.getHttpMethod(),
+                            new VertxHttpClient(
+                                    config.getHost(),
+                                    config.getPort(),
+                                    config.getPath(),
+                                    engine
+                            )));
+        }
     }
 
     @Override
     public void request(final String channelName, final String request, final String responseCorrelationId) {
-        eventChannelMap.get(channelName).request(request, responseCorrelationId);
+        requestChannelMap.get(channelName).request(request, responseCorrelationId);
     }
 
 

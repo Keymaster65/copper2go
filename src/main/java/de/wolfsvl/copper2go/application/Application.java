@@ -15,18 +15,19 @@
  */
 package de.wolfsvl.copper2go.application;
 
+import de.wolfsvl.copper2go.config.Config;
 import de.wolfsvl.copper2go.connector.http.Copper2GoHttpServer;
 import de.wolfsvl.copper2go.connector.http.vertx.VertxHttpServer;
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutException;
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutListener;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import de.wolfsvl.copper2go.engine.Copper2GoEngineImpl;
-import de.wolfsvl.copper2go.engine.Copper2GoWorkflowRepository;
 import de.wolfsvl.copper2go.engine.EngineException;
 import de.wolfsvl.copper2go.impl.ContextStoreImpl;
 import de.wolfsvl.copper2go.impl.DefaultDependencyInjector;
 import de.wolfsvl.copper2go.impl.EventChannelStoreImpl;
 import de.wolfsvl.copper2go.impl.RequestChannelStoreImpl;
+import de.wolfsvl.copper2go.workflowapi.ContextStore;
 import org.copperengine.core.DependencyInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,38 +38,41 @@ public class Application {
 
     private final Copper2GoEngine copper2GoEngine;
     private final Copper2GoHttpServer httpServer;
-    private final ContextStoreImpl contextStore;
+    private final DependencyInjector dependencyInjector;
     private boolean stopRequested;
 
-    public Application(final String branch) {
-        this(
-                branch,
-                "git://github.com/Keymaster65/copper2go-workflows.git",
-                "/src/workflow/java"
+    public static Application of(final Config config) {
+        ContextStore contextStore = new ContextStoreImpl();
+
+        Copper2GoEngine copper2GoEngine = new Copper2GoEngineImpl(
+                config.getWorkflowRepositoryConfig(),
+                contextStore);
+        DependencyInjector dependencyInjector = new DefaultDependencyInjector(
+                contextStore,
+                new EventChannelStoreImpl(),
+                new RequestChannelStoreImpl(config.getHttpRequestChannelConfigs(), copper2GoEngine));
+        Copper2GoHttpServer httpServer = new VertxHttpServer(
+                HTTP_SERVER_PORT,
+                copper2GoEngine);
+        return new Application(
+                copper2GoEngine,
+                dependencyInjector,
+                httpServer
         );
     }
 
-    public Application() {
-        this("feature/1.mapping");
-    }
-
     public Application(
-            final String branch,
-            final String workflowGitURI,
-            final String workflowBase
-            ) {
-        contextStore = new ContextStoreImpl();
-        copper2GoEngine = new Copper2GoEngineImpl(new Copper2GoWorkflowRepository(
-                branch,
-                workflowGitURI,
-                workflowBase
-        ), contextStore);
-        httpServer = new VertxHttpServer(HTTP_SERVER_PORT, copper2GoEngine);
+            final Copper2GoEngine copper2GoEngine,
+            final DependencyInjector dependencyInjector,
+            final Copper2GoHttpServer httpServer
+    ) {
+        this.copper2GoEngine = copper2GoEngine;
+        this.dependencyInjector = dependencyInjector;
+        this.httpServer = httpServer;
     }
 
     public synchronized void start() throws EngineException {
         log.info("start application");
-        DependencyInjector dependencyInjector = new DefaultDependencyInjector(contextStore, new EventChannelStoreImpl(), new RequestChannelStoreImpl(copper2GoEngine));
         copper2GoEngine.start(dependencyInjector);
         httpServer.start();
     }

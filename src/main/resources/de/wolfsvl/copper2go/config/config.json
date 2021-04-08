@@ -1,0 +1,15 @@
+{
+  "httpRequestChannelConfigs": {
+    "Pricing.centPerMinute": {
+      "method": "GET",
+      "host": "raw.githubusercontent.com",
+      "port": "80",
+      "path": "/Keymaster65/copper2go-workflows/feature/1.mapping/src/workflow/resources/1.txt"
+    }
+  },
+  "workflowRepositoryConfig": {
+    "branch": "feature/1.mapping",
+    "workflowGitURI": "git://github.com/Keymaster65/copper2go-workflows.git",
+    "workflowBase": "/src/workflow/java"
+  }
+}

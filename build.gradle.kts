@@ -49,6 +49,9 @@ publishing {
     }
 }
 dependencies {
+
+    implementation("com.fasterxml.jackson.core:jackson-databind:2+")
+
     implementation("io.vertx:vertx-core:4+")
     implementation("io.vertx:vertx-web:4+")
     implementation("io.vertx:vertx-web-client:4+")
@@ -71,7 +74,7 @@ dependencies {
 }
 
 application {
-    mainClassName = "de.wolfsvl.copper2go.Application"
+    mainClassName = "de.wolfsvl.copper2go.Main"
     applicationDefaultJvmArgs = listOf("-Dlogback.configurationFile=src/main/resources/logback.xml")
 }
 

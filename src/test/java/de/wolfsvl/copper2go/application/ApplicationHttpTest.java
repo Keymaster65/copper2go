@@ -1,5 +1,6 @@
 package de.wolfsvl.copper2go.application;
 
+import de.wolfsvl.copper2go.config.Config;
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutException;
 import de.wolfsvl.copper2go.testutil.Assert;
 import de.wolfsvl.copper2go.testutil.Data;
@@ -22,7 +23,9 @@ class ApplicationHttpTest {
     @Test()
     void masterTest() throws Exception {
         String name = Data.getName();
-        Application application = new Application("master");
+        Config config = Config.of();
+        config.getWorkflowRepositoryConfig().branch = "master";
+        Application application = Application.of(config);
         application.start();
         HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT), name);
         application.stop();
@@ -32,7 +35,9 @@ class ApplicationHttpTest {
     @Test()
     void mappingBranchTest() throws Exception {
         String name = Data.getName();
-        Application application = new Application("feature/1.mapping");
+        Config config = Config.of();
+        config.getWorkflowRepositoryConfig().branch = "feature/1.mapping";
+        Application application = Application.of(config);
         application.start();
         HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT), name);
         application.stop();

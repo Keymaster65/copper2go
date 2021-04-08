@@ -1,5 +1,6 @@
 package de.wolfsvl.copper2go.application;
 
+import de.wolfsvl.copper2go.config.Config;
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutException;
 import de.wolfsvl.copper2go.testutil.Assert;
 import de.wolfsvl.copper2go.testutil.Data;
@@ -38,7 +39,9 @@ class ApplicationApplicationTestInOutTest {
         System.setOut(new PrintStream(byteArrayOutputStream));
         String input = name + "\r\nexit\r\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
-        Application application = new Application(branch);
+        Config config = Config.of();
+        config.getWorkflowRepositoryConfig().branch = branch;
+        Application application = Application.of(config);
         Assertions.assertThatExceptionOfType(StandardInOutException.class).isThrownBy(application::startWithStdInOut);
         application.stop();
         return byteArrayOutputStream.toString(StandardCharsets.UTF_8).replace("\r", "").replace("\n", "");

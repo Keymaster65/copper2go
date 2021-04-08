@@ -1,6 +1,7 @@
 package de.wolfsvl.copper2go;
 
 import de.wolfsvl.copper2go.application.Application;
+import de.wolfsvl.copper2go.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +14,7 @@ public class Main {
         Application application = null;
         try {
             log.info("Begin of Main.");
-            application = new Application();
+            application = Application.of(Config.of());
             application.start();
         } catch (Exception e) {
             log.error("Exception in application main. Try to stop application.", e);
