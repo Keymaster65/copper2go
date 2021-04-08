@@ -50,7 +50,6 @@ publishing {
 }
 dependencies {
 
-    implementation("com.fasterxml.jackson:jackson-bom:2+")
     implementation("com.fasterxml.jackson.core:jackson-databind:2+")
 
     implementation("io.vertx:vertx-core:4+")
