@@ -45,6 +45,7 @@ public class Application {
         ContextStore contextStore = new ContextStoreImpl();
 
         Copper2GoEngine copper2GoEngine = new Copper2GoEngineImpl(
+                config.maxTickets,
                 config.workflowRepositoryConfig,
                 contextStore);
         DependencyInjector dependencyInjector = new DefaultDependencyInjector(

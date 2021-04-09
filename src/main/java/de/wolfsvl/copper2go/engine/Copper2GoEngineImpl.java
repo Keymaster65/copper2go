@@ -33,19 +33,21 @@ import java.util.concurrent.locks.LockSupport;
 public class Copper2GoEngineImpl implements Copper2GoEngine {
 
 
-    private int availableTickets = 10;
 
     private static final Logger log = LoggerFactory.getLogger(Copper2GoEngineImpl.class);
+
+    private final WorkflowRepositoryConfig workflowRepositoryConfig;
+    private final ContextStore contextStore;
+    private final int availableTickets;
 
     private TransientScottyEngine engine;
     private SimpleJmxExporter exporter;
     private LoggingStatisticCollector statisticsCollector;
-    private final WorkflowRepositoryConfig workflowRepositoryConfig;
-    private ContextStore contextStore;
 
-    public Copper2GoEngineImpl(WorkflowRepositoryConfig workflowRepositoryConfig, final ContextStore contextStore) {
+    public Copper2GoEngineImpl(final int availableTickets, WorkflowRepositoryConfig workflowRepositoryConfig, final ContextStore contextStore) {
         this.workflowRepositoryConfig = workflowRepositoryConfig;
         this.contextStore = contextStore;
+        this.availableTickets = availableTickets;
  }
 
     public void callWorkflow(final Context context) throws EngineException {
@@ -104,7 +106,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         };
         final TransientScottyEngine transientScottyEngine = factory.create();
         while (!transientScottyEngine.getEngineState().equals(EngineState.STARTED)) {
-            LockSupport.parkNanos(10000000);
+            LockSupport.parkNanos(10L * 1000L * 1000L);
         }
         exporter = startJmxExporter(transientScottyEngine);
         return transientScottyEngine;

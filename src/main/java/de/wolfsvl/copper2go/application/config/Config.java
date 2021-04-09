@@ -12,16 +12,19 @@ public class Config {
 
     public final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs;
     public final WorkflowRepositoryConfig workflowRepositoryConfig;
+    public final int maxTickets;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public Config(
             @JsonProperty(value = "httpRequestChannelConfigs") final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs,
-            @JsonProperty(required = true, value = "workflowRepositoryConfig") final WorkflowRepositoryConfig workflowRepositoryConfig
+            @JsonProperty(required = true, value = "workflowRepositoryConfig") final WorkflowRepositoryConfig workflowRepositoryConfig,
+            @JsonProperty(required = true, value = "maxTickets") final int maxTickets
     ) {
         this.httpRequestChannelConfigs = httpRequestChannelConfigs;
         this.workflowRepositoryConfig = workflowRepositoryConfig;
+        this.maxTickets = maxTickets;
     }
 
     public static Config of() throws IOException {
