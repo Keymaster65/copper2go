@@ -22,8 +22,11 @@ node() {
             }
         }
 
+        // see https://www.jenkins.io/doc/pipeline/steps/jacoco/
         stage('Test coverage') {
-            jacoco()
+            jacoco(
+                    classPattern: 'build/classes'
+            )
         }
 
         stage('License') {
