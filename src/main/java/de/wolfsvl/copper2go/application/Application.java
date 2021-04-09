@@ -15,7 +15,7 @@
  */
 package de.wolfsvl.copper2go.application;
 
-import de.wolfsvl.copper2go.config.Config;
+import de.wolfsvl.copper2go.application.config.Config;
 import de.wolfsvl.copper2go.connector.http.Copper2GoHttpServer;
 import de.wolfsvl.copper2go.connector.http.vertx.VertxHttpServer;
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutException;

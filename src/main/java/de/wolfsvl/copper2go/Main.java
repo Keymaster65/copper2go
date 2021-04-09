@@ -1,7 +1,7 @@
 package de.wolfsvl.copper2go;
 
 import de.wolfsvl.copper2go.application.Application;
-import de.wolfsvl.copper2go.config.Config;
+import de.wolfsvl.copper2go.application.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

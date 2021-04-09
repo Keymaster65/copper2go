@@ -1,6 +1,6 @@
 package de.wolfsvl.copper2go.engine;
 
-import de.wolfsvl.copper2go.config.WorkflowRepositoryConfig;
+import de.wolfsvl.copper2go.application.config.WorkflowRepositoryConfig;
 import de.wolfsvl.copper2go.workflowapi.Context;
 import de.wolfsvl.copper2go.workflowapi.ContextStore;
 import de.wolfsvl.copper2go.workflowapi.HelloData;

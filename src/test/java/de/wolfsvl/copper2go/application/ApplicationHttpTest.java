@@ -1,19 +1,13 @@
 package de.wolfsvl.copper2go.application;
 
-import de.wolfsvl.copper2go.config.Config;
-import de.wolfsvl.copper2go.connector.standardio.StandardInOutException;
+import de.wolfsvl.copper2go.application.config.Config;
 import de.wolfsvl.copper2go.testutil.Assert;
 import de.wolfsvl.copper2go.testutil.Data;
 import de.wolfsvl.copper2go.testutil.TestHttpClient;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.net.URI;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 
 import static de.wolfsvl.copper2go.application.Application.HTTP_SERVER_PORT;
 import static de.wolfsvl.copper2go.testutil.Data.getExpectedPartMappingBranch;

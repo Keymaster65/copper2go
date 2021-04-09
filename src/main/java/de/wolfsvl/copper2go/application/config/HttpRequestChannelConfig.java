@@ -1,4 +1,4 @@
-package de.wolfsvl.copper2go.config;
+package de.wolfsvl.copper2go.application.config;
 
 import io.vertx.core.http.HttpMethod;
 

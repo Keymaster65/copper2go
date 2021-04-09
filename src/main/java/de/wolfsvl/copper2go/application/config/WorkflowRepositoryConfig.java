@@ -1,4 +1,4 @@
-package de.wolfsvl.copper2go.config;
+package de.wolfsvl.copper2go.application.config;
 
 public class WorkflowRepositoryConfig {
 

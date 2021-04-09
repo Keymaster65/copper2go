@@ -1,4 +1,4 @@
-package de.wolfsvl.copper2go.config;
+package de.wolfsvl.copper2go.application.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,7 +16,7 @@ public class Config {
     public Config() {}
 
     public static Config of() throws IOException {
-        String configFileName = Config.class.getResource("/de/wolfsvl/copper2go/config/config.json").getFile();
+        String configFileName = Config.class.getResource("/de/wolfsvl/copper2go/application/config/config.json").getFile();
         return objectMapper.readValue(new File(configFileName), Config.class);
     }
 }
