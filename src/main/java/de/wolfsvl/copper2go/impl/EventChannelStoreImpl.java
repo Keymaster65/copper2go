@@ -10,10 +10,7 @@ public class EventChannelStoreImpl implements EventChannelStore {
     private static Map<String, EventChannel> eventChannelMap = new ConcurrentHashMap<>();
 
     public EventChannelStoreImpl() {
-        store("System.stdout", new StdOutEventChannelImpl());
-    }
-    public void store(String name, EventChannel eventChannel) {
-        eventChannelMap.put(name, eventChannel);
+        eventChannelMap.put("System.stdout", new StdOutEventChannelImpl());
     }
 
     @Override

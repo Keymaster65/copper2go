@@ -3,7 +3,7 @@ package de.wolfsvl.copper2go.engine;
 import de.wolfsvl.copper2go.application.config.WorkflowRepositoryConfig;
 import de.wolfsvl.copper2go.workflowapi.Context;
 import de.wolfsvl.copper2go.workflowapi.ContextStore;
-import de.wolfsvl.copper2go.workflowapi.HelloData;
+import de.wolfsvl.copper2go.workflowapi.WorkflowData;
 import org.copperengine.core.Acknowledge;
 import org.copperengine.core.CopperException;
 import org.copperengine.core.DependencyInjector;
@@ -51,12 +51,12 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
  }
 
     public void callWorkflow(final Context context) throws EngineException {
-        WorkflowInstanceDescr<HelloData> workflowInstanceDescr = new WorkflowInstanceDescr<>("Hello");
+        WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>("Hello");
         WorkflowVersion version = engine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), 1, 0);
         workflowInstanceDescr.setVersion(version);
 
         String uuid = engine.createUUID();
-        workflowInstanceDescr.setData(new HelloData(uuid));
+        workflowInstanceDescr.setData(new WorkflowData(uuid));
         contextStore.store(uuid, context);
         try {
             engine.run(workflowInstanceDescr);
