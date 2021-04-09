@@ -39,7 +39,7 @@ public class VertxHttpServer implements Copper2GoHttpServer {
                     requestBody = new String(buffer.getBytes(), StandardCharsets.UTF_8);
                     final HttpServerResponse response = request.response();
                     try {
-                        copper2GoEngine.callWorkflow(new HttpContextImpl(requestBody, response));
+                        copper2GoEngine.callWorkflow(new HttpContextImpl(requestBody, response), "Hello", 1, 0);
                     } catch (EngineException e) {
                         response.end(String.format("Exception: %s", e.getMessage()));
                         log.warn("Exception while calling workflow.", e);

@@ -10,7 +10,7 @@
  This picture shows a first overview:
  ![This picture shows a first overview](copper2goOverview.svg)
  
- ## Release plan 0.2
+ ## Release plan 1.0
   * http server support
   * http client support
   * non-business config
@@ -19,6 +19,7 @@
  * 0.1 A first MVP (Minimum Viable Product)
  
  ## Possible features
+ * Multi workflow
  * docker image distribution
  * Multi workflow support and REST level
  * Kafka support and choreography example

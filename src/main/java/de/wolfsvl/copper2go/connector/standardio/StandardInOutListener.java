@@ -25,7 +25,7 @@ public class StandardInOutListener {
                 if ("exit".equals(line1)) {
                     throw new StandardInOutException("Input canceled by 'exit' line.");
                 }
-                applicationapplication.callWorkflow(new StdInOutContextImpl(line1));
+                applicationapplication.callWorkflow(new StdInOutContextImpl(line1), "Hello", 1, 0);
                 applicationapplication.waitForIdleEngine();
             } catch (Exception e) {
                 throw new StandardInOutException("Exception while getting input.", e);

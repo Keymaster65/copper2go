@@ -50,9 +50,9 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         this.availableTickets = availableTickets;
  }
 
-    public void callWorkflow(final Context context) throws EngineException {
+    public void callWorkflow(final Context context, final String workflow, final long major, final long minor) throws EngineException {
         WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>("Hello");
-        WorkflowVersion version = engine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), 1, 0);
+        WorkflowVersion version = engine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
         workflowInstanceDescr.setVersion(version);
 
         String uuid = engine.createUUID();

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URI;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -33,8 +34,10 @@ class VertxHttpServerTest {
     void post() throws InterruptedException, EngineException, IOException {
         Copper2GoEngine engine = mock(Copper2GoEngine.class);
 
-        // Exception should lead to normal response.end() ig no workflow does
-        doThrow(new EngineException("Simulated exception.")).when(engine).callWorkflow(any());
+        // Exception should lead to normal response.end() if no workflow does
+        doThrow(new EngineException("Simulated exception."))
+                .when(engine)
+                .callWorkflow(any(), eq("Hello"), eq(1L), eq(0L));
 
         final Vertx vertx = Vertx.vertx();
         final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, engine, vertx);
@@ -42,6 +45,6 @@ class VertxHttpServerTest {
         TestHttpClient.post(URI.create("http://localhost:" + SERVER_PORT), "Wolf\r\n");
         vertxHttpServer.stop();
 
-        verify(engine).callWorkflow(any());
+        verify(engine).callWorkflow(any(), eq("Hello"), eq(1L), eq(0L));
     }
 }
