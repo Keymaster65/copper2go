@@ -13,11 +13,11 @@ class ConfigTest {
     @Test
     void of() throws IOException {
         Config config = Config.of();
-        assertThat(config.getHttpRequestChannelConfigs().size()).isEqualTo(1);
-        HttpRequestChannelConfig httpRequestChannelConfig = config.getHttpRequestChannelConfigs().get("Pricing.centPerMinute");
+        assertThat(config.httpRequestChannelConfigs.size()).isEqualTo(1);
+        HttpRequestChannelConfig httpRequestChannelConfig = config.httpRequestChannelConfigs.get("Pricing.centPerMinute");
         assertThat(httpRequestChannelConfig.getMethod()).isEqualTo("GET");
-        assertThat(httpRequestChannelConfig.getHost()).isEqualTo("raw.githubusercontent.com");
-        assertThat(httpRequestChannelConfig.getPort()).isEqualTo(80);
-        assertThat(httpRequestChannelConfig.getPath()).isEqualTo("/Keymaster65/copper2go-workflows/feature/1.mapping/src/workflow/resources/1.txt");
+        assertThat(httpRequestChannelConfig.host).isEqualTo("raw.githubusercontent.com");
+        assertThat(httpRequestChannelConfig.port).isEqualTo(80);
+        assertThat(httpRequestChannelConfig.path).isEqualTo("/Keymaster65/copper2go-workflows/feature/1.mapping/src/workflow/resources/1.txt");
     }
 }

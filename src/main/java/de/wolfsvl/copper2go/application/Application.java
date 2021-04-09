@@ -45,12 +45,12 @@ public class Application {
         ContextStore contextStore = new ContextStoreImpl();
 
         Copper2GoEngine copper2GoEngine = new Copper2GoEngineImpl(
-                config.getWorkflowRepositoryConfig(),
+                config.workflowRepositoryConfig,
                 contextStore);
         DependencyInjector dependencyInjector = new DefaultDependencyInjector(
                 contextStore,
                 new EventChannelStoreImpl(),
-                new RequestChannelStoreImpl(config.getHttpRequestChannelConfigs(), copper2GoEngine));
+                new RequestChannelStoreImpl(config.httpRequestChannelConfigs, copper2GoEngine));
         Copper2GoHttpServer httpServer = new VertxHttpServer(
                 HTTP_SERVER_PORT,
                 copper2GoEngine);

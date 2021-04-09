@@ -24,7 +24,7 @@ class ApplicationHttpTest {
     void masterTest() throws Exception {
         String name = Data.getName();
         Config config = Config.of();
-        config.getWorkflowRepositoryConfig().branch = "master";
+        config.workflowRepositoryConfig.branch = "master";
         Application application = Application.of(config);
         application.start();
         HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT), name);
@@ -36,7 +36,7 @@ class ApplicationHttpTest {
     void mappingBranchTest() throws Exception {
         String name = Data.getName();
         Config config = Config.of();
-        config.getWorkflowRepositoryConfig().branch = "feature/1.mapping";
+        config.workflowRepositoryConfig.branch = "feature/1.mapping";
         Application application = Application.of(config);
         application.start();
         HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT), name);

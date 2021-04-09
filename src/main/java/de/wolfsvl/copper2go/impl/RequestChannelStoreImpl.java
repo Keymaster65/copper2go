@@ -19,9 +19,9 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
                     new HttpChannelImpl(
                             config.getHttpMethod(),
                             new VertxHttpClient(
-                                    config.getHost(),
-                                    config.getPort(),
-                                    config.getPath(),
+                                    config.host,
+                                    config.port,
+                                    config.path,
                                     engine
                             )));
         }
