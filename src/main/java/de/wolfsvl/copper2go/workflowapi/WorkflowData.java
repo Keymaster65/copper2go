@@ -17,12 +17,12 @@ package de.wolfsvl.copper2go.workflowapi;
 
 import java.io.Serializable;
 
-public class HelloData implements Serializable {
+public class WorkflowData implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final String uuid;
 
-    public HelloData(String uuid) {
+    public WorkflowData(String uuid) {
         this.uuid = uuid;
     }
 
