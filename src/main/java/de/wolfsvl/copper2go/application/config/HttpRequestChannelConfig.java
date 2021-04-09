@@ -1,25 +1,26 @@
 package de.wolfsvl.copper2go.application.config;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.http.HttpMethod;
 
 public class HttpRequestChannelConfig {
 
-    public String host;
-    public int port;
-    public String path;
-    private HttpMethod method;
+    public final String host;
+    public final int port;
+    public final String path;
+    public final HttpMethod method;
 
-    public HttpRequestChannelConfig() { }
-
-    public void setMethod(final String method) {
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public HttpRequestChannelConfig(
+            @JsonProperty(required = true, value = "host") final String host,
+            @JsonProperty(required = true, value = "port") final int port,
+            @JsonProperty(required = true, value = "path") final String path,
+            @JsonProperty(required = true, value = "method") final String method
+    ) {
+        this.host = host;
+        this.port = port;
+        this.path = path;
         this.method = HttpMethod.valueOf(method);
-    }
-
-    public String getMethod() {
-        return method.name();
-    }
-
-    public HttpMethod getHttpMethod() {
-        return method;
     }
 }
