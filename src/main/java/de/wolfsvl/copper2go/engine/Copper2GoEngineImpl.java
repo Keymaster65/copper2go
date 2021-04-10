@@ -51,7 +51,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
  }
 
     public void callWorkflow(final Context context, final String workflow, final long major, final long minor) throws EngineException {
-        WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>("Hello");
+        WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>(workflow);
         WorkflowVersion version = engine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
         workflowInstanceDescr.setVersion(version);
 

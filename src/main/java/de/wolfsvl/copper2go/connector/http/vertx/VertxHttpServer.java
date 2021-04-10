@@ -3,6 +3,7 @@ package de.wolfsvl.copper2go.connector.http.vertx;
 import de.wolfsvl.copper2go.connector.http.Copper2GoHttpServer;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import de.wolfsvl.copper2go.engine.EngineException;
+import de.wolfsvl.copper2go.engine.WorkflowVersion;
 import de.wolfsvl.copper2go.impl.HttpContextImpl;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
@@ -39,7 +40,13 @@ public class VertxHttpServer implements Copper2GoHttpServer {
                     requestBody = new String(buffer.getBytes(), StandardCharsets.UTF_8);
                     final HttpServerResponse response = request.response();
                     try {
-                        copper2GoEngine.callWorkflow(new HttpContextImpl(requestBody, response), "Hello", 1, 0);
+                        WorkflowVersion workflowVersion = WorkflowVersion.of(request.uri());
+                        copper2GoEngine.callWorkflow(
+                                new HttpContextImpl(requestBody, response),
+                                workflowVersion.name,
+                                workflowVersion.major,
+                                workflowVersion.minor
+                        );
                     } catch (EngineException e) {
                         response.end(String.format("Exception: %s", e.getMessage()));
                         log.warn("Exception while calling workflow.", e);

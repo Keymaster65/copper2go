@@ -21,7 +21,7 @@ class ApplicationHttpTest {
         config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "master"), 10);
         Application application = Application.of(config);
         application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT), name);
+        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT + "/1.0/Hello"), name);
         application.stop();
         Assert.assertResponse(response.body(), Data.getExpectedPartMaster(name));
     }
@@ -33,7 +33,7 @@ class ApplicationHttpTest {
         config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "feature/1.mapping"), 10);
         Application application = Application.of(config);
         application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT), name);
+        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT + "/1.0/Hello"), name);
         application.stop();
         Assert.assertResponse(response.body(), getExpectedPartMappingBranch(name));
     }

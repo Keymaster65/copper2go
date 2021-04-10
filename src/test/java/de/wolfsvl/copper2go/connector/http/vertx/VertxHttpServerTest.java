@@ -42,7 +42,7 @@ class VertxHttpServerTest {
         final Vertx vertx = Vertx.vertx();
         final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, engine, vertx);
         vertxHttpServer.start();
-        TestHttpClient.post(URI.create("http://localhost:" + SERVER_PORT), "Wolf\r\n");
+        TestHttpClient.post(URI.create("http://localhost:" + SERVER_PORT + "/demo/1.0/Hello"), "Wolf\r\n");
         vertxHttpServer.stop();
 
         verify(engine).callWorkflow(any(), eq("Hello"), eq(1L), eq(0L));
