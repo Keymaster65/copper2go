@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class VertxHttpServer implements Copper2GoHttpServer {
 
@@ -35,24 +37,35 @@ public class VertxHttpServer implements Copper2GoHttpServer {
         this.vertx = vertx;
         this.httpServer = httpServer;
         httpServer.requestHandler(
-                request -> request.handler(buffer -> {
-                    final String requestBody;
-                    requestBody = new String(buffer.getBytes(), StandardCharsets.UTF_8);
-                    final HttpServerResponse response = request.response();
-                    try {
-                        WorkflowVersion workflowVersion = WorkflowVersion.of(request.uri());
-                        copper2GoEngine.callWorkflow(
-                                requestBody,
-                                new HttpReplyChannelImpl(response),
-                                workflowVersion.name,
-                                workflowVersion.major,
-                                workflowVersion.minor
-                        );
-                    } catch (EngineException e) {
-                        response.end(String.format("Exception: %s", e.getMessage()));
-                        log.warn("Exception while calling workflow.", e);
-                    }
-                }));
+                request -> request.bodyHandler(buffer -> {
+                            final String requestBody;
+                            requestBody = new String(buffer.getBytes(), StandardCharsets.UTF_8);
+                            final HttpServerResponse response = request.response();
+                            final String uri = request.uri();
+                            if (uri.length() > 1) {
+                                try {
+                                    WorkflowVersion workflowVersion = WorkflowVersion.of(uri);
+                                    copper2GoEngine.callWorkflow(
+                                            requestBody,
+                                            new HttpReplyChannelImpl(response),
+                                            workflowVersion.name,
+                                            workflowVersion.major,
+                                            workflowVersion.minor
+                                    );
+                                } catch (EngineException e) {
+                                    response.end(String.format("Exception: %s", e.getMessage()));
+                                    log.warn("Exception while calling workflow.", e);
+                                }
+                            } else {
+                                try {
+                                    response.end(Files.readString(Paths.get(getClass().getResource("/license/index.html").toURI()), StandardCharsets.UTF_8));
+                                } catch (Exception e) {
+                                    response.end("Exception while getting licenses." + e.getMessage());
+                                }
+                            }
+                        }
+                )
+        );
     }
 
     @Override
