@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class Config {
@@ -28,7 +29,13 @@ public class Config {
     }
 
     public static Config of() throws IOException {
-        String configFileName = Config.class.getResource("/de/wolfsvl/copper2go/application/config/config.json").getFile();
-        return objectMapper.readValue(new File(configFileName), Config.class);
+
+        return objectMapper.readValue(
+                new InputStreamReader(Config.class.getResourceAsStream("/de/wolfsvl/copper2go/application/config/config.json"), StandardCharsets.UTF_8),
+                Config.class);
+    }
+
+    public static Config of(final String config) throws IOException {
+        return objectMapper.readValue(config, Config.class);
     }
 }
