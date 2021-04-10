@@ -15,12 +15,14 @@
   * http client support
   * non-business config
   * Multi workflow
-  
+  * docker image distribution
+  * add license info
+   
 ## Release notes
  * 0.1 A first MVP (Minimum Viable Product)
  
  ## Possible features
- * docker image distribution
+
  * quick start
  * Multi workflow support and REST level
  * Kafka support and choreography example

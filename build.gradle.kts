@@ -7,6 +7,7 @@ plugins {
     `maven-publish`
     jacoco
     id("com.github.jk1.dependency-license-report") version "1.16"
+    id("com.google.cloud.tools.jib") version "3.0.0"
 }
 
 group = "de.wolfsvl"
@@ -103,4 +104,23 @@ licenseReport {
     allowedLicensesFile = File("$projectDir/allowed-licenses.json")
     excludes = arrayOf<String>("com.fasterxml.jackson:jackson-bom") // is apache 2.0 but license tool say "null"
     filters = arrayOf<LicenseBundleNormalizer>(LicenseBundleNormalizer("""$projectDir/license-normalizer-bundle.json""", true))
+}
+
+jib {
+    container {
+        mainClass = "de.wolfsvl.copper2go.Main"
+        jvmFlags = listOf("-XX:+UseContainerSupport")
+        workingDirectory = "/"
+    }
+    from {
+        image = "azul/zulu-openjdk-alpine:11.0.7"
+    }
+    to {
+        image = "registry.hub.docker.com/keymaster65/copper2go"
+        auth {
+            username = "keymaster65"
+            password = System.getenv("DOCKER_HUB_PASSWORD")
+        }
+        tags = setOf("latest")
+    }
 }

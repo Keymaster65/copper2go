@@ -1,4 +1,5 @@
 {
+  "httpPort": "80",
   "maxTickets": "10000",
   "httpRequestChannelConfigs": {
     "Pricing.centPerMinute": {

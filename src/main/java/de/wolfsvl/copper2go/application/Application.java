@@ -53,7 +53,7 @@ public class Application {
                 new EventChannelStoreImpl(),
                 new RequestChannelStoreImpl(config.httpRequestChannelConfigs, copper2GoEngine));
         Copper2GoHttpServer httpServer = new VertxHttpServer(
-                HTTP_SERVER_PORT,
+                config.httpPort,
                 copper2GoEngine);
         return new Application(
                 copper2GoEngine,

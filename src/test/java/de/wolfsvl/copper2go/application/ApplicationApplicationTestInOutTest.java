@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
+import static de.wolfsvl.copper2go.application.Application.HTTP_SERVER_PORT;
 import static de.wolfsvl.copper2go.testutil.Data.getExpectedPartMappingBranch;
 
 class ApplicationApplicationTestInOutTest {
@@ -36,7 +37,7 @@ class ApplicationApplicationTestInOutTest {
         String input = name + "\r\nexit\r\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Config config = Config.of();
-        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch(branch), 10);
+        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch(branch), 10, HTTP_SERVER_PORT);
         Application application = Application.of(config);
         Assertions.assertThatExceptionOfType(StandardInOutException.class).isThrownBy(application::startWithStdInOut);
         application.stop();
