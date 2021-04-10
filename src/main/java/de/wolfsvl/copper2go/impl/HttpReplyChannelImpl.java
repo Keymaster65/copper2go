@@ -13,11 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.wolfsvl.copper2go.workflowapi;
+package de.wolfsvl.copper2go.impl;
 
-public interface ContextStore {
-    void store(String id, Context context);
-    void reply(String id, String message);
+import de.wolfsvl.copper2go.workflowapi.ReplyChannel;
+import io.vertx.core.http.HttpServerResponse;
 
-    Context getContext(String uuid);
+public class HttpReplyChannelImpl implements ReplyChannel {
+    private final HttpServerResponse response;
+
+    public HttpReplyChannelImpl(final HttpServerResponse response) {
+        this.response = response;
+    }
+
+    public void reply(String message) {
+        response.end(message);
+    }
 }

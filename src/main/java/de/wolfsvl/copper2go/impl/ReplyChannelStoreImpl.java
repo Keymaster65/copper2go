@@ -15,26 +15,26 @@
  */
 package de.wolfsvl.copper2go.impl;
 
-import de.wolfsvl.copper2go.workflowapi.Context;
-import de.wolfsvl.copper2go.workflowapi.ContextStore;
+import de.wolfsvl.copper2go.workflowapi.ReplyChannel;
+import de.wolfsvl.copper2go.workflowapi.ReplyChannelStore;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ContextStoreImpl implements ContextStore {
-    private static Map<String, Context> contextMap = new ConcurrentHashMap<>();
+public class ReplyChannelStoreImpl implements ReplyChannelStore {
+    private static Map<String, ReplyChannel> contextMap = new ConcurrentHashMap<>();
 
-    public void store(String id, Context context) {
-        contextMap.put(id, context);
+    public void store(String id, ReplyChannel replyChannel) {
+        contextMap.put(id, replyChannel);
     }
 
     public void reply (String id, String message) {
-        Context context = contextMap.remove(id);
-        context.reply(message);
+        ReplyChannel replyChannel = contextMap.remove(id);
+        replyChannel.reply(message);
     }
 
     @Override
-    public Context getContext(String uuid) {
+    public ReplyChannel getReplyChannel(String uuid) {
         return contextMap.get(uuid);
     }
 }

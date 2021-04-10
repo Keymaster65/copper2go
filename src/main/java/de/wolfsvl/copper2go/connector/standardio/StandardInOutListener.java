@@ -1,7 +1,7 @@
 package de.wolfsvl.copper2go.connector.standardio;
 
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
-import de.wolfsvl.copper2go.impl.StdInOutContextImpl;
+import de.wolfsvl.copper2go.impl.StdInOutReplyChannelImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +12,7 @@ public class StandardInOutListener {
 
     private static final Logger log = LoggerFactory.getLogger(StandardInOutListener.class);
 
-    public void listenLocalStream(final Copper2GoEngine applicationapplication) throws StandardInOutException {
+    public void listenLocalStream(final Copper2GoEngine copper2GoEngine) throws StandardInOutException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
             try {
@@ -25,8 +25,8 @@ public class StandardInOutListener {
                 if ("exit".equals(line1)) {
                     throw new StandardInOutException("Input canceled by 'exit' line.");
                 }
-                applicationapplication.callWorkflow(new StdInOutContextImpl(line1), "Hello", 1, 0);
-                applicationapplication.waitForIdleEngine();
+                copper2GoEngine.callWorkflow(line1, new StdInOutReplyChannelImpl(), "Hello", 1, 0);
+                copper2GoEngine.waitForIdleEngine();
             } catch (Exception e) {
                 throw new StandardInOutException("Exception while getting input.", e);
             }

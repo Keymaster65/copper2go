@@ -1,8 +1,8 @@
 package de.wolfsvl.copper2go.engine;
 
 import de.wolfsvl.copper2go.application.config.WorkflowRepositoryConfig;
-import de.wolfsvl.copper2go.workflowapi.Context;
-import de.wolfsvl.copper2go.workflowapi.ContextStore;
+import de.wolfsvl.copper2go.workflowapi.ReplyChannel;
+import de.wolfsvl.copper2go.workflowapi.ReplyChannelStore;
 import de.wolfsvl.copper2go.workflowapi.WorkflowData;
 import org.copperengine.core.Acknowledge;
 import org.copperengine.core.CopperException;
@@ -37,27 +37,33 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
     private static final Logger log = LoggerFactory.getLogger(Copper2GoEngineImpl.class);
 
     private final WorkflowRepositoryConfig workflowRepositoryConfig;
-    private final ContextStore contextStore;
+    private final ReplyChannelStore replyChannelStore;
     private final int availableTickets;
 
     private TransientScottyEngine engine;
     private SimpleJmxExporter exporter;
     private LoggingStatisticCollector statisticsCollector;
 
-    public Copper2GoEngineImpl(final int availableTickets, WorkflowRepositoryConfig workflowRepositoryConfig, final ContextStore contextStore) {
+    public Copper2GoEngineImpl(final int availableTickets, WorkflowRepositoryConfig workflowRepositoryConfig, final ReplyChannelStore replyChannelStore) {
         this.workflowRepositoryConfig = workflowRepositoryConfig;
-        this.contextStore = contextStore;
+        this.replyChannelStore = replyChannelStore;
         this.availableTickets = availableTickets;
  }
 
-    public void callWorkflow(final Context context, final String workflow, final long major, final long minor) throws EngineException {
+    public void callWorkflow(
+            final String payload,
+            final ReplyChannel replyChannel,
+            final String workflow,
+            final long major,
+            final long minor
+    ) throws EngineException {
         WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>(workflow);
         WorkflowVersion version = engine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
         workflowInstanceDescr.setVersion(version);
 
         String uuid = engine.createUUID();
-        workflowInstanceDescr.setData(new WorkflowData(uuid));
-        contextStore.store(uuid, context);
+        workflowInstanceDescr.setData(new WorkflowData(uuid, payload));
+        replyChannelStore.store(uuid, replyChannel);
         try {
             engine.run(workflowInstanceDescr);
         } catch (CopperException e) {

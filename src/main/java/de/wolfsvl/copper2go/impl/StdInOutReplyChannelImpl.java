@@ -15,22 +15,13 @@
  */
 package de.wolfsvl.copper2go.impl;
 
-import de.wolfsvl.copper2go.workflowapi.Context;
-import io.vertx.core.http.HttpServerResponse;
+import de.wolfsvl.copper2go.workflowapi.ReplyChannel;
 
-public class HttpContextImpl implements Context {
-    private final String request;
-    private final HttpServerResponse response;
+public class StdInOutReplyChannelImpl implements ReplyChannel {
 
-    public HttpContextImpl(String request, final HttpServerResponse response) {
-        this.request = request;
-        this.response = response;
+    public StdInOutReplyChannelImpl() {
     }
-    public String getRequest() {
-        return request;
-    }
-
     public void reply(String message) {
-        response.end(message);
+        System.out.println(message);
     }
 }

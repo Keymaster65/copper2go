@@ -18,15 +18,21 @@ package de.wolfsvl.copper2go.workflowapi;
 import java.io.Serializable;
 
 public class WorkflowData implements Serializable {
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 2L;
     private final String uuid;
 
-    public WorkflowData(String uuid) {
+    public WorkflowData(final String uuid, final String payload) {
         this.uuid = uuid;
+        this.payload = payload;
     }
 
     public String getUUID() {
         return uuid;
     }
+
+    public String getPayload() {
+        return payload;
+    }
+
+    public String payload;
 }

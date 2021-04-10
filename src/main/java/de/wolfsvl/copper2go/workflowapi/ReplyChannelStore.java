@@ -13,21 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.wolfsvl.copper2go.impl;
+package de.wolfsvl.copper2go.workflowapi;
 
-import de.wolfsvl.copper2go.workflowapi.Context;
+public interface ReplyChannelStore {
+    void store(String id, ReplyChannel replyChannel);
+    void reply(String id, String message);
 
-public class StdInOutContextImpl implements Context {
-    private final String request;
-
-    public StdInOutContextImpl(String request) {
-        this.request = request;
-    }
-    public String getRequest() {
-        return request;
-    }
-
-    public void reply(String message) {
-        System.out.println(message);
-    }
+    ReplyChannel getReplyChannel(String uuid);
 }

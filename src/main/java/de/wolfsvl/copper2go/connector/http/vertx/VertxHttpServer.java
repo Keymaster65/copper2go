@@ -4,7 +4,7 @@ import de.wolfsvl.copper2go.connector.http.Copper2GoHttpServer;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import de.wolfsvl.copper2go.engine.EngineException;
 import de.wolfsvl.copper2go.engine.WorkflowVersion;
-import de.wolfsvl.copper2go.impl.HttpContextImpl;
+import de.wolfsvl.copper2go.impl.HttpReplyChannelImpl;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
@@ -42,7 +42,8 @@ public class VertxHttpServer implements Copper2GoHttpServer {
                     try {
                         WorkflowVersion workflowVersion = WorkflowVersion.of(request.uri());
                         copper2GoEngine.callWorkflow(
-                                new HttpContextImpl(requestBody, response),
+                                requestBody,
+                                new HttpReplyChannelImpl(response),
                                 workflowVersion.name,
                                 workflowVersion.major,
                                 workflowVersion.minor
