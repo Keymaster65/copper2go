@@ -20,7 +20,11 @@ that support your business workflow.
  * Clone the workflows
  * modify configuration
  * Start container
+   * docker pull registry.hub.docker.com/keymaster65/copper2go
+   * docker run -d -p 59665:59665 -p 9000:9000 -d --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go
+   * docker run -d -p 59665:59665 -p 9000:9000 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go
  * Use browser
+   * http://localhost:59665/
  * Use HTTP-Client
  * Use JMX
  

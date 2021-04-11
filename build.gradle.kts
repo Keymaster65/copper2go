@@ -109,7 +109,21 @@ licenseReport {
 jib {
     container {
         mainClass = "de.wolfsvl.copper2go.Main"
-        jvmFlags = listOf("-XX:+UseContainerSupport")
+        jvmFlags = listOf(
+                "-XX:+UseContainerSupport",
+                "-Dfile.encoding=UTF-8",
+                "-Duser.country=DE",
+                "-Duser.language=de",
+                "-Duser.timezone=Europe/Berlin",
+                "-Dcom.sun.management.jmxremote", // this and the following     not working!?
+                "-Dcom.sun.management.jmxremote.port=9000",
+                //"-Dcom.sun.management.jmxremote.rmi.port=9000",
+                "-Dcom.sun.management.jmxremote.ssl=false",
+                "-Dcom.sun.management.jmxremote.authenticate=false",
+                "-Dcom.sun.management.jmxremote.local.only=false"
+                //"-Dcom.sun.management.jmxremote.host=host.docker.internal"
+                //"-Djava.rmi.server.hostname=host.docker.internal"
+        )
         workingDirectory = "/"
     }
     from {
