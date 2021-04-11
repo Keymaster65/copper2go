@@ -13,25 +13,17 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
 import static de.wolfsvl.copper2go.application.Application.HTTP_SERVER_PORT;
-import static de.wolfsvl.copper2go.testutil.Data.getExpectedPartMappingBranch;
 
 class ApplicationApplicationTestInOutTest {
 
     @Test()
-    void masterTest() throws Exception {
+    void masterHelloTest() throws Exception {
         String name = Data.getName();
-        final String result = stdinTest(name, "master");
+        final String result = stdinHelloTest(name, "master");
         Assert.assertResponse(result, Data.getExpectedPartMaster(name));
     }
 
-    @Test()
-    void mappingBranchTest() throws Exception {
-        String name = Data.getName();
-        final String result = stdinTest(name, "feature/1.mapping");
-        Assert.assertResponse(result, getExpectedPartMappingBranch(name));
-    }
-
-    private String stdinTest(final String name, final String branch) throws Exception {
+    private String stdinHelloTest(final String name, final String branch) throws Exception {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(byteArrayOutputStream));
         String input = name + "\r\nexit\r\n";

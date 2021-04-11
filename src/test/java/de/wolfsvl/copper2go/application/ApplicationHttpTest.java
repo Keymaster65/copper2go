@@ -15,7 +15,7 @@ import static de.wolfsvl.copper2go.testutil.Data.getExpectedPartMappingBranch;
 class ApplicationHttpTest {
 
     @Test()
-    void masterTest() throws Exception {
+    void masterHelloTest() throws Exception {
         String name = Data.getName();
         Config config = Config.of();
         config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "master"), 10, HTTP_SERVER_PORT);
@@ -27,13 +27,13 @@ class ApplicationHttpTest {
     }
 
     @Test()
-    void mappingBranchTest() throws Exception {
+    void masterHello2MappingBranchTest() throws Exception {
         String name = Data.getName();
         Config config = Config.of();
-        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "feature/1.mapping"), 10, HTTP_SERVER_PORT);
+        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "master"), 10, HTTP_SERVER_PORT);
         Application application = Application.of(config);
         application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT + "/1.0/Hello"), name);
+        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT + "/2.0/Hello"), name);
         application.stop();
         Assert.assertResponse(response.body(), getExpectedPartMappingBranch(name));
     }

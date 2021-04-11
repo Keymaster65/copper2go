@@ -15,8 +15,8 @@ class ConfigTest {
         assertThat(config.httpRequestChannelConfigs.size()).isEqualTo(1);
         HttpRequestChannelConfig httpRequestChannelConfig = config.httpRequestChannelConfigs.get("Pricing.centPerMinute");
         assertThat(httpRequestChannelConfig.method).isEqualTo(HttpMethod.GET);
-        assertThat(httpRequestChannelConfig.host).isEqualTo("raw.githubusercontent.com");
-        assertThat(httpRequestChannelConfig.port).isEqualTo(80);
-        assertThat(httpRequestChannelConfig.path).isEqualTo("/Keymaster65/copper2go-workflows/feature/1.mapping/src/workflow/resources/1.txt");
+        assertThat(httpRequestChannelConfig.host).isEqualTo("localhost");
+        assertThat(httpRequestChannelConfig.port).isEqualTo(59665);
+        assertThat(httpRequestChannelConfig.path).isEqualTo("/copper2go/request/1.0/Pricing");
     }
 }
