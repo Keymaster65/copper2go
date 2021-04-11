@@ -8,6 +8,7 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpResponse;
 
@@ -25,7 +26,7 @@ class ApplicationHttpTest {
         application.start();
         HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT + "/1.0/Hello"), name);
         application.stop();
-        Assertions.assertThat(response.statusCode()).isEqualTo(200);
+        Assertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_OK);
         Assert.assertResponse(response.body(), Data.getExpectedHello(name));
     }
 
@@ -38,7 +39,7 @@ class ApplicationHttpTest {
         application.start();
         HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT + "/2.0/Hello"), name);
         application.stop();
-        Assertions.assertThat(response.statusCode()).isEqualTo(200);
+        Assertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_OK);
         Assert.assertResponse(response.body(), getExpectedHello2Mapping(name));
     }
 
@@ -53,8 +54,25 @@ class ApplicationHttpTest {
         application.stop();
         SoftAssertions.assertSoftly(
                 softAssertions -> {
-                    softAssertions.assertThat(response.statusCode()).isEqualTo(500);
+                    softAssertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_INTERNAL_ERROR);
                     softAssertions.assertThat(response.body()).isEqualTo("IllegalArgumentException: A name must be specified.");
+                }
+        );
+    }
+
+    @Test()
+    void masterHello2EmptyNameEventTest() throws Exception {
+        String name = "";
+        Config config = Config.of();
+        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "master"), 10, HTTP_SERVER_PORT);
+        Application application = Application.of(config);
+        application.start();
+        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + HTTP_SERVER_PORT + "/event/2.0/Hello"), name);
+        application.stop();
+        SoftAssertions.assertSoftly(
+                softAssertions -> {
+                    softAssertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_ACCEPTED);
+                    softAssertions.assertThat(response.body()).isEmpty();
                 }
         );
     }

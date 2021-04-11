@@ -41,9 +41,10 @@ API + Config
 
    
 ### Release Plan 1.1
- * Support of COPPER core GUI
  * Workflow with Json binding
+ * Support of COPPER core GUI
  * Workflow with XML binding
+ * JMX usage in Container
 
 ### Release Plan 1.0
  * http server support
@@ -53,11 +54,10 @@ API + Config
  * docker image distribution
  * add license info
  * Add Application and Workflow path 
+ * Event consuming workflows (no reply body, state 202 only)
  * quick start
- * JMX usage in Container
- * Event consuming workflows (no reply body, state only)
   
-### Release Notes
+### Release Notes 0.1
  * 0.1 A first MVP (Minimum Viable Product)
 
 ### Backlog

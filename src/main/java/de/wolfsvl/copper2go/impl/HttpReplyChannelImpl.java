@@ -17,6 +17,8 @@ package de.wolfsvl.copper2go.impl;
 
 import io.vertx.core.http.HttpServerResponse;
 
+import java.net.HttpURLConnection;
+
 public class HttpReplyChannelImpl implements ReplyChannel {
     private final HttpServerResponse response;
 
@@ -32,7 +34,7 @@ public class HttpReplyChannelImpl implements ReplyChannel {
     @Override
     public void replyError(String message) {
         response
-                .setStatusCode(500)
+                .setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR)
                 .end(message);
     }
 }

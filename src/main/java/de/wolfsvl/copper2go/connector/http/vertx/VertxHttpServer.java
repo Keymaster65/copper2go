@@ -11,6 +11,7 @@ import io.vertx.core.http.HttpServerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -52,12 +53,19 @@ public class VertxHttpServer implements Copper2GoHttpServer {
                                             workflowVersion.major,
                                             workflowVersion.minor
                                     );
+                                    if (uri.contains("/event/")) {
+                                        log.debug("Emtpy OK response for incoming event.");
+                                        response
+                                                .setStatusCode(HttpURLConnection.HTTP_ACCEPTED)
+                                                .end();
+                                    }
                                 } catch (EngineException e) {
                                     response
-                                            .setStatusCode(500)
+                                            .setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR)
                                             .end(String.format("Exception: %s", e.getMessage()));
                                     log.warn("Exception while calling workflow.", e);
                                 }
+
                             } else {
                                 try {
                                     response.end(Files.readString(Paths.get(getClass().getResource("/license/index.html").toURI()), StandardCharsets.UTF_8));
