@@ -15,7 +15,6 @@
  */
 package de.wolfsvl.copper2go.impl;
 
-import de.wolfsvl.copper2go.workflowapi.ReplyChannel;
 import de.wolfsvl.copper2go.workflowapi.ReplyChannelStore;
 
 import java.util.Map;
@@ -28,12 +27,12 @@ public class ReplyChannelStoreImpl implements ReplyChannelStore {
         contextMap.put(id, replyChannel);
     }
 
+    @Override
     public void reply (String id, String message) {
         ReplyChannel replyChannel = contextMap.remove(id);
         replyChannel.reply(message);
     }
 
-    @Override
     public ReplyChannel getReplyChannel(String uuid) {
         return contextMap.get(uuid);
     }

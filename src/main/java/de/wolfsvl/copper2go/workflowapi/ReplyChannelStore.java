@@ -16,8 +16,5 @@
 package de.wolfsvl.copper2go.workflowapi;
 
 public interface ReplyChannelStore {
-    void store(String id, ReplyChannel replyChannel);
     void reply(String id, String message);
-
-    ReplyChannel getReplyChannel(String uuid);
 }

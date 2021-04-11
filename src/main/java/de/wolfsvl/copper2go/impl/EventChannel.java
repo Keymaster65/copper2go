@@ -1,4 +1,4 @@
-package de.wolfsvl.copper2go.workflowapi;
+package de.wolfsvl.copper2go.impl;
 
 public interface EventChannel {
     void event(final String message);

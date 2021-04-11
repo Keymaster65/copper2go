@@ -15,8 +15,6 @@
  */
 package de.wolfsvl.copper2go.impl;
 
-import de.wolfsvl.copper2go.workflowapi.EventChannel;
-
 public class StdOutEventChannelImpl implements EventChannel {
     @Override
     public void event(String event) {

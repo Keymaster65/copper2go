@@ -1,6 +1,5 @@
 package de.wolfsvl.copper2go.impl;
 
-import de.wolfsvl.copper2go.workflowapi.EventChannel;
 import de.wolfsvl.copper2go.workflowapi.EventChannelStore;
 
 import java.util.Map;

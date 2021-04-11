@@ -15,7 +15,6 @@
  */
 package de.wolfsvl.copper2go.impl;
 
-import de.wolfsvl.copper2go.workflowapi.ReplyChannel;
 import io.vertx.core.http.HttpServerResponse;
 
 public class HttpReplyChannelImpl implements ReplyChannel {

@@ -15,8 +15,6 @@
  */
 package de.wolfsvl.copper2go.impl;
 
-import de.wolfsvl.copper2go.workflowapi.ReplyChannel;
-
 public class StdInOutReplyChannelImpl implements ReplyChannel {
 
     public StdInOutReplyChannelImpl() {

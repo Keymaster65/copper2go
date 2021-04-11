@@ -3,7 +3,6 @@ package de.wolfsvl.copper2go.impl;
 import de.wolfsvl.copper2go.application.config.HttpRequestChannelConfig;
 import de.wolfsvl.copper2go.connector.http.vertx.VertxHttpClient;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
-import de.wolfsvl.copper2go.workflowapi.RequestChannel;
 import de.wolfsvl.copper2go.workflowapi.RequestChannelStore;
 
 import java.util.Map;

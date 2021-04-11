@@ -23,11 +23,10 @@ import de.wolfsvl.copper2go.connector.standardio.StandardInOutListener;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import de.wolfsvl.copper2go.engine.Copper2GoEngineImpl;
 import de.wolfsvl.copper2go.engine.EngineException;
-import de.wolfsvl.copper2go.impl.ReplyChannelStoreImpl;
 import de.wolfsvl.copper2go.impl.DefaultDependencyInjector;
 import de.wolfsvl.copper2go.impl.EventChannelStoreImpl;
+import de.wolfsvl.copper2go.impl.ReplyChannelStoreImpl;
 import de.wolfsvl.copper2go.impl.RequestChannelStoreImpl;
-import de.wolfsvl.copper2go.workflowapi.ReplyChannelStore;
 import org.copperengine.core.DependencyInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +41,7 @@ public class Application {
     private boolean stopRequested;
 
     public static Application of(final Config config) {
-        ReplyChannelStore replyChannelStore = new ReplyChannelStoreImpl();
+        ReplyChannelStoreImpl replyChannelStore = new ReplyChannelStoreImpl();
 
         Copper2GoEngine copper2GoEngine = new Copper2GoEngineImpl(
                 config.maxTickets,

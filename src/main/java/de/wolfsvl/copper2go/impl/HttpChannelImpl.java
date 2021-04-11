@@ -16,7 +16,6 @@
 package de.wolfsvl.copper2go.impl;
 
 import de.wolfsvl.copper2go.connector.http.Copper2GoHttpClient;
-import de.wolfsvl.copper2go.workflowapi.RequestChannel;
 import io.vertx.core.http.HttpMethod;
 
 public class HttpChannelImpl implements RequestChannel {

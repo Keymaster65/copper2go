@@ -1,8 +1,8 @@
 package de.wolfsvl.copper2go.engine;
 
 import de.wolfsvl.copper2go.application.config.WorkflowRepositoryConfig;
-import de.wolfsvl.copper2go.workflowapi.ReplyChannel;
-import de.wolfsvl.copper2go.workflowapi.ReplyChannelStore;
+import de.wolfsvl.copper2go.impl.ReplyChannelStoreImpl;
+import de.wolfsvl.copper2go.impl.ReplyChannel;
 import de.wolfsvl.copper2go.workflowapi.WorkflowData;
 import org.copperengine.core.Acknowledge;
 import org.copperengine.core.CopperException;
@@ -37,14 +37,14 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
     private static final Logger log = LoggerFactory.getLogger(Copper2GoEngineImpl.class);
 
     private final WorkflowRepositoryConfig workflowRepositoryConfig;
-    private final ReplyChannelStore replyChannelStore;
+    private final ReplyChannelStoreImpl replyChannelStore;
     private final int availableTickets;
 
     private TransientScottyEngine engine;
     private SimpleJmxExporter exporter;
     private LoggingStatisticCollector statisticsCollector;
 
-    public Copper2GoEngineImpl(final int availableTickets, WorkflowRepositoryConfig workflowRepositoryConfig, final ReplyChannelStore replyChannelStore) {
+    public Copper2GoEngineImpl(final int availableTickets, WorkflowRepositoryConfig workflowRepositoryConfig, final ReplyChannelStoreImpl replyChannelStore) {
         this.workflowRepositoryConfig = workflowRepositoryConfig;
         this.replyChannelStore = replyChannelStore;
         this.availableTickets = availableTickets;
