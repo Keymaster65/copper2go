@@ -17,17 +17,34 @@ that support your business workflow.
  ![This picture shows a first overview](copper2goOverview.svg)
 
 ## Quick Start (DRAFT)
- * Clone the workflows
- * modify configuration
+In your container you can run workflows that are accessible via git. 
+Just start with the ones in  https://github.com/Keymaster65/copper2go-workflows.
+
  * Start container
-   * docker pull registry.hub.docker.com/keymaster65/copper2go
-   * docker run -d -p 59665:59665 -p 9000:9000 -d --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go
-   * docker run -d -p 59665:59665 -p 9000:9000 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go
- * Use browser
-   * http://localhost:59665/
- * Use HTTP-Client
- * Use JMX
- 
+       * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go`
+ * In Browser you can see the used licenses
+   * `http://localhost:59665/`
+   * `http://localhost:59665/request/2.0/Hello` will deliver a "IllegalArgumentException: A name must be specified."
+ * Use any other HTTP-Client and POST your name to the URL
+   * Example: `curl --data Wolf http://localhost:59665/request/2.0/Hello`
+   * Will produce someting like `Hello Wolf7! Please transfer 4 cent`
+
+## Change Workflows
+You develop your own workflows. You may start with the existing ones.
+  * Clone or fork the copper2go-workflows: https://github.com/Keymaster65/copper2go-workflows
+  * Modify configuration and store it into environment variable C2G_CONFIG. Example:
+    * Start with file: https://github.com/Keymaster65/copper2go/blob/master/src/main/resources/de/wolfsvl/copper2go/application/config/config.json
+    * store in in your local docker host `config.json`
+    * Typically modify workflowGitURI location
+  * Start Container with your configuration:
+    * `docker run -d -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go`
+
+### Versioning
+The Workflows API in contained in https://github.com/Keymaster65/copper2go/tree/master/src/main/java/de/wolfsvl/copper2go/workflowapi
+Changes will be listed here.
+
+The configuration of the application and the shipped dependencies will be listed here as Application API
+  
 ## Links
   * https://github.com/Keymaster65/copper2go/releases
   * https://github.com/copper-engine
@@ -35,18 +52,16 @@ that support your business workflow.
   * https://github.com/factoryfx
  
 ## Planning
-
-### Versioning (DRAFT)
-API + Config
-
    
-### Release Plan 1.1
+### Release Plan Application API 1.1
+ * Add How to develop Workflows for IDEA
+ * Add How to develop Workflows for gradle
  * Workflow with Json binding
  * Support of COPPER core GUI
  * Workflow with XML binding
  * JMX usage in Container
 
-### Release Plan 1.0
+### Release Notes Workflow API 1.0 and Application API 1.0
  * http server support
  * http client support
  * non-business config
@@ -57,7 +72,7 @@ API + Config
  * Event consuming workflows (no reply body, state 202 only)
  * quick start
   
-### Release Notes 0.1
+### Release Notes Workflow API 0.1 and Application API 0.1
  * 0.1 A first MVP (Minimum Viable Product)
 
 ### Backlog
