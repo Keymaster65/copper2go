@@ -54,7 +54,7 @@ class ApplicationHttpTest {
         SoftAssertions.assertSoftly(
                 softAssertions -> {
                     softAssertions.assertThat(response.statusCode()).isEqualTo(500);
-                    softAssertions.assertThat(response.body()).isEqualTo("A name must be specified.");
+                    softAssertions.assertThat(response.body()).isEqualTo("IllegalArgumentException: A name must be specified.");
                 }
         );
     }
