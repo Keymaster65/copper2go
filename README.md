@@ -45,7 +45,6 @@ API + Config
  * http server support
  * http client support
  * non-business config
- * configure thread pool size
  * Multi workflow
  * docker image distribution
  * add license info
@@ -58,7 +57,8 @@ API + Config
  * 0.1 A first MVP (Minimum Viable Product)
 
 ### Backlog
-* Multi workflow support and REST level
+ * configure thread pool size, client pool size and more
+ * Multi workflow support and REST level
  * Kafka support and choreography example
  * publish to public artifact repository
  * JMS support 
