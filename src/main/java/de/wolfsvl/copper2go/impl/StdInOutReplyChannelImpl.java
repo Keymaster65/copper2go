@@ -19,7 +19,14 @@ public class StdInOutReplyChannelImpl implements ReplyChannel {
 
     public StdInOutReplyChannelImpl() {
     }
+
+    @Override
     public void reply(String message) {
+        System.out.println(message);
+    }
+
+    @Override
+    public void replyError(final String message) {
         System.out.println(message);
     }
 }

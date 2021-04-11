@@ -20,7 +20,7 @@ class ApplicationApplicationTestInOutTest {
     void masterHelloTest() throws Exception {
         String name = Data.getName();
         final String result = stdinHelloTest(name, "master");
-        Assert.assertResponse(result, Data.getExpectedPartMaster(name));
+        Assert.assertResponse(result, Data.getExpectedHello(name));
     }
 
     private String stdinHelloTest(final String name, final String branch) throws Exception {

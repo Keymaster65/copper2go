@@ -53,7 +53,9 @@ public class VertxHttpServer implements Copper2GoHttpServer {
                                             workflowVersion.minor
                                     );
                                 } catch (EngineException e) {
-                                    response.end(String.format("Exception: %s", e.getMessage()));
+                                    response
+                                            .setStatusCode(500)
+                                            .end(String.format("Exception: %s", e.getMessage()));
                                     log.warn("Exception while calling workflow.", e);
                                 }
                             } else {

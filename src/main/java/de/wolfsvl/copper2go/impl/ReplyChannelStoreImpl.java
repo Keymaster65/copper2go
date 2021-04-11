@@ -21,19 +21,24 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ReplyChannelStoreImpl implements ReplyChannelStore {
-    private static Map<String, ReplyChannel> contextMap = new ConcurrentHashMap<>();
+    private static Map<String, ReplyChannel> replyChannelMap = new ConcurrentHashMap<>();
 
     public void store(String id, ReplyChannel replyChannel) {
-        contextMap.put(id, replyChannel);
+        replyChannelMap.put(id, replyChannel);
     }
 
     @Override
     public void reply (String id, String message) {
-        ReplyChannel replyChannel = contextMap.remove(id);
+        ReplyChannel replyChannel = replyChannelMap.remove(id);
         replyChannel.reply(message);
     }
 
+    @Override
+    public void replyError (String id, String message) {
+        ReplyChannel replyChannel = replyChannelMap.remove(id);
+        replyChannel.replyError(message);
+    }
     public ReplyChannel getReplyChannel(String uuid) {
-        return contextMap.get(uuid);
+        return replyChannelMap.get(uuid);
     }
 }

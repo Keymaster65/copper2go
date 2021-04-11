@@ -7,11 +7,11 @@ public class Data {
     }
 
     private Data() {}
-    public static String getExpectedPartMappingBranch(final String name) {
+    public static String getExpectedHello2Mapping(final String name) {
         return  "Hello " + name + "! Please transfer";
     }
 
-    public static String getExpectedPartMaster(final String name) {
+    public static String getExpectedHello(final String name) {
         return  "HEllo " + name + "! (Fix the bug;-)";
     }
 }

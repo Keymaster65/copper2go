@@ -24,7 +24,15 @@ public class HttpReplyChannelImpl implements ReplyChannel {
         this.response = response;
     }
 
+    @Override
     public void reply(String message) {
         response.end(message);
+    }
+
+    @Override
+    public void replyError(String message) {
+        response
+                .setStatusCode(500)
+                .end(message);
     }
 }

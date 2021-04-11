@@ -18,7 +18,7 @@ public class TestHttpClient {
                 .build();
         HttpRequest httpRequest =
                 HttpRequest.newBuilder()
-                        .timeout(Duration.ofMillis(3000))
+                        .timeout(Duration.ofMillis(5000))
                         .uri(uri)
                         .POST(HttpRequest.BodyPublishers.ofString(name))
                         .build();
