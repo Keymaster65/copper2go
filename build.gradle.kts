@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "de.wolfsvl"
-version = "1.0"
+version = "1.1"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -127,7 +127,7 @@ jib {
             username = "keymaster65"
             password = System.getenv("DOCKER_HUB_PASSWORD")
         }
-        tags = setOf("latest", "v1.0")
+        tags = setOf("latest")
     }
     extraDirectories {
         paths {
