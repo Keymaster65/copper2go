@@ -52,6 +52,7 @@ API + Config
  * Add Application and Workflow path 
  * quick start
  * JMX usage in Container
+ * Event consuming workflows (no reply body, state only)
   
 ### Release Notes
  * 0.1 A first MVP (Minimum Viable Product)

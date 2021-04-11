@@ -114,6 +114,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         while (!transientScottyEngine.getEngineState().equals(EngineState.STARTED)) {
             LockSupport.parkNanos(10L * 1000L * 1000L);
         }
+        transientScottyEngine.getProcessorPools().get(0).setNumberOfThreads(101);
         exporter = startJmxExporter(transientScottyEngine);
         return transientScottyEngine;
     }
