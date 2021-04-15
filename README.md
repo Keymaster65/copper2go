@@ -56,9 +56,14 @@ The configuration of the application and the shipped dependencies will be listed
 ### Release Plan Application API 1.1
  * Add How to develop Workflows for IDEA
  * Add How to develop Workflows for gradle
+
+### Release Plan Application API 1.2
+ * Workflow using State Pattern
  * Workflow with Json binding
- * Support of COPPER core GUI
  * Workflow with XML binding
+
+### Release Plan Application API 1.3
+ * Support of COPPER core GUI
  * JMX usage in Container
 
 ### Release Notes Workflow API 1.0 and Application API 1.0
