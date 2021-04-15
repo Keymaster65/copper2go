@@ -27,7 +27,7 @@ Just start with the ones in  https://github.com/Keymaster65/copper2go-workflows.
    * `http://localhost:59665/request/2.0/Hello` will deliver a "IllegalArgumentException: A name must be specified."
  * Use any other HTTP-Client and POST your name to the URL
    * Example: `curl --data Wolf http://localhost:59665/request/2.0/Hello`
-   * Will produce someting like `Hello Wolf7! Please transfer 4 cent`
+   * Will produce someting like `Hello Wolf! Please transfer 4 cent`
 
 ## Change Workflows
 You develop your own workflows. You may start with the existing ones.
