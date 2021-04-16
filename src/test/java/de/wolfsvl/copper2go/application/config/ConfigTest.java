@@ -1,5 +1,6 @@
 package de.wolfsvl.copper2go.application.config;
 
+import de.wolfsvl.copper2go.connector.http.vertx.HttpRequestChannelConfig;
 import io.vertx.core.http.HttpMethod;
 import org.junit.jupiter.api.Test;
 

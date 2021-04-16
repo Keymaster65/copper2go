@@ -16,18 +16,17 @@
 package de.wolfsvl.copper2go.application;
 
 import de.wolfsvl.copper2go.application.config.Config;
-import de.wolfsvl.copper2go.connector.http.Copper2GoHttpServer;
-import de.wolfsvl.copper2go.connector.http.vertx.VertxHttpServer;
+import de.wolfsvl.copper2go.connector.http.vertx.Copper2GoHttpServer;
+import de.wolfsvl.copper2go.connector.http.vertx.vertx.VertxHttpServer;
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutException;
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutListener;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import de.wolfsvl.copper2go.engine.Copper2GoEngineImpl;
 import de.wolfsvl.copper2go.engine.EngineException;
-import de.wolfsvl.copper2go.impl.DefaultDependencyInjector;
+import de.wolfsvl.copper2go.util.Copper2goDependencyInjector;
 import de.wolfsvl.copper2go.impl.EventChannelStoreImpl;
 import de.wolfsvl.copper2go.impl.ReplyChannelStoreImpl;
-import de.wolfsvl.copper2go.impl.RequestChannelStoreImpl;
-import org.copperengine.core.DependencyInjector;
+import de.wolfsvl.copper2go.connector.http.vertx.vertx.RequestChannelStoreImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +36,7 @@ public class Application {
 
     private final Copper2GoEngine copper2GoEngine;
     private final Copper2GoHttpServer httpServer;
-    private final DependencyInjector dependencyInjector;
+    private final org.copperengine.core.DependencyInjector dependencyInjector;
     private boolean stopRequested;
 
     public static Application of(final Config config) {
@@ -47,7 +46,7 @@ public class Application {
                 config.maxTickets,
                 config.workflowRepositoryConfig,
                 replyChannelStore);
-        DependencyInjector dependencyInjector = new DefaultDependencyInjector(
+        org.copperengine.core.DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
                 replyChannelStore,
                 new EventChannelStoreImpl(),
                 new RequestChannelStoreImpl(config.httpRequestChannelConfigs, copper2GoEngine));
@@ -63,7 +62,7 @@ public class Application {
 
     public Application(
             final Copper2GoEngine copper2GoEngine,
-            final DependencyInjector dependencyInjector,
+            final org.copperengine.core.DependencyInjector dependencyInjector,
             final Copper2GoHttpServer httpServer
     ) {
         this.copper2GoEngine = copper2GoEngine;

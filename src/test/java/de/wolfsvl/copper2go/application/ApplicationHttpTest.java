@@ -1,9 +1,7 @@
 package de.wolfsvl.copper2go.application;
 
 import de.wolfsvl.copper2go.application.config.Config;
-import de.wolfsvl.copper2go.testutil.Assert;
-import de.wolfsvl.copper2go.testutil.Data;
-import de.wolfsvl.copper2go.testutil.TestHttpClient;
+import de.wolfsvl.copper2go.connector.http.vertx.TestHttpClient;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
@@ -13,7 +11,7 @@ import java.net.URI;
 import java.net.http.HttpResponse;
 
 import static de.wolfsvl.copper2go.application.Application.HTTP_SERVER_PORT;
-import static de.wolfsvl.copper2go.testutil.Data.getExpectedHello2Mapping;
+import static de.wolfsvl.copper2go.application.Data.getExpectedHello2Mapping;
 
 class ApplicationHttpTest {
 
