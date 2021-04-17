@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.wolfsvl.copper2go.engine.impl.stdinout;
+package de.wolfsvl.copper2go.connector.standardio;
 
-import de.wolfsvl.copper2go.engine.ReplyChannel;
+import de.wolfsvl.copper2go.engine.EventChannel;
 
-public class StdInOutReplyChannelImpl implements ReplyChannel {
-
+public class StandardOutEventChannelImpl implements EventChannel {
     @Override
-    public void reply(String message) {
-        System.out.println(message); // NOSONAR
+    public void event(String event) {
+        System.out.println(event); // NOSONAR
     }
 
     @Override
-    public void replyError(final String message) {
-        System.out.println(message); // NOSONAR
+    public void errorEvent(String event) {
+        System.err.println(event); // NOSONAR
     }
 }

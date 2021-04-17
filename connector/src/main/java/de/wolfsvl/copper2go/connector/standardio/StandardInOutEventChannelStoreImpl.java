@@ -1,4 +1,4 @@
-package de.wolfsvl.copper2go.engine.impl.stdinout;
+package de.wolfsvl.copper2go.connector.standardio;
 
 import de.wolfsvl.copper2go.engine.EventChannel;
 import de.wolfsvl.copper2go.workflowapi.EventChannelStore;
@@ -6,11 +6,11 @@ import de.wolfsvl.copper2go.workflowapi.EventChannelStore;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class StdInOutEventChannelStoreImpl implements EventChannelStore {
+public class StandardInOutEventChannelStoreImpl implements EventChannelStore {
     private static Map<String, EventChannel> eventChannelMap = new ConcurrentHashMap<>();
 
-    public StdInOutEventChannelStoreImpl() {
-        eventChannelMap.put("System.stdout", new StdOutEventChannelImpl());
+    public StandardInOutEventChannelStoreImpl() {
+        eventChannelMap.put("System.stdout", new StandardOutEventChannelImpl());
     }
 
     @Override
