@@ -36,7 +36,7 @@ application {
 }
 
 group = "de.wolfsvl"
-version = "2.0"
+version = "2.0.1"
 
 allprojects {
     apply(plugin= "java")
@@ -54,7 +54,7 @@ allprojects {
         implementation("org.slf4j:slf4j-api:1.8.0-beta2")
         implementation("ch.qos.logback:logback-classic:1.3.0-alpha4")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2+")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.12.3")
 
         testImplementation("org.assertj:assertj-assertions-generator:2+")
         testImplementation("org.junit.jupiter:junit-jupiter:5+")
