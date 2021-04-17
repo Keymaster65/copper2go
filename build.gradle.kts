@@ -119,7 +119,7 @@ distributions {
 
 jib {
     container {
-        mainClass = "de.wolfsvl.copper2go.Main"
+        mainClass = "io.github.keymaster65.copper2go.Main"
         jvmFlags = listOf(
                 "-XX:+UseContainerSupport",
                 "-Dfile.encoding=UTF-8",

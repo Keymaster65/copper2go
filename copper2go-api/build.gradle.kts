@@ -1,4 +1,4 @@
-group = "de.wolfsvl"
+group = "io.github.keymaster65"
 version = "1.2"
 
 plugins {
