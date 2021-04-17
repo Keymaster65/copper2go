@@ -1,5 +1,6 @@
-package de.wolfsvl.copper2go.connector.http;
+package de.wolfsvl.copper2go.connector.http.vertx;
 
+import de.wolfsvl.copper2go.connector.http.HttpMethod;
 import de.wolfsvl.copper2go.connector.http.vertx.VertxHttpClient;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import io.vertx.core.Vertx;
