@@ -1,7 +1,7 @@
 package de.wolfsvl.copper2go.application.config;
 
+import de.wolfsvl.copper2go.connector.http.HttpMethod;
 import de.wolfsvl.copper2go.connector.http.HttpRequestChannelConfig;
-import io.vertx.core.http.HttpMethod;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ class ConfigTest {
     @Test
     void of() throws IOException {
         Config config = Config.of();
-        assertThat(config.httpRequestChannelConfigs.size()).isEqualTo(1);
+        assertThat(config.httpRequestChannelConfigs).hasSize(1);
         HttpRequestChannelConfig httpRequestChannelConfig = config.httpRequestChannelConfigs.get("Pricing.centPerMinute");
         assertThat(httpRequestChannelConfig.method).isEqualTo(HttpMethod.GET);
         assertThat(httpRequestChannelConfig.host).isEqualTo("localhost");

@@ -16,15 +16,15 @@
 package de.wolfsvl.copper2go.connector.http.vertx;
 
 import de.wolfsvl.copper2go.connector.http.Copper2GoHttpClient;
+import de.wolfsvl.copper2go.connector.http.HttpMethod;
 import de.wolfsvl.copper2go.impl.RequestChannel;
-import io.vertx.core.http.HttpMethod;
 
-public class HttpChannelImpl implements RequestChannel {
+public class HttpRequestChannelImpl implements RequestChannel {
 
     private final Copper2GoHttpClient httpClient;
     private final HttpMethod httpMethod;
 
-    public HttpChannelImpl( final HttpMethod httpMethod, final Copper2GoHttpClient httpClient) {
+    public HttpRequestChannelImpl(final HttpMethod httpMethod, final Copper2GoHttpClient httpClient) {
         this.httpClient = httpClient;
         this.httpMethod = httpMethod;
     }

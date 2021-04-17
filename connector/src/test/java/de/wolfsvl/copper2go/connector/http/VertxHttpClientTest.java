@@ -3,7 +3,6 @@ package de.wolfsvl.copper2go.connector.http;
 import de.wolfsvl.copper2go.connector.http.vertx.VertxHttpClient;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import io.vertx.core.Vertx;
-import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import org.junit.jupiter.api.Test;
@@ -34,7 +33,7 @@ class VertxHttpClientTest {
         VertxHttpClient vertxHttpClient = new VertxHttpClient("localhost", SERVER_PORT, "/", engine);
         try {
             httpServer.listen(SERVER_PORT);
-            vertxHttpClient.request(HttpMethod.POST, "Fault test.", CORRELATION_ID);
+            vertxHttpClient.request(HttpMethod.valueOf("POST"), "Fault test.", CORRELATION_ID);
             latch.await();
             Thread.sleep(1000); // give client time for async processing
         } finally {

@@ -12,10 +12,10 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
     private static Map<String, RequestChannel> requestChannelMap = new ConcurrentHashMap<>();
 
     public RequestChannelStoreImpl(final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs, final Copper2GoEngine engine) {
-        for (String name : httpRequestChannelConfigs.keySet()) {
-            HttpRequestChannelConfig config = httpRequestChannelConfigs.get(name);
-            requestChannelMap.put(name,
-                    new HttpChannelImpl(
+        for (Map.Entry<String, HttpRequestChannelConfig> entry : httpRequestChannelConfigs.entrySet()) {
+            HttpRequestChannelConfig config = entry.getValue();
+            requestChannelMap.put(entry.getKey(),
+                    new HttpRequestChannelImpl(
                             config.method,
                             new VertxHttpClient(
                                     config.host,

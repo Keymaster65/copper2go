@@ -1,11 +1,11 @@
 package de.wolfsvl.copper2go.connector.http.vertx;
 
 import de.wolfsvl.copper2go.connector.http.Copper2GoHttpClient;
+import de.wolfsvl.copper2go.connector.http.HttpMethod;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import org.slf4j.Logger;
@@ -32,21 +32,25 @@ public class VertxHttpClient implements Copper2GoHttpClient {
 
     private Handler<HttpResponse<Buffer>> sucesshandler(final String responseCorrelationId, final Copper2GoEngine engine) {
         return result -> {
-            log.trace(String.format("Result=%s", result.bodyAsString()));
+            if (log.isTraceEnabled()) {
+                log.trace(String.format("Result=%s", result.bodyAsString()));
+            }
             engine.notify(responseCorrelationId, result.bodyAsString());
         };
     }
 
     private Handler<Throwable> errorHandler(final String responseCorrelationId, final Copper2GoEngine engine) {
         return err -> {
-            log.trace(String.format("Failure=%s", err.getMessage()));
+            if (log.isTraceEnabled()) {
+                log.trace(String.format("Failure=%s", err.getMessage()));
+            }
             engine.notifyError(responseCorrelationId, err.getMessage());
         };
     }
 
     public void request(final HttpMethod httpMethod, final String request, final String responseCorrelationId) {
         client
-                .request(httpMethod, port, host, uri)
+                .request(io.vertx.core.http.HttpMethod.valueOf(httpMethod.toString()), port, host, uri)
                 .sendBuffer(Buffer.buffer(request))
                 .onFailure(errorHandler(responseCorrelationId, engine))
                 .onSuccess(sucesshandler(responseCorrelationId, engine));

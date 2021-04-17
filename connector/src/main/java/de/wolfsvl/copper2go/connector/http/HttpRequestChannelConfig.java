@@ -2,7 +2,6 @@ package de.wolfsvl.copper2go.connector.http;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.vertx.core.http.HttpMethod;
 
 public class HttpRequestChannelConfig {
 
