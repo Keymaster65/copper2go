@@ -45,6 +45,11 @@ allprojects {
         sourceCompatibility = JavaVersion.VERSION_11
     }
 
+    java {
+        withSourcesJar()
+        withJavadocJar()
+    }
+
     dependencies{
         implementation("org.slf4j:slf4j-api:1.8.0-beta2")
         implementation("ch.qos.logback:logback-classic:1.3.0-alpha4")
