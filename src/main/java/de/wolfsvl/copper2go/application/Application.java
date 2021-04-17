@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
 
 public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
-    public static final int HTTP_SERVER_PORT = 59665;
 
     private final Copper2GoEngine copper2GoEngine;
     private final Copper2GoHttpServer httpServer;
