@@ -25,7 +25,7 @@ node() {
         // see https://www.jenkins.io/doc/pipeline/steps/jacoco/
         stage('Test coverage') {
             jacoco(
-                    classPattern: 'build/classes'
+                    classPattern: '**/build/classes/java/main'
             )
         }
 
