@@ -18,7 +18,6 @@ package de.wolfsvl.copper2go.util.workflow;
 import de.wolfsvl.copper2go.workflowapi.ReplyChannelStore;
 import de.wolfsvl.copper2go.workflowapi.WorkflowData;
 import org.copperengine.core.AutoWire;
-import org.copperengine.core.Interrupt;
 import org.copperengine.core.Workflow;
 import org.copperengine.core.WorkflowDescription;
 
