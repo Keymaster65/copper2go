@@ -12,22 +12,6 @@ plugins {
 
 
 
-tasks.withType<Test> {
-    useJUnitPlatform {
-        includeEngines.add("junit-jupiter")
-    }
-}
-
-task<JacocoMerge>("jacocoMerge") {
-    destinationFile = File("$buildDir/jacoco/allTestCoverage.exec")
-    executionData = fileTree("$buildDir/jacoco")
-}
-
-tasks.withType<JacocoReport> {
-    reports {
-        executionData.setFrom("$buildDir/jacoco/allTestCoverage.exec")
-    }
-}
 
 publishing {
     publications {
@@ -78,6 +62,23 @@ allprojects {
 
     repositories {
         mavenCentral()
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform {
+            includeEngines.add("junit-jupiter")
+        }
+    }
+
+    task<JacocoMerge>("jacocoMerge") {
+        destinationFile = File("$buildDir/jacoco/allTestCoverage.exec")
+        executionData = fileTree("$buildDir/jacoco")
+    }
+
+    tasks.withType<JacocoReport> {
+        reports {
+            executionData.setFrom("$buildDir/jacoco/allTestCoverage.exec")
+        }
     }
 
 }
