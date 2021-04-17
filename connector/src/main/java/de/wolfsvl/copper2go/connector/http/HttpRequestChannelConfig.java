@@ -1,4 +1,4 @@
-package de.wolfsvl.copper2go.connector.http.vertx;
+package de.wolfsvl.copper2go.connector.http;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

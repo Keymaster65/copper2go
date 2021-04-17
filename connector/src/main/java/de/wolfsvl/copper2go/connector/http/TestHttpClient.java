@@ -1,4 +1,4 @@
-package de.wolfsvl.copper2go.connector.http.vertx;
+package de.wolfsvl.copper2go.connector.http;
 
 import java.net.URI;
 import java.net.http.HttpClient;

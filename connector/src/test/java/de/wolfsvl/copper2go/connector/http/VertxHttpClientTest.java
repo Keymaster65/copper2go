@@ -1,6 +1,6 @@
-package de.wolfsvl.copper2go.connector.http.vertx;
+package de.wolfsvl.copper2go.connector.http;
 
-import de.wolfsvl.copper2go.connector.http.vertx.vertx.VertxHttpClient;
+import de.wolfsvl.copper2go.connector.http.vertx.VertxHttpClient;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
@@ -11,13 +11,6 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import java.util.concurrent.CountDownLatch;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 class VertxHttpClientTest {
 

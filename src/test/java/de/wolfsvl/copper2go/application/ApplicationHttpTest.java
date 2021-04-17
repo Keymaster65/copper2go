@@ -1,7 +1,7 @@
 package de.wolfsvl.copper2go.application;
 
 import de.wolfsvl.copper2go.application.config.Config;
-import de.wolfsvl.copper2go.connector.http.vertx.TestHttpClient;
+import de.wolfsvl.copper2go.connector.http.TestHttpClient;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;

@@ -3,7 +3,7 @@ package de.wolfsvl.copper2go.application.config;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.wolfsvl.copper2go.connector.http.vertx.HttpRequestChannelConfig;
+import de.wolfsvl.copper2go.connector.http.HttpRequestChannelConfig;
 import de.wolfsvl.copper2go.engine.WorkflowRepositoryConfig;
 
 import java.io.IOException;

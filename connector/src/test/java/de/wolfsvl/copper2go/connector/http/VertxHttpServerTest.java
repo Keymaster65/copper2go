@@ -1,6 +1,6 @@
-package de.wolfsvl.copper2go.connector.http.vertx;
+package de.wolfsvl.copper2go.connector.http;
 
-import de.wolfsvl.copper2go.connector.http.vertx.vertx.VertxHttpServer;
+import de.wolfsvl.copper2go.connector.http.vertx.VertxHttpServer;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import de.wolfsvl.copper2go.engine.EngineException;
 import io.vertx.core.Vertx;
@@ -10,12 +10,6 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.net.URI;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 class VertxHttpServerTest {
 

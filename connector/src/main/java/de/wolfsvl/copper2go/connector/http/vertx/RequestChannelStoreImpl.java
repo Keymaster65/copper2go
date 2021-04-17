@@ -1,6 +1,6 @@
-package de.wolfsvl.copper2go.connector.http.vertx.vertx;
+package de.wolfsvl.copper2go.connector.http.vertx;
 
-import de.wolfsvl.copper2go.connector.http.vertx.HttpRequestChannelConfig;
+import de.wolfsvl.copper2go.connector.http.HttpRequestChannelConfig;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
 import de.wolfsvl.copper2go.impl.RequestChannel;
 import de.wolfsvl.copper2go.workflowapi.RequestChannelStore;

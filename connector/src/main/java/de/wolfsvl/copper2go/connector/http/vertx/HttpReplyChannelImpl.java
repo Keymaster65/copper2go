@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.wolfsvl.copper2go.connector.http.vertx.vertx;
+package de.wolfsvl.copper2go.connector.http.vertx;
 
 import de.wolfsvl.copper2go.impl.ReplyChannel;
 import io.vertx.core.http.HttpServerResponse;
