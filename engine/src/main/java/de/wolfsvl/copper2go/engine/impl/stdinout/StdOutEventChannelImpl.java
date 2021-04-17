@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.wolfsvl.copper2go.impl;
+package de.wolfsvl.copper2go.engine.impl.stdinout;
+
+import de.wolfsvl.copper2go.engine.EventChannel;
 
 public class StdOutEventChannelImpl implements EventChannel {
     @Override
     public void event(String event) {
-        System.out.println(event);
+        System.out.println(event); // NOSONAR
     }
 
     @Override
     public void errorEvent(String event) {
-        System.err.println(event);
+        System.err.println(event); // NOSONAR
     }
 }

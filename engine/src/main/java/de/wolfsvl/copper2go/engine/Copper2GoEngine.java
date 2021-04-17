@@ -1,6 +1,5 @@
 package de.wolfsvl.copper2go.engine;
 
-import de.wolfsvl.copper2go.impl.ReplyChannel;
 import org.copperengine.core.DependencyInjector;
 
 public interface Copper2GoEngine {

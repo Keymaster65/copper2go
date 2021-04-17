@@ -2,7 +2,7 @@ package de.wolfsvl.copper2go.connector.http.vertx;
 
 import de.wolfsvl.copper2go.connector.http.HttpRequestChannelConfig;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
-import de.wolfsvl.copper2go.impl.RequestChannel;
+import de.wolfsvl.copper2go.engine.RequestChannel;
 import de.wolfsvl.copper2go.workflowapi.RequestChannelStore;
 
 import java.util.Map;

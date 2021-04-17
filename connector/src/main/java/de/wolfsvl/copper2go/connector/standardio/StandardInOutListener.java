@@ -1,7 +1,7 @@
 package de.wolfsvl.copper2go.connector.standardio;
 
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
-import de.wolfsvl.copper2go.impl.StdInOutReplyChannelImpl;
+import de.wolfsvl.copper2go.engine.impl.stdinout.StdInOutReplyChannelImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,9 +14,9 @@ public class StandardInOutListener {
 
     public void listenLocalStream(final Copper2GoEngine copper2GoEngine) throws StandardInOutException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        while (true) {
+        while (true) { // NOSONAR
             try {
-                System.out.println("Enter your name: ");
+                System.out.println("Enter your name: "); // NOSONAR
                 String line1 = reader.readLine();
                 log.debug("line: {}", line1);
                 if (line1 == null) {

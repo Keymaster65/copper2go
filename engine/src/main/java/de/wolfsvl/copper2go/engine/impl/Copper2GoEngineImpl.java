@@ -1,7 +1,10 @@
-package de.wolfsvl.copper2go.engine;
+package de.wolfsvl.copper2go.engine.impl;
 
-import de.wolfsvl.copper2go.impl.ReplyChannel;
-import de.wolfsvl.copper2go.impl.ReplyChannelStoreImpl;
+import de.wolfsvl.copper2go.engine.Copper2GoEngine;
+import de.wolfsvl.copper2go.engine.EngineException;
+import de.wolfsvl.copper2go.engine.EngineRuntimeException;
+import de.wolfsvl.copper2go.engine.ReplyChannel;
+import de.wolfsvl.copper2go.engine.WorkflowRepositoryConfig;
 import de.wolfsvl.copper2go.workflowapi.WorkflowData;
 import org.copperengine.core.Acknowledge;
 import org.copperengine.core.CopperException;

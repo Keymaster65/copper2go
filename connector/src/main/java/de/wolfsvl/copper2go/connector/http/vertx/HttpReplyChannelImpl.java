@@ -15,7 +15,7 @@
  */
 package de.wolfsvl.copper2go.connector.http.vertx;
 
-import de.wolfsvl.copper2go.impl.ReplyChannel;
+import de.wolfsvl.copper2go.engine.ReplyChannel;
 import io.vertx.core.http.HttpServerResponse;
 
 import java.net.HttpURLConnection;

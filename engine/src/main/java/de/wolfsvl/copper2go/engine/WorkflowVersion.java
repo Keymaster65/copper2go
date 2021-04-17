@@ -1,11 +1,11 @@
 package de.wolfsvl.copper2go.engine;
 
-public class WorkflowVersion {
+public final class WorkflowVersion {
     public final String name;
     public final long major;
     public final long minor;
 
-    WorkflowVersion(final String name, final long major, final long minor) {
+    private WorkflowVersion(final String name, final long major, final long minor) {
         this.name = name;
         this.major = major;
         this.minor = minor;

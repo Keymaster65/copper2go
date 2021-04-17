@@ -21,11 +21,11 @@ import de.wolfsvl.copper2go.connector.http.vertx.VertxHttpServer;
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutException;
 import de.wolfsvl.copper2go.connector.standardio.StandardInOutListener;
 import de.wolfsvl.copper2go.engine.Copper2GoEngine;
-import de.wolfsvl.copper2go.engine.Copper2GoEngineImpl;
+import de.wolfsvl.copper2go.engine.impl.Copper2GoEngineImpl;
 import de.wolfsvl.copper2go.engine.EngineException;
 import de.wolfsvl.copper2go.util.Copper2goDependencyInjector;
-import de.wolfsvl.copper2go.impl.EventChannelStoreImpl;
-import de.wolfsvl.copper2go.impl.ReplyChannelStoreImpl;
+import de.wolfsvl.copper2go.engine.impl.stdinout.StdInOutEventChannelStoreImpl;
+import de.wolfsvl.copper2go.engine.impl.ReplyChannelStoreImpl;
 import de.wolfsvl.copper2go.connector.http.vertx.RequestChannelStoreImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public class Application {
                 replyChannelStore);
         org.copperengine.core.DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
                 replyChannelStore,
-                new EventChannelStoreImpl(),
+                new StdInOutEventChannelStoreImpl(),
                 new RequestChannelStoreImpl(config.httpRequestChannelConfigs, copper2GoEngine));
         Copper2GoHttpServer httpServer = new VertxHttpServer(
                 config.httpPort,

@@ -1,4 +1,4 @@
-package de.wolfsvl.copper2go.impl;
+package de.wolfsvl.copper2go.engine;
 
 public interface ReplyChannel {
     void reply(String message);

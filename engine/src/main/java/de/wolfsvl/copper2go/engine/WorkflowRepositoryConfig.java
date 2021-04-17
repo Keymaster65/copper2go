@@ -3,7 +3,7 @@ package de.wolfsvl.copper2go.engine;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class WorkflowRepositoryConfig {
+public final class WorkflowRepositoryConfig {
 
     public final String branch;
     public final String workflowGitURI;

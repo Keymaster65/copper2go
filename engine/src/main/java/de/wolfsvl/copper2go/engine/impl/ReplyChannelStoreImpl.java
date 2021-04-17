@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.wolfsvl.copper2go.impl;
+package de.wolfsvl.copper2go.engine.impl;
 
+import de.wolfsvl.copper2go.engine.ReplyChannel;
 import de.wolfsvl.copper2go.workflowapi.ReplyChannelStore;
 
 import java.util.Map;
@@ -28,8 +29,8 @@ public class ReplyChannelStoreImpl implements ReplyChannelStore {
     }
 
     @Override
-    public void reply (String id, String message) {
-        ReplyChannel replyChannel = replyChannelMap.remove(id);
+    public void reply (String uuid, String message) {
+        ReplyChannel replyChannel = replyChannelMap.remove(uuid);
         replyChannel.reply(message);
     }
 
