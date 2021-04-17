@@ -23,7 +23,7 @@ class VertxHttpClientTest {
         Vertx vertx = Vertx.vertx();
         HttpServer httpServer = vertx.createHttpServer();
         final String successResponse = "Success";
-        CountDownLatch latch  = new CountDownLatch(1);
+        CountDownLatch latch = new CountDownLatch(1);
         httpServer.requestHandler(
                 request -> request.handler(buffer -> {
                             final HttpServerResponse response = request.response();
@@ -39,7 +39,7 @@ class VertxHttpClientTest {
             Thread.sleep(1000); // give client time for async processing
         } finally {
             httpServer.close();
-            vertxHttpClient.stop();
+            vertxHttpClient.close();
             vertx.close();
         }
 
@@ -49,21 +49,18 @@ class VertxHttpClientTest {
     @Test
     void postConnectionRefused() throws InterruptedException {
         Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
-        final VertxHttpClient vertxHttpClient = new VertxHttpClient("localhost", SERVER_PORT, "/", engine);
-        vertxHttpClient.request(HttpMethod.GET,"Fault test.", CORRELATION_ID);
+        final VertxHttpClient vertxHttpClient = new VertxHttpClient("localhost", 50666, "/", engine);
+        vertxHttpClient.request(HttpMethod.GET, "Fault test.", CORRELATION_ID);
         Thread.sleep(5 * 1000); // connection refused max time
+        vertxHttpClient.close();
         Mockito.verify(engine).notifyError(ArgumentMatchers.eq(CORRELATION_ID), ArgumentMatchers.anyString());
         Mockito.verify(engine, Mockito.times(0)).notify(ArgumentMatchers.any(), ArgumentMatchers.any());
     }
 
     @Test
-    void startStop() {
+    void close() {
         Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
         final VertxHttpClient vertxHttpClient = new VertxHttpClient("localhost", SERVER_PORT, "/", engine);
-        try {
-            vertxHttpClient.start();
-        } finally {
-            vertxHttpClient.stop();
-        }
+        vertxHttpClient.close();
     }
 }

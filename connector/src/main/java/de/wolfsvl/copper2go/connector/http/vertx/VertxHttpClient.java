@@ -32,14 +32,14 @@ public class VertxHttpClient implements Copper2GoHttpClient {
 
     private Handler<HttpResponse<Buffer>> sucesshandler(final String responseCorrelationId, final Copper2GoEngine engine) {
         return result -> {
-            log.trace("Result=" + result.bodyAsString());
+            log.trace(String.format("Result=%s", result.bodyAsString()));
             engine.notify(responseCorrelationId, result.bodyAsString());
         };
     }
 
     private Handler<Throwable> errorHandler(final String responseCorrelationId, final Copper2GoEngine engine) {
         return err -> {
-            log.trace("Failure=" + err.getMessage());
+            log.trace(String.format("Failure=%s", err.getMessage()));
             engine.notifyError(responseCorrelationId, err.getMessage());
         };
     }
@@ -53,11 +53,7 @@ public class VertxHttpClient implements Copper2GoHttpClient {
     }
 
     @Override
-    public void start() {
-    }
-
-    @Override
-    public void stop() {
+    public void close() {
         client.close();
         vertx.close();
     }
