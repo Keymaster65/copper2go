@@ -12,8 +12,6 @@ import org.copperengine.core.tranzient.TransientScottyEngine;
 import java.io.File;
 import java.util.concurrent.locks.LockSupport;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public final class WorkflowTestRunner {
 
     private WorkflowTestRunner() {}
@@ -40,8 +38,10 @@ public final class WorkflowTestRunner {
             final TransientScottyEngine engine
     ) throws CopperException {
         try {
-            engine.getState();
-            assertThat(engine.getState()).isEqualTo(EngineState.STARTED.toString()); // NOSONAR
+            String state = engine.getState();
+            if(!EngineState.STARTED.toString().equals(state)) {
+                throw new CopperException(String.format("Engine not started. State =%s", state));
+            }
 
             WorkflowVersion version = engine.getWfRepository().findLatestMinorVersion(workflowDefinition.workflowName, workflowDefinition.majorVersion, workflowDefinition.minorVersion);
             WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>(workflowDefinition.workflowName, workflowData, null, null, null, version);
