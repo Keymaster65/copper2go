@@ -53,16 +53,17 @@ The configuration of the application and the shipped dependencies will be listed
  
 ## Planning
    
-### Release Plan Application API 1.1
+### Release Plan Application API 2.0
  * Add How to develop Workflows for IDEA
  * Add How to develop Workflows for gradle
 
-### Release Plan Application API 1.2
+### Release Plan Application API 2.1
  * Workflow using State Pattern
  * Workflow with Json binding
  * Workflow with XML binding
 
-### Release Plan Application API 1.3
+### Release Plan Application API 2.2
+ * configure thread pool size, client pool size and more
  * Support of COPPER core GUI
  * JMX usage in Container
 
@@ -81,7 +82,6 @@ The configuration of the application and the shipped dependencies will be listed
  * 0.1 A first MVP (Minimum Viable Product)
 
 ### Backlog
- * configure thread pool size, client pool size and more
  * Multi workflow support and REST level
  * Kafka support and choreography example
  * publish to public artifact repository
