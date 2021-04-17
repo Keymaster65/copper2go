@@ -2,6 +2,8 @@
 .gradle
 .idea
 build
+out
+.copper
 
 # Compiled class file
 *.class
