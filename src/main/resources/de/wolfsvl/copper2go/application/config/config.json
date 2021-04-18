@@ -10,7 +10,7 @@
     }
   },
   "workflowRepositoryConfig": {
-    "branch": "master",
+    "branch": "release/1",
     "workflowGitURI": "https://github.com/Keymaster65/copper2go-workflows.git",
     "workflowBase": "/src/workflow/java"
   }
