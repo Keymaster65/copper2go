@@ -31,7 +31,7 @@ dependencies {
 }
 
 application {
-    mainClassName = "de.wolfsvl.copper2go.Main"
+    mainClassName = "io.github.keymaster65.copper2go.Main"
     applicationDefaultJvmArgs = listOf("-Dlogback.configurationFile=src/main/resources/logback.xml")
 }
 
