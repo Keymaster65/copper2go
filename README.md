@@ -123,6 +123,9 @@ Docker images kan be found here: https://hub.docker.com/r/keymaster65/copper2go
 
 ### Backlog
 * Multi workflow support and REST level
+* Support URL parameter (in and out)
+* Load workflow subtree only from git
+* Delete .copper on start (if still problems occours) 
 * Kafka choreography example
 * Support Binary data
 * Binary Binding
