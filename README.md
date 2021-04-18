@@ -170,7 +170,7 @@ Here you find some of them ;-)
 
 ## Released
 
-### Developer Release Plan Application API 2.0
+### Developer Release Workflow API 2.0 and Application API 2.0
 * publish to public artifact repository
 * Add How to develop Workflows for IDEA
 * Add How to develop Workflows for gradle
