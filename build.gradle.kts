@@ -8,10 +8,8 @@ plugins {
     jacoco
     id("com.github.jk1.dependency-license-report") version "1.16"
     id("com.google.cloud.tools.jib") version "3.0.0"
+    id("com.github.hierynomus.license-base") version "0.15.0"
 }
-
-
-
 
 publishing {
     publications {
@@ -48,6 +46,13 @@ allprojects {
     java {
         withSourcesJar()
         withJavadocJar()
+    }
+
+    apply(plugin="com.github.hierynomus.license")
+    license {
+        ignoreFailures=false
+        header=File("$rootDir/licenceHeader.txt")
+        skipExistingHeaders=false
     }
 
     dependencies{
