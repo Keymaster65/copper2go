@@ -132,12 +132,6 @@ Docker images can be found here: https://hub.docker.com/r/keymaster65/copper2go
 ## Planning
 Of course, copper2go is ready use. Many more capabilities might be added.
 Here you find some of them ;-)
-   
-### Developer Release Plan Application API 2.0
-* publish to public artifact repository
-* Add How to develop Workflows for IDEA
-* Add How to develop Workflows for gradle
-* Draft development Guide
 
 ### License Release Plan Application API 2.0.1
 * Add licence info more files and update year
@@ -175,6 +169,12 @@ Here you find some of them ;-)
 * Async idempotent DB API
 
 ## Released
+
+### Developer Release Plan Application API 2.0
+* publish to public artifact repository
+* Add How to develop Workflows for IDEA
+* Add How to develop Workflows for gradle
+* Draft development Guide
 
 ### HTTP Container Release Notes Workflow API 1.0 and Application API 1.0
 * http server support
