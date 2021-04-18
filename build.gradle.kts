@@ -36,7 +36,7 @@ application {
 }
 
 group = "de.wolfsvl"
-version = "2.1"
+version = "2.0.1"
 
 allprojects {
     apply(plugin= "java")
