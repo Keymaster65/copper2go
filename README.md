@@ -21,7 +21,7 @@ In your container you can run workflows that are accessible via git.
 Just start with the ones in  https://github.com/Keymaster65/copper2go-workflows.
 
  * Start container
-       * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v1.0.1`
+       * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v2.0`
  * In Browser you can see the used licenses
    * `http://localhost:59665/`
    * `http://localhost:59665/request/2.0/Hello` will deliver a "IllegalArgumentException: A name must be specified."
@@ -33,11 +33,11 @@ Just start with the ones in  https://github.com/Keymaster65/copper2go-workflows.
 You want to develop your own workflows? You may start with the existing ones.
   * Clone or fork the copper2go-workflows **gradle** project: https://github.com/Keymaster65/copper2go-workflows
   * Modify configuration and store it into environment variable C2G_CONFIG.
-    * Start with file: https://github.com/Keymaster65/copper2go/blob/release/1.0/src/main/resources/de/wolfsvl/copper2go/application/config/config.json
+    * Start with file: https://github.com/Keymaster65/copper2go/blob/release/2.0/src/main/resources/de/wolfsvl/copper2go/application/config/config.json
     * store it in your local docker host `config.json`
     * Typically, modify workflowGitURI location
   * Start Container with your configuration:
-    * `docker run -d -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v1.0`
+    * `docker run -d -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v2.0`
 
 ## Developer's Guide
 copper2go bases on the COPPER (COmmon Persistable Process Excecution Runtime). To get more information about
