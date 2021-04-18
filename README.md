@@ -21,7 +21,7 @@ In your container you can run workflows that are accessible via git.
 Just start with the ones in  https://github.com/Keymaster65/copper2go-workflows.
 
  * Start container
-       * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v1.0`
+       * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v1.0.1`
  * In Browser you can see the used licenses
    * `http://localhost:59665/`
    * `http://localhost:59665/request/2.0/Hello` will deliver a "IllegalArgumentException: A name must be specified."

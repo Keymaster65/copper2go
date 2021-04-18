@@ -138,7 +138,7 @@ jib {
             username = "keymaster65"
             password = System.getenv("DOCKER_HUB_PASSWORD")
         }
-        tags = setOf("latest")
+        tags = setOf("latest") // v2.0
     }
     extraDirectories {
         paths {
