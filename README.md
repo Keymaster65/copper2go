@@ -39,8 +39,7 @@ You want to develop your own workflows? You may start with the existing ones.
   * Start Container with your configuration:
     * `docker run -d -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v1.0`
 
-## Developer's Guide (DRAFT)
-
+## Developer's Guide
 copper2go bases on the COPPER (COmmon Persistable Process Excecution Runtime). To get more information about
 COPPER, you might visit https://github.com/copper-engine or https://github.com/copper-engine.
 
@@ -80,10 +79,27 @@ to the application. Transient workflows are supported in copper2go since release
 supported by COPPER and currently in the Backlog of copper2go.
 
 ### COPPER Details
-* COPPER
-* Links for COPPER
+COPPER workflows look like Synchronous Java Code. This code is instrumented at compile time. If you want
+to become more familiar with COPPER, that you might visit
 
-### Versioning
+* https://copper-engine.org/docs/content/COPPER-best-practices_1.0.1-en.pdf
+* https://copper-engine.org/docs/content/COPPER-WorkflowCompatibilityRules-1.2.0-en.pdf
+* https://copper-engine.org/docs/content/copper.pptx
+* https://copper-engine.org/docs/unsorted/
+* https://github.com/copper-engine
+* https://copper-engine.org/
+
+### copper2go Details
+The API described below is not much to read. I would suggest using the "Quick Start" and then
+start to develop a little sample application.
+
+You came to a point, where you are missing a feature?
+No Problem. You might ues a pull request, if you want to add it by yourself. You
+may also add an item in https://github.com/Keymaster65/copper2go/issues
+
+I am looking for feedback.
+
+### Versioning and API
 #### Workflow's API
 The copper2go Workflow's API is hosted in the Maven Central. It can be found at several places
 * https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
