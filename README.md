@@ -47,7 +47,7 @@ COPPER, you might visit https://github.com/copper-engine or https://github.com/c
 COPPER was developed as an Orchestration Engine. For more that 10 years now, in 2021, many high performance
 systems are in production. The Online Configuration capability of this workflow engine is used seldom.
 To fill this gap, by using this feature as a main concept, copper2go was developed. By adding connectors,
-the development of Orchestration Services will become more effective for Java developers.
+the development of Orchestration Services will become more efficient for Java developers.
 
 You can see copper2go as "Something as a Service", somewhere in the area of Paas and SaaS.
 copper2go containers can be run wherever you want. So the container may run
@@ -59,7 +59,7 @@ copper2go containers can be run wherever you want. So the container may run
 In times of automated build pipelines the needs for Workflow systems reduced, but a more lightweight **git** based
 pipeline might even better fit your needs.
 
-#### Online Configuration
+### Online Configuration
 Using git only, and compiling the workflow inside the container, you can very easy change your system's behaviour
 "online". That is what want many people dream of, if they talk about "configuration". As one use case you can simply
 "revert" your changes, if something goes wrong. As the container is separated from the workflow, this "revert"
@@ -113,7 +113,7 @@ The configuration of the application and the shipped dependencies will be listed
 The releases are hosted at github: https://github.com/Keymaster65/copper2go/tags
 
 If you want to add something, you may contribute with pull requests or forks. In a fork you might
-add 3rd party libs as wihed.
+add 3rd party libs as wished.
 
 Forks or Pull Requests are always very welcome.
 
@@ -162,7 +162,7 @@ Here you find some of them ;-)
 * Multi workflow support and REST level
 * Support URL parameter (in and out)
 * Load workflow subtree only from git
-* Delete .copper on start (if still problems occours)
+* Delete .copper on start (if still problems occurs)
 * Kafka choreography example
 * Support Binary data
 * Binary Binding
