@@ -57,7 +57,7 @@ copper2go containers can be run wherever you want. So the container may run
 * Desktop Workflows, if run on your system
 
 In times of automated build pipeline the needs for Workflow systems reduced, but a more lightweight git based,
-pipeline might still fit your needs.
+pipeline might even better fit your needs.
 
 #### Online Configuration
 Using git only, and compiling the workflow inside the container, you can very easy change your system's behaviour
