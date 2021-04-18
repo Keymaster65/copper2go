@@ -43,7 +43,8 @@ You want to develop your own workflows? You may start with the existing ones.
 * Orchestration
 * Synchronous Code (see "Motivtaion" of the Loom Prject) https://cr.openjdk.java.net/~rpressler/loom/Loom-Proposal.html)  
 * Async (reactive!?)
-* Long Running
+* Long Running (limited transient since version 0.1, unlimited persistent in backlog)
+* Online Configuration (incl. undo/rollback)
 
 * Internet Workflows
 * Intranet Worksflows
@@ -125,10 +126,11 @@ Docker images kan be found here: https://hub.docker.com/r/keymaster65/copper2go
 * Kafka choreography example
 * Support Binary data
 * Binary Binding
-* JMS support (may be IBM MQ, or ...)
-* PostgreSQL for workflow instances
+* JMS support (may be IBM MQ, ActiveMQ or ...)
+* PostgreSQL for workflow persistent instances
   * Add callback in WorkflowData
   * Support of callbacks
 * factoryfx integration
 * PostgreSQL support for business resources
+* Async idempotent DB API
 
