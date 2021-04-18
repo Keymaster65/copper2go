@@ -29,58 +29,93 @@ Just start with the ones in  https://github.com/Keymaster65/copper2go-workflows.
    * Example: `curl --data Wolf http://localhost:59665/request/2.0/Hello`
    * Will produce someting like `Hello Wolf! Please transfer 4 cent`
 
-## Change Workflows
+### Change Workflows
 You want to develop your own workflows? You may start with the existing ones.
-  * Clone or fork the copper2go-workflows: https://github.com/Keymaster65/copper2go-workflows
-  * Modify configuration and store it into environment variable C2G_CONFIG. Example:
+  * Clone or fork the copper2go-workflows gradle project: https://github.com/Keymaster65/copper2go-workflows
+  * Modify configuration and store it into environment variable C2G_CONFIG.
     * Start with file: https://github.com/Keymaster65/copper2go/blob/release/1.0/src/main/resources/de/wolfsvl/copper2go/application/config/config.json
-    * store in in your local docker host `config.json`
-    * Typically modify workflowGitURI location
+    * store it in your local docker host `config.json`
+    * Typically, modify workflowGitURI location
   * Start Container with your configuration:
     * `docker run -d -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v1.0`
 
-## Use Cases
-* Orchestration
-* Synchronous Code (see "Motivtaion" of the Loom Prject) https://cr.openjdk.java.net/~rpressler/loom/Loom-Proposal.html)  
-* Async (reactive!?)
-* Long Running (limited transient since version 0.1, unlimited persistent in backlog)
-* Online Configuration (incl. undo/rollback)
-
-* Internet Workflows
-* Intranet Worksflows
-* Desktop Workflows
-
 ## Developer's Guide (DRAFT)
+
+copper2go bases on the COPPER (COmmon Persistable Process Excecution Runtime). To get more information about
+COPPER, you might visit https://github.com/copper-engine or https://github.com/copper-engine.
+
+### Motivation
+COPPER was developed as an Orchestration Engine. For more that 10 years now, in 2021, many high performance
+systems are in production. The Online Configuration capability of this workflow engine is used seldom.
+To fill this gap, by using this feature as a main concept, copper2go was developed. By adding connectors
+the development of Orchestration Services will become more effective for Java developers.
+
+You can see copper2go as "Something as a Service", lying somewhere in tha area of Paas or SaaS.
+copper2go containers can be run wherever you want. So the container may run
+
+* Internet Workflows, if hosted in the web
+* Intranet Workflows, if hosted in a company
+* Desktop Workflows, if run on your system
+
+In times of automated build pipeline the needs for Workflow systems reduced, but a more lightweight git based,
+pipeline might still fit your needs.
+
+#### Online Configuration
+Using git only, and compiling the workflow inside the container, you can very easy change your system's behaviour
+"online". That is what want many people dream of, if they talk about "configuration". As one use case you can simply
+"revert" your changes, if something goes wrong. As the container is separated from the workflow, this "revert"
+always works by concept.
+
+### Reactive Applications
+Asynchronicity is one of the core concept of COPPER. That is the reason, why you can develop reactive
+high performance applications using COPPER or copper2go.
+
+### Synchronous Code
+In spite of the asynchronicity inside COPPER, the workflow Java code is Synchronous Code. You might
+have a lokk at the "Motivation" of the Loom Project in https://cr.openjdk.java.net/~rpressler/loom/Loom-Proposal.html.
+
+### Long Running Workflows
+Last but not least, COPPER workflows can be executed for an unlimited time. It depends on the resources you add
+to the application. Transient workflows are supported in copper2go since release 0.1. Persistent workflows are
+supported by COPPER and currently in the Backlog of copper2go.
+
+### COPPER Details
 * COPPER
 * Links for COPPER
 
 ### Versioning
 #### Workflow's API
-The Workflow's API is hosted in the Maven Central. It can be found at several places
+The copper2go Workflow's API is hosted in the Maven Central. It can be found at several places
 * https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
 * https://search.maven.org/search?q=copper2go
 * https://mvnrepository.com/artifact/io.github.keymaster65/copper2go-api
 
-Changes will be listed here.
+Changes will be listed here. In addition, you have the API to the COPPER framework.
 
 #### Application API
 The configuration of the application and the shipped dependencies will be listed here as Application API.
 The releases are hosted at github: https://github.com/Keymaster65/copper2go/tags
-* Forks are welcome
+
+If you want to add something, you may contribute with pull requests or forks. In a fork you might
+add 3rd party libs as wihed.
+
+Forks or Pull Requests are always very welcome.
 
 #### COPPER Docker
-* Something as a Service
-Docker images kan be found here: https://hub.docker.com/r/keymaster65/copper2go
+Docker images can be found here: https://hub.docker.com/r/keymaster65/copper2go
 
 ### Links
   * https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
   * https://hub.docker.com/r/keymaster65/copper2go
   * https://github.com/Keymaster65/copper2go/releases
   * https://github.com/copper-engine
+  * https://copper-engine.org/  
   * https://copper-engine.org/blog/2019-12-09-/copper-5.1-released/
   * https://github.com/factoryfx
  
 ## Planning
+Of course, copper2go is ready use. Many more capabilities might be added.
+Here you find some of them ;-)
    
 ### Developer Release Plan Application API 2.0
 * publish to public artifact repository
@@ -107,6 +142,24 @@ Docker images kan be found here: https://hub.docker.com/r/keymaster65/copper2go
 * Support of COPPER core GUI
 * JMX usage in Container
 
+### Backlog
+* Multi workflow support and REST level
+* Support URL parameter (in and out)
+* Load workflow subtree only from git
+* Delete .copper on start (if still problems occours)
+* Kafka choreography example
+* Support Binary data
+* Binary Binding
+* JMS support (may be IBM MQ, ActiveMQ or ...)
+* PostgreSQL for workflow persistent instances
+    * Add callback in WorkflowData
+    * Support of callbacks
+* factoryfx integration
+* PostgreSQL support for business resources
+* Async idempotent DB API
+
+## Released
+
 ### HTTP Container Release Notes Workflow API 1.0 and Application API 1.0
 * http server support
 * http client support
@@ -120,20 +173,3 @@ Docker images kan be found here: https://hub.docker.com/r/keymaster65/copper2go
   
 ### MVP Release Notes Workflow API 0.1 and Application API 0.1
 * 0.1 A first MVP (Minimum Viable Product)
-
-### Backlog
-* Multi workflow support and REST level
-* Support URL parameter (in and out)
-* Load workflow subtree only from git
-* Delete .copper on start (if still problems occours) 
-* Kafka choreography example
-* Support Binary data
-* Binary Binding
-* JMS support (may be IBM MQ, ActiveMQ or ...)
-* PostgreSQL for workflow persistent instances
-  * Add callback in WorkflowData
-  * Support of callbacks
-* factoryfx integration
-* PostgreSQL support for business resources
-* Async idempotent DB API
-
