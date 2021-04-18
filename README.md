@@ -33,7 +33,7 @@ Just start with the ones in  https://github.com/Keymaster65/copper2go-workflows.
 You want to develop your own workflows? You may start with the existing ones.
   * Clone or fork the copper2go-workflows **gradle** project: https://github.com/Keymaster65/copper2go-workflows
   * Modify configuration and store it into environment variable C2G_CONFIG.
-    * Start with file: https://github.com/Keymaster65/copper2go/blob/release/2.0/src/main/resources/de/wolfsvl/copper2go/application/config/config.json
+    * Start with file: https://github.com/Keymaster65/copper2go/blob/release/2.0/src/main/resources/io.github.keymaster65/copper2go/application/config/config.json
     * store it in your local docker host `config.json`
     * Typically, modify workflowGitURI location
   * Start Container with your configuration:
