@@ -29,7 +29,7 @@ dependencies {
 }
 
 application {
-    mainClassName = "io.github.keymaster65.copper2go.Main"
+    mainClass.set("io.github.keymaster65.copper2go.Main")
     applicationDefaultJvmArgs = listOf("-Dlogback.configurationFile=src/main/resources/logback.xml")
 }
 
@@ -48,11 +48,13 @@ allprojects {
         withJavadocJar()
     }
 
+    // see https://github.com/hierynomus/license-gradle-plugin
     apply(plugin="com.github.hierynomus.license")
     license {
         ignoreFailures=false
         header=File("$rootDir/licenceHeader.txt")
         skipExistingHeaders=false
+        exclude("**/*.json")
     }
 
     dependencies{
@@ -101,6 +103,9 @@ licenseReport {
     filters = arrayOf<LicenseBundleNormalizer>(LicenseBundleNormalizer("""$projectDir/license-normalizer-bundle.json""", true))
 }
 
+tasks.processResources {
+}
+
 distributions {
     main {
         contents {
@@ -119,8 +124,6 @@ distributions {
         }
     }
 }
-
-
 
 jib {
     container {
