@@ -153,6 +153,7 @@ Here you find some of them ;-)
 * JMX usage in Container
 
 ### Backlog
+* Add test coverage for workflows to copper2go-workflows
 * Multi workflow support and REST level
 * Support URL parameter (in and out)
 * Load workflow subtree only from git
