@@ -31,6 +31,7 @@ node() {
 
         stage('License') {
             _gradle 'generateLicenseReport checkLicense'
+            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
         }
 
         currentBuild.result = 'SUCCESS'
