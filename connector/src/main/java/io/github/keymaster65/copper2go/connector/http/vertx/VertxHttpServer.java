@@ -15,6 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.http.vertx;
 
+import com.google.common.io.CharStreams;
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.EngineException;
@@ -25,10 +26,10 @@ import io.vertx.core.http.HttpServerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class VertxHttpServer implements Copper2GoHttpServer {
 
@@ -88,10 +89,17 @@ public class VertxHttpServer implements Copper2GoHttpServer {
 
                             } else {
                                 try {
-                                    if ("/".equals(uri)) {
-                                        response.end(Files.readString(Paths.get(ClassLoader.getSystemClassLoader().getResource("license/index.html").toURI()), StandardCharsets.UTF_8));
+                                    String path = null;
+                                    if ("/".equals(uri) || "/.".equals(uri)) {
+                                        path = "license/index.html";
                                     } else {
-                                        response.end(Files.readString(Paths.get(ClassLoader.getSystemClassLoader().getResource("license" + uri).toURI()), StandardCharsets.UTF_8));
+                                        path = "license" + uri;
+                                    }
+
+                                    try (Reader reader = new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream(path), StandardCharsets.UTF_8)) {
+                                        response
+                                                .setStatusCode(HttpURLConnection.HTTP_NOT_FOUND)
+                                                .end(CharStreams.toString(reader));
                                     }
                                 } catch (Exception e) {
                                     response.end(String.format("Exception while getting licenses from uri %s. %s", uri, e.getMessage()));
