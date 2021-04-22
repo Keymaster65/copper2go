@@ -69,14 +69,15 @@ public class VertxHttpServer implements Copper2GoHttpServer {
                                                 workflowVersion.major,
                                                 workflowVersion.minor
                                         );
+                                    } else {
+                                        throw new IllegalArgumentException(String.format("PATH %s not as expected.", uri));
                                     }
+
                                     if (uri.startsWith(COPPER2GO_2_API + "event/")) {
                                         log.debug("Emtpy OK response for incoming event.");
                                         response
                                                 .setStatusCode(HttpURLConnection.HTTP_ACCEPTED)
                                                 .end();
-                                    } else {
-                                        throw new IllegalArgumentException(String.format("PATH %s not as expected.", uri));
                                     }
                                 } catch (EngineException e) {
                                     response
