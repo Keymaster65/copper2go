@@ -33,6 +33,7 @@ import java.nio.file.Paths;
 public class VertxHttpServer implements Copper2GoHttpServer {
 
     private static final Logger log = LoggerFactory.getLogger(VertxHttpServer.class);
+    public static final String COPPER2GO_2_API = "/copper2go/2/api/";
 
     private final HttpServer httpServer;
     private final Vertx vertx;
@@ -57,21 +58,25 @@ public class VertxHttpServer implements Copper2GoHttpServer {
                             requestBody = new String(buffer.getBytes(), StandardCharsets.UTF_8);
                             final HttpServerResponse response = request.response();
                             final String uri = request.uri();
-                            if (uri.length() > 1 && uri.startsWith("/copper2go/2/api")) {
+                            if (uri.length() > 1 && uri.startsWith(COPPER2GO_2_API)) {
                                 try {
-                                    WorkflowVersion workflowVersion = WorkflowVersion.of(uri);
-                                    copper2GoEngine.callWorkflow(
-                                            requestBody,
-                                            new HttpReplyChannelImpl(response),
-                                            workflowVersion.name,
-                                            workflowVersion.major,
-                                            workflowVersion.minor
-                                    );
-                                    if (uri.contains("/event/")) {
+                                    if (uri.startsWith(COPPER2GO_2_API + "request/") || uri.startsWith(COPPER2GO_2_API + "event/")) {
+                                        WorkflowVersion workflowVersion = WorkflowVersion.of(uri);
+                                        copper2GoEngine.callWorkflow(
+                                                requestBody,
+                                                new HttpReplyChannelImpl(response),
+                                                workflowVersion.name,
+                                                workflowVersion.major,
+                                                workflowVersion.minor
+                                        );
+                                    }
+                                    if (uri.startsWith(COPPER2GO_2_API + "event/")) {
                                         log.debug("Emtpy OK response for incoming event.");
                                         response
                                                 .setStatusCode(HttpURLConnection.HTTP_ACCEPTED)
                                                 .end();
+                                    } else {
+                                        throw new IllegalArgumentException(String.format("PATH %s not as expected.", uri));
                                     }
                                 } catch (EngineException e) {
                                     response

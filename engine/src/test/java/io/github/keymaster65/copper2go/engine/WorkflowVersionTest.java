@@ -27,7 +27,10 @@ class WorkflowVersionTest {
             "localhost/1.2/Hello",
             "http://localhost/1.2/Hello",
             "http://localhost:80/1.2/Hello",
-            "http://localhost:80/demoapp/1.2/Hello"
+            "http://localhost:80/demoapp/1.2/Hello",
+            "/1.2/Hello?",
+            "/1.2/Hello?a=1",
+            "/1.2/Hello?a=1&b=2"
     })
     void getWorkflow(final String uri) throws EngineException {
         WorkflowVersion workflowVersion = WorkflowVersion.of(uri);

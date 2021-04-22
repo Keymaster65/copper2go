@@ -28,7 +28,13 @@ public final class WorkflowVersion {
 
     public static WorkflowVersion of(final String uri) throws EngineException {
         try {
-            String[] parts = uri.split("/");
+            String path = uri;
+            int paramStart = uri.indexOf('?');
+            if (paramStart > 0) {
+                path = uri.substring(0, paramStart);
+            }
+
+            String[] parts = path.split("/");
             String name = parts[parts.length - 1];
             String majorMinor = parts[parts.length - 2];
             String[] splittedVersion = majorMinor.split("\\.");
