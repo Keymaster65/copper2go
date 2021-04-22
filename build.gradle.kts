@@ -92,8 +92,8 @@ allprojects {
             executionData.setFrom("$buildDir/jacoco/allTestCoverage.exec")
         }
     }
-
 }
+
 
 // visit https://github.com/jk1/Gradle-License-Report for help
 licenseReport {
@@ -104,19 +104,17 @@ licenseReport {
     filters = arrayOf<LicenseBundleNormalizer>(LicenseBundleNormalizer("""$projectDir/license-normalizer-bundle.json""", true))
 }
 
+tasks.assemble {
+    dependsOn(tasks.findByName("checkLicense"))
+}
+
+tasks.jib {
+    dependsOn(tasks.findByName("checkLicense"))
+}
 
 distributions {
     main {
         contents {
-            into("") {
-                from("$buildDir/resources/main/license", "LICENSE")
-                rename {
-                    it.replace(
-                            "index.html",
-                            "licence.html"
-                    )
-                }
-            }
             into("config") {
                 from("src/main/resources/logback.xml")
             }
