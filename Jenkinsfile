@@ -10,6 +10,10 @@ node() {
             checkout(scm)
         }
 
+        stage('Build') {
+            _gradle 'assemble'
+        }
+
         stage('License') {
             _gradle 'generateLicenseReport checkLicense'
             archiveArtifacts artifacts: 'copper2go-api/build/libs/**/*.jar', fingerprint: true
