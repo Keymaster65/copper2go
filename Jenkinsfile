@@ -12,7 +12,7 @@ node() {
 
         stage('License') {
             _gradle 'generateLicenseReport checkLicense'
-            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+            archiveArtifacts artifacts: 'copper2go-api/build/libs/**/*.jar', fingerprint: true
             archiveArtifacts artifacts: 'build/distributions/**/*.zip', fingerprint: true
         }
 
