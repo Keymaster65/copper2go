@@ -94,7 +94,7 @@ public class VertxHttpServer implements Copper2GoHttpServer {
                                         response.end(Files.readString(Paths.get(getClass().getResource("/license" + uri).toURI()), StandardCharsets.UTF_8));
                                     }
                                 } catch (Exception e) {
-                                    response.end("Exception while getting licenses." + e.getMessage());
+                                    response.end(String.format("Exception while getting licenses from uri %s. %s", uri, e.getMessage()));
                                 }
                             }
                         }
