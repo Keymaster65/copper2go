@@ -139,10 +139,10 @@ Here you find some of them ;-)
 
 ### License Release Plan Application API 2.0.1
 * [x] Add licence info more files and update year
-* [ ] Add licence URL in non Docker apps
-* [ ] Add API release info
-* [ ] Replace the lax Application API by a strict validation
-* [ ] Correct URLs in Quick Start
+* [x] Add licence URL in non Docker apps
+* [x] Add API release info
+* [x] Replace the lax Application API by a strict validation
+* [x] Correct URLs in Quick Start
 
 ### Kafka Release Plan Application API 2.1
 * Kafka Connectors
