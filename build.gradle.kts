@@ -145,12 +145,4 @@ jib {
         }
         tags = setOf("latest")
     }
-    extraDirectories {
-        paths {
-            path {
-                setFrom(project.projectDir.toPath().resolve("resources").resolve("main").resolve("license"))
-                into = "/app/resources/license"
-            }
-        }
-    }
 }
