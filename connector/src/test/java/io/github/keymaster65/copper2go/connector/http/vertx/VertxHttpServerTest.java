@@ -53,7 +53,7 @@ class VertxHttpServerTest {
         final Vertx vertx = Vertx.vertx();
         final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, engine, vertx);
         vertxHttpServer.start();
-        TestHttpClient.post(URI.create("http://localhost:" + SERVER_PORT + "/demo/1.0/Hello"), "Wolf\r\n");
+        TestHttpClient.post(URI.create("http://localhost:" + SERVER_PORT + "/copper2go/2/api/request/1.0/Hello"), "Wolf\r\n");
         vertxHttpServer.stop();
 
         Mockito.verify(engine).callWorkflow(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.eq("Hello"), ArgumentMatchers.eq(1L), ArgumentMatchers.eq(0L));

@@ -97,20 +97,19 @@ allprojects {
 
 // visit https://github.com/jk1/Gradle-License-Report for help
 licenseReport {
+    outputDir = "$projectDir/build/resources/main/license"
     excludeOwnGroup = true
     allowedLicensesFile = File("$projectDir/allowed-licenses.json")
     excludes = arrayOf<String>("com.fasterxml.jackson:jackson-bom") // is apache 2.0 but license tool say "null"
     filters = arrayOf<LicenseBundleNormalizer>(LicenseBundleNormalizer("""$projectDir/license-normalizer-bundle.json""", true))
 }
 
-tasks.processResources {
-}
 
 distributions {
     main {
         contents {
             into("") {
-                from("$buildDir/reports/dependency-license/index.html", "LICENSE")
+                from("$buildDir/reports/build/resources/main/license", "LICENSE")
                 rename {
                     it.replace(
                             "index.html",

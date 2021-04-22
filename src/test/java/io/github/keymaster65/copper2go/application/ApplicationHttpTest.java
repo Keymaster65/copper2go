@@ -34,7 +34,7 @@ class ApplicationHttpTest {
         config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
         Application application = Application.of(config);
         application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + "/1.0/Hello"), name);
+        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + "/api/1.0/Hello"), name);
         application.stop();
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_OK);
         Assert.assertResponse(response.body(), Data.getExpectedHello(name));
@@ -47,7 +47,7 @@ class ApplicationHttpTest {
         config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
         Application application = Application.of(config);
         application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + "/2.0/Hello"), name);
+        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + "/api/2.0/Hello"), name);
         application.stop();
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_OK);
         Assert.assertResponse(response.body(), Data.getExpectedHello2Mapping(name));
@@ -60,7 +60,7 @@ class ApplicationHttpTest {
         config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
         Application application = Application.of(config);
         application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + "/2.0/Hello"), name);
+        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + "/api/2.0/Hello"), name);
         application.stop();
         SoftAssertions.assertSoftly(
                 softAssertions -> {
@@ -77,7 +77,7 @@ class ApplicationHttpTest {
         config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
         Application application = Application.of(config);
         application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + "/event/2.0/Hello"), name);
+        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + "/api/event/2.0/Hello"), name);
         application.stop();
         SoftAssertions.assertSoftly(
                 softAssertions -> {

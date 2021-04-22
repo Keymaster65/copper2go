@@ -24,9 +24,9 @@ Just start with the ones in  https://github.com/Keymaster65/copper2go-workflows.
        * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v2.0`
  * In Browser you can see the used licenses
    * `http://localhost:59665/`
-   * `http://localhost:59665/request/2.0/Hello` will deliver a "IllegalArgumentException: A name must be specified."
+   * `http://localhost:59665/copper2go/2/api/request/2.0/Hello` will deliver a "IllegalArgumentException: A name must be specified."
  * Use any other HTTP-Client and POST your name to the URL
-   * Example: `curl --data Wolf http://localhost:59665/request/2.0/Hello`
+   * Example: `curl --data Wolf http://localhost:59665/copper2go/2/api/request/2.0/Hello`
    * Will produce someting like `Hello Wolf! Please transfer 4 cent`
 
 ### Change Workflows
@@ -94,8 +94,9 @@ The API described below is not much to read. I would suggest using the "Quick St
 start to develop a little sample application.
 
 You came to a point, where you are missing a feature?
-No Problem. You might ues a pull request, if you want to add it by yourself. You
-may also add an item in https://github.com/Keymaster65/copper2go/issues
+No Problem. You might ues a pull request, if you want to add it by yourself. Of cource
+you can fork on GitHub. You may also add an item in 
+https://github.com/Keymaster65/copper2go/issues
 
 I am looking for feedback.
 
@@ -106,19 +107,22 @@ The copper2go Workflow's API is hosted in the Maven Central. It can be found at 
 * https://search.maven.org/search?q=copper2go
 * https://mvnrepository.com/artifact/io.github.keymaster65/copper2go-api
 
-Changes will be listed here. In addition, you have the API to the COPPER framework.
+Changes will be listed here in the "Released" chapter. In addition, you have the API to the COPPER framework.
 
 #### Application API
-The configuration of the application and the shipped dependencies will be listed here as Application API.
+The configuration of the application and the shipped dependencies will be listed here 
+as Application API in the "Released" chapter.
 The releases are hosted at github: https://github.com/Keymaster65/copper2go/tags
 
+Docker images can be found here: https://hub.docker.com/r/keymaster65/copper2go
+
+#### Missing Features?
 If you want to add something, you may contribute with pull requests or forks. In a fork you might
 add 3rd party libs as wished.
 
 Forks or Pull Requests are always very welcome.
 
-#### COPPER Docker
-Docker images can be found here: https://hub.docker.com/r/keymaster65/copper2go
+Isues are very welcome, too.
 
 ### Links
   * https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
@@ -134,8 +138,11 @@ Of course, copper2go is ready use. Many more capabilities might be added.
 Here you find some of them ;-)
 
 ### License Release Plan Application API 2.0.1
-* Add licence info more files and update year
-* Add licence URL in non Docker apps
+* [x] Add licence info more files and update year
+* [ ] Add licence URL in non Docker apps
+* [ ] Add API release info
+* [ ] Replace the lax Application API by a strict validation
+* [ ] Correct URLs in Quick Start
 
 ### Kafka Release Plan Application API 2.1
 * Kafka Connectors
@@ -155,6 +162,14 @@ Here you find some of them ;-)
 ### Backlog
 * Add test coverage for workflows to copper2go-workflows
 * Multi workflow support and REST level
+* Seperate Systemtesting in Build Pipelien  
+* Add information "How Tos" to developer's guide
+   * Overview
+   * Request Channel Stores
+   * Event Channel Stores
+   * Configuration Reply Channel Store
+   * Tickets
+   * Workflow Development/Test
 * Support URL parameter (in and out)
 * Load workflow subtree only from git
 * Delete .copper on start (if still problems occurs)
@@ -163,7 +178,7 @@ Here you find some of them ;-)
 * Binary Binding
 * JMS support (may be IBM MQ, ActiveMQ or ...)
 * PostgreSQL for workflow persistent instances
-    * Add callback in WorkflowData
+    * Add callback in WorkflowData ("replychannel")
     * Support of callbacks
 * factoryfx integration
 * PostgreSQL support for business resources
@@ -171,13 +186,30 @@ Here you find some of them ;-)
 
 ## Released
 
-### Developer Release Workflow API 2.0 and Application API 2.0
+### "Developer" Release Workflow API 2.0 and Application API 2.0
 * publish to public artifact repository
 * Add How to develop Workflows for IDEA
 * Add How to develop Workflows for gradle
 * Draft development Guide
 
-### HTTP Container Release Notes Workflow API 1.0 and Application API 1.0
+#### Workflow API 2.0
+Now the API is available in maven. Due to the OSSRH process, the package were refactored.
+https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
+
+#### Application API 2.0
+URLs path must be "/copper2go/2/api/TYPE/MAJOR.MINOR/WORKFLOW-NAME
+
+were
+* The '2' relates to the Application API major version
+* TYPE can be 
+  * "request" if a body is expected in the reply
+  * "event" if, no body is expected in the reply
+* MAJOR.MINOR is the version of the workflow
+* WORKFLOW-NAME is the target workflow of the request
+
+URL "/" shows licence information.
+
+### "HTTP Container" Release Notes Workflow API 1.0 and Application API 1.0
 * http server support
 * http client support
 * non-business config
@@ -187,6 +219,23 @@ Here you find some of them ;-)
 * Add Application and Workflow path 
 * Event consuming workflows (no reply body, state 202 only)
 * quick start
+
+#### Workflow API 1.0
+The payload is now part of the WorkflowData
+https://github.com/Keymaster65/copper2go/tree/release/1.0/src/main/java/de/wolfsvl/copper2go/workflowapi
+
+#### Application API 1.0
+Support for configuration of the HTTP server and
+https://github.com/Keymaster65/copper2go/blob/release/1.0/src/main/resources/de/wolfsvl/copper2go/application/config/config.json
+
+URLs must end with <major>.<minor>/<workflow-name>
+
   
-### MVP Release Notes Workflow API 0.1 and Application API 0.1
+### "MVP" Release Notes Workflow API 0.1 and Application API 0.1
 * 0.1 A first MVP (Minimum Viable Product)
+
+####  Workflow API 0.1
+https://github.com/Keymaster65/copper2go/tree/release/0.1/src/main/java/de/wolfsvl/copper2go/workflowapi
+
+#### Application API 0.1
+No configuration support and all payloads are processed by the "Hello" workflow.

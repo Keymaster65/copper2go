@@ -57,7 +57,7 @@ public class VertxHttpServer implements Copper2GoHttpServer {
                             requestBody = new String(buffer.getBytes(), StandardCharsets.UTF_8);
                             final HttpServerResponse response = request.response();
                             final String uri = request.uri();
-                            if (uri.length() > 1) {
+                            if (uri.length() > 1 && uri.startsWith("/copper2go/2/api")) {
                                 try {
                                     WorkflowVersion workflowVersion = WorkflowVersion.of(uri);
                                     copper2GoEngine.callWorkflow(
@@ -82,7 +82,11 @@ public class VertxHttpServer implements Copper2GoHttpServer {
 
                             } else {
                                 try {
-                                    response.end(Files.readString(Paths.get(getClass().getResource("/license/index.html").toURI()), StandardCharsets.UTF_8));
+                                    if ("/".equals(uri)) {
+                                        response.end(Files.readString(Paths.get(getClass().getResource("/license/index.html").toURI()), StandardCharsets.UTF_8));
+                                    } else {
+                                        response.end(Files.readString(Paths.get(getClass().getResource("/license" + uri).toURI()), StandardCharsets.UTF_8));
+                                    }
                                 } catch (Exception e) {
                                     response.end("Exception while getting licenses." + e.getMessage());
                                 }
