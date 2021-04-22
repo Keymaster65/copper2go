@@ -137,27 +137,20 @@ Isues are very welcome, too.
 Of course, copper2go is ready use. Many more capabilities might be added.
 Here you find some of them ;-)
 
-### License Release Plan Application API 2.0.1
-* [x] Add licence info more files and update year
-* [x] Add licence URL in non Docker apps
-* [x] Add API release info
-* [x] Replace the lax Application API by a strict validation
-* [x] Correct URLs in Quick Start
+### "Kafka" Release Plan Application API 2.1
+* [ ] Kafka Connectors
 
-### Kafka Release Plan Application API 2.1
-* Kafka Connectors
+### "Binding" Release Plan Application API 2.2
+* [ ] Workflow with Json binding
+* [ ] Workflow with XML binding
 
-### Binding Release Plan Application API 2.2
-* Workflow with Json binding
-* Workflow with XML binding
+### "State Pattern" Release Plan Application API 2.3
+* [ ] Spike: Workflow using State Pattern
 
-### State Pattern Release Plan Application API 2.3
-* Spike: Workflow using State Pattern
-
-### Operator Release Plan Application API 2.3
-* configure thread pool size, client pool size and more
-* Support of COPPER core GUI
-* JMX usage in Container
+### "Operator" Release Plan Application API 2.3
+* [ ] configure thread pool size, client pool size and more
+* [ ] Support of COPPER core GUI
+* [ ] JMX usage in Container
 
 ### Backlog
 * Add test coverage for workflows to copper2go-workflows
@@ -185,6 +178,15 @@ Here you find some of them ;-)
 * Async idempotent DB API
 
 ## Released
+
+### "License" Release Application API 2.0.1
+* [x] Add licence info more files and update year
+* [x] Add licence URL in non Docker apps
+* [x] Add API release info
+* [x] Correct URLs in Quick Start
+
+#### Application API 2.0.1
+* [x] Replace the lax Application API by a stricter validation
 
 ### "Developer" Release Workflow API 2.0 and Application API 2.0
 * publish to public artifact repository

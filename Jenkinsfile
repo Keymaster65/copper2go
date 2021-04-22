@@ -29,6 +29,11 @@ node() {
             )
         }
 
+        stage('Publish') {
+            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+            archiveArtifacts artifacts: 'build/distributions/**/*.zip', fingerprint: true
+        }
+
         currentBuild.result = 'SUCCESS'
     } catch (Exception exception) {
         currentBuild.result = 'FAILURE'
