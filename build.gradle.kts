@@ -147,12 +147,4 @@ jib {
         }
         tags = setOf("latest")
     }
-    extraDirectories {
-        paths {
-            path {
-                setFrom(project.projectDir.toPath().resolve("build").resolve("reports").resolve("dependency-license"))
-                into = "/app/resources/license"
-            }
-        }
-    }
 }

@@ -10,6 +10,12 @@ node() {
             checkout(scm)
         }
 
+        stage('License') {
+            _gradle 'generateLicenseReport checkLicense'
+            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+            archiveArtifacts artifacts: 'build/distributions/**/*.zip', fingerprint: true
+        }
+
         stage('Build') {
             _gradle 'assemble'
         }
@@ -27,12 +33,6 @@ node() {
             jacoco(
                     classPattern: '**/build/classes/java/main'
             )
-        }
-
-        stage('License') {
-            _gradle 'generateLicenseReport checkLicense'
-            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
-            archiveArtifacts artifacts: 'build/distributions/**/*.zip', fingerprint: true
         }
 
         currentBuild.result = 'SUCCESS'
