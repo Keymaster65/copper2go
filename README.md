@@ -184,9 +184,10 @@ Here you find some of them ;-)
 * [x] Add licence URL in non Docker apps
 * [x] Add API release info
 * [x] Correct URLs in Quick Start
-
-#### Application API 2.0.1
 * [x] Replace the lax Application API by a stricter validation
+
+### "Bugfix POM" Release Workflow API 2.0.1
+* [x] No source change, but correction in POM file versions
 
 ### "Developer" Release Workflow API 2.0 and Application API 2.0
 * publish to public artifact repository
