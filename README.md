@@ -201,7 +201,7 @@ https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
 #### Application API 2.0
 URLs path must be "/copper2go/2/api/TYPE/MAJOR.MINOR/WORKFLOW-NAME
 
-were
+where
 * The '2' relates to the Application API major version
 * TYPE can be 
   * "request" if a body is expected in the reply
@@ -230,8 +230,11 @@ https://github.com/Keymaster65/copper2go/tree/release/1.0/src/main/java/de/wolfs
 Support for configuration of the HTTP server and
 https://github.com/Keymaster65/copper2go/blob/release/1.0/src/main/resources/de/wolfsvl/copper2go/application/config/config.json
 
-URLs must end with <major>.<minor>/<workflow-name>
+URLs must end with /MAJOR.MINOR/WORKFLOW-NAME
 
+where
+* MAJOR.MINOR is the version of the workflow
+* WORKFLOW-NAME is the target workflow of the request
   
 ### "MVP" Release Notes Workflow API 0.1 and Application API 0.1
 * 0.1 A first MVP (Minimum Viable Product)
