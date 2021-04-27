@@ -7,6 +7,7 @@ com.fasterxml.jackson.core:jackson-annotations:2.12.3
 com.fasterxml.jackson.core:jackson-core:2.12.3
 com.fasterxml.jackson.core:jackson-databind:2.12.3
 com.fasterxml.jackson:jackson-bom:2.12.3
+com.github.luben:zstd-jni:1.4.4-7
 com.google.code.findbugs:jsr305:3.0.2
 com.google.errorprone:error_prone_annotations:2.5.1
 com.google.guava:failureaccess:1.0.1
@@ -28,8 +29,12 @@ io.netty:netty-transport:4.1.60.Final
 io.vertx:vertx-auth-common:4.0.3
 io.vertx:vertx-bridge-common:4.0.3
 io.vertx:vertx-core:4.0.3
+io.vertx:vertx-kafka-client:4.0.3
 io.vertx:vertx-web-client:4.0.3
 io.vertx:vertx-web-common:4.0.3
 io.vertx:vertx-web:4.0.3
+org.apache.kafka:kafka-clients:2.6.0
 org.checkerframework:checker-qual:3.8.0
+org.lz4:lz4-java:1.7.1
 org.slf4j:slf4j-api:1.8.0-beta2
+org.xerial.snappy:snappy-java:1.1.7.3
