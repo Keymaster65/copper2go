@@ -17,16 +17,17 @@ package io.github.keymaster65.copper2go.application;
 
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
+import io.github.keymaster65.copper2go.connector.http.vertx.RequestChannelStoreImpl;
 import io.github.keymaster65.copper2go.connector.http.vertx.VertxHttpServer;
+import io.github.keymaster65.copper2go.connector.standardio.StandardInOutEventChannelStoreImpl;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutListener;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
-import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngineImpl;
 import io.github.keymaster65.copper2go.engine.EngineException;
-import io.github.keymaster65.copper2go.util.Copper2goDependencyInjector;
-import io.github.keymaster65.copper2go.connector.standardio.StandardInOutEventChannelStoreImpl;
+import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngineImpl;
 import io.github.keymaster65.copper2go.engine.impl.ReplyChannelStoreImpl;
-import io.github.keymaster65.copper2go.connector.http.vertx.RequestChannelStoreImpl;
+import io.github.keymaster65.copper2go.util.Copper2goDependencyInjector;
+import org.copperengine.core.DependencyInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,18 +36,18 @@ public class Application {
 
     private final Copper2GoEngine copper2GoEngine;
     private final Copper2GoHttpServer httpServer;
-    private final org.copperengine.core.DependencyInjector dependencyInjector;
+    private final RequestChannelStoreImpl requestChannelStoreImpl;
+    private final DependencyInjector dependencyInjector;
     private boolean stopRequested;
 
     public static Application of(final Config config) {
-        ReplyChannelStoreImpl replyChannelStore = new ReplyChannelStoreImpl();
-
+        var replyChannelStoreImpl = new ReplyChannelStoreImpl();
         Copper2GoEngine copper2GoEngine = new Copper2GoEngineImpl(
                 config.maxTickets,
                 config.workflowRepositoryConfig,
-                replyChannelStore);
-        org.copperengine.core.DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
-                replyChannelStore,
+                replyChannelStoreImpl);
+        DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
+                replyChannelStoreImpl,
                 new StandardInOutEventChannelStoreImpl(),
                 new RequestChannelStoreImpl(config.httpRequestChannelConfigs, copper2GoEngine));
         Copper2GoHttpServer httpServer = new VertxHttpServer(
@@ -55,18 +56,21 @@ public class Application {
         return new Application(
                 copper2GoEngine,
                 dependencyInjector,
-                httpServer
+                httpServer,
+                new RequestChannelStoreImpl(config.httpRequestChannelConfigs, copper2GoEngine)
         );
     }
 
     public Application(
             final Copper2GoEngine copper2GoEngine,
-            final org.copperengine.core.DependencyInjector dependencyInjector,
-            final Copper2GoHttpServer httpServer
+            final DependencyInjector dependencyInjector,
+            final Copper2GoHttpServer httpServer,
+            final RequestChannelStoreImpl requestChannelStoreImpl
     ) {
         this.copper2GoEngine = copper2GoEngine;
         this.dependencyInjector = dependencyInjector;
         this.httpServer = httpServer;
+        this.requestChannelStoreImpl = requestChannelStoreImpl;
     }
 
     public synchronized void start() throws EngineException {
@@ -77,19 +81,20 @@ public class Application {
 
     public synchronized void startWithStdInOut() throws EngineException, StandardInOutException {
         start();
-        final StandardInOutListener standardInOutListener = new StandardInOutListener();
+        final var standardInOutListener = new StandardInOutListener();
         standardInOutListener.listenLocalStream(copper2GoEngine);
     }
 
     public synchronized void stop() throws EngineException {
         log.info("stop application");
         stopRequested = true;
+        copper2GoEngine.stop();
         try {
             httpServer.stop();
         } catch (Exception e) {
             log.warn("Exception while stopping HTTP server.", e);
         }
-        copper2GoEngine.stop();
+        requestChannelStoreImpl.close();
     }
 
     public synchronized boolean isStopRequested() {

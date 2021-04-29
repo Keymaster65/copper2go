@@ -34,4 +34,8 @@ public class HttpRequestChannelImpl implements RequestChannel {
         httpClient.request(httpMethod, request, responseCorrelationId);
     }
 
+    @Override
+    public void close() {
+        httpClient.close();
+    }
 }

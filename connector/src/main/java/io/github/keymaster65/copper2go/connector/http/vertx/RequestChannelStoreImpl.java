@@ -27,17 +27,19 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
     private static Map<String, RequestChannel> requestChannelMap = new ConcurrentHashMap<>();
 
     public RequestChannelStoreImpl(final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs, final Copper2GoEngine engine) {
-        for (Map.Entry<String, HttpRequestChannelConfig> entry : httpRequestChannelConfigs.entrySet()) {
-            HttpRequestChannelConfig config = entry.getValue();
-            requestChannelMap.put(entry.getKey(),
-                    new HttpRequestChannelImpl(
-                            config.method,
-                            new VertxHttpClient(
-                                    config.host,
-                                    config.port,
-                                    config.path,
-                                    engine
-                            )));
+        if (httpRequestChannelConfigs != null) {
+            for (Map.Entry<String, HttpRequestChannelConfig> entry : httpRequestChannelConfigs.entrySet()) {
+                HttpRequestChannelConfig config = entry.getValue();
+                requestChannelMap.put(entry.getKey(),
+                        new HttpRequestChannelImpl(
+                                config.method,
+                                new VertxHttpClient(
+                                        config.host,
+                                        config.port,
+                                        config.path,
+                                        engine
+                                )));
+            }
         }
     }
 
@@ -46,5 +48,8 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
         requestChannelMap.get(channelName).request(request, responseCorrelationId);
     }
 
+    public void close() {
+        requestChannelMap.values().forEach(RequestChannel::close);
+    }
 
 }

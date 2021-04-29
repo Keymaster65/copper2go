@@ -74,6 +74,6 @@ public class VertxHttpClient implements Copper2GoHttpClient {
     @Override
     public void close() {
         client.close();
-        vertx.close();
+        vertx.close(asyncResult -> log.info("VertX close. succeeded={}", asyncResult.succeeded()));
     }
 }
