@@ -40,7 +40,7 @@ class ApplicationApplicationTestInOutTest {
         String input = name + "\r\nexit\r\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Config config = Config.of();
-        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch(branch), 10, config.httpPort);
+//        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch(branch), 10, config.httpPort, config.kafkaHost);
         Application application = Application.of(config);
         Assertions.assertThatExceptionOfType(StandardInOutException.class).isThrownBy(application::startWithStdInOut);
         application.stop();

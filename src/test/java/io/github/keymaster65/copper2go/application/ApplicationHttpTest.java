@@ -33,7 +33,7 @@ class ApplicationHttpTest {
     void masterHelloTest() throws Exception {
         String name = Data.getName();
         Config config = Config.of();
-        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
+//        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
         Application application = Application.of(config);
         application.start();
         HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + COPPER2GO_2_API + "request/1.0/Hello?a=1"), name);
@@ -46,7 +46,7 @@ class ApplicationHttpTest {
     void masterHello2MappingTest() throws Exception {
         String name = Data.getName();
         Config config = Config.of();
-        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
+//        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
         Application application = Application.of(config);
         application.start();
         HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + COPPER2GO_2_API + "request/2.0/Hello"), name);
@@ -59,7 +59,7 @@ class ApplicationHttpTest {
     void masterHello2EmptyNameTest() throws Exception {
         String name = "";
         Config config = Config.of();
-        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
+//        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
         Application application = Application.of(config);
         application.start();
         HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + COPPER2GO_2_API + "request/2.0/Hello"), name);
@@ -76,7 +76,7 @@ class ApplicationHttpTest {
     void masterHello2EmptyNameEventTest() throws Exception {
         String name = "";
         Config config = Config.of();
-        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
+//        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
         Application application = Application.of(config);
         application.start();
         HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + COPPER2GO_2_API + "event/2.0/Hello"), name);

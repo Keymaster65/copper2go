@@ -21,6 +21,7 @@ import io.github.keymaster65.copper2go.engine.EngineException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.LockSupport;
@@ -53,7 +54,7 @@ public class Main {
         new Main().start();
     }
 
-    void start() throws EngineException {
+    void start() throws EngineException, IOException {
         try {
             log.info("Begin of Main.");
             String configEnv = System.getenv(ENV_C2G_CONFIG);
@@ -67,10 +68,11 @@ public class Main {
             application.get().start();
             started.set(true);
         } catch (Exception e) {
-            log.error("Exception in application main. Try to stop application.", e);
+            log.warn("Exception in application main. Try to stop application.");
             if (application.get() != null) {
                 application.get().stop();
             }
+            throw e;
         } finally {
             if (application.get() != null) {
                 while (!application.get().isStopRequested()) {

@@ -19,12 +19,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.keymaster65.copper2go.connector.http.HttpRequestChannelConfig;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelConfig;
 import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Objects;
 
 public class Config {
 
@@ -32,6 +34,9 @@ public class Config {
     public final WorkflowRepositoryConfig workflowRepositoryConfig;
     public final int maxTickets;
     public final int httpPort;
+    public final String kafkaHost;
+    public final int kafkaPort;
+    public final Map<String, KafkaRequestChannelConfig> kafkaRequestChannelConfigs;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -40,18 +45,24 @@ public class Config {
             @JsonProperty(value = "httpRequestChannelConfigs") final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs,
             @JsonProperty(required = true, value = "workflowRepositoryConfig") final WorkflowRepositoryConfig workflowRepositoryConfig,
             @JsonProperty(required = true, value = "maxTickets") final int maxTickets,
-            @JsonProperty(required = true, value = "httpPort") final int httpPort
+            @JsonProperty(required = true, value = "httpPort") final int httpPort,
+            @JsonProperty(value = "kafkaHost") final String kafkaHost,
+            @JsonProperty(value = "kafkaPort") final int kafkaPort,
+            @JsonProperty(value = "kafkaChannelConfigs") final Map<String, KafkaRequestChannelConfig> kafkaRequestChannelConfigs
     ) {
         this.httpRequestChannelConfigs = httpRequestChannelConfigs;
         this.workflowRepositoryConfig = workflowRepositoryConfig;
         this.maxTickets = maxTickets;
         this.httpPort = httpPort;
+        this.kafkaHost = kafkaHost;
+        this.kafkaPort = kafkaPort;
+        this.kafkaRequestChannelConfigs = kafkaRequestChannelConfigs;
     }
 
     public static Config of() throws IOException {
 
         return objectMapper.readValue(
-                new InputStreamReader(Config.class.getResourceAsStream("/io/github/keymaster65/copper2go/application/config/config.json"), StandardCharsets.UTF_8),
+                new InputStreamReader(Objects.requireNonNull(Config.class.getResourceAsStream("/io/github/keymaster65/copper2go/application/config/config.json")), StandardCharsets.UTF_8),
                 Config.class);
     }
 

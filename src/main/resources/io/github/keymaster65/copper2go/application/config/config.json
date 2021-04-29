@@ -1,5 +1,7 @@
 {
   "httpPort": "59665",
+  "kafkaHost": "localhost",
+  "kafkaPort": "9092",
   "maxTickets": "10000",
   "httpRequestChannelConfigs": {
     "Pricing.centPerMinute": {
@@ -7,6 +9,11 @@
       "host": "localhost",
       "port": "59665",
       "path": "/copper2go/2/api/request/1.0/Pricing"
+    }
+  },
+  "kafkaRequestChannelConfigs": {
+    "Hello": {
+      "topic": "testHello"
     }
   },
   "workflowRepositoryConfig": {
