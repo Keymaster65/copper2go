@@ -46,10 +46,11 @@ public class Application {
                 config.maxTickets,
                 config.workflowRepositoryConfig,
                 replyChannelStoreImpl);
+        final var requestChannelStoreImpl = new RequestChannelStoreImpl(config.httpRequestChannelConfigs, copper2GoEngine);
         DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
                 replyChannelStoreImpl,
                 new StandardInOutEventChannelStoreImpl(),
-                new RequestChannelStoreImpl(config.httpRequestChannelConfigs, copper2GoEngine));
+                requestChannelStoreImpl);
         Copper2GoHttpServer httpServer = new VertxHttpServer(
                 config.httpPort,
                 copper2GoEngine);
@@ -57,7 +58,7 @@ public class Application {
                 copper2GoEngine,
                 dependencyInjector,
                 httpServer,
-                new RequestChannelStoreImpl(config.httpRequestChannelConfigs, copper2GoEngine)
+                requestChannelStoreImpl
         );
     }
 
