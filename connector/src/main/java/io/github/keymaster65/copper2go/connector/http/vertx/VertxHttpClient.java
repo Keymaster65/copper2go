@@ -36,13 +36,39 @@ public class VertxHttpClient implements Copper2GoHttpClient {
     private final WebClient client;
     private static final Logger log = LoggerFactory.getLogger(VertxHttpClient.class);
 
-    public VertxHttpClient(final String host, final int port, final String uri, final Copper2GoEngine engine) {
+    public VertxHttpClient(
+            final String host,
+            final int port,
+            final String uri,
+            final Copper2GoEngine engine
+    ) {
+        this(host, port, uri, engine, Vertx.vertx());
+    }
+
+    public VertxHttpClient(
+            final String host,
+            final int port,
+            final String uri,
+            final Copper2GoEngine engine,
+            final Vertx vertx
+    ) {
+        this(host, port, uri, engine, Vertx.vertx(), WebClient.create(vertx));
+    }
+
+    public VertxHttpClient(
+            final String host,
+            final int port,
+            final String uri,
+            final Copper2GoEngine engine,
+            final Vertx vertx,
+            final WebClient client
+    ) {
         this.host = host;
         this.port = port;
         this.uri = uri;
         this.engine = engine;
-        this.vertx = Vertx.vertx();
-        this.client = WebClient.create(vertx);
+        this.vertx = vertx;
+        this.client = client;
     }
 
     private Handler<HttpResponse<Buffer>> sucesshandler(final String responseCorrelationId, final Copper2GoEngine engine) {
