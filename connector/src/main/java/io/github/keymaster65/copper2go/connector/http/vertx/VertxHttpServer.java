@@ -89,7 +89,7 @@ public class VertxHttpServer implements Copper2GoHttpServer {
 
                             } else {
                                 try {
-                                    String path = null;
+                                    String path;
                                     if ("/".equals(uri) || "/.".equals(uri)) {
                                         path = "license/index.html";
                                     } else {
@@ -118,8 +118,9 @@ public class VertxHttpServer implements Copper2GoHttpServer {
 
     @Override
     public void stop() {
-        httpServer.close(e -> log.info("Server stopped. e={}", e.succeeded()));
-        vertx.close();
+        log.info("Stopping server.");
+        httpServer.close(asyncResult -> log.info("Server close. succeeded={}", asyncResult.succeeded()));
+        vertx.close(asyncResult -> log.info("VertX close. succeeded={}", asyncResult.succeeded()));
     }
 
 }
