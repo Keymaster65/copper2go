@@ -23,7 +23,10 @@
     <root level="warn">
         <appender-ref ref="STDOUT"/>
     </root>
-    <logger name="de.wolfsvl" level="debug" additivity="false">
+    <logger name="io.github.keymaster65.copper2go" level="info" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.copperengine" level="info" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 </configuration>

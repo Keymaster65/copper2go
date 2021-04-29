@@ -80,6 +80,7 @@ allprojects {
         useJUnitPlatform {
             includeEngines.add("junit-jupiter")
         }
+        systemProperty ("logback.configurationFile", "src/main/resources/logback.xml")
     }
 
     task<JacocoMerge>("jacocoMerge") {
