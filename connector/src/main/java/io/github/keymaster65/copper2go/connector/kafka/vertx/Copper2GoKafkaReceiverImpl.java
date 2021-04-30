@@ -41,14 +41,19 @@ public class Copper2GoKafkaReceiverImpl {
 
     private static final Logger log = LoggerFactory.getLogger(Copper2GoKafkaReceiverImpl.class);
 
-    public Copper2GoKafkaReceiverImpl(final String host, final int port, final String topic, final String groupId, Copper2GoEngine copper2GoEngine) {
-        this.topic = topic;
+    public Copper2GoKafkaReceiverImpl(
+            final String host,
+            final int port,
+            final KafkaReceiverConfig receiverConfig,
+            Copper2GoEngine copper2GoEngine
+    ) {
+        this.topic = receiverConfig.topic;
 
         Map<String, String> config = new HashMap<>();
         config.put(BOOTSTRAP_SERVERS_CONFIG, host + ":" + port);
         config.put(KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         config.put(VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
-        config.put(GROUP_ID_CONFIG, groupId);
+        config.put(GROUP_ID_CONFIG, receiverConfig.groupId);
         config.put(AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         consumer = KafkaConsumer.create(Vertx.vertx(), config);
@@ -56,7 +61,7 @@ public class Copper2GoKafkaReceiverImpl {
         consumer.handler(event ->
         {
             try {
-                copper2GoEngine.callWorkflow(event.value(), null, "Hello", 1, 0);
+                copper2GoEngine.callWorkflow(event.value(), null, receiverConfig.workflowName, receiverConfig.majorVersion, receiverConfig.minorVersion);
                 successCount.incrementAndGet();
             } catch (Exception e) {
                 failCount.incrementAndGet();

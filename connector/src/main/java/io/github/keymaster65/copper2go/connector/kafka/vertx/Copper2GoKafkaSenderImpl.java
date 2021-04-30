@@ -15,7 +15,9 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
+import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
+import io.vertx.core.Handler;
 import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.kafka.client.producer.KafkaProducerRecord;
 import io.vertx.kafka.client.producer.RecordMetadata;
@@ -58,6 +60,10 @@ public class Copper2GoKafkaSenderImpl implements Copper2GoKafkaSender {
         return producer.send(event);
     }
 
+    public void send(final String request, Handler<AsyncResult<RecordMetadata>> handler) {
+        KafkaProducerRecord<String, String> event = KafkaProducerRecord.create(topic, request);
+        producer.send(event, handler);
+    }
     public void close() {
         producer.close();
     }

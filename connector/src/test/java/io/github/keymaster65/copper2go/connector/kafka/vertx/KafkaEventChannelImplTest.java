@@ -13,14 +13,14 @@ class KafkaEventChannelImplTest {
 
     @Test
     void event() {
-        Copper2GoKafkaSender eventChannel = Mockito.mock(Copper2GoKafkaSender.class);
-        Copper2GoKafkaSender errorEventChannel = Mockito.mock(Copper2GoKafkaSender.class);
-        KafkaEventChannelImpl kafkaEventChannel = new KafkaEventChannelImpl(eventChannel, errorEventChannel);
+        Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
+        Copper2GoKafkaSender errorSender = Mockito.mock(Copper2GoKafkaSender.class);
+        KafkaEventChannelImpl kafkaEventChannel = new KafkaEventChannelImpl(sender, errorSender);
 
         kafkaEventChannel.event(EVENT);
 
-        verify(eventChannel).send(EVENT);
-        verify(errorEventChannel, times(0)).send(any());
+        verify(sender).send(EVENT);
+        verify(errorSender, times(0)).send(any());
     }
 
     @Test

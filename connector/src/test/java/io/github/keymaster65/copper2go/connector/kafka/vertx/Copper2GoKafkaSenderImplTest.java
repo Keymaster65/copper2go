@@ -3,8 +3,6 @@ package io.github.keymaster65.copper2go.connector.kafka.vertx;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.EngineException;
 import io.vertx.core.Future;
-import io.vertx.core.Vertx;
-import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.kafka.client.producer.RecordMetadata;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
@@ -13,10 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testcontainers.containers.KafkaContainer;
-import org.testcontainers.utility.DockerImageName;
 
-import java.util.Map;
 import java.util.concurrent.locks.LockSupport;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -29,19 +24,12 @@ class Copper2GoKafkaSenderImplTest {
 
     public static final String REQUEST = "request";
     public static final String TOPIC = "test";
-    private static KafkaContainer kafka;
 
     private static final Logger log = LoggerFactory.getLogger(Copper2GoKafkaSenderImplTest.class);
 
     @BeforeAll
     static void startContainer() {
-        kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3"));
-        kafka.start();
-        while (!kafka.isRunning()) {
-            log.info("Wait for kafka running.");
-            LockSupport.parkNanos(50 * 1000 * 1000);
-        }
-        log.info("Kafka server: {} with port {}. Exposed: {}", kafka.getBootstrapServers(), kafka.getFirstMappedPort(), kafka.getExposedPorts());
+        Commons.startContainer();
     }
 
     @Test
@@ -86,16 +74,21 @@ class Copper2GoKafkaSenderImplTest {
 
     @Test
     void close() {
-        Copper2GoKafkaSenderImpl copper2GoKafkaSender = createCopper2GoKafkaSender();
+        Copper2GoKafkaSenderImpl copper2GoKafkaSender = Commons.createCopper2GoKafkaSender(Commons.kafka, TOPIC);
         copper2GoKafkaSender.close();
     }
 
     private Copper2GoKafkaReceiverImpl createCopper2GoKafkaReceiverAndReceive(final Copper2GoEngine engine) {
         Copper2GoKafkaReceiverImpl receiver = new Copper2GoKafkaReceiverImpl(
-                kafka.getHost(),
-                kafka.getFirstMappedPort(),
-                TOPIC,
-                "testGroupId",
+                Commons.kafka.getHost(),
+                Commons.kafka.getFirstMappedPort(),
+                new KafkaReceiverConfig(
+                        TOPIC,
+                        "testGroupId",
+                        "Hello",
+                        1L,
+                        0L)
+                ,
                 engine
         );
         receiver.start();
@@ -107,7 +100,7 @@ class Copper2GoKafkaSenderImplTest {
     }
 
     private Copper2GoKafkaSenderImpl createCopper2GoKafkaSenderAndSend() {
-        Copper2GoKafkaSenderImpl sender = createCopper2GoKafkaSender();
+        Copper2GoKafkaSenderImpl sender = Commons.createCopper2GoKafkaSender(Commons.kafka, TOPIC);
         Future<RecordMetadata> future = sender.send(REQUEST);
         while (!future.isComplete()) {
             log.info("Wait for send completion.");
@@ -115,18 +108,5 @@ class Copper2GoKafkaSenderImplTest {
         }
         Assertions.assertThat(future.succeeded()).isTrue();
         return sender;
-    }
-
-    private Copper2GoKafkaSenderImpl createCopper2GoKafkaSender() {
-        return new Copper2GoKafkaSenderImpl(
-                kafka.getHost(),
-                kafka.getFirstMappedPort(),
-                TOPIC,
-                Copper2GoKafkaSenderImplTest::apply
-        );
-    }
-
-    private static KafkaProducer<String, String> apply(Map<String, String> config) {
-        return KafkaProducer.create(Vertx.vertx(), config);
     }
 }

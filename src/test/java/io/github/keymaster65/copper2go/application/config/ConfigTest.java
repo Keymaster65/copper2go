@@ -17,6 +17,7 @@ package io.github.keymaster65.copper2go.application.config;
 
 import io.github.keymaster65.copper2go.connector.http.HttpMethod;
 import io.github.keymaster65.copper2go.connector.http.HttpRequestChannelConfig;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelConfig;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -45,5 +46,21 @@ class ConfigTest {
         assertThat(config.httpRequestChannelConfigs).hasSize(1);
         KafkaRequestChannelConfig requestRequestChannelConfig = config.kafkaRequestChannelConfigs.get("Hello");
         assertThat(requestRequestChannelConfig.topic).isEqualTo("testHello");
+
+        assertThat(config.kafkaReceiverConfigs).hasSize(3);
+        KafkaReceiverConfig kafkaReceiverManagerConfig = config.kafkaReceiverConfigs.get("Manager");
+        assertThat(kafkaReceiverManagerConfig.topic).isEqualTo("test");
+        assertThat(kafkaReceiverManagerConfig.groupId).isEqualTo("managerGroup");
+        assertThat(kafkaReceiverManagerConfig.workflowName).isEqualTo("HelloChoreo");
+        assertThat(kafkaReceiverManagerConfig.majorVersion).isOne();
+        assertThat(kafkaReceiverManagerConfig.minorVersion).isZero();
+
+
+        KafkaReceiverConfig kafkaReceiverCRMConfig = config.kafkaReceiverConfigs.get("CRM");
+        assertThat(kafkaReceiverCRMConfig.topic).isEqualTo("test");
+        assertThat(kafkaReceiverCRMConfig.groupId).isEqualTo("CRMGroup");
+        assertThat(kafkaReceiverCRMConfig.workflowName).isEqualTo("CRM");
+        assertThat(kafkaReceiverCRMConfig.majorVersion).isOne();
+        assertThat(kafkaReceiverCRMConfig.minorVersion).isZero();
     }
 }

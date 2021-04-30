@@ -16,9 +16,14 @@
 package io.github.keymaster65.copper2go.connector.http.vertx;
 
 import io.github.keymaster65.copper2go.connector.http.HttpRequestChannelConfig;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaSenderImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelConfig;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelImpl;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.RequestChannel;
 import io.github.keymaster65.copper2go.workflowapi.RequestChannelStore;
+import io.vertx.core.Vertx;
+import io.vertx.kafka.client.producer.KafkaProducer;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,7 +31,32 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RequestChannelStoreImpl implements RequestChannelStore {
     private static Map<String, RequestChannel> requestChannelMap = new ConcurrentHashMap<>();
 
-    public RequestChannelStoreImpl(final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs, final Copper2GoEngine engine) {
+    public RequestChannelStoreImpl(
+            final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs,
+            final Copper2GoEngine engine
+    ) {
+        putHttpRequestChannels(httpRequestChannelConfigs, engine);
+    }
+
+    @Override
+    public void request(final String channelName, final String request, final String responseCorrelationId) {
+        requestChannelMap.get(channelName).request(request, responseCorrelationId);
+    }
+
+    public void close() {
+        requestChannelMap.values().forEach(RequestChannel::close);
+    }
+
+    public void addKafkaRequestChannels(
+            final String kafkaHost,
+            final int kafkaPort,
+            final Map<String, KafkaRequestChannelConfig> kafkaRequestChannelConfigs,
+            final Copper2GoEngine engine
+    ) {
+        putKafkaRequestChannels(kafkaHost, kafkaPort, kafkaRequestChannelConfigs, engine);
+    }
+
+    private void putHttpRequestChannels(final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs, final Copper2GoEngine engine) {
         if (httpRequestChannelConfigs != null) {
             for (Map.Entry<String, HttpRequestChannelConfig> entry : httpRequestChannelConfigs.entrySet()) {
                 HttpRequestChannelConfig config = entry.getValue();
@@ -43,13 +73,24 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
         }
     }
 
-    @Override
-    public void request(final String channelName, final String request, final String responseCorrelationId) {
-        requestChannelMap.get(channelName).request(request, responseCorrelationId);
+    private void putKafkaRequestChannels(final String kafkaHost, final int kafkaPort, final Map<String, KafkaRequestChannelConfig> kafkaRequestChannelConfigs, final Copper2GoEngine engine) {
+        if (kafkaRequestChannelConfigs != null) {
+            for (Map.Entry<String, KafkaRequestChannelConfig> entry : kafkaRequestChannelConfigs.entrySet()) {
+                KafkaRequestChannelConfig config = entry.getValue();
+                requestChannelMap.put(entry.getKey(),
+                        new KafkaRequestChannelImpl(
+                                new Copper2GoKafkaSenderImpl(
+                                        kafkaHost,
+                                        kafkaPort,
+                                        config.topic,
+                                        RequestChannelStoreImpl::apply
+                                ), engine));
+            }
+        }
     }
 
-    public void close() {
-        requestChannelMap.values().forEach(RequestChannel::close);
+    private static KafkaProducer<String, String> apply(Map<String, String> config) {
+        return KafkaProducer.create(Vertx.vertx(), config);
     }
 
 }

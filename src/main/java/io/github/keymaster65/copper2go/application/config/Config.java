@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.keymaster65.copper2go.connector.http.HttpRequestChannelConfig;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelConfig;
 import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 
@@ -32,6 +33,7 @@ public class Config {
 
     public final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs;
     public final WorkflowRepositoryConfig workflowRepositoryConfig;
+    public final Map<String, KafkaReceiverConfig> kafkaReceiverConfigs;
     public final int maxTickets;
     public final int httpPort;
     public final String kafkaHost;
@@ -44,6 +46,7 @@ public class Config {
     public Config(
             @JsonProperty(value = "httpRequestChannelConfigs") final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs,
             @JsonProperty(required = true, value = "workflowRepositoryConfig") final WorkflowRepositoryConfig workflowRepositoryConfig,
+            @JsonProperty(value = "kafkaReceiverConfigs") final Map<String, KafkaReceiverConfig> kafkaReceiverConfigs,
             @JsonProperty(required = true, value = "maxTickets") final int maxTickets,
             @JsonProperty(required = true, value = "httpPort") final int httpPort,
             @JsonProperty(value = "kafkaHost") final String kafkaHost,
@@ -52,6 +55,7 @@ public class Config {
     ) {
         this.httpRequestChannelConfigs = httpRequestChannelConfigs;
         this.workflowRepositoryConfig = workflowRepositoryConfig;
+        this.kafkaReceiverConfigs = kafkaReceiverConfigs;
         this.maxTickets = maxTickets;
         this.httpPort = httpPort;
         this.kafkaHost = kafkaHost;
