@@ -26,6 +26,8 @@ dependencies {
     implementation("org.copper-engine:copper-coreengine:5+")
 
     implementation("io.vertx:vertx-core:4+")
+
+    testImplementation("org.testcontainers:testcontainers:1.+")
 }
 
 application {
