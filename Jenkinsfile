@@ -36,7 +36,7 @@ node() {
 
         if (env.BRANCH_NAME == 'master') {
             stage('Publish Image') {
-                _gradle jib
+                _gradle :jib
             }
             stage('Image System Test') {
                 _gradle ':test'
