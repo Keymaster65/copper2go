@@ -14,7 +14,7 @@ node() {
             _gradle 'assemble'
         }
 
-        stage('Test') {
+        stage('Unit Test') {
             try {
                 _gradle 'test -x :test'
             } finally {
@@ -22,11 +22,12 @@ node() {
             }
         }
 
-        // see https://www.jenkins.io/doc/pipeline/steps/jacoco/
-        stage('Test coverage') {
-            jacoco(
-                    classPattern: '**/build/classes/java/main'
-            )
+        try {
+            stage('System Test') {
+                _gradle ':test'
+            }
+        } finally {
+            junit '**/test-results/test/*.xml'
         }
 
         stage('Publish Artifacts') {
@@ -34,15 +35,13 @@ node() {
             archiveArtifacts artifacts: 'build/distributions/**/*.zip', fingerprint: true
         }
 
-        if (env.BRANCH_NAME == 'master') {
-            try {
-                stage('System Test') {
-                    _gradle ':test'
-                }
-            } finally {
-                junit '**/test-results/test/*.xml'
-            }
+        // see https://www.jenkins.io/doc/pipeline/steps/jacoco/
+        stage('Test Coverage') {
+            jacoco(
+                    classPattern: '**/build/classes/java/main'
+            )
         }
+
 
         currentBuild.result = 'SUCCESS'
     } catch (Exception exception) {
