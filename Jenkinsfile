@@ -35,8 +35,12 @@ node() {
         }
 
         if (env.BRANCH_NAME == 'master') {
-            stage('Image System Test') {
-                _gradle ':test'
+            try {
+                stage('System Test') {
+                    _gradle ':test'
+                }
+            } finally {
+                junit '**/test-results/test/*.xml'
             }
         }
 
