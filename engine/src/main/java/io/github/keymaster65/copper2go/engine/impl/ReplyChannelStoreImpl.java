@@ -17,28 +17,55 @@ package io.github.keymaster65.copper2go.engine.impl;
 
 import io.github.keymaster65.copper2go.engine.ReplyChannel;
 import io.github.keymaster65.copper2go.workflowapi.ReplyChannelStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ReplyChannelStoreImpl implements ReplyChannelStore {
     private static Map<String, ReplyChannel> replyChannelMap = new ConcurrentHashMap<>();
+    private static final Logger log = LoggerFactory.getLogger(ReplyChannelStoreImpl.class);
 
-    public void store(String id, ReplyChannel replyChannel) {
-        replyChannelMap.put(id, replyChannel);
+    public void store(
+            final String uuid,
+            final ReplyChannel replyChannel
+    ) {
+        Objects.requireNonNull(uuid, "uuid of ReplyChannel must not be null");
+
+        ReplyChannel usedReplyChannel = Objects.requireNonNullElseGet(replyChannel, () -> new ReplyChannel() {
+            @Override
+            public void reply(final String message) {
+                log.error("Reply channel for uuid {} not defined.", uuid);
+            }
+
+            @Override
+            public void replyError(final String message) {
+                log.error("Reply channel for uuid {} not defined.", uuid);
+            }
+        });
+        replyChannelMap.put(uuid, usedReplyChannel);
     }
 
     @Override
-    public void reply (String uuid, String message) {
+    public void reply(
+            final String uuid,
+            final String message
+    ) {
         ReplyChannel replyChannel = replyChannelMap.remove(uuid);
         replyChannel.reply(message);
     }
 
     @Override
-    public void replyError (String id, String message) {
-        ReplyChannel replyChannel = replyChannelMap.remove(id);
+    public void replyError(
+            final String uuid,
+            final String message
+    ) {
+        ReplyChannel replyChannel = replyChannelMap.remove(uuid);
         replyChannel.replyError(message);
     }
+
     public ReplyChannel getReplyChannel(String uuid) {
         return replyChannelMap.get(uuid);
     }

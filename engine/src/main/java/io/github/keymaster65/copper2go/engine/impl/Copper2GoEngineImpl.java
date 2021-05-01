@@ -45,6 +45,7 @@ import javax.management.InstanceNotFoundException;
 import javax.management.MBeanRegistrationException;
 import java.io.File;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.concurrent.locks.LockSupport;
 
 public class Copper2GoEngineImpl implements Copper2GoEngine {
@@ -73,6 +74,8 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
             final long major,
             final long minor
     ) throws EngineException {
+        Objects.requireNonNull(engine, "No engine found. May be it must be started first.");
+
         WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>(workflow);
         WorkflowVersion version = engine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
         workflowInstanceDescr.setVersion(version);
@@ -191,5 +194,6 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
             throw new EngineException("Could not shutdown exporter.", e);
         }
         waitForIdleEngine();
+        engine = null;
     }
 }

@@ -47,11 +47,10 @@ public class Application {
     private final Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap;
 
     public static Application of(final Config config) {
+
         var replyChannelStoreImpl = new ReplyChannelStoreImpl();
-        Copper2GoEngine copper2GoEngine = new Copper2GoEngineImpl(
-                config.maxTickets,
-                config.workflowRepositoryConfig,
-                replyChannelStoreImpl);
+        Copper2GoEngine copper2GoEngine = createCopper2GoEngine(config, replyChannelStoreImpl);
+
         final var requestChannelStoreImpl = new RequestChannelStoreImpl(
                 config.httpRequestChannelConfigs,
                 copper2GoEngine
@@ -80,6 +79,13 @@ public class Application {
                 requestChannelStoreImpl,
                 kafkaReceiverMap
         );
+    }
+
+    public static Copper2GoEngine createCopper2GoEngine(final Config config, final ReplyChannelStoreImpl replyChannelStoreImpl) {
+        return new Copper2GoEngineImpl(
+                config.maxTickets,
+                config.workflowRepositoryConfig,
+                replyChannelStoreImpl);
     }
 
     private static Map<String, Copper2GoKafkaReceiverImpl> createKafkaReceiverMap(final String kafkaHost, final int kafkaPort, final Map<String, KafkaReceiverConfig> kafkaReceiverConfigs, final Copper2GoEngine copper2GoEngine) {
