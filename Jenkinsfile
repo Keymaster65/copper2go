@@ -16,7 +16,7 @@ node() {
 
         stage('Test') {
             try {
-                _gradle 'test'
+                _gradle 'test -x :test'
             } finally {
                 junit '**/test-results/test/*.xml'
             }
@@ -29,9 +29,18 @@ node() {
             )
         }
 
-        stage('Publish') {
+        stage('Publish Artifacts') {
             archiveArtifacts artifacts: 'copper2go-api/build/libs/**/*.jar', fingerprint: true
             archiveArtifacts artifacts: 'build/distributions/**/*.zip', fingerprint: true
+        }
+
+        if (env.BRANCH_NAME == 'master') {
+            stage('Publish Image') {
+                _gradle jib
+            }
+            stage('Image System Test') {
+                _gradle ':test'
+            }
         }
 
         currentBuild.result = 'SUCCESS'
