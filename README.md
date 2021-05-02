@@ -99,6 +99,21 @@ you can fork on GitHub. You may also add an item in
 https://github.com/Keymaster65/copper2go/issues
 
 I am looking for feedback.
+### Workflow's API
+To Do: 
+* WorkflowData
+* ReplyChannel
+* RequestChannel
+* EventChannel
+
+### Application Configuration
+To Do:
+* COPPER Workflows (workflowRepositoryConfig)
+* HTTP Server (httpPort)
+* HTTP Request/Response (httpRequestChannelConfigs)
+* Kafka Server (kafkaHost, kafkaPort)
+* Kafka Receiver (kafkaReceiverConfigs)
+* Kafka Request/Response (kafkaRequestChannelConfigs)
 
 ### Versioning and API
 #### Workflow's API
@@ -138,26 +153,31 @@ Of course, copper2go is ready use. Many more capabilities might be added.
 Here you find some of them ;-)
 
 ### "Kafka" Release Plan Application API 2.1
-* [ ] Kafka Connectors
+* [x] Kafka Connectors
+* [x] Seperate System- and Integration- testing in Build Pipeline
 
-### "Binding" Release Plan Application API 2.2
+### "Kafka/Http Bridge" Release Plan Application API 2.2
+* [ ] Support HTTP URL parameter (in and out)
+* [ ] Support Kafka Header (parameter) (in and out)
+* [ ] Add use case in Developer's Guide
+
+### "Binding" Release Plan Application API 2.3
 * [ ] Workflow with Json binding
 * [ ] Workflow with XML binding
 
 ### "State Pattern" Release Plan Application API 2.3
 * [ ] Spike: Workflow using State Pattern
 
-### "Operator" Release Plan Application API 2.3
+### "Operator" Release Plan Application API 2.4
 * [ ] configure thread pool size, client pool size and more
 * [ ] Support of COPPER core GUI
 * [ ] JMX usage in Container
 
 ### Backlog
-* Support HTTP URL parameter (in and out)
-* Support Kafka Header (parameter) (in and out)
+
 * Add test coverage for workflows to copper2go-workflows
 * Multi workflow support and REST level
-* Seperate Systemtesting in Build Pipelien  
+* STDIN/OUT support in config and container (or remove it)
 * Add information "How Tos" to developer's guide
    * Overview
    * Request Channel Stores
