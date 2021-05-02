@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.application;
+package io.github.keymaster65.copper2go.systemtest;
 
-public class Data {
+import org.testcontainers.containers.GenericContainer;
 
-    public static String getName() {
-        return "Wolf" + System.currentTimeMillis();
-    }
+import java.net.URI;
+import java.net.URISyntaxException;
 
-    private Data() {}
-    public static String getExpectedHello2Mapping(final String name) {
-        return  "Hello " + name + "! Please transfer";
-    }
+public class Commons {
 
-    public static String getExpectedHello(final String name) {
-        return  "HEllo " + name + "! (Fix the bug;-)";
+    private Commons() {}
+
+    public static URI getUri(final String path, GenericContainer<?> copper2GoContainer) throws URISyntaxException {
+        return new URI(String.format("http://%s:%d%s",
+                copper2GoContainer.getHost(),
+                copper2GoContainer.getFirstMappedPort(),
+                path));
     }
 }

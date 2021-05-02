@@ -13,34 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.application;
+package io.github.keymaster65.copper2go;
 
+import io.github.keymaster65.copper2go.application.Application;
+import io.github.keymaster65.copper2go.application.Data;
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
+import io.github.keymaster65.copper2go.engine.EngineException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
 class ApplicationApplicationTestInOutTest {
 
     @Test()
-    void masterHelloTest() throws Exception {
+    void masterHelloTest() throws EngineException, IOException {
         String name = Data.getName();
-        final String result = stdinHelloTest(name, "release/2");
-        Assert.assertResponse(result, Data.getExpectedHello(name));
+        final String result = stdinHelloTest(name);
+        Assertions.assertThat(result).contains(Data.getExpectedHello(name));
     }
 
-    private String stdinHelloTest(final String name, final String branch) throws Exception {
+    private String stdinHelloTest(final String name) throws IOException, EngineException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(byteArrayOutputStream));
         String input = name + "\r\nexit\r\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Config config = Config.of();
-//        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch(branch), 10, config.httpPort, config.kafkaHost);
         Application application = Application.of(config);
         Assertions.assertThatExceptionOfType(StandardInOutException.class).isThrownBy(application::startWithStdInOut);
         application.stop();

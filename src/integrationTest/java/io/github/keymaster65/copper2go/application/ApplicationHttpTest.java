@@ -17,10 +17,12 @@ package io.github.keymaster65.copper2go.application;
 
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.http.TestHttpClient;
+import io.github.keymaster65.copper2go.engine.EngineException;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpResponse;
@@ -29,40 +31,39 @@ import static io.github.keymaster65.copper2go.connector.http.vertx.VertxHttpServ
 
 class ApplicationHttpTest {
 
+    public static final String HTTP_LOCALHOST = "http://localhost:";
+
     @Test()
-    void masterHelloTest() throws Exception {
+    void masterHelloTest() throws IOException, EngineException, InterruptedException {
         String name = Data.getName();
         Config config = Config.of();
-//        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
         Application application = Application.of(config);
         application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + COPPER2GO_2_API + "request/1.0/Hello?a=1"), name);
+        HttpResponse<String> response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "request/1.0/Hello?a=1"), name);
         application.stop();
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_OK);
-        Assert.assertResponse(response.body(), Data.getExpectedHello(name));
+        Assertions.assertThat(response.body()).contains(Data.getExpectedHello(name));
     }
 
     @Test()
-    void masterHello2MappingTest() throws Exception {
+    void masterHello2MappingTest() throws IOException, EngineException, InterruptedException {
         String name = Data.getName();
         Config config = Config.of();
-//        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
         Application application = Application.of(config);
         application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + COPPER2GO_2_API + "request/2.0/Hello"), name);
+        HttpResponse<String> response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "request/2.0/Hello"), name);
         application.stop();
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_OK);
-        Assert.assertResponse(response.body(), Data.getExpectedHello2Mapping(name));
+        Assertions.assertThat(response.body()).contains(Data.getExpectedHello2Mapping(name));
     }
 
     @Test()
-    void masterHello2EmptyNameTest() throws Exception {
+    void masterHello2EmptyNameTest() throws IOException, EngineException, InterruptedException {
         String name = "";
         Config config = Config.of();
-//        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
         Application application = Application.of(config);
         application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + COPPER2GO_2_API + "request/2.0/Hello"), name);
+        HttpResponse<String> response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "request/2.0/Hello"), name);
         application.stop();
         SoftAssertions.assertSoftly(
                 softAssertions -> {
@@ -73,13 +74,12 @@ class ApplicationHttpTest {
     }
 
     @Test()
-    void masterHello2EmptyNameEventTest() throws Exception {
+    void masterHello2EmptyNameEventTest() throws IOException, EngineException, InterruptedException {
         String name = "";
         Config config = Config.of();
-//        config = new Config(config.httpRequestChannelConfigs, config.workflowRepositoryConfig.withBranch( "release/2"), 10, config.httpPort);
         Application application = Application.of(config);
         application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create("http://localhost:" + config.httpPort + COPPER2GO_2_API + "event/2.0/Hello"), name);
+        HttpResponse<String> response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "event/2.0/Hello"), name);
         application.stop();
         SoftAssertions.assertSoftly(
                 softAssertions -> {

@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go;
+package io.github.keymaster65.copper2go.systemtest;
 
-import io.github.keymaster65.copper2go.application.Assert;
-import io.github.keymaster65.copper2go.application.Data;
 import io.github.keymaster65.copper2go.connector.http.TestHttpClient;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterAll;
@@ -48,7 +46,7 @@ class SystemDefaultTest {
         HttpResponse<String> response = TestHttpClient.post(
                 Commons.getUri("/copper2go/2/api/request/2.0/Hello", copper2GoContainer),
                 name);
-        Assert.assertResponse(response.body(), Data.getExpectedHello2Mapping(name));
+        Assertions.assertThat(response.body()).contains(Data.getExpectedHello2Mapping(name));
     }
 
 
@@ -58,7 +56,7 @@ class SystemDefaultTest {
         HttpResponse<String> response = TestHttpClient.post(
                 Commons.getUri("/copper2go/2/api/request/1.0/Hello", copper2GoContainer),
                 name);
-        Assert.assertResponse(response.body(), Data.getExpectedHello(name));
+        Assertions.assertThat(response.body()).contains(Data.getExpectedHello(name));
     }
 
     @Test
@@ -66,7 +64,7 @@ class SystemDefaultTest {
         HttpResponse<String> response = TestHttpClient.post(
                 Commons.getUri("/bad", copper2GoContainer),
                 "name");
-        Assert.assertResponse(response.body(), "Exception while getting licenses from uri /bad. null");
+        Assertions.assertThat(response.body()).contains("Exception while getting licenses from uri /bad. null");
     }
 
     @Test
@@ -74,7 +72,7 @@ class SystemDefaultTest {
         HttpResponse<String> response = TestHttpClient.post(
                 Commons.getUri("/copper2go/2/api/request/1.0/Bad", copper2GoContainer),
                 "name");
-        Assert.assertResponse(response.body(), "Exception: Exception while running workflow.");
+        Assertions.assertThat(response.body()).contains("Exception: Exception while running workflow.");
     }
 
     @BeforeAll

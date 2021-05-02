@@ -15,12 +15,19 @@
  */
 package io.github.keymaster65.copper2go.application;
 
-import org.assertj.core.api.Assertions;
+// dublicated in systemTest
+public class Data {
 
-public class Assert {
-    private Assert() {}
+    public static String getName() {
+        return "Wolf" + System.currentTimeMillis();
+    }
 
-    public static void assertResponse(final String response, final String expectedPart) {
-        Assertions.assertThat(response).contains(expectedPart);
+    private Data() {}
+    public static String getExpectedHello2Mapping(final String name) {
+        return  "Hello " + name + "! Please transfer";
+    }
+
+    public static String getExpectedHello(final String name) {
+        return  "HEllo " + name + "! (Fix the bug;-)";
     }
 }

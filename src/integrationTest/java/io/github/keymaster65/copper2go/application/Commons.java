@@ -13,21 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go;
+package io.github.keymaster65.copper2go.application;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.GenericContainer;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-class Commons {
+public class Commons {
 
     private Commons() {}
-    private static final Logger log = LoggerFactory.getLogger(Commons.class);
 
-    static URI getUri(final String path, GenericContainer<?> copper2GoContainer) throws URISyntaxException {
+    public static URI getUri(final String path, GenericContainer<?> copper2GoContainer) throws URISyntaxException {
         return new URI(String.format("http://%s:%d%s",
                 copper2GoContainer.getHost(),
                 copper2GoContainer.getFirstMappedPort(),

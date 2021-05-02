@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go;
+package io.github.keymaster65.copper2go.systemtest;
 
 import com.google.common.io.CharStreams;
-import io.github.keymaster65.copper2go.application.Assert;
+import io.github.keymaster65.copper2go.Main;
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.http.TestHttpClient;
+import org.assertj.core.api.Assertions;
 import org.junit.Rule;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,7 +46,7 @@ class SystemCompleteTest {
     static KafkaContainer kafka;
 
     @Rule
-    public static Network network = Network.newNetwork();
+    public static final Network network = Network.newNetwork();
 
     @Test
     void systemTest() throws URISyntaxException, IOException, InterruptedException {
@@ -53,7 +54,7 @@ class SystemCompleteTest {
         HttpResponse<String> response = TestHttpClient.post(
                 Commons.getUri("/copper2go/2/api/request/1.0/SystemTest", copper2GoContainer),
                 name);
-        Assert.assertResponse(response.body(), name);
+        Assertions.assertThat(response.body()).contains(name);
     }
 
     @BeforeAll
@@ -79,7 +80,7 @@ class SystemCompleteTest {
         kafka.start();
         while (!kafka.isRunning()) {
             log.info("Wait for kafka running.");
-            LockSupport.parkNanos(50 * 1000 * 1000);
+            LockSupport.parkNanos(50L * 1000 * 1000);
         }
         log.info("Kafka server: {} with port {}. Exposed: {}", kafka.getBootstrapServers(), kafka.getFirstMappedPort(), kafka.getExposedPorts());
     }

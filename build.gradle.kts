@@ -44,9 +44,13 @@ testSets {
     create("systemTest")
 }
 
+tasks.check {
+    dependsOn(tasks.findByName("systemTest"))
+}
+
 allprojects {
-    apply(plugin= "java")
-    apply(plugin="org.unbroken-dome.test-sets")
+    apply(plugin = "java")
+    apply(plugin = "org.unbroken-dome.test-sets")
 
     java {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -58,15 +62,15 @@ allprojects {
     }
 
     // see https://github.com/hierynomus/license-gradle-plugin
-    apply(plugin="com.github.hierynomus.license")
+    apply(plugin = "com.github.hierynomus.license")
     license {
-        ignoreFailures=false
-        header=File("$rootDir/licenceHeader.txt")
-        skipExistingHeaders=false
+        ignoreFailures = false
+        header = File("$rootDir/licenceHeader.txt")
+        skipExistingHeaders = false
         exclude("**/*.json")
     }
 
-    dependencies{
+    dependencies {
         implementation("org.slf4j:slf4j-api:1.8.0-beta2")
         implementation("ch.qos.logback:logback-classic:1.3.0-alpha4")
 
@@ -89,11 +93,15 @@ allprojects {
         create("integrationTest")
     }
 
+    tasks.check {
+        dependsOn(tasks.findByName("integrationTest"))
+    }
+
     tasks.withType<Test> {
         useJUnitPlatform {
             includeEngines.add("junit-jupiter")
         }
-        systemProperty ("logback.configurationFile", "src/main/resources/logback.xml")
+        systemProperty("logback.configurationFile", "src/main/resources/logback.xml")
     }
 
     task<JacocoMerge>("jacocoMerge") {
