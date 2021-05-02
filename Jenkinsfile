@@ -23,8 +23,16 @@ node() {
         }
 
         try {
+            stage('Integration Test') {
+                _gradle 'integrationTest'
+            }
+        } finally {
+            junit '**/test-results/test/*.xml'
+        }
+
+        try {
             stage('System Test') {
-                _gradle ':test'
+                _gradle 'systemTest'
             }
         } finally {
             junit '**/test-results/test/*.xml'

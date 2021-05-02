@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.connector.http.vertx;
+package io.github.keymaster65.copper2go.connector.integrationtest;
 
 import io.github.keymaster65.copper2go.connector.http.HttpMethod;
+import io.github.keymaster65.copper2go.connector.http.vertx.VertxHttpClient;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
@@ -30,6 +31,7 @@ class VertxHttpClientTest {
 
     public static final String CORRELATION_ID = "correlationId";
     public static final int SERVER_PORT = 8023;
+    public static final String LOCALHOST = "localhost";
 
     @Test
     void postGoodCase() throws InterruptedException {
@@ -45,7 +47,7 @@ class VertxHttpClientTest {
                             latch.countDown();
                         }
                 ));
-        VertxHttpClient vertxHttpClient = new VertxHttpClient("localhost", SERVER_PORT, "/", engine);
+        VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, SERVER_PORT, "/", engine);
         try {
             httpServer.listen(SERVER_PORT);
             vertxHttpClient.request(HttpMethod.valueOf("POST"), "Fault test.", CORRELATION_ID);
@@ -63,9 +65,9 @@ class VertxHttpClientTest {
     // disabled due to hanging on Jenkins
     void postConnectionRefused() throws InterruptedException {
         Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
-        final VertxHttpClient vertxHttpClient = new VertxHttpClient("localhost", 50666, "/", engine);
+        final VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, 50666, "/", engine);
         vertxHttpClient.request(HttpMethod.GET, "Fault test.", CORRELATION_ID);
-        Thread.sleep(5 * 1000); // connection refused max time
+        Thread.sleep(5L * 1000); // connection refused max time
         vertxHttpClient.close();
         Mockito.verify(engine).notifyError(ArgumentMatchers.eq(CORRELATION_ID), ArgumentMatchers.anyString());
         Mockito.verify(engine, Mockito.times(0)).notify(ArgumentMatchers.any(), ArgumentMatchers.any());
@@ -74,7 +76,7 @@ class VertxHttpClientTest {
     @Test
     void close() {
         Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
-        final VertxHttpClient vertxHttpClient = new VertxHttpClient("localhost", SERVER_PORT, "/", engine);
+        final VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, SERVER_PORT, "/", engine);
         vertxHttpClient.close();
     }
 }

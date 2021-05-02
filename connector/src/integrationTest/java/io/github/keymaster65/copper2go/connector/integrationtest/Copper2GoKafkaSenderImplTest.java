@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.connector.kafka.vertx;
+package io.github.keymaster65.copper2go.connector.integrationtest;
 
+import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaReceiverImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaSenderImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.EngineException;
 import io.vertx.core.Future;
@@ -109,7 +112,7 @@ class Copper2GoKafkaSenderImplTest {
         receiver.start();
         while (receiver.getSuccessCount() + receiver.getFailCount() < 1L) {
             log.info("Wait for receive completion.");
-            LockSupport.parkNanos(50 * 1000 * 1000);
+            LockSupport.parkNanos(50L * 1000 * 1000);
         }
         return receiver;
     }
@@ -119,7 +122,7 @@ class Copper2GoKafkaSenderImplTest {
         Future<RecordMetadata> future = sender.send(REQUEST);
         while (!future.isComplete()) {
             log.info("Wait for send completion.");
-            LockSupport.parkNanos(50 * 1000 * 1000);
+            LockSupport.parkNanos(50L * 1000 * 1000);
         }
         Assertions.assertThat(future.succeeded()).isTrue();
         return sender;

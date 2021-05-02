@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.connector.kafka.vertx;
+package io.github.keymaster65.copper2go.connector.integrationtest;
 
+import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaSender;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelImpl;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,6 +32,7 @@ import static org.mockito.Mockito.verify;
 class KafkaRequestChannelImplTest {
 
     private static final Logger log = LoggerFactory.getLogger(KafkaRequestChannelImplTest.class);
+    public static final String CORR_ID = "corrId";
 
     @BeforeAll
     static void startContainer() {
@@ -45,17 +48,18 @@ class KafkaRequestChannelImplTest {
                 engine
         );
 
-        requestChannel.request("request", "corrId");
+        requestChannel.request("request",
+                CORR_ID);
 
         while ((requestChannel.getSuccessCount() + requestChannel.getFailCount()) < 1) {
             log.info("Wait for response.");
-            LockSupport.parkNanos(50 * 1000 * 1000);
+            LockSupport.parkNanos(50L * 1000 * 1000);
         }
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(requestChannel.getSuccessCount()).isEqualTo(1L);
             soft.assertThat(requestChannel.getFailCount()).isEqualTo(0L);
         });
-        verify(engine).notify("corrId", "");
+        verify(engine).notify(CORR_ID, "");
     }
 
     @Test
@@ -67,16 +71,16 @@ class KafkaRequestChannelImplTest {
                 engine
         );
 
-        requestChannel.request("request", "corrId");
+        requestChannel.request("request", CORR_ID);
 
         while ((requestChannel.getSuccessCount() + requestChannel.getFailCount()) < 1) {
             log.info("Wait for response.");
-            LockSupport.parkNanos(50 * 1000 * 1000);
+            LockSupport.parkNanos(50L * 1000 * 1000);
         }
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(requestChannel.getSuccessCount()).isEqualTo(0L);
             soft.assertThat(requestChannel.getFailCount()).isEqualTo(1L);
         });
-        verify(engine).notifyError("corrId", "Invalid topics: []");
+        verify(engine).notifyError(CORR_ID, "Invalid topics: []");
     }
 }

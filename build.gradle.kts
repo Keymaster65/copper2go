@@ -9,6 +9,7 @@ plugins {
     id("com.github.jk1.dependency-license-report") version "1.16"
     id("com.google.cloud.tools.jib") version "3.0.0"
     id("com.github.hierynomus.license-base") version "0.15.0"
+    id("org.unbroken-dome.test-sets") version "3.0.1"
 }
 
 publishing {
@@ -39,8 +40,13 @@ application {
 group = "de.wolfsvl"
 version = "2.1"
 
+testSets {
+    create("systemTest")
+}
+
 allprojects {
     apply(plugin= "java")
+    apply(plugin="org.unbroken-dome.test-sets")
 
     java {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -77,6 +83,10 @@ allprojects {
 
     repositories {
         mavenCentral()
+    }
+
+    testSets {
+        create("integrationTest")
     }
 
     tasks.withType<Test> {

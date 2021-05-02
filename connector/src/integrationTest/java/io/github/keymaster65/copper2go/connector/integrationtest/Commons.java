@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.connector.kafka.vertx;
+package io.github.keymaster65.copper2go.connector.integrationtest;
 
+import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaSenderImpl;
 import io.vertx.core.Vertx;
 import io.vertx.kafka.client.producer.KafkaProducer;
 import org.slf4j.Logger;
@@ -37,7 +38,7 @@ class Commons {
         kafka.start();
         while (!kafka.isRunning()) {
             log.info("Wait for kafka running.");
-            LockSupport.parkNanos(50 * 1000 * 1000);
+            LockSupport.parkNanos(50L * 1000 * 1000);
         }
         log.info("Kafka server: {} with port {}. Exposed: {}", kafka.getBootstrapServers(), kafka.getFirstMappedPort(), kafka.getExposedPorts());
     }
