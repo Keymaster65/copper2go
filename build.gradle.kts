@@ -38,7 +38,7 @@ application {
 }
 
 group = "de.wolfsvl"
-version = "2.1"
+version = "2.2"
 
 testSets {
     create("systemTest")

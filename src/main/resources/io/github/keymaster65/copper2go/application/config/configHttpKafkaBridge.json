@@ -1,0 +1,16 @@
+{
+  "httpPort": "59665",
+  "kafkaHost": "kafka",
+  "kafkaPort": "9092",
+  "maxTickets": "10000",
+  "kafkaRequestChannelConfigs": {
+    "RequestChannel": {
+      "topic": "targetTopic"
+    }
+  },
+  "workflowRepositoryConfig": {
+    "branch": "release/2",
+    "workflowGitURI": "https://github.com/Keymaster65/copper2go-workflows.git",
+    "workflowBase": "/src/workflow/java"
+  }
+}

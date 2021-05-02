@@ -158,7 +158,7 @@ Of course, copper2go is ready use. Many more capabilities might be added.
 Here you find some of them ;-)
 
 ### "Kafka/Http Bridge" Release Plan Release Workflow API 2.1  and Application API 2.2
-* [ ] Add Bridge Workflow
+* [x] Add Bridge Workflow
 * [ ] Support HTTP URL parameter (in and out)
 * [ ] Support Kafka Header (parameter) (in and out)
 * [ ] Add use case in Developer's Guide
