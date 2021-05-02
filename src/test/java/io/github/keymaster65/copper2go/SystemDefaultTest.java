@@ -28,33 +28,25 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
 
-class SystemTest {
+class SystemDefaultTest {
 
-    private static final Logger log = LoggerFactory.getLogger(SystemTest.class);
+    private static final Logger log = LoggerFactory.getLogger(SystemDefaultTest.class);
     private static GenericContainer<?> copper2GoContainer;
 
     @Test
     void license() throws URISyntaxException, IOException, InterruptedException {
-        HttpResponse<String> response = TestHttpClient.post(getUriBase("/"), "");
+        HttpResponse<String> response = TestHttpClient.post(Commons.getUri("/", copper2GoContainer), "");
         Assertions.assertThat(response.body()).contains("Dependency License Report for copper2go");
-    }
-
-    private URI getUriBase(final String path) throws URISyntaxException {
-        return new URI(String.format("http://%s:%d%s",
-                copper2GoContainer.getHost(),
-                copper2GoContainer.getFirstMappedPort(),
-                path));
     }
 
     @Test
     void hello2() throws URISyntaxException, IOException, InterruptedException {
         String name = "Wolf";
         HttpResponse<String> response = TestHttpClient.post(
-                getUriBase("/copper2go/2/api/request/2.0/Hello"),
+                Commons.getUri("/copper2go/2/api/request/2.0/Hello", copper2GoContainer),
                 name);
         Assert.assertResponse(response.body(), Data.getExpectedHello2Mapping(name));
     }
@@ -64,7 +56,7 @@ class SystemTest {
     void hello() throws URISyntaxException, IOException, InterruptedException {
         String name = "Wolf";
         HttpResponse<String> response = TestHttpClient.post(
-                getUriBase("/copper2go/2/api/request/1.0/Hello"),
+                Commons.getUri("/copper2go/2/api/request/1.0/Hello", copper2GoContainer),
                 name);
         Assert.assertResponse(response.body(), Data.getExpectedHello(name));
     }
@@ -72,7 +64,7 @@ class SystemTest {
     @Test
     void exception() throws URISyntaxException, IOException, InterruptedException {
         HttpResponse<String> response = TestHttpClient.post(
-                getUriBase("/bad"),
+                Commons.getUri("/bad", copper2GoContainer),
                 "name");
         Assert.assertResponse(response.body(), "Exception while getting licenses from uri /bad. null");
     }
@@ -80,20 +72,23 @@ class SystemTest {
     @Test
     void exception2() throws URISyntaxException, IOException, InterruptedException {
         HttpResponse<String> response = TestHttpClient.post(
-                getUriBase("/copper2go/2/api/request/1.0/Bad"),
+                Commons.getUri("/copper2go/2/api/request/1.0/Bad", copper2GoContainer),
                 "name");
         Assert.assertResponse(response.body(), "Exception: Exception while running workflow.");
     }
 
     @BeforeAll
     static void startContainer() {
-        copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:latest"))
-                .withExposedPorts(59665);
+        copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:tmp"))
+                .withExposedPorts(59665)
+                .withImagePullPolicy(imageName -> true);
         copper2GoContainer.start();
+        log.info("TestContainer started.");
     }
 
     @AfterAll
     static void stopContainer() {
         copper2GoContainer.stop();
     }
+
 }

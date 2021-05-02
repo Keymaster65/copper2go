@@ -86,6 +86,7 @@ org.ow2.asm:asm:9.0
 org.rnorth.duct-tape:duct-tape:1.0.8
 org.rnorth.visible-assertions:visible-assertions:2.1.2
 org.slf4j:slf4j-api:1.8.0-beta4
+org.testcontainers:kafka:1.15.3
 org.testcontainers:testcontainers:1.15.3
 org.xerial.snappy:snappy-java:1.1.7.3
 org.yaml:snakeyaml:1.27

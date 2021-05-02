@@ -90,17 +90,19 @@ public class Application {
 
     private static Map<String, Copper2GoKafkaReceiverImpl> createKafkaReceiverMap(final String kafkaHost, final int kafkaPort, final Map<String, KafkaReceiverConfig> kafkaReceiverConfigs, final Copper2GoEngine copper2GoEngine) {
         Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap = new HashMap<>();
-        for (Map.Entry<String, KafkaReceiverConfig> entry : kafkaReceiverConfigs.entrySet()) {
-            KafkaReceiverConfig config = entry.getValue();
-            kafkaReceiverMap.put(
-                    entry.getKey(),
-                    new Copper2GoKafkaReceiverImpl(
-                            kafkaHost,
-                            kafkaPort,
-                            config,
-                            copper2GoEngine
-                    )
-            );
+        if (kafkaReceiverConfigs != null) {
+            for (Map.Entry<String, KafkaReceiverConfig> entry : kafkaReceiverConfigs.entrySet()) {
+                KafkaReceiverConfig config = entry.getValue();
+                kafkaReceiverMap.put(
+                        entry.getKey(),
+                        new Copper2GoKafkaReceiverImpl(
+                                kafkaHost,
+                                kafkaPort,
+                                config,
+                                copper2GoEngine
+                        )
+                );
+            }
         }
         return kafkaReceiverMap;
     }

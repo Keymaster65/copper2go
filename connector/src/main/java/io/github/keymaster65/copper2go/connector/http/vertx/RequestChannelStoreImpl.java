@@ -26,6 +26,7 @@ import io.vertx.core.Vertx;
 import io.vertx.kafka.client.producer.KafkaProducer;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RequestChannelStoreImpl implements RequestChannelStore {
@@ -40,6 +41,7 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
 
     @Override
     public void request(final String channelName, final String request, final String responseCorrelationId) {
+        Objects.requireNonNull(requestChannelMap.get(channelName), String.format("Channel with name %s%s", channelName, " must not be null."));
         requestChannelMap.get(channelName).request(request, responseCorrelationId);
     }
 

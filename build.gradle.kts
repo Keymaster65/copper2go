@@ -28,6 +28,7 @@ dependencies {
     implementation("io.vertx:vertx-core:4+")
 
     testImplementation("org.testcontainers:testcontainers:1.+")
+    testImplementation("org.testcontainers:kafka:1.+")
 }
 
 application {

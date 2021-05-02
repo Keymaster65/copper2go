@@ -1,42 +1,12 @@
 {
   "httpPort": "59665",
-  "kafkaHost": "localhost",
-  "kafkaPort": "9092",
   "maxTickets": "10000",
-  "kafkaReceiverConfigs": {
-    "Manager": {
-      "topic": "test",
-      "groupId": "managerGroup",
-      "workflowName": "HelloChoreo",
-      "majorVersion": "1",
-      "minorVersion": "0"
-    },
-    "CRM": {
-      "topic": "test",
-      "groupId": "CRMGroup",
-      "workflowName": "CRM",
-      "majorVersion": "1",
-      "minorVersion": "0"
-    },
-    "Pricing": {
-      "topic": "test",
-      "groupId": "PricingGroup",
-      "workflowName": "Pricing",
-      "majorVersion": "1",
-      "minorVersion": "0"
-    }
-  },
   "httpRequestChannelConfigs": {
     "Pricing.centPerMinute": {
       "method": "GET",
       "host": "localhost",
       "port": "59665",
       "path": "/copper2go/2/api/request/1.0/Pricing"
-    }
-  },
-  "kafkaRequestChannelConfigs": {
-    "Hello": {
-      "topic": "testHello"
     }
   },
   "workflowRepositoryConfig": {

@@ -15,6 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.http;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -25,7 +26,7 @@ public class TestHttpClient {
 
     private TestHttpClient() {}
 
-    public static HttpResponse<String> post(final URI uri, final String name) throws java.io.IOException, InterruptedException {
+    public static HttpResponse<String> post(final URI uri, final String payload) throws java.io.IOException, InterruptedException {
         HttpClient client = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
                 .followRedirects(HttpClient.Redirect.NORMAL)
@@ -35,8 +36,12 @@ public class TestHttpClient {
                 HttpRequest.newBuilder()
                         .timeout(Duration.ofMillis(5000))
                         .uri(uri)
-                        .POST(HttpRequest.BodyPublishers.ofString(name))
+                        .POST(HttpRequest.BodyPublishers.ofString(payload))
                         .build();
-        return client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        try {
+            return client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            throw new IOException(String.format("Could not send to URI %s", uri), e);
+        }
     }
 }

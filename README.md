@@ -153,6 +153,8 @@ Here you find some of them ;-)
 * [ ] JMX usage in Container
 
 ### Backlog
+* Support HTTP URL parameter (in and out)
+* Support Kafka Header (parameter) (in and out)
 * Add test coverage for workflows to copper2go-workflows
 * Multi workflow support and REST level
 * Seperate Systemtesting in Build Pipelien  
@@ -163,7 +165,6 @@ Here you find some of them ;-)
    * Configuration Reply Channel Store
    * Tickets
    * Workflow Development/Test
-* Support URL parameter (in and out)
 * Load workflow subtree only from git
 * Delete .copper on start (if still problems occurs)
 * Kafka choreography example
