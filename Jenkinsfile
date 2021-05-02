@@ -16,7 +16,7 @@ node() {
 
         stage('Unit Test') {
             try {
-                _gradle 'test -x :test'
+                _gradle 'test'
             } finally {
                 junit '**/test-results/test/*.xml'
             }
