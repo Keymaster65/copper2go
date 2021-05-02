@@ -99,6 +99,11 @@ you can fork on GitHub. You may also add an item in
 https://github.com/Keymaster65/copper2go/issues
 
 I am looking for feedback.
+
+#### Utilities
+To Do:
+* HTTP-Kafka Bridge
+
 ### Workflow's API
 To Do: 
 * WorkflowData
@@ -152,11 +157,8 @@ Isues are very welcome, too.
 Of course, copper2go is ready use. Many more capabilities might be added.
 Here you find some of them ;-)
 
-### "Kafka" Release Plan Application API 2.1
-* [x] Kafka Connectors
-* [x] Seperate System- and Integration- testing in Build Pipeline
-
-### "Kafka/Http Bridge" Release Plan Application API 2.2
+### "Kafka/Http Bridge" Release Plan Release Workflow API 2.1  and Application API 2.2
+* [ ] Add Bridge Workflow
 * [ ] Support HTTP URL parameter (in and out)
 * [ ] Support Kafka Header (parameter) (in and out)
 * [ ] Add use case in Developer's Guide
@@ -199,6 +201,10 @@ Here you find some of them ;-)
 * Async idempotent DB API
 
 ## Released
+
+### "Kafka" Release Application API 2.1
+* [x] Kafka Connectors
+* [x] Seperate System- and Integration- testing in Build Pipeline
 
 ### "License" Release Application API 2.0.1
 * [x] Add licence info more files and update year
