@@ -18,7 +18,7 @@ node() {
             try {
                 _gradle 'test'
             } finally {
-                junit '**/test-results/**/*.xml'
+                junit '**/test-results/test/*.xml'
             }
         }
 
@@ -27,7 +27,7 @@ node() {
                 _gradle 'integrationTest'
             }
         } finally {
-            junit '**/test-results/test/*.xml'
+            junit '**/test-results/integrationTest/*.xml'
         }
 
         try {
@@ -35,7 +35,7 @@ node() {
                 _gradle 'systemTest'
             }
         } finally {
-            junit '**/test-results/test/*.xml'
+            junit '**/test-results/systemTest/*.xml'
         }
 
         stage('Publish Artifacts') {
