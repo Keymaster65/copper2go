@@ -2,6 +2,7 @@ package io.github.keymaster65.copper2go.connector.http.vertx;
 
 import io.github.keymaster65.copper2go.connector.http.HttpRequestChannelConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelConfig;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelImpl;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.EngineRuntimeException;
 import org.assertj.core.api.Assertions;
@@ -37,7 +38,7 @@ class RequestChannelStoreImplTest {
         RequestChannelStoreImpl requestChannelStore = new RequestChannelStoreImpl(httpRequestChannelConfigs, engine);
 
         Assertions.assertThatExceptionOfType(EngineRuntimeException.class).isThrownBy(() ->
-                requestChannelStore.addKafkaRequestChannels("kafkaHost", 0, kafkaRequestChannelConfigs, engine)
+                requestChannelStore.putKafkaRequestChannel(channelName, mock(KafkaRequestChannelImpl.class))
         );
     }
 }

@@ -85,17 +85,22 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
         if (kafkaRequestChannelConfigs != null) {
             for (Map.Entry<String, KafkaRequestChannelConfig> entry : kafkaRequestChannelConfigs.entrySet()) {
                 KafkaRequestChannelConfig config = entry.getValue();
-                if (requestChannelMap.putIfAbsent(entry.getKey(),
+                putKafkaRequestChannel(
+                        entry.getKey(),
                         new KafkaRequestChannelImpl(
                                 new Copper2GoKafkaSenderImpl(
                                         kafkaHost,
                                         kafkaPort,
                                         config.topic,
                                         RequestChannelStoreImpl::apply
-                                ), engine)) != null) {
-                    throw new EngineRuntimeException(String.format("Duplicate RequestChannel %s found.", entry.getKey()));
-                }
+                                ), engine));
             }
+        }
+    }
+
+    void putKafkaRequestChannel(final String name, final KafkaRequestChannelImpl kafkaRequestChannelImpl) {
+        if (requestChannelMap.putIfAbsent(name, kafkaRequestChannelImpl) != null) {
+            throw new EngineRuntimeException(String.format("Duplicate RequestChannel %s found.", name));
         }
     }
 
