@@ -25,7 +25,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ReplyChannelStoreImpl implements ReplyChannelStore {
-    private static Map<String, ReplyChannel> replyChannelMap = new ConcurrentHashMap<>();
+    private Map<String, ReplyChannel> replyChannelMap = new ConcurrentHashMap<>();
     private static final Logger log = LoggerFactory.getLogger(ReplyChannelStoreImpl.class);
 
     public void store(

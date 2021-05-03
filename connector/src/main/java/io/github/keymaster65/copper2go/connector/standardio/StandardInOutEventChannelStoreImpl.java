@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class StandardInOutEventChannelStoreImpl implements EventChannelStore {
-    private static Map<String, EventChannel> eventChannelMap = new ConcurrentHashMap<>();
+    private Map<String, EventChannel> eventChannelMap = new ConcurrentHashMap<>();
 
     public StandardInOutEventChannelStoreImpl() {
         eventChannelMap.put("System.stdout", new StandardOutEventChannelImpl());

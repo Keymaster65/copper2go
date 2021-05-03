@@ -31,7 +31,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RequestChannelStoreImpl implements RequestChannelStore {
-    private static final Map<String, RequestChannel> requestChannelMap = new ConcurrentHashMap<>();
+    private final Map<String, RequestChannel> requestChannelMap = new ConcurrentHashMap<>();
 
     public RequestChannelStoreImpl(
             final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs,
