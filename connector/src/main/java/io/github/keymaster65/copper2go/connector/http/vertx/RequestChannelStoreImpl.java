@@ -74,7 +74,7 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
                                         config.path,
                                         engine
                                 ))) != null) {
-                    // can not happen
+                    // should not happen
                     throw new EngineRuntimeException(String.format("Duplicate RequestChannel %s found.", entry.getKey()));
                 }
             }
