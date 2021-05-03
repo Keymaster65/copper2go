@@ -18,7 +18,7 @@ node() {
             try {
                 _gradle 'test'
             } finally {
-                junit '**/test-results/*/*.xml'
+                junit '**/test-results/**/*.xml'
             }
         }
 
