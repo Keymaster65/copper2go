@@ -177,9 +177,12 @@ Here you find some of them ;-)
 
 ### Backlog
 
+* STDIN/OUT support in config and container (or remove it)
+* Redesign DefaultRequestChannel (like Kafka)
+* Redesign RequestChannel/EventChannel: Is the difference needed? Why 2 errorEvent (was inspired by STDOUR/ERR)?
+* Collect Statistics and other (may be useful for Tests like Bridge-Test)   
 * Add test coverage for workflows to copper2go-workflows
 * Multi workflow support and REST level
-* STDIN/OUT support in config and container (or remove it)
 * Add information "How Tos" to developer's guide
    * Overview
    * Request Channel Stores
