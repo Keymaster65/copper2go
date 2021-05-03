@@ -103,17 +103,6 @@ allprojects {
         }
         systemProperty("logback.configurationFile", "src/main/resources/logback.xml")
     }
-
-    task<JacocoMerge>("jacocoMerge") {
-        destinationFile = File("$buildDir/jacoco/allTestCoverage.exec")
-        executionData = fileTree("$buildDir/jacoco")
-    }
-
-    tasks.withType<JacocoReport> {
-        reports {
-            executionData.setFrom("$buildDir/jacoco/allTestCoverage.exec")
-        }
-    }
 }
 
 
