@@ -21,7 +21,6 @@ import org.copperengine.core.CopperException;
 import org.copperengine.core.tranzient.TransientScottyEngine;
 import org.junit.jupiter.api.Test;
 
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 

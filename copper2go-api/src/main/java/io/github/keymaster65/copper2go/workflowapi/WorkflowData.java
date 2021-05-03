@@ -34,5 +34,5 @@ public final class WorkflowData implements Serializable {
         return payload;
     }
 
-    public String payload;
+    public String payload; // NOSONAR Not final, to be able to reduce or clear the payload
 }
