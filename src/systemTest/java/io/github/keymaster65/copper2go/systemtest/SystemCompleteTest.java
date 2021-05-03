@@ -74,7 +74,7 @@ class SystemCompleteTest {
     }
 
     static void startKafkaContainer() {
-        kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3"))
+        kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3")) // NOSONAR
                 .withNetwork(network)
                 .withNetworkAliases("kafka");
         kafka.start();
@@ -92,7 +92,7 @@ class SystemCompleteTest {
                         StandardCharsets.UTF_8
                 )
         );
-        copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:latest"))
+        copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:latest")) // NOSONAR
                 .withExposedPorts(59665)
                 .withImagePullPolicy(imageName -> true)
                 .withNetworkAliases("copper2go")

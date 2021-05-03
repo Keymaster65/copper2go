@@ -42,7 +42,6 @@ import java.util.concurrent.locks.LockSupport;
 class HttpKafkaBridgeTest {
 
     private static final Logger log = LoggerFactory.getLogger(HttpKafkaBridgeTest.class);
-    private static GenericContainer<?> copper2GoContainer;
     static KafkaContainer kafka;
 
     @Rule
@@ -50,31 +49,40 @@ class HttpKafkaBridgeTest {
 
     @Test
     void systemTest() throws URISyntaxException, IOException, InterruptedException {
-        String payload = "{\"name\" = \"Wolf\"}";
-        HttpResponse<String> response = TestHttpClient.post(
-                Commons.getUri("/copper2go/2/api/request/1.0/Bridge", copper2GoContainer),
-                payload);
-        Assertions.assertThat(response.body()).isEqualTo(payload);
-    }
+        try (final GenericContainer<?> copper2GoContainerHttpKafkaBridge = startCopper2GoContainer("configHttpKafkaBridge")) {
+            String payload = "{\"name\" = \"Wolf\"}";
+            HttpResponse<String> response = TestHttpClient.post(
+                    Commons.getUri("/copper2go/2/api/request/1.0/Bridge", copper2GoContainerHttpKafkaBridge),
+                    payload);
+            Assertions.assertThat(response.body()).isEqualTo(payload);
+        }
 
-    @BeforeAll
-    static void startContainer() throws IOException {
-        log.info("Starting TestContainer.");
-        startKafkaContainer();
-        startCopper2GoContainer();
-        log.info("TestContainer started.");
+        try (GenericContainer<?> copper2GoContainerKafkaHttpBridge = startCopper2GoContainer("configKafkaHttpBridge")) {
+            final String connectionRefusedMessage = "Caused by: java.lang.RuntimeException: Connection refused: host.docker.internal";
+            do {
+                LockSupport.parkNanos(1000L * 1000L * 1000L);
+            } while (!copper2GoContainerKafkaHttpBridge.getLogs().contains(connectionRefusedMessage));
+
+            LockSupport.parkNanos(1000L * 1000L * 1000L);
+            // not nice, but i need support for Windows and Unix host
+            // host.docker.internal work for Windows only
+            // other solution may follow later
+            Assertions.assertThat(copper2GoContainerKafkaHttpBridge.getLogs()).containsOnlyOnce(connectionRefusedMessage);
+        }
     }
 
     @AfterAll
     static void stopContainer() {
         log.info("Stopping TestContainer.");
-        copper2GoContainer.stop();
         kafka.stop();
         log.info("TestContainer stopped.");
     }
 
+    @BeforeAll
     static void startKafkaContainer() {
-        kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3"))
+        // SonarLint: Use try-with-resources or close this "KafkaContainer" in a "finally" clause.
+        // In stop() only
+        kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3")) // NOSONAR
                 .withNetwork(network)
                 .withNetworkAliases("kafka");
         kafka.start();
@@ -85,19 +93,22 @@ class HttpKafkaBridgeTest {
         log.info("Kafka server: {} with port {}. Exposed: {}", kafka.getBootstrapServers(), kafka.getFirstMappedPort(), kafka.getExposedPorts());
     }
 
-    private static void startCopper2GoContainer() throws IOException {
+    private static GenericContainer<?> startCopper2GoContainer(final String configName) throws IOException {
         String config = CharStreams.toString(
                 new InputStreamReader(
-                        Objects.requireNonNull(Config.class.getResourceAsStream("/io/github/keymaster65/copper2go/application/config/configHttpKafkaBridge.json")),
+                        Objects.requireNonNull(Config.class.getResourceAsStream("/io/github/keymaster65/copper2go/application/config/" + configName + ".json")),
                         StandardCharsets.UTF_8
                 )
         );
-        copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:latest"))
+        GenericContainer<?> copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:latest")) // NOSONAR
                 .withExposedPorts(59665)
                 .withImagePullPolicy(imageName -> true)
                 .withNetworkAliases("copper2go")
                 .withNetwork(network)
                 .withEnv(Main.ENV_C2G_CONFIG, config);
         copper2GoContainer.start();
+
+        log.info("copper2go server started with port {}. Exposed: {}", copper2GoContainer.getFirstMappedPort(), copper2GoContainer.getExposedPorts());
+        return copper2GoContainer;
     }
 }

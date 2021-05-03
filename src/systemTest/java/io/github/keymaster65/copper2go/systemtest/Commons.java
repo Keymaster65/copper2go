@@ -20,14 +20,18 @@ import org.testcontainers.containers.GenericContainer;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class Commons {
+class Commons {
 
-    private Commons() {}
 
-    public static URI getUri(final String path, GenericContainer<?> copper2GoContainer) throws URISyntaxException {
-        return new URI(String.format("http://%s:%d%s",
+    private Commons() {
+    }
+
+    static URI getUri(final String path, GenericContainer<?> copper2GoContainer) throws URISyntaxException {
+        // NOSONAR Nor yet: HTTP links are not secure
+        return new URI(String.format("http://%s:%d%s", // NOSONAR
                 copper2GoContainer.getHost(),
                 copper2GoContainer.getFirstMappedPort(),
                 path));
     }
+
 }

@@ -61,20 +61,23 @@ public class Copper2GoKafkaReceiverImpl {
         consumer.handler(event ->
         {
             try {
+                log.info("Call workflow {} for topic {}.", receiverConfig.workflowName, topic);
                 copper2GoEngine.callWorkflow(event.value(), null, receiverConfig.workflowName, receiverConfig.majorVersion, receiverConfig.minorVersion);
                 successCount.incrementAndGet();
             } catch (Exception e) {
                 failCount.incrementAndGet();
-                log.error("Unable to call Workflow with payload='{}'.", event.value(), e);
+                log.error("Unable to call Workflow from topic {} with payload='{}'.", topic, event.value(), e);
             }
         });
     }
 
     public void start() {
+        log.info("Start receiving from topic {}.", topic);
         consumer.subscribe(topic);
     }
 
     public void close() {
+        log.info("Finish receiving from topic {}.", topic);
         consumer.close();
     }
 

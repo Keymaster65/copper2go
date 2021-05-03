@@ -20,6 +20,7 @@ import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaSende
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelImpl;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.EngineRuntimeException;
 import io.github.keymaster65.copper2go.engine.RequestChannel;
 import io.github.keymaster65.copper2go.workflowapi.RequestChannelStore;
 import io.vertx.core.Vertx;
@@ -30,12 +31,14 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RequestChannelStoreImpl implements RequestChannelStore {
-    private static Map<String, RequestChannel> requestChannelMap = new ConcurrentHashMap<>();
+    private static final Map<String, RequestChannel> requestChannelMap = new ConcurrentHashMap<>();
 
     public RequestChannelStoreImpl(
             final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs,
             final Copper2GoEngine engine
     ) {
+        Objects.requireNonNull(engine, "Engine must be not null.");
+
         putHttpRequestChannels(httpRequestChannelConfigs, engine);
     }
 
@@ -62,7 +65,7 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
         if (httpRequestChannelConfigs != null) {
             for (Map.Entry<String, HttpRequestChannelConfig> entry : httpRequestChannelConfigs.entrySet()) {
                 HttpRequestChannelConfig config = entry.getValue();
-                requestChannelMap.put(entry.getKey(),
+                if (requestChannelMap.putIfAbsent(entry.getKey(),
                         new HttpRequestChannelImpl(
                                 config.method,
                                 new VertxHttpClient(
@@ -70,7 +73,10 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
                                         config.port,
                                         config.path,
                                         engine
-                                )));
+                                ))) != null) {
+                    // can not happen
+                    throw new EngineRuntimeException(String.format("Duplicate RequestChannel %s found.", entry.getKey()));
+                }
             }
         }
     }
@@ -79,14 +85,16 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
         if (kafkaRequestChannelConfigs != null) {
             for (Map.Entry<String, KafkaRequestChannelConfig> entry : kafkaRequestChannelConfigs.entrySet()) {
                 KafkaRequestChannelConfig config = entry.getValue();
-                requestChannelMap.put(entry.getKey(),
+                if (requestChannelMap.putIfAbsent(entry.getKey(),
                         new KafkaRequestChannelImpl(
                                 new Copper2GoKafkaSenderImpl(
                                         kafkaHost,
                                         kafkaPort,
                                         config.topic,
                                         RequestChannelStoreImpl::apply
-                                ), engine));
+                                ), engine)) != null) {
+                    throw new EngineRuntimeException(String.format("Duplicate RequestChannel %s found.", entry.getKey()));
+                }
             }
         }
     }
