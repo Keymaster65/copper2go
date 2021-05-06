@@ -179,14 +179,14 @@ Here you find some of them ;-)
 
 * Fix memory leak in ReplyChannelStore
 * STDIN/OUT support in config and container (or remove it)
-* HTTP Security 
-* Kafka Security
-* Redesign DefaultRequestChannel (like Kafka)
+* Redesign DefaultRequestChannel (like Kafka). Use WARN instead of ERROR?
 * Redesign RequestChannel/EventChannel: Is the difference needed? Why 2 errorEvent (was inspired by STDOUR/ERR)?
 * Collect Statistics and other (may be useful for Tests like Bridge-Test)   
 * Add test coverage for workflows to copper2go-workflows
 * Multi workflow support and REST level
 * Vertx Bus Connector 
+* HTTP Security
+* Kafka Security
 * Add information "How Tos" to developer's guide
    * Overview
    * Request Channel Stores
