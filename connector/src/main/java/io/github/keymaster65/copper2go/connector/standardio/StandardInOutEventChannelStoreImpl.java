@@ -17,11 +17,15 @@ package io.github.keymaster65.copper2go.connector.standardio;
 
 import io.github.keymaster65.copper2go.engine.EventChannel;
 import io.github.keymaster65.copper2go.workflowapi.EventChannelStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class StandardInOutEventChannelStoreImpl implements EventChannelStore {
+    private static final Logger log = LoggerFactory.getLogger(StandardInOutEventChannelStoreImpl.class);
+
     private Map<String, EventChannel> eventChannelMap = new ConcurrentHashMap<>();
 
     public StandardInOutEventChannelStoreImpl() {
@@ -29,12 +33,26 @@ public class StandardInOutEventChannelStoreImpl implements EventChannelStore {
     }
 
     @Override
-    public void event(final String channelName, final String event) {
+    public void event(
+            final String channelName,
+            final String event,
+            final Map<String, String> attributes
+    ) {
+        if (attributes != null) {
+            log.warn("Ignore attributes {}", attributes);
+        }
         eventChannelMap.get(channelName).event(event);
     }
 
     @Override
-    public void errorEvent(final String channelName, final String event) {
+    public void errorEvent(
+            final String channelName,
+            final String event,
+            final Map<String, String> attributes
+    ) {
+        if (attributes != null) {
+            log.warn("Ignore attributes {}", attributes);
+        }
         eventChannelMap.get(channelName).errorEvent(event);
     }
 }

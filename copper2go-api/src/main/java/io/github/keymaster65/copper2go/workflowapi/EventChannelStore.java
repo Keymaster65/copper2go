@@ -15,7 +15,30 @@
  */
 package io.github.keymaster65.copper2go.workflowapi;
 
+import java.util.Map;
+
 public interface EventChannelStore {
-    void event(String channelName, String event);
-    void errorEvent(String channelName, String event);
+    default void event(
+            final String channelName,
+            final String event
+    ) {
+        event(channelName, event, null);
+    }
+    void event(
+            final String channelName,
+            final String event,
+            final Map<String, String> attributes
+    );
+
+    default void errorEvent(
+            final String channelName,
+            final String event
+    ) {
+        errorEvent(channelName, event, null);
+    }
+    void errorEvent(
+            final String channelName,
+            final String event,
+            final Map<String, String> attributes
+    );
 }

@@ -16,15 +16,27 @@
 package io.github.keymaster65.copper2go.connector.standardio;
 
 import io.github.keymaster65.copper2go.engine.EventChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 public class StandardOutEventChannelImpl implements EventChannel {
+    private static final Logger log = LoggerFactory.getLogger(StandardOutEventChannelImpl.class);
+
     @Override
-    public void event(String event) {
+    public void event(final String event, final Map<String, String> attributes) {
+        if (attributes != null) {
+            log.warn("Ignore attributes {}", attributes);
+        }
         System.out.println(event); // NOSONAR
     }
 
     @Override
-    public void errorEvent(String event) {
+    public void errorEvent(final String event, final Map<String, String> attributes) {
+        if (attributes != null) {
+            log.warn("Ignore attributes {}", attributes);
+        }
         System.err.println(event); // NOSONAR
     }
 }

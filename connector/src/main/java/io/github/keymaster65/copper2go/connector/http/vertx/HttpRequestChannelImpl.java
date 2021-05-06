@@ -18,8 +18,14 @@ package io.github.keymaster65.copper2go.connector.http.vertx;
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpClient;
 import io.github.keymaster65.copper2go.connector.http.HttpMethod;
 import io.github.keymaster65.copper2go.engine.RequestChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 public class HttpRequestChannelImpl implements RequestChannel {
+
+    private static final Logger log = LoggerFactory.getLogger(HttpRequestChannelImpl.class);
 
     private final Copper2GoHttpClient httpClient;
     private final HttpMethod httpMethod;
@@ -30,7 +36,14 @@ public class HttpRequestChannelImpl implements RequestChannel {
     }
 
     @Override
-    public void request(final String request, final String responseCorrelationId) {
+    public void request(
+            final String request,
+            final Map<String, String> attributes,
+            final String responseCorrelationId
+    ) {
+        if (attributes != null) {
+            log.warn("Ignore attributes {}", attributes);
+        }
         httpClient.request(httpMethod, request, responseCorrelationId);
     }
 

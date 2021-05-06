@@ -15,6 +15,21 @@
  */
 package io.github.keymaster65.copper2go.workflowapi;
 
+import java.util.Map;
+
 public interface RequestChannelStore {
-    void request(String channelName, String request, final String responseCorrelationId);
+    void request(
+            final String channelName,
+            final String request,
+            Map<String,String> attributes,
+            final String responseCorrelationId
+    );
+    
+    default void request(
+            final String channelName,
+            final String request,
+            final String responseCorrelationId
+    ) {
+        request(channelName, request, null, responseCorrelationId);
+    }
 }

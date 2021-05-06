@@ -15,7 +15,19 @@
  */
 package io.github.keymaster65.copper2go.engine;
 
+import java.util.Map;
+
 public interface RequestChannel {
-    void request(final String request, final String responseCorrelationId);
+    default void request(
+            final String request,
+            final String responseCorrelationId
+    ) {
+        request(request, null, responseCorrelationId);
+    }
+    void request(
+            final String request,
+            final Map<String, String> attributes,
+            final String responseCorrelationId
+    );
     void close();
 }

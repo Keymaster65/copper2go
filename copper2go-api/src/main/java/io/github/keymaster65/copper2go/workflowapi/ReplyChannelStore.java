@@ -15,7 +15,31 @@
  */
 package io.github.keymaster65.copper2go.workflowapi;
 
+import java.util.Map;
+
 public interface ReplyChannelStore {
-    void reply(String uuid, String message);
-    void replyError(String uuid, String message);
+
+    void reply(
+            final String uuid,
+            final String message,
+            final Map<String,String> attributes
+    );
+    default void reply(
+            final String uuid,
+            final String message
+    ) {
+        reply(uuid, message, null);
+    }
+    void replyError(
+            final String uuid,
+            final String message,
+            final Map<String,String> attributes
+    );
+
+    default void replyError(
+            final String uuid,
+            final String message
+    ) {
+        replyError(uuid, message, null);
+    }
 }

@@ -17,11 +17,15 @@ package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.RequestChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class KafkaRequestChannelImpl implements RequestChannel {
 
+    private static final Logger log = LoggerFactory.getLogger(KafkaRequestChannelImpl.class);
     private final Copper2GoKafkaSender copper2GoKafkaSender;
     private final Copper2GoEngine engine;
 
@@ -37,7 +41,14 @@ public class KafkaRequestChannelImpl implements RequestChannel {
     }
 
     @Override
-    public void request(final String request, final String responseCorrelationId) {
+    public void request(
+            final String request,
+            final Map<String, String> attributes,
+            final String responseCorrelationId
+    ) {
+        if (attributes != null) {
+            log.warn("Ignore attributes {}", attributes);
+        }
         copper2GoKafkaSender.send(request)
                 .onSuccess(metadata ->
                 {

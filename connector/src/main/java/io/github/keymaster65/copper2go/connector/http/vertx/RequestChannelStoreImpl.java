@@ -43,9 +43,14 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
     }
 
     @Override
-    public void request(final String channelName, final String request, final String responseCorrelationId) {
+    public void request(
+            final String channelName,
+            final String request,
+            Map<String,String> attributes,
+            final String responseCorrelationId
+    ) {
         Objects.requireNonNull(requestChannelMap.get(channelName), String.format("Channel with name %s%s", channelName, " must not be null."));
-        requestChannelMap.get(channelName).request(request, responseCorrelationId);
+        requestChannelMap.get(channelName).request(request, attributes, responseCorrelationId);
     }
 
     public void close() {

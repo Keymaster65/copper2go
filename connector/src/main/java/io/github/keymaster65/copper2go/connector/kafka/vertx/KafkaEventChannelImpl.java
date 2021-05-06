@@ -16,8 +16,14 @@
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
 import io.github.keymaster65.copper2go.engine.EventChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 public class KafkaEventChannelImpl implements EventChannel {
+
+    private static final Logger log = LoggerFactory.getLogger(KafkaEventChannelImpl.class);
 
     private final Copper2GoKafkaSender copper2GoKafkaSender;
     private final Copper2GoKafkaSender copper2GoKafkaErrorSender;
@@ -30,12 +36,18 @@ public class KafkaEventChannelImpl implements EventChannel {
         this.copper2GoKafkaErrorSender = copper2GoKafkaErrorSender;
     }
     @Override
-    public void event(String event) {
+    public void event(final String event, final Map<String, String> attributes) {
+        if (attributes != null) {
+            log.warn("Ignore attributes {}", attributes);
+        }
         copper2GoKafkaSender.send(event);
     }
 
     @Override
-    public void errorEvent(String event) {
+    public void errorEvent(final String event, final Map<String, String> attributes) {
+        if (attributes != null) {
+            log.warn("Ignore attributes {}", attributes);
+        }
         copper2GoKafkaErrorSender.send(event);
     }
 }

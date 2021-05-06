@@ -16,8 +16,8 @@
 package io.github.keymaster65.copper2go.workflowapi;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public final class WorkflowData implements Serializable {
     private static final long serialVersionUID = 2L;
@@ -36,7 +36,7 @@ public final class WorkflowData implements Serializable {
         this.uuid = uuid;
         this.payload = payload; // NOSONAR
         if (attributes != null) {
-            this.attributes = new ConcurrentHashMap<>();
+            this.attributes = new HashMap<>();
             this.attributes.putAll(attributes);
         } else {
             this.attributes = null;
@@ -75,6 +75,13 @@ public final class WorkflowData implements Serializable {
             return null;
         }
         return attributes.get(name);
+    }
+
+    public Map<String,String> getAttributes() {
+        if (attributes == null) {
+            return null;
+        }
+        return new HashMap<>(attributes);
     }
 
     /**

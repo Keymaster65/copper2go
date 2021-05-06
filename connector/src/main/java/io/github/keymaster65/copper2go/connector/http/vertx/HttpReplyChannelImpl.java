@@ -17,23 +17,32 @@ package io.github.keymaster65.copper2go.connector.http.vertx;
 
 import io.github.keymaster65.copper2go.engine.ReplyChannel;
 import io.vertx.core.http.HttpServerResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.HttpURLConnection;
+import java.util.Map;
 
 public class HttpReplyChannelImpl implements ReplyChannel {
     private final HttpServerResponse response;
-
+    private static final Logger log = LoggerFactory.getLogger(HttpReplyChannelImpl.class);
     public HttpReplyChannelImpl(final HttpServerResponse response) {
         this.response = response;
     }
 
     @Override
-    public void reply(String message) {
+    public void reply(String message, final Map<String, String> attributes) {
+        if (attributes != null) {
+            log.warn("Ignore attributes {}", attributes);
+        }
         response.end(message);
     }
 
     @Override
-    public void replyError(String message) {
+    public void replyError(String message, final Map<String, String> attributes) {
+        if (attributes != null) {
+            log.warn("Ignore attributes {}", attributes);
+        }
         response
                 .setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR)
                 .end(message);

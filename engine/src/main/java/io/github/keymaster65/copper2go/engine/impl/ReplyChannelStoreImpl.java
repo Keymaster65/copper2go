@@ -36,12 +36,12 @@ public class ReplyChannelStoreImpl implements ReplyChannelStore {
 
         ReplyChannel usedReplyChannel = Objects.requireNonNullElseGet(replyChannel, () -> new ReplyChannel() {
             @Override
-            public void reply(final String message) {
+            public void reply(final String message, final Map<String, String> attributes) {
                 log.error("Reply channel for uuid {} not defined.", uuid);
             }
 
             @Override
-            public void replyError(final String message) {
+            public void replyError(final String message, final Map<String, String> attributes) {
                 log.error("Reply channel for uuid {} not defined.", uuid);
             }
         });
@@ -51,19 +51,21 @@ public class ReplyChannelStoreImpl implements ReplyChannelStore {
     @Override
     public void reply(
             final String uuid,
-            final String message
+            final String message,
+            final Map<String, String> attributes
     ) {
         ReplyChannel replyChannel = replyChannelMap.remove(uuid);
-        replyChannel.reply(message);
+        replyChannel.reply(message, attributes);
     }
 
     @Override
     public void replyError(
             final String uuid,
-            final String message
+            final String message,
+            final Map<String, String> attributes
     ) {
         ReplyChannel replyChannel = replyChannelMap.remove(uuid);
-        replyChannel.replyError(message);
+        replyChannel.replyError(message, attributes);
     }
 
     public ReplyChannel getReplyChannel(String uuid) {

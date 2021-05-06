@@ -15,7 +15,16 @@
  */
 package io.github.keymaster65.copper2go.engine;
 
+import java.util.Map;
+
 public interface ReplyChannel {
-    void reply(String message);
-    void replyError(String message);
+    default void reply(final String message) {
+        reply(message, null);
+    }
+    void reply(final String message, final Map<String, String> attributes);
+
+    default void replyError(final String message) {
+        replyError(message, null);
+    }
+    void replyError(final String message, final Map<String, String> attributes);
 }

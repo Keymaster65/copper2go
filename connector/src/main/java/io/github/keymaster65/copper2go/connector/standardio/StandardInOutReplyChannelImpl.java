@@ -17,15 +17,17 @@ package io.github.keymaster65.copper2go.connector.standardio;
 
 import io.github.keymaster65.copper2go.engine.ReplyChannel;
 
+import java.util.Map;
+
 public class StandardInOutReplyChannelImpl implements ReplyChannel {
 
     @Override
-    public void reply(String message) {
+    public void reply(String message, final Map<String, String> attributes) {
         System.out.println(message); // NOSONAR
     }
 
     @Override
-    public void replyError(final String message) {
+    public void replyError(final String message, final Map<String, String> attributes) {
         System.out.println(message); // NOSONAR
     }
 }

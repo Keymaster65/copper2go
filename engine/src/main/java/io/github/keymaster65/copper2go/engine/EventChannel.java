@@ -15,7 +15,16 @@
  */
 package io.github.keymaster65.copper2go.engine;
 
+import java.util.Map;
+
 public interface EventChannel {
-    void event(final String message);
-    void errorEvent(final String message);
+    default void event(final String message) {
+        event(message, null);
+    }
+    void event(final String message, final Map<String, String> attributes);
+
+    default void errorEvent(final String message){
+        errorEvent(message, null);
+    }
+    void errorEvent(final String message, final Map<String, String> attributes);
 }
