@@ -45,6 +45,7 @@ import javax.management.InstanceNotFoundException;
 import javax.management.MBeanRegistrationException;
 import java.io.File;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.locks.LockSupport;
 
@@ -69,6 +70,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
 
     public void callWorkflow(
             final String payload,
+            final Map<String, String> attributes,
             final ReplyChannel replyChannel,
             final String workflow,
             final long major,
@@ -81,7 +83,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         workflowInstanceDescr.setVersion(version);
 
         String uuid = engine.createUUID();
-        workflowInstanceDescr.setData(new WorkflowData(uuid, payload));
+        workflowInstanceDescr.setData(new WorkflowData(uuid, payload, attributes));
         replyChannelStore.store(uuid, replyChannel);
         try {
             engine.run(workflowInstanceDescr);
