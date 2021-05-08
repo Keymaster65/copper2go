@@ -21,6 +21,7 @@ import io.github.keymaster65.copper2go.connector.http.vertx.RequestChannelStoreI
 import io.github.keymaster65.copper2go.connector.http.vertx.RequestHandler;
 import io.github.keymaster65.copper2go.connector.http.vertx.VertxHttpServer;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaReceiverImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaConsumerHandler;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutEventChannelStoreImpl;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
@@ -94,13 +95,21 @@ public class Application {
         if (kafkaReceiverConfigs != null) {
             for (Map.Entry<String, KafkaReceiverConfig> entry : kafkaReceiverConfigs.entrySet()) {
                 KafkaReceiverConfig config = entry.getValue();
+                final KafkaConsumerHandler handler = new KafkaConsumerHandler(
+                        config.topic,
+                        copper2GoEngine,
+                        config.workflowName,
+                        config.majorVersion,
+                        config.minorVersion
+                );
                 kafkaReceiverMap.put(
                         entry.getKey(),
                         new Copper2GoKafkaReceiverImpl(
                                 kafkaHost,
                                 kafkaPort,
-                                config,
-                                copper2GoEngine
+                                config.topic,
+                                config.groupId,
+                                handler
                         )
                 );
             }

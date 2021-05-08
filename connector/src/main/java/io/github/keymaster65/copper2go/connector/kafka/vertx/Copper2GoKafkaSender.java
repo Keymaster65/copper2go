@@ -18,7 +18,13 @@ package io.github.keymaster65.copper2go.connector.kafka.vertx;
 import io.vertx.core.Future;
 import io.vertx.kafka.client.producer.RecordMetadata;
 
+import java.util.Map;
+
 public interface Copper2GoKafkaSender {
-    Future<RecordMetadata> send(final String request);
+    default Future<RecordMetadata> send(final String request) {
+        return send(request, null);
+    }
+
+    Future<RecordMetadata> send(final String request, final Map<String, String> attributes);
     void close();
 }

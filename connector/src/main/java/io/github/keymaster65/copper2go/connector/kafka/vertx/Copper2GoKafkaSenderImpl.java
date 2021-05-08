@@ -15,14 +15,15 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
-import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
-import io.vertx.core.Handler;
+import io.vertx.kafka.client.producer.KafkaHeader;
 import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.kafka.client.producer.KafkaProducerRecord;
 import io.vertx.kafka.client.producer.RecordMetadata;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -55,15 +56,21 @@ public class Copper2GoKafkaSenderImpl implements Copper2GoKafkaSender {
         this.producer = producerFactory.apply(config);
     }
 
-    public Future<RecordMetadata> send(final String request) {
+    public Future<RecordMetadata> send(final String request, final Map<String, String> attributes) {
         KafkaProducerRecord<String, String> event = KafkaProducerRecord.create(topic, request);
+        event.addHeaders(createHeader(attributes));
         return producer.send(event);
     }
 
-    public void send(final String request, Handler<AsyncResult<RecordMetadata>> handler) {
-        KafkaProducerRecord<String, String> event = KafkaProducerRecord.create(topic, request);
-        producer.send(event, handler);
+    static List<KafkaHeader> createHeader(final Map<String, String> attributes) {
+        List<KafkaHeader> headers = new LinkedList<>();
+        if (attributes == null || attributes.isEmpty()) {
+            return headers;
+        }
+        attributes.forEach((key, value) -> headers.add(KafkaHeader.header(key, value)));
+        return headers;
     }
+
     public void close() {
         producer.close();
     }

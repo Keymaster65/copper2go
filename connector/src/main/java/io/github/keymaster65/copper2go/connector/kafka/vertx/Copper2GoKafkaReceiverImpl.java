@@ -15,15 +15,15 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.kafka.client.consumer.KafkaConsumer;
+import io.vertx.kafka.client.consumer.KafkaConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 import static org.apache.kafka.clients.consumer.ConsumerConfig.AUTO_OFFSET_RESET_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG;
@@ -36,39 +36,27 @@ public class Copper2GoKafkaReceiverImpl {
     private final KafkaConsumer<String, String> consumer;
     private final String topic;
 
-    private final AtomicLong successCount = new AtomicLong(0);
-    private final AtomicLong failCount = new AtomicLong(0);
-
     private static final Logger log = LoggerFactory.getLogger(Copper2GoKafkaReceiverImpl.class);
 
     public Copper2GoKafkaReceiverImpl(
             final String host,
             final int port,
-            final KafkaReceiverConfig receiverConfig,
-            Copper2GoEngine copper2GoEngine
+            final String topic,
+            final String groupId,
+            final Handler<KafkaConsumerRecord<String, String>> handler
     ) {
-        this.topic = receiverConfig.topic;
+        this.topic = topic;
 
         Map<String, String> config = new HashMap<>();
         config.put(BOOTSTRAP_SERVERS_CONFIG, host + ":" + port);
         config.put(KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         config.put(VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
-        config.put(GROUP_ID_CONFIG, receiverConfig.groupId);
+        config.put(GROUP_ID_CONFIG, groupId);
         config.put(AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         consumer = KafkaConsumer.create(Vertx.vertx(), config);
 
-        consumer.handler(event ->
-        {
-            try {
-                log.info("Call workflow {} for topic {}.", receiverConfig.workflowName, topic);
-                copper2GoEngine.callWorkflow(event.value(), null, receiverConfig.workflowName, receiverConfig.majorVersion, receiverConfig.minorVersion);
-                successCount.incrementAndGet();
-            } catch (Exception e) {
-                failCount.incrementAndGet();
-                log.error("Unable to call Workflow from topic {} with payload='{}'.", topic, event.value(), e);
-            }
-        });
+        consumer.handler(handler);
     }
 
     public void start() {
@@ -79,13 +67,5 @@ public class Copper2GoKafkaReceiverImpl {
     public void close() {
         log.info("Finish receiving from topic {}.", topic);
         consumer.close();
-    }
-
-    public long getSuccessCount() {
-        return successCount.get();
-    }
-
-    public long getFailCount() {
-        return failCount.get();
     }
 }

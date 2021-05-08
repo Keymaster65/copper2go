@@ -17,7 +17,7 @@ package io.github.keymaster65.copper2go.connector.integrationtest.kafka.vertx;
 
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaReceiverImpl;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaSenderImpl;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaConsumerHandler;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.EngineException;
 import io.vertx.core.Future;
@@ -57,14 +57,14 @@ class Copper2GoKafkaSenderImplTest {
         sender.close();
 
         Copper2GoEngine engine = mock(Copper2GoEngine.class);
-        Copper2GoKafkaReceiverImpl receiver = createCopper2GoKafkaReceiverAndReceive(engine);
-        receiver.close();
+        KafkaConsumerHandler handler = createCopper2GoKafkaReceiverAndReceive(engine);
+
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(receiver.getSuccessCount()).isEqualTo(1L);
-            soft.assertThat(receiver.getFailCount()).isEqualTo(0L);
+            soft.assertThat(handler.getSuccessCount()).isEqualTo(1L);
+            soft.assertThat(handler.getFailCount()).isEqualTo(0L);
         });
-        verify(engine).callWorkflow(eq(REQUEST), any(), anyString(), eq(1L), eq(0L));
+        verify(engine).callWorkflow(eq(REQUEST), eq(null), any(), anyString(), eq(1L), eq(0L));
     }
 
     @Test
@@ -77,17 +77,15 @@ class Copper2GoKafkaSenderImplTest {
         Mockito
                 .doThrow(new EngineException("Simulated exception."))
                 .when(engine)
-                .callWorkflow(eq(REQUEST), any(), anyString(), eq(1L), eq(0L));
+                .callWorkflow(eq(REQUEST), eq(null), any(), anyString(), eq(1L), eq(0L));
 
-        Copper2GoKafkaReceiverImpl receiver = createCopper2GoKafkaReceiverAndReceive(engine);
-        receiver.close();
-
+        KafkaConsumerHandler handler = createCopper2GoKafkaReceiverAndReceive(engine);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(receiver.getSuccessCount()).isEqualTo(0L);
-            soft.assertThat(receiver.getFailCount()).isEqualTo(1L);
+            soft.assertThat(handler.getSuccessCount()).isEqualTo(0L);
+            soft.assertThat(handler.getFailCount()).isEqualTo(1L);
         });
-        verify(engine).callWorkflow(eq(REQUEST), any(), anyString(), eq(1L), eq(0L));
+        verify(engine).callWorkflow(eq(REQUEST), eq(null), any(), anyString(), eq(1L), eq(0L));
     }
 
     @Test
@@ -96,25 +94,28 @@ class Copper2GoKafkaSenderImplTest {
         copper2GoKafkaSender.close();
     }
 
-    private Copper2GoKafkaReceiverImpl createCopper2GoKafkaReceiverAndReceive(final Copper2GoEngine engine) {
+    private KafkaConsumerHandler createCopper2GoKafkaReceiverAndReceive(final Copper2GoEngine engine) {
+        KafkaConsumerHandler handler = new KafkaConsumerHandler(
+                TOPIC,
+                engine,
+                "Hello",
+                1L,
+                0L
+        );
         Copper2GoKafkaReceiverImpl receiver = new Copper2GoKafkaReceiverImpl(
                 Commons.kafka.getHost(),
                 Commons.kafka.getFirstMappedPort(),
-                new KafkaReceiverConfig(
-                        TOPIC,
-                        "testGroupId",
-                        "Hello",
-                        1L,
-                        0L)
-                ,
-                engine
+                TOPIC,
+                "testGroupId",
+                handler
         );
         receiver.start();
-        while (receiver.getSuccessCount() + receiver.getFailCount() < 1L) {
+        while (handler.getSuccessCount() + handler.getFailCount() < 1L) {
             log.info("Wait for receive completion.");
             LockSupport.parkNanos(50L * 1000 * 1000);
         }
-        return receiver;
+        receiver.close();
+        return handler;
     }
 
     private Copper2GoKafkaSenderImpl createCopper2GoKafkaSenderAndSend() {

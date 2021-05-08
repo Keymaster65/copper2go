@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.net.URI;
 
 import static io.github.keymaster65.copper2go.connector.http.vertx.RequestHandler.COPPER2GO_2_API;
+import static org.mockito.ArgumentMatchers.eq;
 
 class VertxHttpServerTest {
 
@@ -52,7 +53,7 @@ class VertxHttpServerTest {
         // Exception should lead to normal response.end() if no workflow does
         Mockito.doThrow(new EngineException("Simulated exception."))
                 .when(engine)
-                .callWorkflow(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.eq("Hello"), ArgumentMatchers.eq(1L), ArgumentMatchers.eq(0L));
+                .callWorkflow(ArgumentMatchers.any(), eq(null), ArgumentMatchers.any(), eq("Hello"), eq(1L), eq(0L));
 
         final Vertx vertx = Vertx.vertx();
         final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, vertx, new RequestHandler(engine));
@@ -60,6 +61,6 @@ class VertxHttpServerTest {
         TestHttpClient.post(URI.create("http://localhost:" + SERVER_PORT + COPPER2GO_2_API + "request/1.0/Hello"), "Wolf\r\n");
         vertxHttpServer.stop();
 
-        Mockito.verify(engine).callWorkflow(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.eq("Hello"), ArgumentMatchers.eq(1L), ArgumentMatchers.eq(0L));
+        Mockito.verify(engine).callWorkflow(ArgumentMatchers.any(), eq(null), ArgumentMatchers.any(), eq("Hello"), eq(1L), eq(0L));
     }
 }

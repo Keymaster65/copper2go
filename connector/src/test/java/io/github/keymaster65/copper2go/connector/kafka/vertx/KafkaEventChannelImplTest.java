@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -34,8 +35,9 @@ class KafkaEventChannelImplTest {
 
         kafkaEventChannel.event(EVENT);
 
-        verify(sender).send(EVENT);
+        verify(sender).send(EVENT, null);
         verify(errorSender, times(0)).send(any());
+        verify(errorSender, times(0)).send(any(), eq(null));
     }
 
     @Test
@@ -46,8 +48,10 @@ class KafkaEventChannelImplTest {
 
         kafkaEventChannel.errorEvent(EVENT);
 
-        verify(errorSender).send(EVENT);
+        verify(errorSender).send(EVENT, null);
         verify(sender, times(0)).send(any());
+        verify(sender, times(0)).send(any());
+        verify(sender, times(0)).send(any(), eq(null));
     }
 
 }

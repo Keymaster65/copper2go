@@ -15,7 +15,12 @@
  */
 package io.github.keymaster65.copper2go.connector.http;
 
+import java.util.Map;
+
 public interface Copper2GoHttpClient {
-    void request(final HttpMethod httpMethod, final String request, final String responseCorrelationId);
+    default void request(final HttpMethod httpMethod, final String request, final String responseCorrelationId) {
+        request(httpMethod, request, responseCorrelationId, null);
+    }
+    void request(final HttpMethod httpMethod, final String request, final String responseCorrelationId, final Map<String,String> attributes);
     void close();
 }
