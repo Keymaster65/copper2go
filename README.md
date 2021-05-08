@@ -206,6 +206,7 @@ Here you find some of them ;-)
 * factoryfx integration
 * PostgreSQL support for business resources
 * Async idempotent DB API
+* On demand only: extend workflow attributes to a MultiMap
 
 ## Released
 
