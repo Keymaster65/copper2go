@@ -27,7 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpResponse;
 
-import static io.github.keymaster65.copper2go.connector.http.vertx.VertxHttpServer.COPPER2GO_2_API;
+import static io.github.keymaster65.copper2go.connector.http.vertx.RequestHandler.COPPER2GO_2_API;
 
 class ApplicationHttpTest {
 
@@ -41,7 +41,7 @@ class ApplicationHttpTest {
         application.start();
         HttpResponse<String> response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "request/1.0/Hello?a=1"), name);
         application.stop();
-        Assertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_OK);
+        Assertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_OK); // NOSONAR
         Assertions.assertThat(response.body()).contains(Data.getExpectedHello(name));
     }
 

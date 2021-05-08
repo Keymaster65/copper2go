@@ -18,6 +18,7 @@ package io.github.keymaster65.copper2go.application;
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
 import io.github.keymaster65.copper2go.connector.http.vertx.RequestChannelStoreImpl;
+import io.github.keymaster65.copper2go.connector.http.vertx.RequestHandler;
 import io.github.keymaster65.copper2go.connector.http.vertx.VertxHttpServer;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaReceiverImpl;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig;
@@ -69,7 +70,7 @@ public class Application {
 
         Copper2GoHttpServer httpServer = new VertxHttpServer(
                 config.httpPort,
-                copper2GoEngine);
+                new RequestHandler(copper2GoEngine));
 
         Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap = createKafkaReceiverMap(config.kafkaHost, config.kafkaPort, config.kafkaReceiverConfigs, copper2GoEngine);
         return new Application(
