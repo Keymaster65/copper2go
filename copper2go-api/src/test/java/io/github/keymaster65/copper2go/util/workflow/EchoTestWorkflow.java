@@ -34,6 +34,6 @@ public class EchoTestWorkflow extends Workflow<WorkflowData> {
 
     @Override
     public void main() {
-        replyChannelStore.reply(getData().getUUID(), getData().getPayload());
+        replyChannelStore.reply(getData().getUUID(), getData().getPayload(), getData().getAttributes());
     }
 }

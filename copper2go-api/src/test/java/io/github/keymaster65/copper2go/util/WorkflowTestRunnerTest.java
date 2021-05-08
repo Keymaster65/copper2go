@@ -21,6 +21,9 @@ import org.copperengine.core.CopperException;
 import org.copperengine.core.tranzient.TransientScottyEngine;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -43,12 +46,15 @@ class WorkflowTestRunnerTest {
                         null
                 )
         );
+        Map<String,String> attributes = new HashMap<>();
+        attributes.put("att", "ATT");
         WorkflowTestRunner.runTest(
-                new WorkflowData(UUID, TEST_DATA),
+                new WorkflowData(UUID, TEST_DATA, attributes),
                 new WorkflowTestRunner.WorkflowDefinition(WORKFLOW_NAME, 1L, 0L),
                 engine
         );
 
-        verify(replyChannelStoreMock).reply(UUID, TEST_DATA);
+
+        verify(replyChannelStoreMock).reply(UUID, TEST_DATA,  attributes);
     }
 }
