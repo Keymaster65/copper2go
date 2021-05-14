@@ -6,6 +6,6 @@ dependencies {
     implementation("org.copper-engine:copper-ext:5.3.0")
 
     // needed for exceptions
-    implementation("org.eclipse.jgit:org.eclipse.jgit:5.7.0.202003110725-r")
+    implementation("org.eclipse.jgit:org.eclipse.jgit:5.11.1.202105131744-r")
 
 }
