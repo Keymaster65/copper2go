@@ -38,9 +38,13 @@ class ApplicationHttpTest {
         String name = Data.getName();
         Config config = Config.of();
         Application application = Application.of(config);
-        application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "request/1.0/Hello?a=1"), name);
-        application.stop();
+        HttpResponse<String> response;
+        try {
+            application.start();
+            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "request/1.0/Hello?a=1"), name);
+        } finally {
+            application.stop();
+        }
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_OK); // NOSONAR
         Assertions.assertThat(response.body()).contains(Data.getExpectedHello(name));
     }
@@ -50,9 +54,14 @@ class ApplicationHttpTest {
         String name = Data.getName();
         Config config = Config.of();
         Application application = Application.of(config);
-        application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "request/2.0/Hello"), name);
-        application.stop();
+        HttpResponse<String> response;
+        try {
+            application.start();
+            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "request/2.0/Hello"), name);
+        } finally {
+
+            application.stop();
+        }
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_OK);
         Assertions.assertThat(response.body()).contains(Data.getExpectedHello2Mapping(name));
     }
@@ -62,9 +71,13 @@ class ApplicationHttpTest {
         String name = "";
         Config config = Config.of();
         Application application = Application.of(config);
-        application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "request/2.0/Hello"), name);
-        application.stop();
+        HttpResponse<String> response;
+        try {
+            application.start();
+            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "request/2.0/Hello"), name);
+        } finally {
+            application.stop();
+        }
         SoftAssertions.assertSoftly(
                 softAssertions -> {
                     softAssertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_INTERNAL_ERROR);
@@ -78,9 +91,13 @@ class ApplicationHttpTest {
         String name = "";
         Config config = Config.of();
         Application application = Application.of(config);
-        application.start();
-        HttpResponse<String> response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "event/2.0/Hello"), name);
-        application.stop();
+        HttpResponse<String> response;
+        try {
+            application.start();
+            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "event/2.0/Hello"), name);
+        } finally {
+            application.stop();
+        }
         SoftAssertions.assertSoftly(
                 softAssertions -> {
                     softAssertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_ACCEPTED);
