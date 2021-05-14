@@ -73,7 +73,7 @@ allprojects {
 
     dependencies {
         implementation("org.slf4j:slf4j-api:1.8.0-beta2")
-        implementation("ch.qos.logback:logback-classic:1.3.0-alpha4")
+        implementation("ch.qos.logback:logback-classic:1.3.0-alpha5")
 
         implementation("com.fasterxml.jackson.core:jackson-databind:2.12.3")
 
