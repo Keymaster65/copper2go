@@ -9,7 +9,7 @@ plugins {
     id("com.github.jk1.dependency-license-report") version "1.16"
     id("com.google.cloud.tools.jib") version "3.0.0"
     id("com.github.hierynomus.license-base") version "0.15.0"
-    id("org.unbroken-dome.test-sets") version "3.0.1"
+    id("org.unbroken-dome.test-sets") version "4.0.0"
 }
 
 publishing {
