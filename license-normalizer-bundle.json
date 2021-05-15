@@ -2,13 +2,11 @@
   "bundles" : [
     { "bundleName" : "apache1", "licenseName" : "Apache Software License, Version 1.1", "licenseUrl" : "http://www.apache.org/licenses/LICENSE-1.1" },
     { "bundleName" : "apache2", "licenseName" : "Apache License, Version 2.0", "licenseUrl" : "http://www.apache.org/licenses/LICENSE-2.0" },
-    { "bundleName" : "apache2", "licenseName" : "Eclipse Public License - v 1.0", "licenseUrl" : " http://www.eclipse.org/legal/epl-v10.html" },
+    { "bundleName" : "epl1", "licenseName" : "Eclipse Public License - v 1.0", "licenseUrl" : " http://www.eclipse.org/legal/epl-v10.html" },
     { "bundleName" : "cddl1", "licenseName" : "COMMON DEVELOPMENT AND DISTRIBUTION LICENSE Version 1.0 (CDDL-1.0)", "licenseUrl" : "http://opensource.org/licenses/CDDL-1.0" },
     { "bundleName" : "cddl11", "licenseName" : "COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.1", "licenseUrl": "https://github.com/javaee/activation/blob/master/LICENSE.txt"},
     { "bundleName" : "bsdJsch", "licenseName" : "Revised BSD", "licenseUrl" : "http://www.jcraft.com/jsch/LICENSE.txt" },
     { "bundleName" : "bsdJzlib", "licenseName" : "Revised BSD", "licenseUrl" : "http://www.jcraft.com/jzlib/LICENSE.txt"}
-
-
   ],
   "transformationRules" : [
     { "bundleName" : "apache2", "licenseUrlPattern" : "http://www.apache.org/licenses/LICENSE-2.0.txt" }

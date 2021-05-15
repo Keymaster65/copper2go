@@ -24,10 +24,10 @@ dependencies {
     implementation(project(":engine"))
     implementation(project(":connector"))
 
-    implementation("org.copper-engine:copper-coreengine:5+")
+    implementation("org.copper-engine:copper-coreengine:5.3.0")
 
-    implementation("io.vertx:vertx-core:4+")
-    implementation("io.vertx:vertx-kafka-client:4.+")
+    implementation("io.vertx:vertx-core:4.0.+")
+    implementation("io.vertx:vertx-kafka-client:4.0.+")
 
     testImplementation("org.testcontainers:testcontainers:1.+")
     testImplementation("org.testcontainers:kafka:1.+")
@@ -72,14 +72,14 @@ allprojects {
     }
 
     dependencies {
-        implementation("org.slf4j:slf4j-api:1.8.0-beta2")
-        implementation("ch.qos.logback:logback-classic:1.3.0-alpha4")
+        implementation("org.slf4j:slf4j-api:2.0.0-alpha1")
+        implementation("ch.qos.logback:logback-classic:1.3.0-alpha5")
 
         implementation("com.fasterxml.jackson.core:jackson-databind:2.12.3")
 
-        testImplementation("org.assertj:assertj-assertions-generator:2+")
-        testImplementation("org.junit.jupiter:junit-jupiter:5+")
-        testImplementation("org.mockito:mockito-core:3+")
+        testImplementation("org.assertj:assertj-assertions-generator:2.+")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.+")
+        testImplementation("org.mockito:mockito-core:3.+")
     }
 
     dependencyLocking {
