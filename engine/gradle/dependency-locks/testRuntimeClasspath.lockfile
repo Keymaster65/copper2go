@@ -33,7 +33,7 @@ org.checkerframework:checker-qual:2.11.1
 org.copper-engine:copper-coreengine:5.3.0
 org.copper-engine:copper-ext:5.3.0
 org.copper-engine:copper-jmx-interface:5.3.0
-org.eclipse.jgit:org.eclipse.jgit:5.9.0.202009080501-r
+org.eclipse.jgit:org.eclipse.jgit:5.11.1.202105131744-r
 org.javassist:javassist:3.23.1-GA
 org.jetbrains.kotlin:kotlin-stdlib-common:1.4.20
 org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.20
