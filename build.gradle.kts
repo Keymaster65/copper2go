@@ -6,6 +6,7 @@ plugins {
     distribution
     `maven-publish`
     jacoco
+    id("org.sonarqube") version "3.2.0"
     id("com.github.jk1.dependency-license-report") version "1.16"
     id("com.google.cloud.tools.jib") version "3.0.0"
     id("com.github.hierynomus.license-base") version "0.16.1"
@@ -19,6 +20,7 @@ publishing {
         }
     }
 }
+
 dependencies {
     implementation(project(":copper2go-api"))
     implementation(project(":engine"))
@@ -52,6 +54,15 @@ tasks.check {
 allprojects {
     apply(plugin = "java")
     apply(plugin = "org.unbroken-dome.test-sets")
+    apply(plugin = "org.sonarqube")
+
+    sonarqube {
+        properties {
+            property("sonar.projectKey", "Keymaster65_copper2go")
+            property("sonar.organization", "keymaster65")
+            property("sonar.host.url", "https://sonarcloud.io")
+        }
+    }
 
     java {
         sourceCompatibility = JavaVersion.VERSION_11
