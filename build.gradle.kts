@@ -51,10 +51,31 @@ tasks.check {
     dependsOn(tasks.findByName("systemTest"))
 }
 
+// https://docs.gradle.org/current/userguide/jacoco_plugin.html
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
+}
+
+tasks.sonarqube {
+    dependsOn(tasks.test)
+}
+
 allprojects {
     apply(plugin = "java")
     apply(plugin = "org.unbroken-dome.test-sets")
     apply(plugin = "org.sonarqube")
+    apply(plugin = "jacoco")
+
+
+
+    tasks.jacocoTestReport {
+        reports {
+            xml.isEnabled = true
+            csv.isEnabled = false
+            //html.destination = layout.buildDirectory.dir("jacocoHtml").get().asFile
+        }
+    }
+
 
     sonarqube {
         properties {
@@ -72,6 +93,7 @@ allprojects {
         withSourcesJar()
         withJavadocJar()
     }
+
 
     // see https://github.com/hierynomus/license-gradle-plugin
     apply(plugin = "com.github.hierynomus.license")
