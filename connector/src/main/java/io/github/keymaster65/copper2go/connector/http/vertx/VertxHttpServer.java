@@ -63,7 +63,7 @@ public class VertxHttpServer implements Copper2GoHttpServer {
             }
         });
         try {
-            if(!latch.await(10, TimeUnit.SECONDS)) {
+            if (!latch.await(10, TimeUnit.SECONDS)) {
                 throw new IllegalStateException("Server start timed out. Server might not be started.");
             }
         } catch (InterruptedException e) {
@@ -76,7 +76,23 @@ public class VertxHttpServer implements Copper2GoHttpServer {
     @Override
     public void stop() {
         log.info("Stopping server.");
-        httpServer.close(asyncResult -> log.info("Server close. succeeded={}", asyncResult.succeeded()));
+        CountDownLatch latch = new CountDownLatch(1);
+        httpServer.close(asyncResult -> {
+            log.info("Server close. succeeded={}", asyncResult.succeeded());
+            if (asyncResult.succeeded()) {
+                latch.countDown();
+            } else {
+                log.error("Server NOT closed on port {}. succeeded={}", port, asyncResult.succeeded());
+            }
+        });
+        try {
+            if (!latch.await(10, TimeUnit.SECONDS)) {
+                throw new IllegalStateException("Server stop timed out. Server might not be stopped.");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Server might not be stopped.", e);
+        }
         vertx.close(asyncResult -> log.info("VertX close. succeeded={}", asyncResult.succeeded()));
     }
 
