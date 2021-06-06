@@ -23,9 +23,6 @@ import io.vertx.core.http.HttpServerRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 public class VertxHttpServer implements Copper2GoHttpServer {
 
     private static final Logger log = LoggerFactory.getLogger(VertxHttpServer.class);
@@ -53,47 +50,14 @@ public class VertxHttpServer implements Copper2GoHttpServer {
     @Override
     public void start() {
         log.info("Before server listen on port {}", port);
-        CountDownLatch latch = new CountDownLatch(1);
-        httpServer.listen(port, asyncResult -> {
-            log.info("Server listening on port {}. succeeded={}", port, asyncResult.succeeded());
-            if (asyncResult.succeeded()) {
-                latch.countDown();
-            } else {
-                log.error("Server NOT listening on port {}. succeeded={}", port, asyncResult.succeeded());
-            }
-        });
-        try {
-            if (!latch.await(10, TimeUnit.SECONDS)) {
-                throw new IllegalStateException("Server start timed out. Server might not be started.");
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("Server might not be started.", e);
-        }
+        httpServer.listen(port);
         log.info("After server listen on port {}", port);
     }
 
     @Override
     public void stop() {
         log.info("Stopping server.");
-        CountDownLatch latch = new CountDownLatch(1);
-        httpServer.close(asyncResult -> {
-            log.info("Server close. succeeded={}", asyncResult.succeeded());
-            if (asyncResult.succeeded()) {
-                latch.countDown();
-            } else {
-                log.error("Server NOT closed on port {}. succeeded={}", port, asyncResult.succeeded());
-            }
-        });
-        try {
-            if (!latch.await(10, TimeUnit.SECONDS)) {
-                throw new IllegalStateException("Server stop timed out. Server might not be stopped.");
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("Server might not be stopped.", e);
-        }
+        httpServer.close(asyncResult -> log.info("Server close. succeeded={}", asyncResult.succeeded()));
         vertx.close(asyncResult -> log.info("VertX close. succeeded={}", asyncResult.succeeded()));
     }
-
 }
