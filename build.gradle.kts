@@ -40,7 +40,7 @@ application {
     applicationDefaultJvmArgs = listOf("-Dlogback.configurationFile=src/main/resources/logback.xml")
 }
 
-group = "de.wolfsvl"
+group = "io.github.keymaster65"
 version = "2.2"
 
 testSets {
@@ -75,7 +75,6 @@ allprojects {
             //html.destination = layout.buildDirectory.dir("jacocoHtml").get().asFile
         }
     }
-
 
     sonarqube {
         properties {
