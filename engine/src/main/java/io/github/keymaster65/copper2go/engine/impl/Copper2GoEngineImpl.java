@@ -106,7 +106,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
 
             @Override
             protected TicketPoolManager createTicketPoolManager() {
-                DefaultTicketPoolManager tpManager = new DefaultTicketPoolManager();
+                var tpManager = new DefaultTicketPoolManager();
                 tpManager.setTicketPools(Collections.singletonList(new TicketPool(DefaultTicketPoolManager.DEFAULT_POOL_ID, availableTickets)));
                 return tpManager;
             }
@@ -114,11 +114,11 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
             @Override
             protected WorkflowRepository createWorkflowRepository() {
                 try {
-                    String workDir = "./.copper";
+                    var workDir = "./.copper";
                     if (!new File("workDir").mkdirs()) {
                         log.info("Could not create dir {}", "workDir");
                     }
-                    GitWorkflowRepository repo = new GitWorkflowRepository();
+                    var repo = new GitWorkflowRepository();
 
                     repo.setGitRepositoryDir(getWorkflowSourceDirectory());
                     repo.addSourceDir(getWorkflowSourceDirectory().getAbsolutePath() + workflowRepositoryConfig.workflowBase);
@@ -131,7 +131,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
                 }
             }
         };
-        final TransientScottyEngine transientScottyEngine = factory.create();
+        final var transientScottyEngine = factory.create();
         while (!transientScottyEngine.getEngineState().equals(EngineState.STARTED)) {
             LockSupport.parkNanos(10L * 1000L * 1000L);
         }
@@ -141,7 +141,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
     }
 
     private SimpleJmxExporter startJmxExporter(final TransientScottyEngine engine) throws EngineException {
-        SimpleJmxExporter newExporter = new SimpleJmxExporter();
+        var newExporter = new SimpleJmxExporter();
         newExporter.addProcessingEngineMXBean("copper2go-engine", engine);
         newExporter.addWorkflowRepositoryMXBean("copper2go-workflow-repository", (FileBasedWorkflowRepository) engine.getWfRepository());
         engine.getProcessorPools().forEach(pool -> newExporter.addProcessorPoolMXBean(pool.getId(), pool));

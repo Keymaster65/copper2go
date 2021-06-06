@@ -77,7 +77,7 @@ public class RequestHandler implements Handler<HttpServerRequest> {
     private void handleWorkflow(final String requestBody, final HttpServerResponse response, final Map<String, String> attributes, final String uri) {
         try {
             if (uri.startsWith(COPPER2GO_2_API + "request/") || uri.startsWith(COPPER2GO_2_API + "event/")) {
-                WorkflowVersion workflowVersion = WorkflowVersion.of(uri);
+                var workflowVersion = WorkflowVersion.of(uri);
                 copper2GoEngine.callWorkflow(
                         requestBody,
                         attributes,

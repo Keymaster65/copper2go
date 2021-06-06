@@ -27,8 +27,9 @@ public class StandardInOutListener {
     private static final Logger log = LoggerFactory.getLogger(StandardInOutListener.class);
 
     public void listenLocalStream(final Copper2GoEngine copper2GoEngine) throws StandardInOutException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        while (true) { // NOSONAR
+        var reader = new BufferedReader(new InputStreamReader(System.in));
+        //noinspection InfiniteLoopStatement
+        while (true) {
             try {
                 System.out.println("Enter your name: "); // NOSONAR
                 String line1 = reader.readLine();

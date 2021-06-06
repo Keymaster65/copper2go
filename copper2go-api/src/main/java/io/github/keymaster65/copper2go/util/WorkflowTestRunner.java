@@ -71,7 +71,7 @@ public final class WorkflowTestRunner {
     }
 
     public static TransientScottyEngine createTestEngine(final String workflowDir, Copper2goDependencyInjector copper2goDependencyInjector) {
-        TransientEngineFactory factory = createTransientEngineFactory(workflowDir, copper2goDependencyInjector);
+        var factory = createTransientEngineFactory(workflowDir, copper2goDependencyInjector);
         return factory.create();
     }
 

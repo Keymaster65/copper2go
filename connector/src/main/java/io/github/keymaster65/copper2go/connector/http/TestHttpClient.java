@@ -32,7 +32,7 @@ public class TestHttpClient {
                 .followRedirects(HttpClient.Redirect.NORMAL)
                 .connectTimeout(Duration.ofSeconds(20))
                 .build();
-        HttpRequest httpRequest =
+        var httpRequest =
                 HttpRequest.newBuilder()
                         .timeout(Duration.ofMillis(5000))
                         .uri(uri)

@@ -51,7 +51,7 @@ public class Application {
     public static Application of(final Config config) {
 
         var replyChannelStoreImpl = new ReplyChannelStoreImpl();
-        Copper2GoEngine copper2GoEngine = createCopper2GoEngine(config, replyChannelStoreImpl);
+        var copper2GoEngine = createCopper2GoEngine(config, replyChannelStoreImpl);
 
         final var requestChannelStoreImpl = new RequestChannelStoreImpl(
                 config.httpRequestChannelConfigs,
@@ -95,7 +95,7 @@ public class Application {
         if (kafkaReceiverConfigs != null) {
             for (Map.Entry<String, KafkaReceiverConfig> entry : kafkaReceiverConfigs.entrySet()) {
                 KafkaReceiverConfig config = entry.getValue();
-                final KafkaConsumerHandler handler = new KafkaConsumerHandler(
+                final var handler = new KafkaConsumerHandler(
                         config.topic,
                         copper2GoEngine,
                         config.workflowName,
