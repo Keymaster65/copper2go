@@ -77,7 +77,7 @@ class SystemDefaultTest {
 
     @BeforeAll
     static void startContainer() {
-        copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:tmp"))
+        copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:latest"))
                 .withExposedPorts(59665)
                 .withImagePullPolicy(imageName -> true);
         copper2GoContainer.start();
