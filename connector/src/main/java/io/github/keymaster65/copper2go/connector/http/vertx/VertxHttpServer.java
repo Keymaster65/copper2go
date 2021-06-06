@@ -40,17 +40,18 @@ public class VertxHttpServer implements Copper2GoHttpServer {
         this(port, vertx, vertx.createHttpServer(), handler);
     }
 
-    VertxHttpServer(final int port, final Vertx vertx, final HttpServer httpServer, Handler<HttpServerRequest> handler) {
+    VertxHttpServer(final int port, final Vertx vertx, final HttpServer httpServer, final Handler<HttpServerRequest> handler) {
         this.port = port;
         this.vertx = vertx;
         this.httpServer = httpServer;
-        httpServer.requestHandler(handler);
+        this.httpServer.requestHandler(handler);
     }
 
     @Override
     public void start() {
-        log.info("Server listen on port {}", port);
+        log.info("Before server listen on port {}", port);
         httpServer.listen(port);
+        log.info("After server listen on port {}", port);
     }
 
     @Override
