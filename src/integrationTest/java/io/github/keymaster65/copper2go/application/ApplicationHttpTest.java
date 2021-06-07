@@ -27,7 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpResponse;
 
-import static io.github.keymaster65.copper2go.connector.http.vertx.RequestHandler.COPPER2GO_2_API;
+import static io.github.keymaster65.copper2go.connector.http.vertx.BodyHandler.COPPER2GO_2_API;
 
 class ApplicationHttpTest {
 

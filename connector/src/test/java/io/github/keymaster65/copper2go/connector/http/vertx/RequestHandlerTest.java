@@ -15,41 +15,25 @@
  */
 package io.github.keymaster65.copper2go.connector.http.vertx;
 
-import io.vertx.core.MultiMap;
-import org.assertj.core.api.Assertions;
+import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.vertx.core.http.HttpServerRequest;
 import org.junit.jupiter.api.Test;
 
-import static java.util.Map.entry;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class RequestHandlerTest {
 
     @Test
-    void createAttributes() {
-        MultiMap multiMap = MultiMap.caseInsensitiveMultiMap();
-        multiMap.add("a", "A");
-        Assertions.assertThat(RequestHandler.createAttributes(multiMap))
-                .containsOnly(entry("a", "A"))
-                .hasSize(1);
-    }
+    void handle() {
+        Copper2GoEngine engine = mock(Copper2GoEngine.class);
+        var handler = new RequestHandler(engine);
 
-    @Test
-    void createAttributesDouble() {
-        MultiMap multiMap = MultiMap.caseInsensitiveMultiMap();
-        multiMap.add("a", "A");
-        multiMap.add("a", "A");
-        Assertions.assertThat(RequestHandler.createAttributes(multiMap))
-                .containsOnly(entry("a", "A"))
-                .hasSize(1);
-    }
+        HttpServerRequest request = mock(HttpServerRequest.class);
+        handler.handle(request);
 
-    @Test
-    void createAttributesEmpty() {
-        MultiMap multiMap = MultiMap.caseInsensitiveMultiMap();
-        Assertions.assertThat(RequestHandler.createAttributes(multiMap)).isNull();
-    }
+        verify(request).bodyHandler(any());
 
-    @Test
-    void createAttributesNull() {
-        Assertions.assertThat(RequestHandler.createAttributes(null)).isNull();
     }
 }
