@@ -14,29 +14,32 @@ import static org.mockito.Mockito.verify;
 
 class ReplyChannelStoreImplTest {
 
+    public static final String UUID = "1";
+    public static final String TEST_MESSAGE = "Test message";
+
     @Test
     void defaultTest() {
         var store = new ReplyChannelStoreImpl();
 
-        assertThat(store.getReplyChannel("1")).isNull();
+        assertThat(store.getReplyChannel(UUID)).isNull();
 
-        store.store("1", null);
-        assertThat(store.getReplyChannel("1")).isNotNull();
+        store.store(UUID, null);
+        assertThat(store.getReplyChannel(UUID)).isNotNull();
         assertThatNoException()
                 .isThrownBy(() ->
-                        store.reply("1", "Test message"));
+                        store.reply(UUID, TEST_MESSAGE));
 
-        assertThat(store.getReplyChannel("1")).isNull();
+        assertThat(store.getReplyChannel(UUID)).isNull();
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() ->
-                        store.replyError("1", "Test message"));
+                        store.replyError(UUID, TEST_MESSAGE));
 
 
-        store.store("1", null);
-        assertThat(store.getReplyChannel("1")).isNotNull();
+        store.store(UUID, null);
+        assertThat(store.getReplyChannel(UUID)).isNotNull();
         assertThatNoException()
                 .isThrownBy(() ->
-                        store.replyError("1", "Test message"));
+                        store.replyError(UUID, TEST_MESSAGE));
 
     }
 
@@ -44,57 +47,57 @@ class ReplyChannelStoreImplTest {
     @Test
     void storeAndGet() {
         var store = new ReplyChannelStoreImpl();
-        assertThat(store.getReplyChannel("1")).isNull();
+        assertThat(store.getReplyChannel(UUID)).isNull();
 
         var channel = mock(ReplyChannel.class);
-        store.store("1", channel);
+        store.store(UUID, channel);
 
-        assertThat(store.getReplyChannel("1")).isNotNull().isSameAs(channel);
+        assertThat(store.getReplyChannel(UUID)).isNotNull().isSameAs(channel);
         }
 
     @Test
     void reply() {
         var store = new ReplyChannelStoreImpl();
         var channel = mock(ReplyChannel.class);
-        store.store("1", channel);
+        store.store(UUID, channel);
 
-        store.reply("1", "Test message");
-        verify(channel).reply("Test message", null);
-        verify(channel, times(0)).replyError("Test message", null);
-        verify(channel, times(0)).replyError("Test message");
+        store.reply(UUID, TEST_MESSAGE);
+        verify(channel).reply(TEST_MESSAGE, null);
+        verify(channel, times(0)).replyError(TEST_MESSAGE, null);
+        verify(channel, times(0)).replyError(TEST_MESSAGE);
 
-        store.store("1", channel);
+        store.store(UUID, channel);
         var attributes = mock(Map.class);
         //noinspection unchecked
-        store.reply("1", "Test message", attributes);
+        store.reply(UUID, TEST_MESSAGE, attributes);
 
         //noinspection unchecked
-        verify(channel).reply("Test message", attributes);
-        verify(channel, times(0)).replyError("Test message", null);
-        verify(channel, times(0)).replyError("Test message");
+        verify(channel).reply(TEST_MESSAGE, attributes);
+        verify(channel, times(0)).replyError(TEST_MESSAGE, null);
+        verify(channel, times(0)).replyError(TEST_MESSAGE);
    }
 
     @Test
     void replyError() {
         var store = new ReplyChannelStoreImpl();
         var channel = mock(ReplyChannel.class);
-        store.store("1", channel);
+        store.store(UUID, channel);
 
-        store.replyError("1", "Test message");
+        store.replyError(UUID, TEST_MESSAGE);
 
-        verify(channel).replyError("Test message", null);
-        verify(channel, times(0)).reply("Test message", null);
-        verify(channel, times(0)).reply("Test message");
+        verify(channel).replyError(TEST_MESSAGE, null);
+        verify(channel, times(0)).reply(TEST_MESSAGE, null);
+        verify(channel, times(0)).reply(TEST_MESSAGE);
 
 
-        store.store("1", channel);
+        store.store(UUID, channel);
         var attributes = mock(Map.class);
         //noinspection unchecked
-        store.replyError("1", "Test message", attributes);
+        store.replyError(UUID, TEST_MESSAGE, attributes);
 
         //noinspection unchecked
-        verify(channel).replyError("Test message", attributes);
-        verify(channel, times(0)).reply("Test message", null);
-        verify(channel, times(0)).reply("Test message");
+        verify(channel).replyError(TEST_MESSAGE, attributes);
+        verify(channel, times(0)).reply(TEST_MESSAGE, null);
+        verify(channel, times(0)).reply(TEST_MESSAGE);
     }
 }
