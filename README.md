@@ -146,6 +146,8 @@ Docker images can be found here: https://hub.docker.com/r/keymaster65/copper2go
 If you want to add something, you may contribute with pull requests or forks. In a fork you might
 add 3rd party libs as wished.
 
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
 Forks or Pull Requests are always very welcome.
 
 Isues are very welcome, too.
