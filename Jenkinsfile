@@ -22,21 +22,21 @@ node() {
             }
         }
 
-        try {
-            stage('Integration Test') {
-                _gradle 'integrationTest'
-            }
-        } finally {
-            junit '**/test-results/integrationTest/*.xml'
-        }
-
-        try {
-            stage('System Test') {
-                _gradle 'systemTest'
-            }
-        } finally {
-            junit '**/test-results/systemTest/*.xml'
-        }
+//        try {
+//            stage('Integration Test') {
+//                _gradle 'integrationTest'
+//            }
+//        } finally {
+//            junit '**/test-results/integrationTest/*.xml'
+//        }
+//
+//        try {
+//            stage('System Test') {
+//                _gradle 'systemTest'
+//            }
+//        } finally {
+//            junit '**/test-results/systemTest/*.xml'
+//        }
 
         stage('Publish Artifacts') {
             archiveArtifacts artifacts: 'copper2go-api/build/libs/**/*.jar', fingerprint: true
