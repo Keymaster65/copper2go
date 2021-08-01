@@ -167,10 +167,11 @@ Here you find some of them ;-)
 
 ### "Kafka/Http Bridge" Release Plan Release Workflow API 2.1  and Application API 2.2
 * [x] Add Bridge Workflow
+* [x] Add quality badges
 * [ ] Support HTTP URL parameter (in and out)
 * [ ] Support Kafka Header (parameter) (in and out)
 * [ ] Add use case in Developer's Guide
-* [ ] Add quality badges and improve unit test coverage
+* [ ] Improve unit test coverage
 
 ### "Binding" Release Plan Application API 2.3
 * [ ] Workflow with Json binding
