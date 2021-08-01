@@ -1,4 +1,6 @@
-# copper2go 
+# copper2go
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/Keymaster65/copper2go/blob/master/LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Build](https://github.com/Keymaster65/copper2go/actions/workflows/build.yml/badge.svg)](https://github.com/Keymaster65/copper2go/actions/workflows/build.yml)
 [![CodeQL](https://github.com/Keymaster65/copper2go/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Keymaster65/copper2go/actions/workflows/codeql-analysis.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=alert_status)](https://sonarcloud.io/dashboard?id=Keymaster65_copper2go)
