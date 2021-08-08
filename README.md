@@ -168,6 +168,7 @@ Here you find some of them ;-)
 ### "Kafka/Http Bridge" Release Plan Release Workflow API 2.1  and Application API 2.2
 * [x] Add Bridge Workflow
 * [x] Add quality badges
+* [ ] Release internat workflow application as copper2go-webapp
 * [ ] Support HTTP URL parameter (in and out)
 * [ ] Support Kafka Header (parameter) (in and out)
 * [ ] Add use case in Developer's Guide
