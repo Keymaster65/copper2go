@@ -107,7 +107,7 @@ allprojects {
         implementation("org.slf4j:slf4j-api:2.0.0-alpha2")
         implementation("ch.qos.logback:logback-classic:1.3.0-alpha6")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.12.4")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.12.5")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.+")
         testImplementation("org.junit.jupiter:junit-jupiter:5.+")
