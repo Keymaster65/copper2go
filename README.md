@@ -49,9 +49,10 @@ You want to develop your own workflows? You may start with the existing ones.
 * Start Container with your configuration:
     * `docker run -d -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v2.0`
 
-## More Motivation COPPER was developed as an Orchestration Engine. For more than 10 years now, in 2021, many high
+## More Motivation 
 
-performance systems are in production. The Online Configuration capability of this workflow engine Fixis used seldom. To
+COPPER was developed as an Orchestration Engine. For more than 10 years now, in 2021, many high
+performance systems are in production. The Online Configuration capability of this workflow engine is used seldom. To
 fill this gap, by using this feature as a main concept, copper2go was developed. By adding connectors, the development
 of Orchestration Services will become easier for Java developers.
 
