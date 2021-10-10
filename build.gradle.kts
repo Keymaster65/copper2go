@@ -26,7 +26,7 @@ dependencies {
     implementation(project(":engine"))
     implementation(project(":connector"))
 
-    implementation("org.copper-engine:copper-coreengine:5.3.0")
+    implementation("org.copper-engine:copper-coreengine:5.4.0")
 
     implementation("io.vertx:vertx-core:4.1.+")
     implementation("io.vertx:vertx-kafka-client:4.1.+")

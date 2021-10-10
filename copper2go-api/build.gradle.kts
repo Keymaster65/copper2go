@@ -37,7 +37,7 @@ publishing {
 }
 
 dependencies {
-    implementation("org.copper-engine:copper-coreengine:5.3.0")
+    implementation("org.copper-engine:copper-coreengine:5.4.0")
 
     testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
 }
