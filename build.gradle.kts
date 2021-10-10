@@ -101,6 +101,7 @@ allprojects {
         setHeader(File("$rootDir/licenceHeader.txt"))
         setSkipExistingHeaders(false)
         exclude("**/*.json")
+        exclude("**/test.html")
     }
 
     dependencies {
