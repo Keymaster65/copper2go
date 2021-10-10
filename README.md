@@ -168,11 +168,10 @@ Here you find some of them ;-)
 ### "Kafka/Http Bridge" Release Plan Release Workflow API 2.1  and Application API 2.2
 * [x] Add Bridge Workflow
 * [x] Add quality badges
-* [ ] Release internat workflow application as copper2go-webapp
 * [ ] Support HTTP URL parameter (in and out)
 * [ ] Support Kafka Header (parameter) (in and out)
 * [ ] Add use case in Developer's Guide
-* [ ] Improve unit test coverage
+* [ ] Improve unit test coverage up to 50%
 
 ### "Binding" Release Plan Application API 2.3
 * [ ] Workflow with Json binding
@@ -189,11 +188,13 @@ Here you find some of them ;-)
 ### Backlog
 
 * Fix memory leak in ReplyChannelStore
+* Improve unit test coverage up to 50+%
 * STDIN/OUT support in config and container (or remove it)
 * Redesign DefaultRequestChannel (like Kafka). Use WARN instead of ERROR?
 * Redesign RequestChannel/EventChannel: Is the difference needed? Why 2 errorEvent (was inspired by STDOUR/ERR)?
 * Collect Statistics and other (may be useful for Tests like Bridge-Test)   
 * Add test coverage for workflows to copper2go-workflows
+* Release internet workflow application as copper2go-webapp (see branch experiment/webapp)
 * Multi workflow support and REST level
 * Vertx Bus Connector 
 * HTTP Security
