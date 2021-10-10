@@ -45,18 +45,19 @@ You want to develop your own workflows? You may start with the existing ones.
   * Start Container with your configuration:
     * `docker run -d -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v2.0`
 
-## Developer's Guide
-copper2go bases on the COPPER (COmmon Persistable Process Excecution Runtime). To get more information about
-COPPER, you might visit https://github.com/copper-engine or https://github.com/copper-engine.
-
-### Motivation
+R## More Motivation
 COPPER was developed as an Orchestration Engine. For more that 10 years now, in 2021, many high performance
 systems are in production. The Online Configuration capability of this workflow engine is used seldom.
 To fill this gap, by using this feature as a main concept, copper2go was developed. By adding connectors,
-the development of Orchestration Services will become more efficient for Java developers.
+the development of Orchestration Services will become easier for Java developers.
 
-You can see copper2go as "Something as a Service", somewhere in the area of Paas and SaaS.
-copper2go containers can be run wherever you want. So the container may run
+You can see copper2go as a "Plattform as a Service", if you want to enable your clients
+to write and support their own COPPER workflows.
+
+With an existing git repository, that contains all COPPER workflows of your orchestration services,
+copper2go is the enabler for "Software as as Service" orchestration systems.
+
+Of course, copper2go containers can be run wherever you want. So the container may run
 
 * Internet Workflows, if hosted in the web
 * Intranet Workflows, if hosted in a company
@@ -65,6 +66,10 @@ copper2go containers can be run wherever you want. So the container may run
 In times of automated build pipelines the needs for Workflow systems reduced, but a more lightweight **git** based
 pipeline might even better fit your needs.
 
+## Developer's Guide
+copper2go bases on the COPPER (COmmon Persistable Process Excecution Runtime). To get more information about
+COPPER, you might visit https://github.com/copper-engine or https://github.com/copper-engine.
+
 ### Online Configuration
 Using git only, and compiling the workflow inside the container, you can very easy change your system's behaviour
 "online". That is what want many people dream of, if they talk about "configuration". As one use case you can simply
@@ -72,12 +77,15 @@ Using git only, and compiling the workflow inside the container, you can very ea
 always works by concept.
 
 ### Reactive Applications
-Asynchronicity is one of the core concept of COPPER. That is the reason, why you can develop reactive
-high performance applications using COPPER or copper2go.
+Non-blocking threads is one of the core concept of COPPER. That is the reason, why you can develop reactive
+high performance applications using COPPER or copper2go. A good motivation can be found in the "reactor" reference
+https://projectreactor.io/docs/core/release/reference/#intro-reactive
 
-### Synchronous Code
-In spite of the asynchronicity inside COPPER, the workflow Java code is Synchronous Code. You might
-have a look at the "Motivation" of the Loom Project in https://cr.openjdk.java.net/~rpressler/loom/Loom-Proposal.html.
+### Non-Blocking Threads but easy to Maintain
+In spite of the non-blocking code with callback inside COPPER, the COPPER workflow Java code is readable and looks 
+as simple as blocking code. There is no "callback hell" in your project.
+You might  have a look at the "Motivation" of the Loom Project in
+https://cr.openjdk.java.net/~rpressler/loom/Loom-Proposal.html.
 
 ### Long Running Workflows
 Last but not least, COPPER workflows can be executed for an unlimited time. It depends on the resources you add
