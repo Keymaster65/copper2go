@@ -15,7 +15,7 @@ copper2go makes use of this feature and should help to use COPPER in your projec
 All you need to do is, to start the copper2go container with your configuration,
 that support your business workflow.
  
- As one of the later steps, there might follow a factoryfx integration. 
+ As one of the future steps, there might follow a factoryfx integration. 
  This will enable copper2go to make runtime changes in the technical part of the application 
  outside the business workflows without usage of the traditional pipeline.
  
@@ -46,8 +46,8 @@ You want to develop your own workflows? You may start with the existing ones.
     * `docker run -d -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v2.0`
 
 R## More Motivation
-COPPER was developed as an Orchestration Engine. For more that 10 years now, in 2021, many high performance
-systems are in production. The Online Configuration capability of this workflow engine is used seldom.
+COPPER was developed as an Orchestration Engine. For more than 10 years now, in 2021, many high performance
+systems are in production. The Online Configuration capability of this workflow engine Fixis used seldom.
 To fill this gap, by using this feature as a main concept, copper2go was developed. By adding connectors,
 the development of Orchestration Services will become easier for Java developers.
 
@@ -55,7 +55,7 @@ You can see copper2go as a "Plattform as a Service", if you want to enable your 
 to write and support their own COPPER workflows.
 
 With an existing git repository, that contains all COPPER workflows of your orchestration services,
-copper2go is the enabler for "Software as as Service" orchestration systems.
+copper2go is the enabler for "Software as a Service" orchestration systems.
 
 Of course, copper2go containers can be run wherever you want. So the container may run
 
@@ -158,7 +158,7 @@ add 3rd party libs as wished.
 
 Forks or Pull Requests are always very welcome.
 
-Isues are very welcome, too.
+Issues are very welcome, too.
 
 ### Links
   * https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
