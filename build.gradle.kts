@@ -7,8 +7,8 @@ plugins {
     `maven-publish`
     jacoco
     id("org.sonarqube") version "3.3"
-    id("com.github.jk1.dependency-license-report") version "1.17"
-    id("com.google.cloud.tools.jib") version "3.1.2"
+    id("com.github.jk1.dependency-license-report") version "2.0"
+    id("com.google.cloud.tools.jib") version "3.1.4"
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
 }
@@ -26,7 +26,7 @@ dependencies {
     implementation(project(":engine"))
     implementation(project(":connector"))
 
-    implementation("org.copper-engine:copper-coreengine:5.3.0")
+    implementation("org.copper-engine:copper-coreengine:5.4.0")
 
     implementation("io.vertx:vertx-core:4.1.+")
     implementation("io.vertx:vertx-kafka-client:4.1.+")
@@ -101,13 +101,14 @@ allprojects {
         setHeader(File("$rootDir/licenceHeader.txt"))
         setSkipExistingHeaders(false)
         exclude("**/*.json")
+        exclude("**/test.html")
     }
 
     dependencies {
-        implementation("org.slf4j:slf4j-api:2.0.0-alpha2")
-        implementation("ch.qos.logback:logback-classic:1.3.0-alpha6")
+        implementation("org.slf4j:slf4j-api:2.0.0-alpha4")
+        implementation("ch.qos.logback:logback-classic:1.3.0-alpha10")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.12.4")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.+")
         testImplementation("org.junit.jupiter:junit-jupiter:5.+")
