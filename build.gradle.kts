@@ -85,7 +85,7 @@ allprojects {
     }
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
     }
 
     java {
@@ -180,7 +180,7 @@ jib {
         workingDirectory = "/"
     }
     from {
-        image = "azul/zulu-openjdk-alpine:11.0.7"
+        image = "azul/zulu-openjdk-alpine:17.0.0"
     }
     to {
         image = "registry.hub.docker.com/keymaster65/copper2go"
