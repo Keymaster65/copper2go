@@ -70,8 +70,8 @@ allprojects {
 
     tasks.jacocoTestReport {
         reports {
-            xml.isEnabled = true
-            csv.isEnabled = false
+            xml.getRequired().set(true)
+            csv.getRequired().set(false)
             //html.destination = layout.buildDirectory.dir("jacocoHtml").get().asFile
         }
     }
