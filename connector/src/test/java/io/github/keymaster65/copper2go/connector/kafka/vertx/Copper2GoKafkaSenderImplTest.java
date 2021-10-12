@@ -15,20 +15,59 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
+import io.vertx.core.Future;
 import io.vertx.kafka.client.producer.KafkaHeader;
+import io.vertx.kafka.client.producer.KafkaProducer;
+import io.vertx.kafka.client.producer.RecordMetadata;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 class Copper2GoKafkaSenderImplTest {
 
     @Test
+    void send() {
+        @SuppressWarnings("unchecked")
+        Function<Map<String, String>, KafkaProducer<String, String>> producerFactory =
+                        Mockito.mock(Function.class);
+
+        @SuppressWarnings("unchecked")
+        KafkaProducer<String, String> producer =
+                        Mockito.mock(KafkaProducer.class);
+
+        @SuppressWarnings("unchecked")
+        Future<RecordMetadata> sendFuture = Mockito.mock(Future.class);
+
+        Mockito.when(producer.send(Mockito.any())).thenReturn(sendFuture);
+        Mockito.when(producerFactory.apply(Mockito.any())).thenReturn(producer);
+
+        final Copper2GoKafkaSender copper2GoKafkaSender = new Copper2GoKafkaSenderImpl(
+                "host",
+                0,
+                "topic",
+                producerFactory
+        );
+        copper2GoKafkaSender.send(
+                "request",
+                Map.of()
+        );
+        copper2GoKafkaSender.close();
+
+        Mockito.verify(producerFactory).apply(Mockito.any());
+        Mockito.verify(producer).send(Mockito.any());
+        Mockito.verify(producer).close();
+
+    }
+
+    @Test
     void createHeader() {
-        Map<String,String> attributes = new HashMap<>();
+        Map<String, String> attributes = new HashMap<>();
         attributes.put("a", "A");
         final List<KafkaHeader> header = Copper2GoKafkaSenderImpl.createHeader(attributes);
         Assertions.assertThat(header).hasSize(1);
@@ -38,7 +77,7 @@ class Copper2GoKafkaSenderImplTest {
 
     @Test
     void createHeaderEmpty() {
-        Map<String,String> attributes = new HashMap<>();
+        Map<String, String> attributes = new HashMap<>();
         Assertions.assertThat(Copper2GoKafkaSenderImpl.createHeader(attributes)).isEmpty();
     }
 
