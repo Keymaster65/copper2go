@@ -45,8 +45,10 @@ class WorkflowDataTest {
     @Test
     void getAttributesNull() {
         final WorkflowData workflowDataNullAttributes = new WorkflowData(UUID, PAYLOAD, null);
+
         Assertions.assertThat(workflowDataNullAttributes.getUUID()).isEqualTo(UUID);
         Assertions.assertThat(workflowDataNullAttributes.getPayload()).isEqualTo(PAYLOAD);
+        Assertions.assertThat(workflowDataNullAttributes.getAttributes()).isEmpty();
     }
 
     @Test

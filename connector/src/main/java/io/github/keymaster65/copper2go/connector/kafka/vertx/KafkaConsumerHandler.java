@@ -84,9 +84,9 @@ public class KafkaConsumerHandler implements Handler<KafkaConsumerRecord<String,
 
     static Map<String,String> createAttributes(final List<KafkaHeader> headers) {
         if (headers == null || headers.isEmpty()) {
-            return null;
+            return Map.of();
         }
-        var attributes = new HashMap<String, String>();
+        Map<String,String> attributes = new HashMap<>();
         headers.iterator()
                 .forEachRemaining(entry ->
                         attributes.put(entry.key(), entry.value().toString(StandardCharsets.UTF_8))

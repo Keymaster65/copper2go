@@ -60,7 +60,7 @@ public class BodyHandler implements Handler<Buffer> {
     }
 
     void handleBody(final String requestBody, final HttpServerResponse response, final Map<String, String> attributes, final String uri) {
-        if (uri.length() > 1 && uri.startsWith(BodyHandler.COPPER2GO_2_API)) {
+        if (uri.startsWith(BodyHandler.COPPER2GO_2_API)) {
             handleWorkflow(requestBody, response, attributes, uri);
         } else {
             BodyHandler.handleLicense(response, uri);
@@ -120,7 +120,7 @@ public class BodyHandler implements Handler<Buffer> {
 
     static Map<String, String> createAttributes(final MultiMap params) {
         if (params == null || params.isEmpty()) {
-            return null;
+            return Map.of();
         }
         var attributes = new HashMap<String, String>();
         params.iterator().forEachRemaining(entry -> attributes.put(entry.getKey(), entry.getValue()));

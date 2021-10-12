@@ -112,11 +112,11 @@ class KafkaConsumerHandlerTest {
 
     @Test
     void createAttributesEmpty() {
-        Assertions.assertThat(KafkaConsumerHandler.createAttributes(List.of())).isNull();
+        Assertions.assertThat(KafkaConsumerHandler.createAttributes(List.of())).isEmpty();
     }
 
     @Test
     void createAttributesNull() {
-        Assertions.assertThat(KafkaConsumerHandler.createAttributes(null)).isNull();
+        Assertions.assertThat(KafkaConsumerHandler.createAttributes(null)).isEmpty();
     }
 }

@@ -64,12 +64,13 @@ class BodyHandlerTest {
     @Test
     void createAttributesEmpty() {
         MultiMap multiMap = MultiMap.caseInsensitiveMultiMap();
-        Assertions.assertThat(BodyHandler.createAttributes(multiMap)).isNull();
+        
+        Assertions.assertThat(BodyHandler.createAttributes(multiMap)).isEmpty();
     }
 
     @Test
     void createAttributesNull() {
-        Assertions.assertThat(BodyHandler.createAttributes(null)).isNull();
+        Assertions.assertThat(BodyHandler.createAttributes(null)).isEmpty();
     }
 
     @Test

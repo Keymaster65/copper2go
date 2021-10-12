@@ -15,12 +15,16 @@
  */
 package io.github.keymaster65.copper2go.workflowapi;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 public final class WorkflowData implements Serializable {
+
+    @Serial
     private static final long serialVersionUID = 2L;
+
     private final String uuid;
 
     /**
@@ -79,7 +83,7 @@ public final class WorkflowData implements Serializable {
 
     public Map<String,String> getAttributes() {
         if (attributes == null) {
-            return null;
+            return Map.of();
         }
         return new HashMap<>(attributes);
     }
