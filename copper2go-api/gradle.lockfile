@@ -57,5 +57,5 @@ org.ow2.asm:asm-tree:9.2=integrationTestRuntimeClasspath,runtimeClasspath,testRu
 org.ow2.asm:asm-util:9.2=integrationTestRuntimeClasspath,runtimeClasspath,testRuntimeClasspath
 org.ow2.asm:asm:9.1=jacocoAnt
 org.ow2.asm:asm:9.2=integrationTestRuntimeClasspath,runtimeClasspath,testRuntimeClasspath
-org.slf4j:slf4j-api:2.0.0-alpha4=compileClasspath,integrationTestCompileClasspath,integrationTestRuntimeClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.slf4j:slf4j-api:2.0.0-alpha5=compileClasspath,integrationTestCompileClasspath,integrationTestRuntimeClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 empty=annotationProcessor,integrationTestAnnotationProcessor,testAnnotationProcessor
