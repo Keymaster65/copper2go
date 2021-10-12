@@ -51,11 +51,6 @@ tasks.check {
     dependsOn(tasks.findByName("systemTest"))
 }
 
-// https://docs.gradle.org/current/userguide/jacoco_plugin.html
-tasks.jacocoTestReport {
-    dependsOn(tasks.test) // tests are required to run before generating the report
-}
-
 tasks.sonarqube {
     dependsOn(tasks.test)
 }
@@ -68,7 +63,10 @@ allprojects {
 
 
 
+    // https://docs.gradle.org/current/userguide/jacoco_plugin.html
     tasks.jacocoTestReport {
+        dependsOn(tasks.test) // tests are required to run before generating the report
+
         reports {
             xml.getRequired().set(true)
             csv.getRequired().set(false)
