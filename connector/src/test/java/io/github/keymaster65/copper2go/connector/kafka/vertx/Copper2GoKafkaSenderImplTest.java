@@ -35,29 +35,21 @@ class Copper2GoKafkaSenderImplTest {
     void send() {
         @SuppressWarnings("unchecked")
         Function<Map<String, String>, KafkaProducer<String, String>> producerFactory =
-                        Mockito.mock(Function.class);
-
+                Mockito.mock(Function.class);
         @SuppressWarnings("unchecked")
         KafkaProducer<String, String> producer =
-                        Mockito.mock(KafkaProducer.class);
-
+                Mockito.mock(KafkaProducer.class);
         @SuppressWarnings("unchecked")
         Future<RecordMetadata> sendFuture = Mockito.mock(Future.class);
-
         Mockito.when(producer.send(Mockito.any())).thenReturn(sendFuture);
         Mockito.when(producerFactory.apply(Mockito.any())).thenReturn(producer);
 
-        final Copper2GoKafkaSender copper2GoKafkaSender = new Copper2GoKafkaSenderImpl(
-                "host",
-                0,
-                "topic",
-                producerFactory
-        );
-        copper2GoKafkaSender.send(
-                "request",
-                Map.of()
-        );
-        copper2GoKafkaSender.close();
+        try (final Copper2GoKafkaSender copper2GoKafkaSender = createCopper2GoKafkaSender(producerFactory)) {
+            copper2GoKafkaSender.send(
+                    "request",
+                    Map.of()
+            );
+        }
 
         Mockito.verify(producerFactory).apply(Mockito.any());
         Mockito.verify(producer).send(Mockito.any());
@@ -84,5 +76,14 @@ class Copper2GoKafkaSenderImplTest {
     @Test
     void createHeaderNull() {
         Assertions.assertThat(Copper2GoKafkaSenderImpl.createHeader(null)).isEmpty();
+    }
+
+    private Copper2GoKafkaSenderImpl createCopper2GoKafkaSender(final Function<Map<String, String>, KafkaProducer<String, String>> producerFactory) {
+        return new Copper2GoKafkaSenderImpl(
+                "host",
+                0,
+                "topic",
+                producerFactory
+        );
     }
 }
