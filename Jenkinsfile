@@ -1,6 +1,6 @@
 #!groovy
 node() {
-    env.JAVA_HOME = "${tool 'zulu-11.0.8'}"
+    env.JAVA_HOME = "${tool 'zulu-17.0.0'}"
     try {
         stage('Clean workspace') {
             cleanWs()
