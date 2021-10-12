@@ -202,7 +202,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [ ] Support HTTP URL parameter (in and out)
 * [ ] Support Kafka Header (parameter) (in and out)
 * [ ] Add use case in Developer's Guide
-* [ ] Improve unit test coverage up to 50%
+* [x] Improve unit test coverage up to 50%
+* [x] Support for Java 17
 
 ### "Binding" Release Plan Application API 2.3
 
@@ -259,7 +260,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### "Kafka" Release Application API 2.1
 
 * [x] Kafka Connectors
-* [x] Seperate System- and Integration- testing in Build Pipeline
+* [x] Separate System- and Integration- testing in Build Pipeline
 
 ### "License" Release Application API 2.0.1
 
