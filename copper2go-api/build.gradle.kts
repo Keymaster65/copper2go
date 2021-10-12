@@ -5,6 +5,11 @@ plugins {
     `maven-publish`
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
 publishing {
     publications {
         create<MavenPublication>("library") {
@@ -39,5 +44,5 @@ publishing {
 dependencies {
     implementation("org.copper-engine:copper-coreengine:5.4.0")
 
-    testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
+    testImplementation("org.assertj:assertj-assertions-generator:2.+")
 }
