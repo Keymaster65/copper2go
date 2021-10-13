@@ -24,6 +24,7 @@ import org.junit.Rule;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockserver.integration.ClientAndServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.GenericContainer;
@@ -39,6 +40,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.locks.LockSupport;
 
+import static org.mockserver.model.HttpRequest.request;
+import static org.mockserver.model.HttpResponse.response;
+
 class HttpKafkaBridgeTest {
 
     private static final Logger log = LoggerFactory.getLogger(HttpKafkaBridgeTest.class);
@@ -49,25 +53,20 @@ class HttpKafkaBridgeTest {
 
     @Test
     void systemTest() throws URISyntaxException, IOException, InterruptedException {
+        String payload = "{\"name\" = \"Wolf\"}";
         try (final GenericContainer<?> copper2GoContainerHttpKafkaBridge = startCopper2GoContainer("configHttpKafkaBridge")) {
-            String payload = "{\"name\" = \"Wolf\"}";
             HttpResponse<String> response = TestHttpClient.post(
-                    Commons.getUri("/copper2go/2/api/request/1.0/Bridge", copper2GoContainerHttpKafkaBridge),
+                    Commons.getUri("/copper2go/2/api/request/1.0/Bridge?key=value", copper2GoContainerHttpKafkaBridge),
                     payload);
-            Assertions.assertThat(response.body()).isEqualTo(payload);
+            Assertions.assertThat(response.body()).isEqualTo("");
         }
 
-        try (GenericContainer<?> copper2GoContainerKafkaHttpBridge = startCopper2GoContainer("configKafkaHttpBridge")) {
-            final String connectionRefusedMessage = "Caused by: java.lang.RuntimeException: Connection refused: host.docker.internal";
-            do {
-                LockSupport.parkNanos(1000L * 1000L * 1000L);
-            } while (!copper2GoContainerKafkaHttpBridge.getLogs().contains(connectionRefusedMessage));
+        final ClientAndServer clientAndServer = startHttpServerSimulator();
 
-            LockSupport.parkNanos(1000L * 1000L * 1000L);
-            // not nice, but i need support for Windows and Unix host
-            // host.docker.internal work for Windows only
-            // other solution may follow later
-            Assertions.assertThat(copper2GoContainerKafkaHttpBridge.getLogs()).containsOnlyOnce(connectionRefusedMessage);
+        try (GenericContainer<?> copper2GoContainerKafkaHttpBridge = startCopper2GoContainer("configKafkaHttpBridge")) {
+            waitForRequest(clientAndServer, payload);
+        } finally {
+            clientAndServer.stop();
         }
     }
 
@@ -82,7 +81,7 @@ class HttpKafkaBridgeTest {
     static void startKafkaContainer() {
         // SonarLint: Use try-with-resources or close this "KafkaContainer" in a "finally" clause.
         // In stop() only
-        kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3")) // NOSONAR
+        kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.5.6")) // NOSONAR
                 .withNetwork(network)
                 .withNetworkAliases("kafka");
         kafka.start();
@@ -110,5 +109,39 @@ class HttpKafkaBridgeTest {
 
         log.info("copper2go server started with port {}. Exposed: {}", copper2GoContainer.getFirstMappedPort(), copper2GoContainer.getExposedPorts());
         return copper2GoContainer;
+    }
+
+    private ClientAndServer startHttpServerSimulator() {
+        final ClientAndServer clientAndServer = new ClientAndServer(59999);
+        clientAndServer
+                .when(
+                        request()
+                                .withMethod("GET")
+                )
+                .respond(
+                        response()
+                                .withBody("yes")
+
+                );
+        return clientAndServer;
+    }
+
+    private void waitForRequest(final ClientAndServer clientAndServer, final String payload) {
+        boolean waitForRequest = true;
+        do {
+            try {
+                clientAndServer
+                        .verify(
+                                request()
+                                        .withPath("/")
+                                        .withBody(payload)
+                        );
+                waitForRequest = false;
+                log.info("Received request {}.", payload);
+            } catch (AssertionError assertionError) {
+                log.info("Wait for request.");
+                LockSupport.parkNanos(1000L * 1000L * 1000L);
+            }
+        } while (waitForRequest);
     }
 }

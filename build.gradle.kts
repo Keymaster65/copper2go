@@ -111,6 +111,8 @@ allprojects {
         testImplementation("org.assertj:assertj-assertions-generator:2.+")
         testImplementation("org.junit.jupiter:junit-jupiter:5.+")
         testImplementation("org.mockito:mockito-core:4.+")
+        testImplementation("org.mock-server:mockserver-netty:5.+")
+
     }
 
     dependencyLocking {
