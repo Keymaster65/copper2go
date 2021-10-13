@@ -53,7 +53,13 @@ class VertxHttpServerTest {
         // Exception should lead to normal response.end() if no workflow does
         Mockito.doThrow(new EngineException("Simulated exception."))
                 .when(engine)
-                .callWorkflow(ArgumentMatchers.any(), eq(null), ArgumentMatchers.any(), eq("Hello"), eq(1L), eq(0L));
+                .callWorkflow(
+                        ArgumentMatchers.any(),
+                        ArgumentMatchers.any (),
+                        ArgumentMatchers.any(),
+                        eq("Hello"),
+                        eq(1L),
+                        eq(0L));
 
         final Vertx vertx = Vertx.vertx();
         final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, vertx, new RequestHandler(engine));
@@ -61,6 +67,12 @@ class VertxHttpServerTest {
         TestHttpClient.post(URI.create("http://localhost:" + SERVER_PORT + COPPER2GO_2_API + "request/1.0/Hello"), "Wolf\r\n");
         vertxHttpServer.stop();
 
-        Mockito.verify(engine).callWorkflow(ArgumentMatchers.any(), eq(null), ArgumentMatchers.any(), eq("Hello"), eq(1L), eq(0L));
+        Mockito.verify(engine).callWorkflow(
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(),
+                eq("Hello"),
+                eq(1L),
+                eq(0L));
     }
 }
