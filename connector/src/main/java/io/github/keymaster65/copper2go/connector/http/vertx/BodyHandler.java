@@ -71,6 +71,7 @@ public class BodyHandler implements Handler<Buffer> {
         try {
             if (uri.startsWith(BodyHandler.COPPER2GO_2_API + "request/") || uri.startsWith(BodyHandler.COPPER2GO_2_API + "event/")) {
                 var workflowVersion = WorkflowVersion.of(uri);
+                log.debug("Call Workflow on engine {}.", copper2GoEngine);
                 copper2GoEngine.callWorkflow(
                         requestBody,
                         attributes,
@@ -90,10 +91,10 @@ public class BodyHandler implements Handler<Buffer> {
                         .end();
             }
         } catch (EngineException|RuntimeException e) {
+            log.warn("Exception while calling workflow.", e);
             response
                     .setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR)
                     .end(String.format("Exception: %s", e.getMessage()));
-            log.warn("Exception while calling workflow.", e);
         }
     }
 
