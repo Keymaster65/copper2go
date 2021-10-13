@@ -16,7 +16,6 @@
 package io.github.keymaster65.copper2go.connector.http.vertx;
 
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
-import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
@@ -51,8 +50,8 @@ public class VertxHttpServer implements Copper2GoHttpServer {
     @Override
     public void start() {
         log.info("Before server listen on port {}", port);
-        final Future<HttpServer> listen = httpServer.listen(port);
-        log.info("After server listen on port {} completed={} failed={} cause={}", port, listen.isComplete(), listen.failed(), listen.cause());
+        httpServer.listen(port);
+        log.info("After server listen on port {}", port);
     }
 
     @Override
