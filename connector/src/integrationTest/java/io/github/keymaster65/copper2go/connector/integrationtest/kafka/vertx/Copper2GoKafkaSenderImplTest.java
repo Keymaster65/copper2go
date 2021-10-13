@@ -64,7 +64,14 @@ class Copper2GoKafkaSenderImplTest {
             soft.assertThat(handler.getSuccessCount()).isEqualTo(1L);
             soft.assertThat(handler.getFailCount()).isEqualTo(0L);
         });
-        verify(engine).callWorkflow(eq(REQUEST), eq(null), any(), anyString(), eq(1L), eq(0L));
+        verify(engine).callWorkflow(
+                eq(REQUEST),
+                any(),
+                any(),
+                anyString(),
+                eq(1L),
+                eq(0L)
+        );
     }
 
     @Test
@@ -77,7 +84,14 @@ class Copper2GoKafkaSenderImplTest {
         Mockito
                 .doThrow(new EngineException("Simulated exception."))
                 .when(engine)
-                .callWorkflow(eq(REQUEST), eq(null), any(), anyString(), eq(1L), eq(0L));
+                .callWorkflow(
+                        eq(REQUEST),
+                        any(),
+                        any(),
+                        anyString(),
+                        eq(1L),
+                        eq(0L)
+                );
 
         KafkaConsumerHandler handler = createCopper2GoKafkaReceiverAndReceive(engine);
 
@@ -85,7 +99,14 @@ class Copper2GoKafkaSenderImplTest {
             soft.assertThat(handler.getSuccessCount()).isEqualTo(0L);
             soft.assertThat(handler.getFailCount()).isEqualTo(1L);
         });
-        verify(engine).callWorkflow(eq(REQUEST), eq(null), any(), anyString(), eq(1L), eq(0L));
+        verify(engine).callWorkflow(
+                eq(REQUEST),
+                any(),
+                any(),
+                anyString(),
+                eq(1L),
+                eq(0L)
+        );
     }
 
     @Test
