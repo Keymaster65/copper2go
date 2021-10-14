@@ -180,7 +180,9 @@ jib {
         workingDirectory = "/"
     }
     from {
-        image = "azul/zulu-openjdk-alpine:17.0.0"
+        // Has no bash, needed for testcontainers
+        // image = "azul/zulu-openjdk-alpine:17.0.0"
+        image = "openjdk:17-jdk"
     }
     to {
         image = "registry.hub.docker.com/keymaster65/copper2go"

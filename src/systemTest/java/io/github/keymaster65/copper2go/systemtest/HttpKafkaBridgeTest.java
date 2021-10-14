@@ -58,7 +58,7 @@ class HttpKafkaBridgeTest {
             HttpResponse<String> response = TestHttpClient.post(
                     Commons.getUri("/copper2go/2/api/request/1.0/Bridge?key=value", copper2GoContainerHttpKafkaBridge),
                     payload);
-            Assertions.assertThat(response.body()).isEqualTo("");
+            Assertions.assertThat(response.body()).startsWith("{");
         }
 
         final ClientAndServer clientAndServer = startHttpServerSimulator();
