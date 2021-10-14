@@ -17,6 +17,8 @@ package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.RequestChannel;
+import io.vertx.core.Future;
+import io.vertx.kafka.client.producer.RecordMetadata;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
@@ -43,18 +45,26 @@ public class KafkaRequestChannelImpl implements RequestChannel {
             final Map<String, String> attributes,
             final String responseCorrelationId
     ) {
-        copper2GoKafkaSender.send(request, attributes)
+        final Future<RecordMetadata> send = copper2GoKafkaSender.send(request, attributes);
+        send
                 .onSuccess(metadata ->
                 {
+                    engine.notify(responseCorrelationId, createResponse(send));
                     successCount.incrementAndGet();
-                    engine.notify(responseCorrelationId, "");
                 })
                 .onFailure(throwable ->
                         {
-                            failCount.incrementAndGet();
                             engine.notifyError(responseCorrelationId, throwable.getMessage());
+                            failCount.incrementAndGet();
                         }
                 );
+    }
+
+    private String createResponse(final Future<RecordMetadata> send) {
+        if (send.result() == null) {
+            return "{}";
+        }
+        return send.result().toJson().encode();
     }
 
     @Override

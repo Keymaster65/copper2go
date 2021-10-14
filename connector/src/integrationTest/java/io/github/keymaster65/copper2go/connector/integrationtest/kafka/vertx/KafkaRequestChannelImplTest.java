@@ -40,7 +40,7 @@ class KafkaRequestChannelImplTest {
     }
 
     @Test
-    void requestSucess() {
+    void requestSuccess() {
         Copper2GoKafkaSender sender = Commons.createCopper2GoKafkaSender(Commons.kafka, "testTopic");
         Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
         KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
@@ -48,8 +48,7 @@ class KafkaRequestChannelImplTest {
                 engine
         );
 
-        requestChannel.request("request",
-                CORR_ID);
+        requestChannel.request("request", CORR_ID);
 
         while ((requestChannel.getSuccessCount() + requestChannel.getFailCount()) < 1) {
             log.info("Wait for response.");
@@ -59,7 +58,7 @@ class KafkaRequestChannelImplTest {
             soft.assertThat(requestChannel.getSuccessCount()).isEqualTo(1L);
             soft.assertThat(requestChannel.getFailCount()).isEqualTo(0L);
         });
-        verify(engine).notify(CORR_ID, "");
+        verify(engine).notify(Mockito.eq(CORR_ID), Mockito.startsWith("{"));
     }
 
     @Test
