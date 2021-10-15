@@ -204,6 +204,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [ ] Add use case in Developer's Guide
 * [x] Improve unit test coverage up to 50%
 * [x] Support for Java 17
+* [x] Update used jars
 
 ### "Binding" Release Plan Application API 2.3
 
