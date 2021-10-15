@@ -84,4 +84,41 @@ class KafkaRequestChannelImplTest {
         Assertions.assertThat(requestChannel.getSuccessCount()).isZero();
         Assertions.assertThat(requestChannel.getFailCount()).isOne();
     }
+
+    @Test
+    void createResponse() {
+        @SuppressWarnings("unchecked")
+        Future<RecordMetadata> metadata = Mockito.mock(Future.class);
+        final RecordMetadata value = new RecordMetadata();
+        Mockito.when(metadata.result()).thenReturn(value);
+
+        final String response = KafkaRequestChannelImpl.createResponse(metadata);
+
+        Assertions.assertThat(response).isEqualTo("{\"checksum\":0,\"offset\":0,\"partition\":0,\"timestamp\":0,\"topic\":null}");
+    }
+
+    @Test
+    void createResponseEmpty() {
+        @SuppressWarnings("unchecked")
+        Future<RecordMetadata> metadata = Mockito.mock(Future.class);
+
+        final String response = KafkaRequestChannelImpl.createResponse(metadata);
+
+        Assertions.assertThat(response).isEqualTo("{}");
+    }
+
+    @Test
+    void close() {
+        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
+
+        KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
+                sender,
+                engine
+        );
+
+        requestChannel.close();
+
+        Mockito.verify(sender).close();
+    }
 }

@@ -23,7 +23,7 @@ import io.vertx.kafka.client.producer.RecordMetadata;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class KafkaRequestChannelImpl implements RequestChannel {
+public class KafkaRequestChannelImpl implements RequestChannel, AutoCloseable {
 
     private final Copper2GoKafkaSender copper2GoKafkaSender;
     private final Copper2GoEngine engine;
@@ -61,7 +61,7 @@ public class KafkaRequestChannelImpl implements RequestChannel {
         successCount.incrementAndGet();
     }
 
-    private String createResponse(final Future<RecordMetadata> send) {
+    static String createResponse(final Future<RecordMetadata> send) {
         if (send.result() == null) {
             return "{}";
         }
