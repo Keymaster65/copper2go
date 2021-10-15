@@ -30,56 +30,70 @@ public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
     public static final String ENV_C2G_CONFIG = "C2G_CONFIG";
 
-    private AtomicReference<Application> application = new AtomicReference<>();
-    private AtomicBoolean started = new AtomicBoolean(false);
+    private final AtomicReference<Application> applicationReference = new AtomicReference<>();
+    private final AtomicBoolean started = new AtomicBoolean(false);
 
-    /**
-     *
-     * @return true, if started application was stopped
-     * @throws EngineException in case of exception while stopping the application
-     */
-    public boolean stop() throws EngineException {
-        log.info("Stopping application.");
-        if (started.get()) {
-            application.get().stop();
-            started.set(false);
-            log.info("Application stopped.");
-            return true;
-        }
-        log.info("Application not started yet.");
-        return false;
+    public Main() throws IOException {
+        this(Application.of(createConfig()));
     }
 
+    public Main(final Application theApplication) {
+        applicationReference.set(theApplication);
+    }
+
+    // tested in system or integrationtest
     public static void main(String[] args) throws Exception {
         new Main().start();
     }
 
-    void start() throws EngineException, IOException {
+    static Config createConfig() throws IOException {
+        return createConfig(System.getenv(ENV_C2G_CONFIG));
+    }
+
+    static Config createConfig(final String config) throws IOException {
+        if (config != null) {
+            log.info("Using config defined in environment variable {}.", config);
+            return Config.of(config);
+        }
+        log.info("Use default config.");
+        return Config.of();
+    }
+
+    void start() throws EngineException {
         try {
-            log.info("Begin of Main.");
-            String configEnv = System.getenv(ENV_C2G_CONFIG);
-            if (configEnv != null) {
-                log.info("Using config defined in environment variable C2G_CONFIG.");
-                application.set(Application.of(Config.of(configEnv)));
-            } else {
-                log.info("Use default config.");
-                application.set(Application.of(Config.of()));
-            }
-            application.get().start();
+            log.info("Start of Main.");
+            applicationReference.get().start();
             started.set(true);
         } catch (Exception e) {
             log.warn("Exception in application main. Try to stop application.");
-            if (application.get() != null) {
-                application.get().stop();
+            if (applicationReference.get() != null) {
+                applicationReference.get().stop();
             }
             throw e;
         } finally {
-            if (application.get() != null) {
-                while (!application.get().isStopRequested()) {
+            if (applicationReference.get() != null) {
+                while (!applicationReference.get().isStopRequested()) {
+                    log.debug("Wait for stop request.");
                     LockSupport.parkNanos(100L * 1000L * 1000L);
                 }
             }
             log.info("End of Main.");
         }
+    }
+
+    /**
+     * @return true, if started application was stopped
+     * @throws EngineException in case of exception while stopping the application
+     */
+    boolean stop() throws EngineException {
+        log.info("Stopping Main.");
+        if (started.get()) {
+            applicationReference.get().stop();
+            started.set(false);
+            log.info("Main stopped.");
+            return true;
+        }
+        log.info("Main not started yet.");
+        return false;
     }
 }

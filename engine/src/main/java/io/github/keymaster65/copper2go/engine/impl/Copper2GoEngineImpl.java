@@ -92,7 +92,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         }
     }
 
-    public TransientScottyEngine startScotty(DependencyInjector dependencyInjector) throws EngineException {
+    private TransientScottyEngine startScotty(DependencyInjector dependencyInjector) throws EngineException {
         var factory = new TransientEngineFactory() {
             @Override
             protected File getWorkflowSourceDirectory() {
@@ -160,7 +160,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
     }
 
     public void waitForIdleEngine() {
-        while (engine.getNumberOfWorkflowInstances() > 0) {
+        while (engine != null && engine.getNumberOfWorkflowInstances() > 0) {
             LockSupport.parkNanos(100000000L);
         }
     }
@@ -191,7 +191,9 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         }
 
         try {
-            exporter.shutdown();
+            if (exporter != null) {
+                exporter.shutdown();
+            }
         } catch (MBeanRegistrationException | InstanceNotFoundException e) {
             throw new EngineException("Could not shutdown exporter.", e);
         }
