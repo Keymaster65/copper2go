@@ -47,17 +47,18 @@ public class KafkaRequestChannelImpl implements RequestChannel {
     ) {
         final Future<RecordMetadata> send = copper2GoKafkaSender.send(request, attributes);
         send
-                .onSuccess(metadata ->
-                {
-                    engine.notify(responseCorrelationId, createResponse(send));
-                    successCount.incrementAndGet();
-                })
-                .onFailure(throwable ->
-                        {
-                            engine.notifyError(responseCorrelationId, throwable.getMessage());
-                            failCount.incrementAndGet();
-                        }
-                );
+                .onSuccess(metadata -> handleSendSuccess(responseCorrelationId, send))
+                .onFailure(throwable -> handleSendFailure(responseCorrelationId, throwable));
+    }
+
+    void handleSendFailure(final String responseCorrelationId, final Throwable throwable) {
+        engine.notifyError(responseCorrelationId, throwable.getMessage());
+        failCount.incrementAndGet();
+    }
+
+    void handleSendSuccess(final String responseCorrelationId, final Future<RecordMetadata> send) {
+        engine.notify(responseCorrelationId, createResponse(send));
+        successCount.incrementAndGet();
     }
 
     private String createResponse(final Future<RecordMetadata> send) {
