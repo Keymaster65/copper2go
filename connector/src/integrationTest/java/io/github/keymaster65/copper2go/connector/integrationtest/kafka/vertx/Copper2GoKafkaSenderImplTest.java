@@ -61,7 +61,7 @@ class Copper2GoKafkaSenderImplTest {
 
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(handler.getSuccessCount()).isEqualTo(1L);
+            soft.assertThat(handler.getSuccessCount()).isPositive();
             soft.assertThat(handler.getFailCount()).isEqualTo(0L);
         });
         verify(engine).callWorkflow(
