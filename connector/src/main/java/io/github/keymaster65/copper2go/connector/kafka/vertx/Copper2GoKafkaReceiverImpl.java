@@ -31,7 +31,7 @@ import static org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
 
-public class Copper2GoKafkaReceiverImpl {
+public class Copper2GoKafkaReceiverImpl implements AutoCloseable {
 
     private final KafkaConsumer<String, String> consumer;
     private final String topic;
@@ -45,8 +45,23 @@ public class Copper2GoKafkaReceiverImpl {
             final String groupId,
             final Handler<KafkaConsumerRecord<String, String>> handler
     ) {
-        this.topic = topic;
+        this(topic, createConsumer(host, port, groupId, handler));
+    }
 
+    public Copper2GoKafkaReceiverImpl(
+            final String topic,
+            final KafkaConsumer<String, String> consumer
+    ) {
+        this.topic = topic;
+        this.consumer = consumer;
+    }
+
+    private static KafkaConsumer<String, String> createConsumer(
+            final String host,
+            final int port,
+            final String groupId,
+            final Handler<KafkaConsumerRecord<String, String>> handler
+    ) {
         Map<String, String> config = new HashMap<>();
         config.put(BOOTSTRAP_SERVERS_CONFIG, host + ":" + port);
         config.put(KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
@@ -54,9 +69,10 @@ public class Copper2GoKafkaReceiverImpl {
         config.put(GROUP_ID_CONFIG, groupId);
         config.put(AUTO_OFFSET_RESET_CONFIG, "earliest");
 
-        consumer = KafkaConsumer.create(Vertx.vertx(), config);
-
+        KafkaConsumer<String, String> consumer = KafkaConsumer.create(Vertx.vertx(), config);
         consumer.handler(handler);
+
+        return consumer;
     }
 
     public void start() {
@@ -64,8 +80,10 @@ public class Copper2GoKafkaReceiverImpl {
         consumer.subscribe(topic);
     }
 
+    @Override
     public void close() {
         log.info("Finish receiving from topic {}.", topic);
+        consumer.unsubscribe();
         consumer.close();
     }
 }
