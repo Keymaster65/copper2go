@@ -2,7 +2,7 @@ dependencies {
     implementation(project(":engine"))
     implementation(project(":copper2go-api"))
 
-    implementation("io.vertx:vertx-core:4.1.+")
+    implementation("io.vertx:vertx-core:4.2.+")
     implementation("io.vertx:vertx-web:4.1.+")
     implementation("io.vertx:vertx-web-client:4.1.+")
 
