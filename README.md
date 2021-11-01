@@ -195,27 +195,27 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "Kafka/Http Bridge" Release Plan Release Workflow API 2.1  and Application API 2.2
+### "Kafka/Http Bridge" Release Plan Release Workflow API 2.1  and Application API 3.0
 
+* [x] Support for Java 17
 * [x] Add Bridge Workflow
 * [x] Add quality badges
 * [ ] Support HTTP URL parameter (in and out)
 * [ ] Support Kafka Header (parameter) (in and out)
 * [ ] Add use case in Developer's Guide
 * [x] Improve unit test coverage up to 50%
-* [x] Support for Java 17
 * [x] Update used jars
 
-### "Binding" Release Plan Application API 2.3
+### "Binding" Release Plan Application API 3.1
 
 * [ ] Workflow with Json binding
 * [ ] Workflow with XML binding
 
-### "State Pattern" Release Plan Application API 2.3
+### "State Pattern" Release Plan Application API 3.1
 
 * [ ] Spike: Workflow using State Pattern
 
-### "Operator" Release Plan Application API 2.4
+### "Operator" Release Plan Application API 3.2
 
 * [ ] configure thread pool size, client pool size and more
 * [ ] Support of COPPER core GUI
