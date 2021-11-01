@@ -61,8 +61,8 @@ class Copper2GoKafkaSenderImplTest {
 
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(handler.getSuccessCount()).isPositive();
-            soft.assertThat(handler.getFailCount()).isEqualTo(0L);
+            soft.assertThat(handler.getSuccessCount()).isOne();
+            soft.assertThat(handler.getFailCount()).isZero();
         });
         verify(engine).callWorkflow(
                 eq(REQUEST),
@@ -96,8 +96,8 @@ class Copper2GoKafkaSenderImplTest {
         KafkaConsumerHandler handler = createCopper2GoKafkaReceiverAndReceive(engine);
 
         SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(handler.getSuccessCount()).isEqualTo(0L);
-            soft.assertThat(handler.getFailCount()).isEqualTo(1L);
+            soft.assertThat(handler.getSuccessCount()).isZero();
+            soft.assertThat(handler.getFailCount()).isOne();
         });
         verify(engine).callWorkflow(
                 eq(REQUEST),

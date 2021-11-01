@@ -83,6 +83,7 @@ public class Copper2GoKafkaReceiverImpl implements AutoCloseable {
     @Override
     public void close() {
         log.info("Finish receiving from topic {}.", topic);
+        consumer.commit();
         consumer.unsubscribe();
         consumer.close();
     }
