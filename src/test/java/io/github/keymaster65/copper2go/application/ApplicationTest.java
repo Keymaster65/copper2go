@@ -16,7 +16,6 @@
 package io.github.keymaster65.copper2go.application;
 
 import io.github.keymaster65.copper2go.application.config.Config;
-import io.github.keymaster65.copper2go.engine.EngineException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
