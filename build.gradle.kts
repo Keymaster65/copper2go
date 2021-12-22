@@ -48,6 +48,7 @@ group = "io.github.keymaster65"
 version = "2.2"
 
 testSets {
+    create("integrationTest")
     create("systemTest")
 }
 
@@ -55,17 +56,32 @@ tasks.check {
     dependsOn(tasks.findByName("systemTest"))
 }
 
+tasks.check {
+    dependsOn(tasks.findByName("integrationTest"))
+}
+
 tasks.sonarqube {
     dependsOn(tasks.test)
 }
+
+tasks.checkLicense {
+    dependsOn(tasks.findByName("processResources"))
+}
+
+tasks.jar {
+    dependsOn(tasks.findByName("checkLicense"))
+}
+tasks.compileTestJava {
+    dependsOn(tasks.findByName("checkLicense"))
+}
+tasks.findByName("compileSystemTestJava")?.dependsOn(tasks.findByName("checkLicense"))
+tasks.findByName("compileIntegrationTestJava")?.dependsOn(tasks.findByName("checkLicense"))
 
 allprojects {
     apply(plugin = "java")
     apply(plugin = "org.unbroken-dome.test-sets")
     apply(plugin = "org.sonarqube")
     apply(plugin = "jacoco")
-
-
 
     // https://docs.gradle.org/current/userguide/jacoco_plugin.html
     tasks.jacocoTestReport {
@@ -122,13 +138,13 @@ allprojects {
         mavenCentral()
     }
 
-    testSets {
-        create("integrationTest")
-    }
+//    testSets {
+//        create("integrationTest")
+//    }
 
-    tasks.check {
-        dependsOn(tasks.findByName("integrationTest"))
-    }
+//    tasks.check {
+//        dependsOn(tasks.findByName("integrationTest"))
+//    }
 
     tasks.withType<Test> {
         useJUnitPlatform {
