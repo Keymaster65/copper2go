@@ -27,15 +27,42 @@ import org.copperengine.core.tranzient.TransientScottyEngine;
 import java.io.File;
 import java.util.concurrent.locks.LockSupport;
 
+/**
+ * Utility the helps to create tested copper2go workflow.
+ */
 public final class WorkflowTestRunner {
 
-    private WorkflowTestRunner() {}
+    private WorkflowTestRunner() {
+    }
 
+    /**
+     * Container for attributes, that defines a workflow definition.
+     */
     public static class WorkflowDefinition {
+
+        /**
+         * Name of the workflow.
+         */
         public final String workflowName;
+
+        /**
+         * Major version of the workflow.
+         */
         public final long majorVersion;
+
+
+        /**
+         * Minor version of the workflow.
+         */
         public final long minorVersion;
 
+        /**
+         * Creates a definition with given attributes.
+         *
+         * @param workflowName of the workflow
+         * @param majorVersion of the workflow
+         * @param minorVersion of the workflow
+         */
         public WorkflowDefinition(
                 final String workflowName,
                 final long majorVersion,
@@ -47,6 +74,19 @@ public final class WorkflowTestRunner {
         }
     }
 
+    /**
+     * Run the test:
+     * <ol>
+     *     <li>creates and runs a workflow instance</li>
+     *     <li>waits for all instances to finish</li>
+     *     <li>shuts the engine down</li>
+     * </ol>
+     *
+     * @param workflowData       input for workflow instance
+     * @param workflowDefinition the tested worklow
+     * @param engine             started engine
+     * @throws CopperException is engine is not started or exception to run the instance
+     */
     public static void runTest(
             final WorkflowData workflowData,
             final WorkflowDefinition workflowDefinition,
@@ -54,7 +94,7 @@ public final class WorkflowTestRunner {
     ) throws CopperException {
         try {
             String state = engine.getState();
-            if(!EngineState.STARTED.toString().equals(state)) {
+            if (!EngineState.STARTED.toString().equals(state)) {
                 throw new CopperException(String.format("Engine not started. State =%s", state));
             }
 
@@ -70,6 +110,13 @@ public final class WorkflowTestRunner {
         }
     }
 
+    /**
+     * Creates the copper engine for a test.
+     *
+     * @param workflowDir                 directory that contains the workflows
+     * @param copper2goDependencyInjector uses as injector in test
+     * @return the copper test engine
+     */
     public static TransientScottyEngine createTestEngine(final String workflowDir, Copper2goDependencyInjector copper2goDependencyInjector) {
         var factory = createTransientEngineFactory(workflowDir, copper2goDependencyInjector);
         return factory.create();

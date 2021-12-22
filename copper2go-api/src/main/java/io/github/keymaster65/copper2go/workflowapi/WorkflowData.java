@@ -15,16 +15,20 @@
  */
 package io.github.keymaster65.copper2go.workflowapi;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Holds the payload data and attributes for a workflow.
+ */
 public final class WorkflowData implements Serializable {
 
-    @Serial
     private static final long serialVersionUID = 2L;
 
+    /**
+     * Identifies the payload and can be used for replies
+     */
     private final String uuid;
 
     /**
@@ -32,10 +36,23 @@ public final class WorkflowData implements Serializable {
      */
     private final Map<String,String> attributes;
 
+    /**
+     * Creates the data without attributes.
+     *
+     * @param uuid identifies the payload and can be used for replies.
+     * @param payload workflow data
+     */
     public WorkflowData(final String uuid, final String payload) {
         this(uuid, payload, null);
     }
 
+    /**
+     * Creates the data without attributes.
+     *
+     * @param uuid identifies the payload and can be used for replies.
+     * @param payload workflow data
+     * @param attributes additional attributes
+     */
     public WorkflowData(final String uuid, final String payload, final Map<String,String> attributes) {
         this.uuid = uuid;
         this.payload = payload; // NOSONAR
@@ -70,9 +87,12 @@ public final class WorkflowData implements Serializable {
     public void clearPayload() {
         payload = null; // NOSONAR
     }
+
     /**
+     * Gets the attribute value.
+     *
      * @param name of the attribute
-     * @return the named attribute or null.
+     * @return the named attribute value or null.
      */
     public String getAttribute(final String name) {
         if (attributes == null) {
@@ -81,6 +101,11 @@ public final class WorkflowData implements Serializable {
         return attributes.get(name);
     }
 
+    /**
+     * Gets a copy of all additional attributes.
+     *
+     * @return copy of all additional attributes
+     */
     public Map<String,String> getAttributes() {
         if (attributes == null) {
             return Map.of();

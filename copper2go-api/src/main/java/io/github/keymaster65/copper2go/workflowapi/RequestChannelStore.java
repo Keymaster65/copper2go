@@ -17,14 +17,18 @@ package io.github.keymaster65.copper2go.workflowapi;
 
 import java.util.Map;
 
+/**
+ * Store for defined request channels, that can be used by name in workflows to submit requests.
+ */
 public interface RequestChannelStore {
-    void request(
-            final String channelName,
-            final String request,
-            Map<String,String> attributes,
-            final String responseCorrelationId
-    );
-    
+
+    /**
+     * Submit request without attributes.
+     *
+     * @param channelName defined channel name
+     * @param request request payload
+     * @param responseCorrelationId identifies the correlation for a request/response pair
+     */
     default void request(
             final String channelName,
             final String request,
@@ -32,4 +36,20 @@ public interface RequestChannelStore {
     ) {
         request(channelName, request, null, responseCorrelationId);
     }
+
+    /**
+     /**
+     * Submit request with attributes.
+     *
+     * @param channelName defined channel name
+     * @param request request payload
+     * @param attributes additional attributes
+     * @param responseCorrelationId identifies the correlation for a request/response pair
+     */
+    void request(
+            final String channelName,
+            final String request,
+            Map<String,String> attributes,
+            final String responseCorrelationId
+    );
 }

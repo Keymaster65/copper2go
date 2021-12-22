@@ -17,25 +17,57 @@ package io.github.keymaster65.copper2go.workflowapi;
 
 import java.util.Map;
 
+/**
+ * Store for defined events channels, that can be used by name in workflows to submit events.
+ */
 public interface EventChannelStore {
+
+    /**
+     * Submit event without attributes.
+     *
+     * @param channelName defined channel name
+     * @param event event payload
+     */
     default void event(
             final String channelName,
-            final String event
+                    final String event
     ) {
         event(channelName, event, null);
     }
+
+    /**
+     * Submit event with attributes.
+     *
+     * @param channelName defined channel name
+     * @param event event payload
+     * @param attributes additional attributes
+     */
     void event(
             final String channelName,
             final String event,
             final Map<String, String> attributes
     );
 
+    /**
+     * Submit error event without attributes.
+     *
+     * @param channelName defined channel name
+     * @param event event payload
+     */
     default void errorEvent(
             final String channelName,
-            final String event
+                    final String event
     ) {
-        errorEvent(channelName, event, null);
+                errorEvent(channelName, event, null);
     }
+
+    /**
+     * Submit error event with attributes.
+     *
+     * @param channelName defined channel name
+     * @param event event payload
+     * @param attributes additional attributes
+     */
     void errorEvent(
             final String channelName,
             final String event,

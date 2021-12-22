@@ -17,29 +17,60 @@ package io.github.keymaster65.copper2go.workflowapi;
 
 import java.util.Map;
 
+/**
+ * Store for replies, that can be used by name in workflows to submit replies to requests.
+ */
 public interface ReplyChannelStore {
 
-    void reply(
-            final String uuid,
-            final String message,
-            final Map<String,String> attributes
-    );
+    /**
+     * Submit reply without attributes.
+     *
+     * @param uuid identifies the reply for a request
+     * @param message reply payload
+     */
     default void reply(
             final String uuid,
             final String message
     ) {
         reply(uuid, message, null);
     }
-    void replyError(
+
+    /**
+     * Submit reply with attributes.
+     *
+     * @param uuid identifies the reply for a request
+     * @param message reply payload
+     * @param attributes additional attributes
+     */
+    void reply(
             final String uuid,
             final String message,
             final Map<String,String> attributes
     );
 
+    /**
+     * Submit error reply without attributes.
+     *
+     * @param uuid identifies the reply for a request
+     * @param message reply payload
+     */
     default void replyError(
             final String uuid,
             final String message
     ) {
         replyError(uuid, message, null);
     }
+
+    /**
+     * Submit error reply without attributes.
+     *
+     * @param uuid identifies the reply for a request
+     * @param message reply payload
+     * @param attributes additional attributes
+     */
+    void replyError(
+            final String uuid,
+            final String message,
+            final Map<String,String> attributes
+    );
 }

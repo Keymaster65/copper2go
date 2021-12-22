@@ -20,7 +20,18 @@ import io.github.keymaster65.copper2go.workflowapi.ReplyChannelStore;
 import io.github.keymaster65.copper2go.workflowapi.RequestChannelStore;
 import org.copperengine.core.util.PojoDependencyInjector;
 
+/**
+ * Injector for the 3 channel stores: event, request and reply
+ */
 public final class Copper2goDependencyInjector extends PojoDependencyInjector {
+
+    /**
+     * Registers the channel stores.
+     *
+     * @param replyChannelStore to be registered
+     * @param eventChannelStore to be registered
+     * @param requestChannelStore to be registered
+     */
     public Copper2goDependencyInjector(
             final ReplyChannelStore replyChannelStore,
             final EventChannelStore eventChannelStore,
