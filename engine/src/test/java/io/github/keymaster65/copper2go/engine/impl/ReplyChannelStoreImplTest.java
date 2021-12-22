@@ -80,13 +80,11 @@ class ReplyChannelStoreImplTest {
         verify(channel).reply(TEST_MESSAGE, null);
         verify(channel, times(0)).replyError(TEST_MESSAGE, null);
         verify(channel, times(0)).replyError(TEST_MESSAGE);
-
         store.store(UUID, channel);
-        var attributes = mock(Map.class);
-        //noinspection unchecked
+        @SuppressWarnings("unchecked") Map<String,String> attributes = mock(Map.class);
+
         store.reply(UUID, TEST_MESSAGE, attributes);
 
-        //noinspection unchecked
         verify(channel).reply(TEST_MESSAGE, attributes);
         verify(channel, times(0)).replyError(TEST_MESSAGE, null);
         verify(channel, times(0)).replyError(TEST_MESSAGE);
@@ -104,13 +102,11 @@ class ReplyChannelStoreImplTest {
         verify(channel, times(0)).reply(TEST_MESSAGE, null);
         verify(channel, times(0)).reply(TEST_MESSAGE);
 
-
         store.store(UUID, channel);
-        var attributes = mock(Map.class);
-        //noinspection unchecked
+        @SuppressWarnings("unchecked") Map<String,String> attributes = mock(Map.class);
+
         store.replyError(UUID, TEST_MESSAGE, attributes);
 
-        //noinspection unchecked
         verify(channel).replyError(TEST_MESSAGE, attributes);
         verify(channel, times(0)).reply(TEST_MESSAGE, null);
         verify(channel, times(0)).reply(TEST_MESSAGE);
