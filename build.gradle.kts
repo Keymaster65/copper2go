@@ -28,6 +28,10 @@ dependencies {
 
     implementation("org.copper-engine:copper-coreengine:5.4.0")
 
+    configurations.implementation {
+        // due to license issue and I guess I currently do not need it
+        exclude("io.netty","netty-tcnative-classes")
+    }
     implementation("io.vertx:vertx-core:4.2.+")
     implementation("io.vertx:vertx-kafka-client:4.2.+")
 
