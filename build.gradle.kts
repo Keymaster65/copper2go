@@ -138,14 +138,6 @@ allprojects {
         mavenCentral()
     }
 
-//    testSets {
-//        create("integrationTest")
-//    }
-
-//    tasks.check {
-//        dependsOn(tasks.findByName("integrationTest"))
-//    }
-
     tasks.withType<Test> {
         useJUnitPlatform {
             includeEngines.add("junit-jupiter")
