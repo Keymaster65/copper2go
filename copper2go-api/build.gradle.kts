@@ -10,6 +10,11 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
 publishing {
     publications {
         create<MavenPublication>("library") {

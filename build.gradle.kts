@@ -91,12 +91,6 @@ allprojects {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    java {
-        withSourcesJar()
-        withJavadocJar()
-    }
-
-
     // see https://github.com/hierynomus/license-gradle-plugin
     apply(plugin = "com.github.hierynomus.license")
     license {
