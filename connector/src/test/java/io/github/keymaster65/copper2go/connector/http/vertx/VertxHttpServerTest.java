@@ -18,6 +18,7 @@ package io.github.keymaster65.copper2go.connector.http.vertx;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerRequest;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -30,12 +31,12 @@ class VertxHttpServerTest {
     @Test
     void startStop() {
         final HttpServer httpServer = mock(HttpServer.class);
-        //noinspection unchecked
+        @SuppressWarnings("unchecked") final Handler<HttpServerRequest> handler = mock(Handler.class);
         final VertxHttpServer vertxHttpServer = new VertxHttpServer(
                 0,
                 mock(Vertx.class),
                 httpServer,
-                mock(Handler.class)
+                handler
         );
 
         vertxHttpServer.start();
