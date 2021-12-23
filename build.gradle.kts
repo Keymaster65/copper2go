@@ -47,19 +47,6 @@ application {
 group = "io.github.keymaster65"
 version = "2.2"
 
-testSets {
-    create("integrationTest")
-    create("systemTest")
-}
-
-tasks.check {
-    dependsOn(tasks.findByName("systemTest"))
-}
-
-tasks.check {
-    dependsOn(tasks.findByName("integrationTest"))
-}
-
 tasks.sonarqube {
     dependsOn(tasks.test)
 }
@@ -74,8 +61,8 @@ tasks.jar {
 tasks.compileTestJava {
     dependsOn(tasks.findByName("checkLicense"))
 }
-tasks.findByName("compileSystemTestJava")?.dependsOn(tasks.findByName("checkLicense"))
-tasks.findByName("compileIntegrationTestJava")?.dependsOn(tasks.findByName("checkLicense"))
+
+var ct = tasks.checkLicense
 
 allprojects {
     apply(plugin = "java")
@@ -129,6 +116,22 @@ allprojects {
         testImplementation("org.mock-server:mockserver-netty:5.+")
 
     }
+
+    testSets {
+        create("integrationTest")
+        create("systemTest")
+    }
+
+    tasks.check {
+        dependsOn(tasks.findByName("systemTest"))
+    }
+
+    tasks.check {
+        dependsOn(tasks.findByName("integrationTest"))
+    }
+
+    tasks.findByName("compileSystemTestJava")?.dependsOn(ct)
+    tasks.findByName("compileIntegrationTestJava")?.dependsOn(ct)
 
     dependencyLocking {
         lockAllConfigurations()
