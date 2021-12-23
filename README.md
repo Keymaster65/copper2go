@@ -195,7 +195,14 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "Kafka/Http Bridge" Release Plan Release Workflow API 2.1  and Application API 3.0
+### "Kafka/Http Bridge" Release Plan Release Bridge Workflow 1.0
+
+### "Kafka/Http Bridge" Release Plan Release Workflow API 2.1
+
+* [ ] Support HTTP URL parameter (in and out)
+* [ ] Support Kafka Header (parameter) (in and out)
+
+### Application API 3.0
 
 * [x] Support for Java 17
 * [x] Add Bridge Workflow
@@ -204,7 +211,12 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [ ] Support Kafka Header (parameter) (in and out)
 * [ ] Add use case in Developer's Guide
 * [x] Improve unit test coverage up to 50%
-* [x] Update used jars
+* [x] Update many used jars
+
+### "Java 17" Release Plan Release Workflow API 3.0
+
+* [ ] Support for Java 17
+* [ ] Remove payload member from WorkflowData
 
 ### "Binding" Release Plan Application API 3.1
 
@@ -213,7 +225,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ### "State Pattern" Release Plan Application API 3.1
 
-* [ ] Spike: Workflow using State Pattern
+* [ ] Spike: Workflow using State Pattern or other defined strategy
 
 ### "Operator" Release Plan Application API 3.2
 
@@ -251,9 +263,9 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * PostgreSQL for workflow persistent instances
     * Add callback in WorkflowData ("replychannel")
     * Support of callbacks
-* factoryfx integration
 * PostgreSQL support for business resources
 * Async idempotent DB API
+* On demand only: factoryfx integration
 * On demand only: extend workflow attributes to a MultiMap
 
 ## Released
