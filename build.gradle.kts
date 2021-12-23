@@ -26,7 +26,7 @@ dependencies {
     implementation(project(":engine"))
     implementation(project(":connector"))
 
-    implementation("org.copper-engine:copper-coreengine:5.4.0")
+    implementation("org.copper-engine:copper-coreengine:5.4.1")
 
     configurations.implementation {
         // due to license issue and I guess I currently do not need it
