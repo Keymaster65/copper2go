@@ -74,30 +74,9 @@ public class VertxHttpClient implements Copper2GoHttpClient {
         this.client = client;
     }
 
-    private Handler<HttpResponse<Buffer>> successHandler(final String responseCorrelationId, final Copper2GoEngine engine) {
-        return result -> {
-            if (log.isTraceEnabled()) {
-                log.trace(String.format("Result=%s", result.bodyAsString()));
-            }
-            engine.notify(responseCorrelationId, result.bodyAsString());
-        };
-    }
-
-    private Handler<Throwable> errorHandler(final String responseCorrelationId, final Copper2GoEngine engine) {
-        return err -> {
-            if (log.isTraceEnabled()) {
-                log.trace(String.format("Failure=%s", err.getMessage()));
-            }
-            engine.notifyError(responseCorrelationId, err.getMessage());
-        };
-    }
-
     @Override
     public void request(final HttpMethod httpMethod, final String request, final String responseCorrelationId, Map<String, String> attributes) {
-        final HttpRequest<Buffer> httpRequest = addQueryParams(
-                attributes,
-                client.request(io.vertx.core.http.HttpMethod.valueOf(httpMethod.toString()), port, host, uri)
-        );
+        final HttpRequest<Buffer> httpRequest = createHttpRequest(httpMethod, attributes);
 
         httpRequest
                 .sendBuffer(Buffer.buffer(request))
@@ -111,7 +90,38 @@ public class VertxHttpClient implements Copper2GoHttpClient {
         vertx.close(asyncResult -> log.info("VertX close. succeeded={}", asyncResult.succeeded()));
     }
 
-    static HttpRequest<Buffer> addQueryParams(final Map<String, String> attributes, final HttpRequest<Buffer> request) {
+    HttpRequest<Buffer> createHttpRequest(final HttpMethod httpMethod, final Map<String, String> attributes) {
+        final HttpRequest<Buffer> bufferHttpRequest = client.request(
+                io.vertx.core.http.HttpMethod.valueOf(httpMethod.toString()),
+                port,
+                host,
+                uri
+        );
+        return addQueryParams(
+                attributes,
+                bufferHttpRequest
+        );
+    }
+
+    Handler<HttpResponse<Buffer>> successHandler(final String responseCorrelationId, final Copper2GoEngine engine) {
+        return result -> {
+            if (log.isTraceEnabled()) {
+                log.trace(String.format("Result=%s", result.bodyAsString()));
+            }
+            engine.notify(responseCorrelationId, result.bodyAsString());
+        };
+    }
+
+    Handler<Throwable> errorHandler(final String responseCorrelationId, final Copper2GoEngine engine) {
+        return err -> {
+            if (log.isTraceEnabled()) {
+                log.trace(String.format("Failure=%s", err.getMessage()));
+            }
+            engine.notifyError(responseCorrelationId, err.getMessage());
+        };
+    }
+
+    private static HttpRequest<Buffer> addQueryParams(final Map<String, String> attributes, final HttpRequest<Buffer> request) {
         if (attributes == null || attributes.isEmpty()) {
             return request;
         }
