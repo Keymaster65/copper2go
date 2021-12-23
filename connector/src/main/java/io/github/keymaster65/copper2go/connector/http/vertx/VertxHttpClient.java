@@ -74,7 +74,7 @@ public class VertxHttpClient implements Copper2GoHttpClient {
         this.client = client;
     }
 
-    private Handler<HttpResponse<Buffer>> sucessHandler(final String responseCorrelationId, final Copper2GoEngine engine) {
+    private Handler<HttpResponse<Buffer>> successHandler(final String responseCorrelationId, final Copper2GoEngine engine) {
         return result -> {
             if (log.isTraceEnabled()) {
                 log.trace(String.format("Result=%s", result.bodyAsString()));
@@ -102,7 +102,7 @@ public class VertxHttpClient implements Copper2GoHttpClient {
         httpRequest
                 .sendBuffer(Buffer.buffer(request))
                 .onFailure(errorHandler(responseCorrelationId, engine))
-                .onSuccess(sucessHandler(responseCorrelationId, engine));
+                .onSuccess(successHandler(responseCorrelationId, engine));
     }
 
     @Override
