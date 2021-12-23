@@ -5,7 +5,13 @@ dependencies {
     implementation("org.copper-engine:copper-jmx-interface:5.4.0")
     implementation("org.copper-engine:copper-ext:5.4.0")
 
-    // needed for exceptions
+    constraints {
+        implementation("commons-io:commons-io:2.11.0") {
+            because("Bug while deleting dirs on Windows 10; JDK11")
+        }
+    }
+
+    // needed for needed for GitAPIException
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.0.0.202111291000-r")
 
 }
