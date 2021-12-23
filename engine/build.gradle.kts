@@ -3,7 +3,7 @@ dependencies {
 
     implementation("org.copper-engine:copper-coreengine:5.4.0")
     implementation("org.copper-engine:copper-jmx-interface:5.4.0")
-    implementation("org.copper-engine:copper-ext:5.4.0")
+    implementation("org.copper-engine:copper-ext:5.4.1")
 
     constraints {
         implementation("commons-io:commons-io:2.11.0") {
