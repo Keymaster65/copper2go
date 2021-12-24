@@ -103,21 +103,21 @@ public class VertxHttpClient implements Copper2GoHttpClient {
         );
     }
 
-    Handler<HttpResponse<Buffer>> successHandler(final String responseCorrelationId, final Copper2GoEngine engine) {
+    static Handler<HttpResponse<Buffer>> successHandler(final String responseCorrelationId, final Copper2GoEngine engine) {
         return result -> {
-            if (log.isTraceEnabled()) {
-                log.trace(String.format("Result=%s", result.bodyAsString()));
+            if (log.isDebugEnabled()) {
+                log.debug(String.format("Result=%s", result.bodyAsString()));
             }
             engine.notify(responseCorrelationId, result.bodyAsString());
         };
     }
 
-    Handler<Throwable> errorHandler(final String responseCorrelationId, final Copper2GoEngine engine) {
-        return err -> {
-            if (log.isTraceEnabled()) {
-                log.trace(String.format("Failure=%s", err.getMessage()));
+    static Handler<Throwable> errorHandler(final String responseCorrelationId, final Copper2GoEngine engine) {
+        return throwable -> {
+            if (log.isDebugEnabled()) {
+                log.debug(String.format("Failure=%s", throwable.getMessage()));
             }
-            engine.notifyError(responseCorrelationId, err.getMessage());
+            engine.notifyError(responseCorrelationId, throwable.getMessage());
         };
     }
 
