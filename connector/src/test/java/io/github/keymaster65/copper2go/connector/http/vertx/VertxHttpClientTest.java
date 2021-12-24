@@ -21,12 +21,13 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
+import net.jqwik.api.Example;
+import net.jqwik.api.ForAll;
+import net.jqwik.api.Property;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.slf4j.LoggerFactory;
 
@@ -40,8 +41,8 @@ class VertxHttpClientTest {
     private static final Map<String, String> NULL_ATTRIBUTES = null;
     private static final io.github.keymaster65.copper2go.connector.http.HttpMethod GET = io.github.keymaster65.copper2go.connector.http.HttpMethod.GET;
 
-    @Test
-    void createHttpRequestWithAttribute() {
+    @Property
+    void createHttpRequestWithAttribute(@ForAll final io.github.keymaster65.copper2go.connector.http.HttpMethod httpMethod) {
         final WebClient webClient = Mockito.mock(WebClient.class);
         final HttpRequest<Buffer> httpRequest = createBufferHttpRequest(webClient);
         final VertxHttpClient vertxHttpClient = createVertxHttpClient(webClient, Mockito.mock(Vertx.class));
@@ -51,7 +52,7 @@ class VertxHttpClientTest {
         Map<String, String> attributes = Map.of(parameterName, parameterValue);
 
         final HttpRequest<Buffer> result = vertxHttpClient.createHttpRequest(
-                GET,
+                httpMethod,
                 attributes
         );
 
@@ -59,7 +60,7 @@ class VertxHttpClientTest {
         Mockito.verify(httpRequest).addQueryParam(parameterName, parameterValue);
     }
 
-    @Test
+    @Example
     void createHttpRequestNullAttributes() {
         final WebClient webClient = Mockito.mock(WebClient.class);
         final HttpRequest<Buffer> httpRequest = createBufferHttpRequest(webClient);
@@ -74,7 +75,7 @@ class VertxHttpClientTest {
         Mockito.verifyNoInteractions(httpRequest);
     }
 
-    @Test
+    @Example
     void successHandler() {
         resetLogContext();
         final Copper2GoEngine copper2GoEngine = Mockito.mock(Copper2GoEngine.class);
@@ -88,7 +89,7 @@ class VertxHttpClientTest {
         Mockito.verify(copper2GoEngine).notify(CORRELATION_ID, BODY);
     }
 
-    @Test
+    @Example
     void errorHandler() {
         resetLogContext();
         final Copper2GoEngine copper2GoEngine = Mockito.mock(Copper2GoEngine.class);
@@ -101,7 +102,7 @@ class VertxHttpClientTest {
         Mockito.verify(copper2GoEngine).notifyError(CORRELATION_ID, EXCEPTION_MESSAGE);
     }
 
-    @Test
+    @Example
     void close() {
         final WebClient webClient = Mockito.mock(WebClient.class);
         final Vertx vertx = Mockito.mock(Vertx.class);
@@ -114,14 +115,12 @@ class VertxHttpClientTest {
     }
 
 
-    @Test
+    @Example
     void request() {
         final WebClient webClient = Mockito.mock(WebClient.class);
         final HttpRequest<Buffer> httpRequest = createBufferHttpRequest(webClient);
-        @SuppressWarnings("unchecked")
-        final Future<HttpResponse<Buffer>> onFailureFuture = Mockito.mock(Future.class);
-        @SuppressWarnings("unchecked")
-        final Future<HttpResponse<Buffer>> onSuccessFuture = Mockito.mock(Future.class);
+        @SuppressWarnings("unchecked") final Future<HttpResponse<Buffer>> onFailureFuture = Mockito.mock(Future.class);
+        @SuppressWarnings("unchecked") final Future<HttpResponse<Buffer>> onSuccessFuture = Mockito.mock(Future.class);
         Mockito.when(onFailureFuture.onFailure(Mockito.any())).thenReturn(onSuccessFuture);
         Mockito.when(httpRequest.sendBuffer(Mockito.any())).thenReturn(onFailureFuture);
         final Vertx vertx = Mockito.mock(Vertx.class);
@@ -157,10 +156,10 @@ class VertxHttpClientTest {
     private static HttpRequest<Buffer> createBufferHttpRequest(final WebClient webClient) {
         @SuppressWarnings("unchecked") final HttpRequest<Buffer> httpRequest = Mockito.mock(HttpRequest.class);
         Mockito.when(webClient.request(
-                HttpMethod.GET,
-                0,
-                "host",
-                "uri"
+                Mockito.any(),
+                Mockito.eq(0),
+                Mockito.eq("host"),
+                Mockito.eq("uri")
         )).thenReturn(httpRequest);
         return httpRequest;
     }
