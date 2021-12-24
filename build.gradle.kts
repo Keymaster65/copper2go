@@ -111,6 +111,7 @@ allprojects {
         implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.+")
+        testImplementation("net.jqwik:jqwik:1.+")
         testImplementation("org.junit.jupiter:junit-jupiter:5.+")
         testImplementation("org.mockito:mockito-core:4.+")
         testImplementation("org.mock-server:mockserver-netty:5.+")
@@ -144,6 +145,7 @@ allprojects {
     tasks.withType<Test> {
         useJUnitPlatform {
             includeEngines.add("junit-jupiter")
+            includeEngines.add("jqwik")
         }
         systemProperty("logback.configurationFile", "src/main/resources/logback.xml")
     }
