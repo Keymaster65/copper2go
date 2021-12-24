@@ -7,7 +7,7 @@ dependencies {
 
     constraints {
         implementation("commons-io:commons-io:2.11.0") {
-            because("Bug while deleting dirs on Windows 10; JDK11")
+            because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
         }
     }
 
