@@ -62,7 +62,8 @@ class VertxHttpClientTest {
         Mockito.verify(engine).notify(CORRELATION_ID, successResponse);
     }
 
-    // disabled due to hanging on Jenkins
+    // hanging on Jenkins
+    @Test
     void postConnectionRefused() throws InterruptedException {
         Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
         final VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, 50666, "/", engine);
