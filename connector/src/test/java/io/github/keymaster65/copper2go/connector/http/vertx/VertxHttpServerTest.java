@@ -19,6 +19,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerRequest;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -27,6 +28,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 class VertxHttpServerTest {
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void construct() {
+        Assertions.assertThatCode(() -> new VertxHttpServer(
+                0,
+                mock(Handler.class)
+        )
+        ).doesNotThrowAnyException();
+    }
 
     @Test
     void startStop() {
