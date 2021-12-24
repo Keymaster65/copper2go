@@ -32,11 +32,12 @@ class VertxHttpServerTest {
     @SuppressWarnings("unchecked")
     @Test
     void construct() {
-        Assertions.assertThatCode(() -> new VertxHttpServer(
-                0,
-                mock(Handler.class)
-        )
-        ).doesNotThrowAnyException();
+        Assertions
+                .assertThatCode(() -> new VertxHttpServer(
+                        0,
+                        mock(Handler.class)
+                ))
+                .doesNotThrowAnyException();
     }
 
     @Test
