@@ -97,7 +97,7 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
                                         kafkaHost,
                                         kafkaPort,
                                         config.topic,
-                                        RequestChannelStoreImpl::apply
+                                        RequestChannelStoreImpl::createKafkaProducer
                                 ), engine));
             }
         }
@@ -109,7 +109,7 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
         }
     }
 
-    private static KafkaProducer<String, String> apply(Map<String, String> config) {
+    static KafkaProducer<String, String> createKafkaProducer(Map<String, String> config) {
         return KafkaProducer.create(Vertx.vertx(), config);
     }
 

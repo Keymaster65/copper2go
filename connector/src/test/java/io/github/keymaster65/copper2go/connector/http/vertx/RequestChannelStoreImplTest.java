@@ -20,20 +20,22 @@ import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannel
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelImpl;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.EngineRuntimeException;
+import net.jqwik.api.Example;
+import org.apache.kafka.common.KafkaException;
+import org.apache.kafka.common.config.ConfigException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.mockito.Mockito.mock;
+import java.util.concurrent.locks.LockSupport;
 
 class RequestChannelStoreImplTest {
 
-    @Test
+    @Example
     void addDuplicateRequestChannels() {
-        Copper2GoEngine engine = mock(Copper2GoEngine.class);
-
+        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
         final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs = new HashMap<>();
         final String channelName = "channelName";
         httpRequestChannelConfigs.put(
@@ -44,16 +46,110 @@ class RequestChannelStoreImplTest {
                         "/",
                         "GET"
                 ));
+        RequestChannelStoreImpl requestChannelStore = new RequestChannelStoreImpl(httpRequestChannelConfigs, engine);
 
+        Assertions.assertThatExceptionOfType(EngineRuntimeException.class).isThrownBy(() ->
+                requestChannelStore.putKafkaRequestChannel(channelName, Mockito.mock(KafkaRequestChannelImpl.class))
+        );
+    }
+
+    @Example
+    void addRequestChannels() {
+        RequestChannelStoreImpl requestChannelStore = createHttpRequestChannelStore(Mockito.mock(Copper2GoEngine.class));
+
+        final String channelName2 = "channelName2";
+        Assertions.assertThatCode(() ->
+                        requestChannelStore.putKafkaRequestChannel(channelName2, Mockito.mock(KafkaRequestChannelImpl.class))
+                )
+                .doesNotThrowAnyException();
+    }
+
+    @Example
+    void request() {
+        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        final String channelName = "channelName";
+        RequestChannelStoreImpl requestChannelStore = createHttpRequestChannelStore(engine);
+
+        requestChannelStore.request(channelName, "request", "responseCorrelationId");
+        LockSupport.parkNanos(6L * 1000 * 1000 * 1000);
+
+        Mockito.verify(engine).notifyError(Mockito.any(), Mockito.any());
+    }
+
+    @Example
+    void putKafkaRequestChannels() {
+        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        RequestChannelStoreImpl requestChannelStore = new RequestChannelStoreImpl(null, engine);
+        final String channelName = "channelName";
         final Map<String, KafkaRequestChannelConfig> kafkaRequestChannelConfigs = new HashMap<>();
         kafkaRequestChannelConfigs.put(
                 channelName,
                 new KafkaRequestChannelConfig("topic"));
 
-        RequestChannelStoreImpl requestChannelStore = new RequestChannelStoreImpl(httpRequestChannelConfigs, engine);
+        Assertions.assertThatCode(() ->
+                        requestChannelStore.addKafkaRequestChannels(
+                                "kafkaHost",
+                                0,
+                                kafkaRequestChannelConfigs,
+                                engine
+                        ))
+                .isInstanceOf(KafkaException.class)
+                .hasMessage("Failed to construct kafka producer")
+                .hasRootCauseInstanceOf(ConfigException.class)
+                .hasRootCauseMessage("No resolvable bootstrap urls given in bootstrap.servers");
 
-        Assertions.assertThatExceptionOfType(EngineRuntimeException.class).isThrownBy(() ->
-                requestChannelStore.putKafkaRequestChannel(channelName, mock(KafkaRequestChannelImpl.class))
-        );
+    }
+
+    @Example
+    void putKafkaRequestChannelsNull() {
+        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        RequestChannelStoreImpl requestChannelStore = createEmptyRequestChannelStore(engine);
+
+        Assertions.assertThatCode(() ->
+                        requestChannelStore.addKafkaRequestChannels(
+                                "kafkaHost",
+                                0,
+                                null,
+                                engine
+                        ))
+                .doesNotThrowAnyException();
+    }
+
+    @Example
+    void close() {
+        RequestChannelStoreImpl requestChannelStore = createEmptyRequestChannelStore(Mockito.mock(Copper2GoEngine.class));
+
+        Assertions.assertThatCode(requestChannelStore::close)
+                .doesNotThrowAnyException();
+
+    }
+
+
+    @Test
+    void createKafkaProducer() {
+        Map<String, String> emptyMap = Map.of();
+        Assertions.assertThatCode(() ->
+                        RequestChannelStoreImpl.createKafkaProducer(emptyMap)
+                )
+                .isInstanceOf(ConfigException.class)
+                .hasMessage("Missing required configuration \"key.serializer\" which has no default value.");
+    }
+
+    private RequestChannelStoreImpl createHttpRequestChannelStore(final Copper2GoEngine engine) {
+        final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs = new HashMap<>();
+        final String channelName = "channelName";
+        httpRequestChannelConfigs.put(
+                channelName,
+                new HttpRequestChannelConfig(
+                        "httpHost",
+                        0,
+                        "/",
+                        "GET"
+                ));
+        return new RequestChannelStoreImpl(httpRequestChannelConfigs, engine);
+    }
+
+    private RequestChannelStoreImpl createEmptyRequestChannelStore(final Copper2GoEngine engine) {
+        return new RequestChannelStoreImpl(null, engine);
     }
 }
