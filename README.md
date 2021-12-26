@@ -1,10 +1,16 @@
 # copper2go
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/Keymaster65/copper2go/blob/master/LICENSE)
+
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
 [![Build](https://github.com/Keymaster65/copper2go/actions/workflows/build.yml/badge.svg)](https://github.com/Keymaster65/copper2go/actions/workflows/build.yml)
 [![CodeQL](https://github.com/Keymaster65/copper2go/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Keymaster65/copper2go/actions/workflows/codeql-analysis.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=alert_status)](https://sonarcloud.io/dashboard?id=Keymaster65_copper2go)
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api)
+[![GitHub release](https://img.shields.io/github/release/Keymaster65/copper2go)](https://GitHub.com/Keymaster65/copper2go/releases/)
+[![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
 
 Implementation of a lightweight CI/CD pipeline using git repositories for changes in COPPER workflows.
 
@@ -26,15 +32,17 @@ This picture shows a first overview:
 In your container you can run workflows that are accessible via git. Just start with the ones
 in  https://github.com/Keymaster65/copper2go-workflows.
 
+
+[![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
 * Start container
   * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v2.0`
 * In Browser you can see the used licenses
     * `http://localhost:59665/`
-    * `http://localhost:59665/copper2go/2/api/request/2.0/Hello` will deliver a "IllegalArgumentException: A name must
-      be specified."
+      * `http://localhost:59665/copper2go/2/api/request/2.0/Hello` will deliver a "IllegalArgumentException: A name must
+        be specified."
 * Use any other HTTP-Client and POST your name to the URL
     * Example: `curl --data Wolf http://localhost:59665/copper2go/2/api/request/2.0/Hello`
-    * Will produce someting like `Hello Wolf! Please transfer 4 cent`
+      * Will produce someting like `Hello Wolf! Please transfer 4 cent`
 
 ### Change Workflows
 
@@ -44,8 +52,8 @@ You want to develop your own workflows? You may start with the existing ones.
 * Modify configuration and store it into environment variable C2G_CONFIG.
     * Start with
       file: https://github.com/Keymaster65/copper2go/blob/release/2.0/src/main/resources/io/github/keymaster65/copper2go/application/config/config.json
-    * store it in your local docker host `config.json`
-    * Typically, modify workflowGitURI location
+      * store it in your local docker host `config.json`
+      * Typically, modify workflowGitURI location
 * Start Container with your configuration:
     * `docker run -d -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v2.0`
 
@@ -68,8 +76,8 @@ Of course, copper2go containers can be run wherever you want. So the container m
 * Intranet Workflows, if hosted in a company
 * Desktop Workflows, if run on your system
 
-In times of automated build pipelines the needs for Workflow systems reduced, but a more lightweight **git** based
-pipeline might even better fit your needs.
+  In times of automated build pipelines the needs for Workflow systems reduced, but a more lightweight **git** based
+  pipeline might even better fit your needs.
 
 ## Developer's Guide
 
@@ -155,18 +163,23 @@ To Do:
 
 #### Workflow's API
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api)
+
 The copper2go Workflow's API is hosted in the Maven Central. It can be found at several places
 
 * https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
 * https://search.maven.org/search?q=copper2go
 * https://mvnrepository.com/artifact/io.github.keymaster65/copper2go-api
 
-Changes will be listed here in the "Released" chapter. In addition, you have the API to the COPPER framework.
+  Changes will be listed here in the "Released" chapter. In addition, you have the API to the COPPER framework.
 
 #### Application API
 
-The configuration of the application and the shipped dependencies will be listed here as Application API in the "
-Released" chapter. The releases are hosted at github: https://github.com/Keymaster65/copper2go/tags
+[![GitHub release](https://img.shields.io/github/release/Keymaster65/copper2go)](https://GitHub.com/Keymaster65/copper2go/releases/)
+
+The configuration of the application and the shipped dependencies will be listed here as Application API in the 
+"Released" chapter. The releases are hosted at github: 
+https://github.com/Keymaster65/copper2go/releases
 
 Docker images can be found here: https://hub.docker.com/r/keymaster65/copper2go
 
