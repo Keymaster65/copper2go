@@ -17,7 +17,7 @@ package io.github.keymaster65.copper2go.connector.integrationtest.kafka.vertx;
 
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaSender;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelImpl;
-import io.github.keymaster65.copper2go.engine.Engine;
+import io.github.keymaster65.copper2go.engine.ResponseReceiver;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -42,10 +42,10 @@ class KafkaRequestChannelImplTest {
     @Test
     void requestSuccess() {
         Copper2GoKafkaSender sender = Commons.createCopper2GoKafkaSender(Commons.kafka, "testTopic");
-        Engine engine = Mockito.mock(Engine.class);
+        ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
         try (KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
                 sender,
-                engine
+                responseReceiver
         )) {
 
             requestChannel.request("request", CORR_ID);
@@ -59,16 +59,16 @@ class KafkaRequestChannelImplTest {
                 soft.assertThat(requestChannel.getFailCount()).isEqualTo(0L);
             });
         }
-        verify(engine).receive(Mockito.eq(CORR_ID), Mockito.startsWith("{"));
+        verify(responseReceiver).receive(Mockito.eq(CORR_ID), Mockito.startsWith("{"));
     }
 
     @Test
     void requestFail() {
         Copper2GoKafkaSender sender = Commons.createCopper2GoKafkaSender(Commons.kafka, "");
-        Engine engine = Mockito.mock(Engine.class);
+        ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
         try (KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
                 sender,
-                engine
+                responseReceiver
         )) {
 
             requestChannel.request("request", CORR_ID);
@@ -82,6 +82,6 @@ class KafkaRequestChannelImplTest {
                 soft.assertThat(requestChannel.getFailCount()).isEqualTo(1L);
             });
         }
-        verify(engine).receiveError(CORR_ID, "Invalid topics: []");
+        verify(responseReceiver).receiveError(CORR_ID, "Invalid topics: []");
     }
 }

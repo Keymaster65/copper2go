@@ -17,7 +17,7 @@ package io.github.keymaster65.copper2go.connector.http.vertx;
 
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpClient;
 import io.github.keymaster65.copper2go.connector.http.HttpMethod;
-import io.github.keymaster65.copper2go.engine.Engine;
+import io.github.keymaster65.copper2go.engine.ResponseReceiver;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -34,7 +34,7 @@ public class VertxHttpClient implements Copper2GoHttpClient {
     private final String host;
     private final int port;
     private final String uri;
-    private final Engine engine;
+    private final ResponseReceiver responseReceiver;
     private final Vertx vertx;
     private final WebClient client;
     private static final Logger log = LoggerFactory.getLogger(VertxHttpClient.class);
@@ -43,33 +43,33 @@ public class VertxHttpClient implements Copper2GoHttpClient {
             final String host,
             final int port,
             final String uri,
-            final Engine engine
+            final ResponseReceiver responseReceiver
     ) {
-        this(host, port, uri, engine, Vertx.vertx());
+        this(host, port, uri, responseReceiver, Vertx.vertx());
     }
 
     public VertxHttpClient(
             final String host,
             final int port,
             final String uri,
-            final Engine engine,
+            final ResponseReceiver responseReceiver,
             final Vertx vertx
     ) {
-        this(host, port, uri, engine, Vertx.vertx(), WebClient.create(vertx));
+        this(host, port, uri, responseReceiver, Vertx.vertx(), WebClient.create(vertx));
     }
 
     public VertxHttpClient(
             final String host,
             final int port,
             final String uri,
-            final Engine engine,
+            final ResponseReceiver responseReceiver,
             final Vertx vertx,
             final WebClient client
     ) {
         this.host = host;
         this.port = port;
         this.uri = uri;
-        this.engine = engine;
+        this.responseReceiver = responseReceiver;
         this.vertx = vertx;
         this.client = client;
     }
@@ -80,8 +80,8 @@ public class VertxHttpClient implements Copper2GoHttpClient {
 
         httpRequest
                 .sendBuffer(Buffer.buffer(request))
-                .onFailure(errorHandler(responseCorrelationId, engine))
-                .onSuccess(successHandler(responseCorrelationId, engine));
+                .onFailure(errorHandler(responseCorrelationId, responseReceiver))
+                .onSuccess(successHandler(responseCorrelationId, responseReceiver));
     }
 
     @Override
@@ -103,21 +103,27 @@ public class VertxHttpClient implements Copper2GoHttpClient {
         );
     }
 
-    static Handler<HttpResponse<Buffer>> successHandler(final String responseCorrelationId, final Engine engine) {
+    static Handler<HttpResponse<Buffer>> successHandler(
+            final String responseCorrelationId,
+            final ResponseReceiver responseReceiver
+    ) {
         return result -> {
             if (log.isDebugEnabled()) {
                 log.debug(String.format("Result=%s", result.bodyAsString()));
             }
-            engine.receive(responseCorrelationId, result.bodyAsString());
+            responseReceiver.receive(responseCorrelationId, result.bodyAsString());
         };
     }
 
-    static Handler<Throwable> errorHandler(final String responseCorrelationId, final Engine engine) {
+    static Handler<Throwable> errorHandler(
+            final String responseCorrelationId,
+            final ResponseReceiver responseReceiver
+    ) {
         return throwable -> {
             if (log.isDebugEnabled()) {
                 log.debug(String.format("Failure=%s", throwable.getMessage()));
             }
-            engine.receiveError(responseCorrelationId, throwable.getMessage());
+            responseReceiver.receiveError(responseCorrelationId, throwable.getMessage());
         };
     }
 

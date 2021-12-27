@@ -18,8 +18,8 @@ package io.github.keymaster65.copper2go.connector.integrationtest.kafka.vertx;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaReceiverImpl;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaSenderImpl;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaConsumerHandler;
-import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineException;
+import io.github.keymaster65.copper2go.engine.PayloadReceiver;
 import io.vertx.core.Future;
 import io.vertx.kafka.client.producer.RecordMetadata;
 import org.assertj.core.api.Assertions;
@@ -56,15 +56,15 @@ class Copper2GoKafkaSenderImplTest {
         Copper2GoKafkaSenderImpl sender = createCopper2GoKafkaSenderAndSend();
         sender.close();
 
-        Engine engine = mock(Engine.class);
-        KafkaConsumerHandler handler = createCopper2GoKafkaReceiverAndReceive(engine);
+        PayloadReceiver payloadReceiver = mock(PayloadReceiver.class);
+        KafkaConsumerHandler handler = createCopper2GoKafkaReceiverAndReceive(payloadReceiver);
 
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(handler.getSuccessCount()).isOne();
             soft.assertThat(handler.getFailCount()).isZero();
         });
-        verify(engine).receive(
+        verify(payloadReceiver).receive(
                 eq(REQUEST),
                 any(),
                 any(),
@@ -80,10 +80,10 @@ class Copper2GoKafkaSenderImplTest {
         Copper2GoKafkaSenderImpl sender = createCopper2GoKafkaSenderAndSend();
         sender.close();
 
-        Engine engine = mock(Engine.class);
+        PayloadReceiver payloadReceiver = mock(PayloadReceiver.class);
         Mockito
                 .doThrow(new EngineException("Simulated exception."))
-                .when(engine)
+                .when(payloadReceiver)
                 .receive(
                         eq(REQUEST),
                         any(),
@@ -93,13 +93,13 @@ class Copper2GoKafkaSenderImplTest {
                         eq(0L)
                 );
 
-        KafkaConsumerHandler handler = createCopper2GoKafkaReceiverAndReceive(engine);
+        KafkaConsumerHandler handler = createCopper2GoKafkaReceiverAndReceive(payloadReceiver);
 
         SoftAssertions.assertSoftly(soft -> {
             soft.assertThat(handler.getSuccessCount()).isZero();
             soft.assertThat(handler.getFailCount()).isOne();
         });
-        verify(engine).receive(
+        verify(payloadReceiver).receive(
                 eq(REQUEST),
                 any(),
                 any(),
@@ -115,10 +115,10 @@ class Copper2GoKafkaSenderImplTest {
         copper2GoKafkaSender.close();
     }
 
-    private KafkaConsumerHandler createCopper2GoKafkaReceiverAndReceive(final Engine engine) {
+    private KafkaConsumerHandler createCopper2GoKafkaReceiverAndReceive(final PayloadReceiver payloadReceiver) {
         KafkaConsumerHandler handler = new KafkaConsumerHandler(
                 TOPIC,
-                engine,
+                payloadReceiver,
                 "Hello",
                 1L,
                 0L

@@ -18,8 +18,8 @@ package io.github.keymaster65.copper2go.connector.integrationtest.http.vertx;
 import io.github.keymaster65.copper2go.connector.http.TestHttpClient;
 import io.github.keymaster65.copper2go.connector.http.vertx.RequestHandler;
 import io.github.keymaster65.copper2go.connector.http.vertx.VertxHttpServer;
-import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineException;
+import io.github.keymaster65.copper2go.engine.PayloadReceiver;
 import io.vertx.core.Vertx;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -37,8 +37,8 @@ class VertxHttpServerTest {
 
     @Test
     void startStop() {
-        Engine engine = Mockito.mock(Engine.class);
-        final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, new RequestHandler(engine));
+        PayloadReceiver payloadReceiver = Mockito.mock(PayloadReceiver.class);
+        final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, new RequestHandler(payloadReceiver));
         try {
             vertxHttpServer.start();
         } finally {
@@ -48,11 +48,11 @@ class VertxHttpServerTest {
 
     @Test
     void post() throws InterruptedException, EngineException, IOException {
-        Engine engine = Mockito.mock(Engine.class);
+        PayloadReceiver payloadReceiver = Mockito.mock(PayloadReceiver.class);
 
         // Exception should lead to normal response.end() if no workflow does
         Mockito.doThrow(new EngineException("Simulated exception."))
-                .when(engine)
+                .when(payloadReceiver)
                 .receive(
                         ArgumentMatchers.any(),
                         ArgumentMatchers.any (),
@@ -62,7 +62,7 @@ class VertxHttpServerTest {
                         eq(0L));
 
         final Vertx vertx = Vertx.vertx();
-        final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, vertx, new RequestHandler(engine));
+        final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, vertx, new RequestHandler(payloadReceiver));
         try {
             vertxHttpServer.start();
             TestHttpClient.post(URI.create("http://localhost:" + SERVER_PORT + COPPER2GO_2_API + "request/1.0/Hello"), "Wolf\r\n");
@@ -70,7 +70,7 @@ class VertxHttpServerTest {
             vertxHttpServer.stop();
         }
 
-        Mockito.verify(engine).receive(
+        Mockito.verify(payloadReceiver).receive(
                 ArgumentMatchers.any(),
                 ArgumentMatchers.any(),
                 ArgumentMatchers.any(),

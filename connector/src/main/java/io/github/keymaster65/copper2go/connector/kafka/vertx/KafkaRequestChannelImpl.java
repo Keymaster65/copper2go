@@ -15,8 +15,8 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
-import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.RequestChannel;
+import io.github.keymaster65.copper2go.engine.ResponseReceiver;
 import io.vertx.core.Future;
 import io.vertx.kafka.client.producer.RecordMetadata;
 
@@ -26,17 +26,17 @@ import java.util.concurrent.atomic.AtomicLong;
 public class KafkaRequestChannelImpl implements RequestChannel, AutoCloseable {
 
     private final Copper2GoKafkaSender copper2GoKafkaSender;
-    private final Engine engine;
+    private final ResponseReceiver responseReceiver;
 
     private final AtomicLong successCount = new AtomicLong(0);
     private final AtomicLong failCount = new AtomicLong(0);
 
     public KafkaRequestChannelImpl(
             final Copper2GoKafkaSender copper2GoKafkaSender,
-            final Engine engine
+            final ResponseReceiver responseReceiver
     ) {
         this.copper2GoKafkaSender = copper2GoKafkaSender;
-        this.engine = engine;
+        this.responseReceiver = responseReceiver;
     }
 
     @Override
@@ -52,12 +52,12 @@ public class KafkaRequestChannelImpl implements RequestChannel, AutoCloseable {
     }
 
     void handleSendFailure(final String responseCorrelationId, final Throwable throwable) {
-        engine.receiveError(responseCorrelationId, throwable.getMessage());
+        responseReceiver.receiveError(responseCorrelationId, throwable.getMessage());
         failCount.incrementAndGet();
     }
 
     void handleSendSuccess(final String responseCorrelationId, final Future<RecordMetadata> send) {
-        engine.receive(responseCorrelationId, createResponse(send));
+        responseReceiver.receive(responseCorrelationId, createResponse(send));
         successCount.incrementAndGet();
     }
 

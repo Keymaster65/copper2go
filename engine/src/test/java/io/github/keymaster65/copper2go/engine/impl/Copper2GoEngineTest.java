@@ -15,10 +15,9 @@
  */
 package io.github.keymaster65.copper2go.engine.impl;
 
-import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineControl;
 import io.github.keymaster65.copper2go.engine.EngineException;
-import io.github.keymaster65.copper2go.engine.InitialPayloadReceiver;
+import io.github.keymaster65.copper2go.engine.PayloadReceiver;
 import io.github.keymaster65.copper2go.engine.ResponseReceiver;
 import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 import io.github.keymaster65.copper2go.util.Copper2goDependencyInjector;
@@ -26,22 +25,13 @@ import org.assertj.core.api.Assertions;
 import org.copperengine.core.DependencyInjector;
 import org.junit.jupiter.api.Test;
 
-class EngineImplTest {
-
-    @Test
-    void receiveResponseEngineNotStarted() {
-        ResponseReceiver responseReceiver = createEngine();
-        Assertions
-                .assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> responseReceiver.receive("responseCorrelationId", "response"))
-                .withMessage("No engine found. May be it must be started first.");
-    }
+class Copper2GoEngineTest {
 
     @Test
     void receiveResponseEngine() throws EngineException {
-        try (Engine engine = createStartedEngine()) {
-            @SuppressWarnings("UnnecessaryLocalVariable")
-            ResponseReceiver responseReceiver = engine;
+        Copper2GoEngine engine = createStartedEngine();
+        try (EngineControl ignored = engine.getEngineControl()) {
+            ResponseReceiver responseReceiver = engine.getResponseReceiver();
 
             Assertions
                     .assertThatNoException()
@@ -50,19 +40,10 @@ class EngineImplTest {
     }
 
     @Test
-    void receiveErrorResponseEngineNotStarted() {
-        ResponseReceiver responseReceiver = createEngine();
-        Assertions
-                .assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> responseReceiver.receiveError("responseCorrelationId", "response"))
-                .withMessage("No engine found. May be it must be started first.");
-    }
-
-    @Test
     void receiveErrorResponseEngine() throws EngineException {
-        try (Engine engine = createStartedEngine()) {
-            @SuppressWarnings("UnnecessaryLocalVariable")
-            ResponseReceiver responseReceiver = engine;
+        Copper2GoEngine engine = createStartedEngine();
+        try (EngineControl ignored = engine.getEngineControl()) {
+            ResponseReceiver responseReceiver = engine.getResponseReceiver();
 
             Assertions
                     .assertThatNoException()
@@ -72,48 +53,48 @@ class EngineImplTest {
 
     @Test
     void receiveInitialPayloadEngineNotStarted() {
-        InitialPayloadReceiver initialPayloadReceiver = createEngine();
+        PayloadReceiver payloadReceiver = createEngine().getPayloadReceiver();
         Assertions
                 .assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> initialPayloadReceiver.receive("", null, "Hello", 1L, 0L))
-                .withMessage("No engine found. May be it must be started first.");
+                .isThrownBy(() -> payloadReceiver.receive("", null, "Hello", 1L, 0L))
+                .withMessage("Cannot read field \"wfVersions\" because \"volatileState\" is null");
     }
 
     @Test
     void receiveInitialPayload() throws EngineException {
-        try (Engine engine = createStartedEngine()) {
-            @SuppressWarnings("UnnecessaryLocalVariable")
-            InitialPayloadReceiver initialPayloadReceiver = engine;
+        Copper2GoEngine engine = createStartedEngine();
+        try (EngineControl ignored = engine.getEngineControl()) {
+            PayloadReceiver payloadReceiver = engine.getPayloadReceiver();
 
             Assertions
                     .assertThatNoException()
-                    .isThrownBy(() -> initialPayloadReceiver.receive("", null, "Hello", 1L, 0L));
+                    .isThrownBy(() -> payloadReceiver.receive("", null, "Hello", 1L, 0L));
         }
     }
 
-    private static Engine createEngine() {
+    private static Copper2GoEngine createEngine() {
         final ReplyChannelStoreImpl replyChannelStoreImpl = new ReplyChannelStoreImpl();
         WorkflowRepositoryConfig workflowRepositoryConfig = new WorkflowRepositoryConfig(
                 "release/2",
                 "https://github.com/Keymaster65/copper2go-workflows.git",
                 "/src/workflow/java"
         );
-        return new EngineImpl(
+        return new Copper2GoEngine(
                 10,
                 workflowRepositoryConfig,
                 replyChannelStoreImpl
         );
     }
 
-    private static Engine createStartedEngine() throws EngineException {
+    private static Copper2GoEngine createStartedEngine() throws EngineException {
         final ReplyChannelStoreImpl replyChannelStoreImpl = new ReplyChannelStoreImpl();
         final DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
                 replyChannelStoreImpl,
                 null,
                 null
         );
-        Engine engine = createEngine();
-        engine.start(dependencyInjector);
+        Copper2GoEngine engine = createEngine();
+        engine.getEngineControl().start(dependencyInjector);
 
         return engine;
     }

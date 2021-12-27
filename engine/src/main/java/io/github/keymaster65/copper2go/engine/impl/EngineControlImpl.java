@@ -15,19 +15,12 @@
  */
 package io.github.keymaster65.copper2go.engine.impl;
 
-import io.github.keymaster65.copper2go.engine.Engine;
+import io.github.keymaster65.copper2go.engine.EngineControl;
 import io.github.keymaster65.copper2go.engine.EngineException;
 import io.github.keymaster65.copper2go.engine.EngineRuntimeException;
-import io.github.keymaster65.copper2go.engine.ReplyChannel;
 import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
-import io.github.keymaster65.copper2go.workflowapi.WorkflowData;
-import org.copperengine.core.Acknowledge;
-import org.copperengine.core.CopperException;
 import org.copperengine.core.DependencyInjector;
 import org.copperengine.core.EngineState;
-import org.copperengine.core.Response;
-import org.copperengine.core.WorkflowInstanceDescr;
-import org.copperengine.core.WorkflowVersion;
 import org.copperengine.core.common.DefaultTicketPoolManager;
 import org.copperengine.core.common.SimpleJmxExporter;
 import org.copperengine.core.common.TicketPool;
@@ -45,105 +38,56 @@ import javax.management.InstanceNotFoundException;
 import javax.management.MBeanRegistrationException;
 import java.io.File;
 import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.locks.LockSupport;
 
-public class EngineImpl implements Engine {
+public class EngineControlImpl implements EngineControl {
 
-    private static final Logger log = LoggerFactory.getLogger(EngineImpl.class);
-    public static final String NO_ENIGINE_FOUND_MESSAGE = "No engine found. May be it must be started first.";
+    final TransientScottyEngine scottyEngine;
 
-    private final WorkflowRepositoryConfig workflowRepositoryConfig;
-    private final ReplyChannelStoreImpl replyChannelStore;
-    private final int availableTickets;
-
-    private TransientScottyEngine scottyEngine;
-    private SimpleJmxExporter exporter;
+    private static final Logger log = LoggerFactory.getLogger(EngineControlImpl.class);
     private LoggingStatisticCollector statisticsCollector;
+    private SimpleJmxExporter exporter;
 
-    public EngineImpl(final int availableTickets, WorkflowRepositoryConfig workflowRepositoryConfig, final ReplyChannelStoreImpl replyChannelStore) {
-        this.workflowRepositoryConfig = workflowRepositoryConfig;
-        this.replyChannelStore = replyChannelStore;
-        this.availableTickets = availableTickets;
+    public EngineControlImpl(
+            final int availableTickets,
+            final WorkflowRepositoryConfig workflowRepositoryConfig
+    ) {
+        this.scottyEngine = createScotty(availableTickets, workflowRepositoryConfig);
     }
 
     public synchronized void start(final DependencyInjector dependencyInjector) throws EngineException {
         log.info("start engine");
-        scottyEngine = startScotty(dependencyInjector);
+        scottyEngine.setDependencyInjector(dependencyInjector);
+        startScotty();
     }
+
 
     @Override
     public synchronized void stop() throws EngineException {
-        if (scottyEngine != null) {
-            scottyEngine.shutdown();
-        }
-        if (statisticsCollector != null) {
-            statisticsCollector.shutdown();
-        }
-
         try {
+            if (scottyEngine.getEngineState().equals(EngineState.STARTED)) {
+                scottyEngine.shutdown();
+            }
+            if (statisticsCollector != null) {
+                statisticsCollector.shutdown();
+            }
             if (exporter != null) {
                 exporter.shutdown();
             }
         } catch (MBeanRegistrationException | InstanceNotFoundException e) {
-            throw new EngineException("Could not shutdown exporter.", e);
+            throw new EngineException("Could not shutdown engine.", e);
         }
         waitForIdleEngine();
-        scottyEngine = null;
     }
 
-    @Override
-    public void receive(
-            final String payload,
-            final Map<String, String> attributes,
-            final ReplyChannel replyChannel,
-            final String workflow,
-            final long major,
-            final long minor
-    ) throws EngineException {
-        Objects.requireNonNull(scottyEngine, NO_ENIGINE_FOUND_MESSAGE);
-
-        WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>(workflow);
-        WorkflowVersion version = scottyEngine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
-        workflowInstanceDescr.setVersion(version);
-
-        String uuid = scottyEngine.createUUID();
-        workflowInstanceDescr.setData(new WorkflowData(uuid, payload, attributes));
-        replyChannelStore.store(uuid, replyChannel);
-        try {
-            scottyEngine.run(workflowInstanceDescr);
-        } catch (CopperException e) {
-            throw new EngineException("Exception while running workflow. ", e);
-        }
-    }
-
-    @Override
-    public void receive(final String responseCorrelationId, final String response) {
-        Objects.requireNonNull(scottyEngine, NO_ENIGINE_FOUND_MESSAGE);
-
-        Response<String> copperResponse = new Response<>(responseCorrelationId, response, null);
-        scottyEngine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
-    }
-
-    @Override
-    public void receiveError(final String responseCorrelationId, final String response) {
-        Objects.requireNonNull(scottyEngine, NO_ENIGINE_FOUND_MESSAGE);
-
-        Response<String> copperResponse = new Response<>(responseCorrelationId, response, new RuntimeException(response));
-        scottyEngine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
-    }
-
-    private TransientScottyEngine startScotty(DependencyInjector dependencyInjector) throws EngineException {
+    private TransientScottyEngine createScotty(
+            final int availableTickets,
+            final WorkflowRepositoryConfig workflowRepositoryConfig
+    ) {
         var factory = new TransientEngineFactory() {
             @Override
             protected File getWorkflowSourceDirectory() {
                 return new File("./.copper/clone");
-            }
-
-            @Override
-            protected DependencyInjector createDependencyInjector() {
-                return dependencyInjector;
             }
 
             @Override
@@ -172,14 +116,31 @@ public class EngineImpl implements Engine {
                     throw new EngineRuntimeException("Exception while creating workflow rfepository.", createException);
                 }
             }
+
+            @Override
+            public TransientScottyEngine create() {
+                TransientScottyEngine transientScottyEngine = new TransientScottyEngine();
+                transientScottyEngine.setEarlyResponseContainer(createEarlyResponseContainer());
+                transientScottyEngine.setEngineIdProvider(createEngineIdProvider());
+                transientScottyEngine.setIdFactory(createIdFactory());
+                transientScottyEngine.setPoolManager(createProcessorPoolManager());
+                transientScottyEngine.setStatisticsCollector(createRuntimeStatisticsCollector());
+                transientScottyEngine.setTicketPoolManager(createTicketPoolManager());
+                transientScottyEngine.setTimeoutManager(createTimeoutManager());
+                transientScottyEngine.setWfRepository(createWorkflowRepository());
+                return transientScottyEngine;
+            }
         };
-        final var transientScottyEngine = factory.create();
-        while (!transientScottyEngine.getEngineState().equals(EngineState.STARTED)) {
+        return factory.create();
+    }
+
+    private void startScotty() throws EngineException {
+        scottyEngine.startup();
+        while (!scottyEngine.getEngineState().equals(EngineState.STARTED)) {
             LockSupport.parkNanos(10L * 1000L * 1000L);
         }
 
-        exporter = startJmxExporter(transientScottyEngine);
-        return transientScottyEngine;
+        exporter = startJmxExporter(scottyEngine);
     }
 
     private SimpleJmxExporter startJmxExporter(final TransientScottyEngine engine) throws EngineException {

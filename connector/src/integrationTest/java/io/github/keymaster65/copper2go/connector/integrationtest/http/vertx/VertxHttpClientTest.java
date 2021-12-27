@@ -17,7 +17,7 @@ package io.github.keymaster65.copper2go.connector.integrationtest.http.vertx;
 
 import io.github.keymaster65.copper2go.connector.http.HttpMethod;
 import io.github.keymaster65.copper2go.connector.http.vertx.VertxHttpClient;
-import io.github.keymaster65.copper2go.engine.Engine;
+import io.github.keymaster65.copper2go.engine.ResponseReceiver;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
@@ -35,7 +35,7 @@ class VertxHttpClientTest {
 
     @Test
     void postGoodCase() throws InterruptedException {
-        Engine engine = Mockito.mock(Engine.class);
+        ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
         Vertx vertx = Vertx.vertx();
         HttpServer httpServer = vertx.createHttpServer();
         final String successResponse = "Success";
@@ -47,7 +47,7 @@ class VertxHttpClientTest {
                             latch.countDown();
                         }
                 ));
-        VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, SERVER_PORT, "/", engine);
+        VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, SERVER_PORT, "/", responseReceiver);
         try {
             httpServer.listen(SERVER_PORT);
             vertxHttpClient.request(HttpMethod.valueOf("POST"), "Fault test.", CORRELATION_ID);
@@ -59,25 +59,25 @@ class VertxHttpClientTest {
             vertx.close();
         }
 
-        Mockito.verify(engine).receive(CORRELATION_ID, successResponse);
+        Mockito.verify(responseReceiver).receive(CORRELATION_ID, successResponse);
     }
 
     // hanging on Jenkins
     @Test
     void postConnectionRefused() throws InterruptedException {
-        Engine engine = Mockito.mock(Engine.class);
-        final VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, 50666, "/", engine);
+        ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
+        final VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, 50666, "/", responseReceiver);
         vertxHttpClient.request(HttpMethod.GET, "Fault test.", CORRELATION_ID);
         Thread.sleep(5L * 1000); // connection refused max time
         vertxHttpClient.close();
-        Mockito.verify(engine).receiveError(ArgumentMatchers.eq(CORRELATION_ID), ArgumentMatchers.anyString());
-        Mockito.verify(engine, Mockito.times(0)).receive(ArgumentMatchers.any(), ArgumentMatchers.any());
+        Mockito.verify(responseReceiver).receiveError(ArgumentMatchers.eq(CORRELATION_ID), ArgumentMatchers.anyString());
+        Mockito.verify(responseReceiver, Mockito.times(0)).receive(ArgumentMatchers.any(), ArgumentMatchers.any());
     }
 
     @Test
     void close() {
-        Engine engine = Mockito.mock(Engine.class);
-        final VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, SERVER_PORT, "/", engine);
+        ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
+        final VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, SERVER_PORT, "/", responseReceiver);
         vertxHttpClient.close();
     }
 }

@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.http.vertx;
 
-import io.github.keymaster65.copper2go.engine.Engine;
+import io.github.keymaster65.copper2go.engine.PayloadReceiver;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
 import org.slf4j.Logger;
@@ -25,16 +25,16 @@ public class RequestHandler implements Handler<HttpServerRequest> {
 
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
 
-    private final Engine copper2GoEngine;
+    private final PayloadReceiver payloadReceiver;
 
-    public RequestHandler(final Engine copper2GoEngine) {
-        this.copper2GoEngine = copper2GoEngine;
+    public RequestHandler(final PayloadReceiver payloadReceiver) {
+        this.payloadReceiver = payloadReceiver;
     }
 
     @Override
     public void handle(final HttpServerRequest request) {
         log.debug("Handle request.");
-        request.bodyHandler(new BodyHandler(request, copper2GoEngine));
+        request.bodyHandler(new BodyHandler(request, payloadReceiver));
     }
 
 

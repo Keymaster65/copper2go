@@ -19,9 +19,9 @@ import io.github.keymaster65.copper2go.connector.http.HttpRequestChannelConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaSenderImpl;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelImpl;
-import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineRuntimeException;
 import io.github.keymaster65.copper2go.engine.RequestChannel;
+import io.github.keymaster65.copper2go.engine.ResponseReceiver;
 import io.github.keymaster65.copper2go.workflowapi.RequestChannelStore;
 import io.vertx.core.Vertx;
 import io.vertx.kafka.client.producer.KafkaProducer;
@@ -35,11 +35,11 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
 
     public RequestChannelStoreImpl(
             final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs,
-            final Engine engine
+            final ResponseReceiver responseReceiver
     ) {
-        Objects.requireNonNull(engine, "Engine must be not null.");
+        Objects.requireNonNull(responseReceiver, "ResponseReceiver must be not null.");
 
-        putHttpRequestChannels(httpRequestChannelConfigs, engine);
+        putHttpRequestChannels(httpRequestChannelConfigs, responseReceiver);
     }
 
     @Override
@@ -61,12 +61,12 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
             final String kafkaHost,
             final int kafkaPort,
             final Map<String, KafkaRequestChannelConfig> kafkaRequestChannelConfigs,
-            final Engine engine
+            final ResponseReceiver responseReceiver
     ) {
-        putKafkaRequestChannels(kafkaHost, kafkaPort, kafkaRequestChannelConfigs, engine);
+        putKafkaRequestChannels(kafkaHost, kafkaPort, kafkaRequestChannelConfigs, responseReceiver);
     }
 
-    private void putHttpRequestChannels(final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs, final Engine engine) {
+    private void putHttpRequestChannels(final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs, final ResponseReceiver engine) {
         if (httpRequestChannelConfigs != null) {
             for (Map.Entry<String, HttpRequestChannelConfig> entry : httpRequestChannelConfigs.entrySet()) {
                 HttpRequestChannelConfig config = entry.getValue();
@@ -86,7 +86,7 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
         }
     }
 
-    private void putKafkaRequestChannels(final String kafkaHost, final int kafkaPort, final Map<String, KafkaRequestChannelConfig> kafkaRequestChannelConfigs, final Engine engine) {
+    private void putKafkaRequestChannels(final String kafkaHost, final int kafkaPort, final Map<String, KafkaRequestChannelConfig> kafkaRequestChannelConfigs, final ResponseReceiver responseReceiver) {
         if (kafkaRequestChannelConfigs != null) {
             for (Map.Entry<String, KafkaRequestChannelConfig> entry : kafkaRequestChannelConfigs.entrySet()) {
                 KafkaRequestChannelConfig config = entry.getValue();
@@ -98,7 +98,7 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
                                         kafkaPort,
                                         config.topic,
                                         RequestChannelStoreImpl::createKafkaProducer
-                                ), engine));
+                                ), responseReceiver));
             }
         }
     }

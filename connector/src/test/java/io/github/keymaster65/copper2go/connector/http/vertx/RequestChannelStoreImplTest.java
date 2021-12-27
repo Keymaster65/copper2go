@@ -18,8 +18,8 @@ package io.github.keymaster65.copper2go.connector.http.vertx;
 import io.github.keymaster65.copper2go.connector.http.HttpRequestChannelConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelImpl;
-import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineRuntimeException;
+import io.github.keymaster65.copper2go.engine.ResponseReceiver;
 import net.jqwik.api.Example;
 import org.apache.kafka.common.KafkaException;
 import org.apache.kafka.common.config.ConfigException;
@@ -35,7 +35,7 @@ class RequestChannelStoreImplTest {
 
     @Example
     void addDuplicateRequestChannels() {
-        Engine engine = Mockito.mock(Engine.class);
+        ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
         final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs = new HashMap<>();
         final String channelName = "channelName";
         httpRequestChannelConfigs.put(
@@ -46,7 +46,7 @@ class RequestChannelStoreImplTest {
                         "/",
                         "GET"
                 ));
-        RequestChannelStoreImpl requestChannelStore = new RequestChannelStoreImpl(httpRequestChannelConfigs, engine);
+        RequestChannelStoreImpl requestChannelStore = new RequestChannelStoreImpl(httpRequestChannelConfigs, responseReceiver);
 
         Assertions.assertThatExceptionOfType(EngineRuntimeException.class).isThrownBy(() ->
                 requestChannelStore.putKafkaRequestChannel(channelName, Mockito.mock(KafkaRequestChannelImpl.class))
@@ -55,7 +55,7 @@ class RequestChannelStoreImplTest {
 
     @Example
     void addRequestChannels() {
-        RequestChannelStoreImpl requestChannelStore = createHttpRequestChannelStore(Mockito.mock(Engine.class));
+        RequestChannelStoreImpl requestChannelStore = createHttpRequestChannelStore(Mockito.mock(ResponseReceiver.class));
 
         final String channelName2 = "channelName2";
         Assertions.assertThatCode(() ->
@@ -66,20 +66,20 @@ class RequestChannelStoreImplTest {
 
     @Example
     void request() {
-        Engine engine = Mockito.mock(Engine.class);
+        ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
         final String channelName = "channelName";
-        RequestChannelStoreImpl requestChannelStore = createHttpRequestChannelStore(engine);
+        RequestChannelStoreImpl requestChannelStore = createHttpRequestChannelStore(responseReceiver);
 
         requestChannelStore.request(channelName, "request", "responseCorrelationId");
         LockSupport.parkNanos(6L * 1000 * 1000 * 1000);
 
-        Mockito.verify(engine).receiveError(Mockito.any(), Mockito.any());
+        Mockito.verify(responseReceiver).receiveError(Mockito.any(), Mockito.any());
     }
 
     @Example
     void putKafkaRequestChannels() {
-        Engine engine = Mockito.mock(Engine.class);
-        RequestChannelStoreImpl requestChannelStore = new RequestChannelStoreImpl(null, engine);
+        ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
+        RequestChannelStoreImpl requestChannelStore = new RequestChannelStoreImpl(null, responseReceiver);
         final String channelName = "channelName";
         final Map<String, KafkaRequestChannelConfig> kafkaRequestChannelConfigs = new HashMap<>();
         kafkaRequestChannelConfigs.put(
@@ -91,7 +91,7 @@ class RequestChannelStoreImplTest {
                                 "kafkaHost",
                                 0,
                                 kafkaRequestChannelConfigs,
-                                engine
+                                responseReceiver
                         ))
                 .isInstanceOf(KafkaException.class)
                 .hasMessage("Failed to construct kafka producer")
@@ -102,22 +102,22 @@ class RequestChannelStoreImplTest {
 
     @Example
     void putKafkaRequestChannelsNull() {
-        Engine engine = Mockito.mock(Engine.class);
-        RequestChannelStoreImpl requestChannelStore = createEmptyRequestChannelStore(engine);
+        ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
+        RequestChannelStoreImpl requestChannelStore = createEmptyRequestChannelStore(responseReceiver);
 
         Assertions.assertThatCode(() ->
                         requestChannelStore.addKafkaRequestChannels(
                                 "kafkaHost",
                                 0,
                                 null,
-                                engine
+                                responseReceiver
                         ))
                 .doesNotThrowAnyException();
     }
 
     @Example
     void close() {
-        RequestChannelStoreImpl requestChannelStore = createEmptyRequestChannelStore(Mockito.mock(Engine.class));
+        RequestChannelStoreImpl requestChannelStore = createEmptyRequestChannelStore(Mockito.mock(ResponseReceiver.class));
 
         Assertions.assertThatCode(requestChannelStore::close)
                 .doesNotThrowAnyException();
@@ -135,7 +135,7 @@ class RequestChannelStoreImplTest {
                 .hasMessage("Missing required configuration \"key.serializer\" which has no default value.");
     }
 
-    private RequestChannelStoreImpl createHttpRequestChannelStore(final Engine engine) {
+    private RequestChannelStoreImpl createHttpRequestChannelStore(final ResponseReceiver responseReceiver) {
         final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs = new HashMap<>();
         final String channelName = "channelName";
         httpRequestChannelConfigs.put(
@@ -146,10 +146,10 @@ class RequestChannelStoreImplTest {
                         "/",
                         "GET"
                 ));
-        return new RequestChannelStoreImpl(httpRequestChannelConfigs, engine);
+        return new RequestChannelStoreImpl(httpRequestChannelConfigs, responseReceiver);
     }
 
-    private RequestChannelStoreImpl createEmptyRequestChannelStore(final Engine engine) {
-        return new RequestChannelStoreImpl(null, engine);
+    private RequestChannelStoreImpl createEmptyRequestChannelStore(final ResponseReceiver responseReceiver) {
+        return new RequestChannelStoreImpl(null, responseReceiver);
     }
 }

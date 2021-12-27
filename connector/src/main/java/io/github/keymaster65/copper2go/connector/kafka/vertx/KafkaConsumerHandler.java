@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
-import io.github.keymaster65.copper2go.engine.Engine;
+import io.github.keymaster65.copper2go.engine.PayloadReceiver;
 import io.vertx.core.Handler;
 import io.vertx.kafka.client.consumer.KafkaConsumerRecord;
 import io.vertx.kafka.client.producer.KafkaHeader;
@@ -36,21 +36,21 @@ public class KafkaConsumerHandler implements Handler<KafkaConsumerRecord<String,
     private final AtomicLong failCount = new AtomicLong(0);
 
     private static final Logger log = LoggerFactory.getLogger(KafkaConsumerHandler.class);
-    private final Engine copper2GoEngine;
+    private final PayloadReceiver payloadReceiver;
     private final String workflowName;
     private final long majorVersion;
     private final long minorVersion;
 
     public KafkaConsumerHandler(
             final String topic,
-            final Engine copper2GoEngine,
+            final PayloadReceiver payloadReceiver,
             final String workflowName,
             final long majorVersion,
             final long minorVersion
             ) {
         this.topic = topic;
 
-        this.copper2GoEngine = copper2GoEngine;
+        this.payloadReceiver = payloadReceiver;
         this.workflowName = workflowName;
         this.majorVersion = majorVersion;
         this.minorVersion = minorVersion;
@@ -68,7 +68,7 @@ public class KafkaConsumerHandler implements Handler<KafkaConsumerRecord<String,
     public void handle(final KafkaConsumerRecord<String, String> event) {
         try {
             log.info("Call workflow {} for topic {}.", this.workflowName, topic);
-            copper2GoEngine.receive(
+            payloadReceiver.receive(
                     event.value(),
                     createAttributes(event.headers()),
                     null,
