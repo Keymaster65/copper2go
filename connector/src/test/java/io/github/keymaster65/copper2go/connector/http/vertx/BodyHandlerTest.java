@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.http.vertx;
 
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineException;
 import io.vertx.core.MultiMap;
 import io.vertx.core.buffer.Buffer;
@@ -98,7 +98,7 @@ class BodyHandlerTest {
     void handleLicense() {
         final HttpServerResponse response = mock(HttpServerResponse.class);
         final HttpServerRequest request = mock(HttpServerRequest.class);
-        final Copper2GoEngine copper2GoEngine = mock(Copper2GoEngine.class);
+        final Engine copper2GoEngine = mock(Engine.class);
         final Buffer buffer = mock(Buffer.class);
         BodyHandler handler = new BodyHandler(request, copper2GoEngine);
 
@@ -132,7 +132,7 @@ class BodyHandlerTest {
 
     void handleWorkflowRequest(final String type, final HttpServerResponse response) throws EngineException {
         final HttpServerRequest request = mock(HttpServerRequest.class);
-        final Copper2GoEngine copper2GoEngine = mock(Copper2GoEngine.class);
+        final Engine copper2GoEngine = mock(Engine.class);
         final Buffer buffer = mock(Buffer.class);
         BodyHandler handler = new BodyHandler(request, copper2GoEngine);
 
@@ -168,7 +168,7 @@ class BodyHandlerTest {
     void handleWorkflowBadUrl() {
         final HttpServerResponse response = mock(HttpServerResponse.class);
         final HttpServerRequest request = mock(HttpServerRequest.class);
-        final Copper2GoEngine copper2GoEngine = mock(Copper2GoEngine.class);
+        final Engine copper2GoEngine = mock(Engine.class);
         final Buffer buffer = mock(Buffer.class);
         BodyHandler handler = new BodyHandler(request, copper2GoEngine);
 

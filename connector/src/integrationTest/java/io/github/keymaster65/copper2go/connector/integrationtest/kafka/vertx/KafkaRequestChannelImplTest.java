@@ -17,7 +17,7 @@ package io.github.keymaster65.copper2go.connector.integrationtest.kafka.vertx;
 
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaSender;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelImpl;
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -42,44 +42,46 @@ class KafkaRequestChannelImplTest {
     @Test
     void requestSuccess() {
         Copper2GoKafkaSender sender = Commons.createCopper2GoKafkaSender(Commons.kafka, "testTopic");
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
-        KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
+        Engine engine = Mockito.mock(Engine.class);
+        try (KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
                 sender,
                 engine
-        );
+        )) {
 
-        requestChannel.request("request", CORR_ID);
+            requestChannel.request("request", CORR_ID);
 
-        while ((requestChannel.getSuccessCount() + requestChannel.getFailCount()) < 1) {
-            log.info("Wait for response.");
-            LockSupport.parkNanos(50L * 1000 * 1000);
+            while ((requestChannel.getSuccessCount() + requestChannel.getFailCount()) < 1) {
+                log.info("Wait for response.");
+                LockSupport.parkNanos(50L * 1000 * 1000);
+            }
+            SoftAssertions.assertSoftly(soft -> {
+                soft.assertThat(requestChannel.getSuccessCount()).isEqualTo(1L);
+                soft.assertThat(requestChannel.getFailCount()).isEqualTo(0L);
+            });
         }
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(requestChannel.getSuccessCount()).isEqualTo(1L);
-            soft.assertThat(requestChannel.getFailCount()).isEqualTo(0L);
-        });
         verify(engine).notify(Mockito.eq(CORR_ID), Mockito.startsWith("{"));
     }
 
     @Test
     void requestFail() {
         Copper2GoKafkaSender sender = Commons.createCopper2GoKafkaSender(Commons.kafka, "");
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
-        KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
+        Engine engine = Mockito.mock(Engine.class);
+        try (KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
                 sender,
                 engine
-        );
+        )) {
 
-        requestChannel.request("request", CORR_ID);
+            requestChannel.request("request", CORR_ID);
 
-        while ((requestChannel.getSuccessCount() + requestChannel.getFailCount()) < 1) {
-            log.info("Wait for response.");
-            LockSupport.parkNanos(50L * 1000 * 1000);
+            while ((requestChannel.getSuccessCount() + requestChannel.getFailCount()) < 1) {
+                log.info("Wait for response.");
+                LockSupport.parkNanos(50L * 1000 * 1000);
+            }
+            SoftAssertions.assertSoftly(soft -> {
+                soft.assertThat(requestChannel.getSuccessCount()).isEqualTo(0L);
+                soft.assertThat(requestChannel.getFailCount()).isEqualTo(1L);
+            });
         }
-        SoftAssertions.assertSoftly(soft -> {
-            soft.assertThat(requestChannel.getSuccessCount()).isEqualTo(0L);
-            soft.assertThat(requestChannel.getFailCount()).isEqualTo(1L);
-        });
         verify(engine).notifyError(CORR_ID, "Invalid topics: []");
     }
 }

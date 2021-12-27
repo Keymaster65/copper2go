@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.engine.impl;
 
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineException;
 import io.github.keymaster65.copper2go.engine.EngineRuntimeException;
 import io.github.keymaster65.copper2go.engine.ReplyChannel;
@@ -49,10 +49,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.locks.LockSupport;
 
-public class Copper2GoEngineImpl implements Copper2GoEngine {
+public class EngineImpl implements Engine {
 
 
-    private static final Logger log = LoggerFactory.getLogger(Copper2GoEngineImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(EngineImpl.class);
 
     private final WorkflowRepositoryConfig workflowRepositoryConfig;
     private final ReplyChannelStoreImpl replyChannelStore;
@@ -62,12 +62,13 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
     private SimpleJmxExporter exporter;
     private LoggingStatisticCollector statisticsCollector;
 
-    public Copper2GoEngineImpl(final int availableTickets, WorkflowRepositoryConfig workflowRepositoryConfig, final ReplyChannelStoreImpl replyChannelStore) {
+    public EngineImpl(final int availableTickets, WorkflowRepositoryConfig workflowRepositoryConfig, final ReplyChannelStoreImpl replyChannelStore) {
         this.workflowRepositoryConfig = workflowRepositoryConfig;
         this.replyChannelStore = replyChannelStore;
         this.availableTickets = availableTickets;
     }
 
+    @Override
     public void callWorkflow(
             final String payload,
             final Map<String, String> attributes,
@@ -159,6 +160,7 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         return newExporter;
     }
 
+    @Override
     public void waitForIdleEngine() {
         while (engine != null && engine.getNumberOfWorkflowInstances() > 0) {
             LockSupport.parkNanos(100000000L);

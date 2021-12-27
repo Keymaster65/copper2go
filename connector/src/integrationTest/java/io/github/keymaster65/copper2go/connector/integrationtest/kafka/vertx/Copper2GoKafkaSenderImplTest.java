@@ -18,7 +18,7 @@ package io.github.keymaster65.copper2go.connector.integrationtest.kafka.vertx;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaReceiverImpl;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaSenderImpl;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaConsumerHandler;
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineException;
 import io.vertx.core.Future;
 import io.vertx.kafka.client.producer.RecordMetadata;
@@ -56,7 +56,7 @@ class Copper2GoKafkaSenderImplTest {
         Copper2GoKafkaSenderImpl sender = createCopper2GoKafkaSenderAndSend();
         sender.close();
 
-        Copper2GoEngine engine = mock(Copper2GoEngine.class);
+        Engine engine = mock(Engine.class);
         KafkaConsumerHandler handler = createCopper2GoKafkaReceiverAndReceive(engine);
 
 
@@ -80,7 +80,7 @@ class Copper2GoKafkaSenderImplTest {
         Copper2GoKafkaSenderImpl sender = createCopper2GoKafkaSenderAndSend();
         sender.close();
 
-        Copper2GoEngine engine = mock(Copper2GoEngine.class);
+        Engine engine = mock(Engine.class);
         Mockito
                 .doThrow(new EngineException("Simulated exception."))
                 .when(engine)
@@ -115,7 +115,7 @@ class Copper2GoKafkaSenderImplTest {
         copper2GoKafkaSender.close();
     }
 
-    private KafkaConsumerHandler createCopper2GoKafkaReceiverAndReceive(final Copper2GoEngine engine) {
+    private KafkaConsumerHandler createCopper2GoKafkaReceiverAndReceive(final Engine engine) {
         KafkaConsumerHandler handler = new KafkaConsumerHandler(
                 TOPIC,
                 engine,

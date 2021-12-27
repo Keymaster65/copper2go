@@ -17,7 +17,7 @@ package io.github.keymaster65.copper2go.connector.integrationtest.http.vertx;
 
 import io.github.keymaster65.copper2go.connector.http.HttpMethod;
 import io.github.keymaster65.copper2go.connector.http.vertx.VertxHttpClient;
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
@@ -35,7 +35,7 @@ class VertxHttpClientTest {
 
     @Test
     void postGoodCase() throws InterruptedException {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         Vertx vertx = Vertx.vertx();
         HttpServer httpServer = vertx.createHttpServer();
         final String successResponse = "Success";
@@ -65,7 +65,7 @@ class VertxHttpClientTest {
     // hanging on Jenkins
     @Test
     void postConnectionRefused() throws InterruptedException {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         final VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, 50666, "/", engine);
         vertxHttpClient.request(HttpMethod.GET, "Fault test.", CORRELATION_ID);
         Thread.sleep(5L * 1000); // connection refused max time
@@ -76,7 +76,7 @@ class VertxHttpClientTest {
 
     @Test
     void close() {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         final VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, SERVER_PORT, "/", engine);
         vertxHttpClient.close();
     }

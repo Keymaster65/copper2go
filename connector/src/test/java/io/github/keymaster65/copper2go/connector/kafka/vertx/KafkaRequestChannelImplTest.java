@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.vertx.core.Future;
 import io.vertx.kafka.client.producer.RecordMetadata;
 import org.assertj.core.api.Assertions;
@@ -29,7 +29,7 @@ class KafkaRequestChannelImplTest {
 
     @Test
     void request() {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
         @SuppressWarnings("unchecked")
         Future<RecordMetadata> metadata = Mockito.mock(Future.class);
@@ -50,7 +50,7 @@ class KafkaRequestChannelImplTest {
 
     @Test
     void handleSendSuccess() {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
         @SuppressWarnings("unchecked")
         Future<RecordMetadata> metadata = Mockito.mock(Future.class);
@@ -69,7 +69,7 @@ class KafkaRequestChannelImplTest {
 
     @Test
     void handleSendFailure() {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
 
         KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
@@ -109,7 +109,7 @@ class KafkaRequestChannelImplTest {
 
     @Test
     void close() {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
 
         KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(

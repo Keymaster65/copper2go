@@ -16,7 +16,7 @@
 package io.github.keymaster65.copper2go.connector.http.vertx;
 
 import ch.qos.logback.classic.LoggerContext;
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -78,7 +78,7 @@ class VertxHttpClientTest {
     @Example
     void successHandler() {
         resetLogContext();
-        final Copper2GoEngine copper2GoEngine = Mockito.mock(Copper2GoEngine.class);
+        final Engine copper2GoEngine = Mockito.mock(Engine.class);
         @SuppressWarnings("unchecked")
         HttpResponse<Buffer> response = Mockito.mock(HttpResponse.class);
         Mockito.when(response.bodyAsString()).thenReturn(BODY);
@@ -92,7 +92,7 @@ class VertxHttpClientTest {
     @Example
     void errorHandler() {
         resetLogContext();
-        final Copper2GoEngine copper2GoEngine = Mockito.mock(Copper2GoEngine.class);
+        final Engine copper2GoEngine = Mockito.mock(Engine.class);
         final Handler<Throwable> handler = VertxHttpClient.errorHandler(CORRELATION_ID, copper2GoEngine);
 
         Throwable response = Mockito.mock(Throwable.class);
@@ -147,7 +147,7 @@ class VertxHttpClientTest {
                 "host",
                 0,
                 "uri",
-                Mockito.mock(Copper2GoEngine.class),
+                Mockito.mock(Engine.class),
                 vertx,
                 webClient
         );

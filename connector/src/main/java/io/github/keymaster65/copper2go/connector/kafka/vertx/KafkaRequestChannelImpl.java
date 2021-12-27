@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.RequestChannel;
 import io.vertx.core.Future;
 import io.vertx.kafka.client.producer.RecordMetadata;
@@ -26,14 +26,14 @@ import java.util.concurrent.atomic.AtomicLong;
 public class KafkaRequestChannelImpl implements RequestChannel, AutoCloseable {
 
     private final Copper2GoKafkaSender copper2GoKafkaSender;
-    private final Copper2GoEngine engine;
+    private final Engine engine;
 
     private final AtomicLong successCount = new AtomicLong(0);
     private final AtomicLong failCount = new AtomicLong(0);
 
     public KafkaRequestChannelImpl(
             final Copper2GoKafkaSender copper2GoKafkaSender,
-            final Copper2GoEngine engine
+            final Engine engine
     ) {
         this.copper2GoKafkaSender = copper2GoKafkaSender;
         this.engine = engine;

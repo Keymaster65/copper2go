@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.engine.impl;
 
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineException;
 import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 import io.github.keymaster65.copper2go.util.Copper2goDependencyInjector;
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 
 class Copper2GoEngineImplTest {
 
-    private static Copper2GoEngine copper2GoEngine;
+    private static Engine copper2GoEngine;
     private static ReplyChannelStoreImpl replyChannelStoreImpl = new ReplyChannelStoreImpl();
     private final DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
             replyChannelStoreImpl,
@@ -60,13 +60,13 @@ class Copper2GoEngineImplTest {
     }
 
 
-    public static Copper2GoEngine createCopper2GoEngine() {
+    public static Engine createCopper2GoEngine() {
         WorkflowRepositoryConfig workflowRepositoryConfig = new WorkflowRepositoryConfig(
                 "release/2",
                 "https://github.com/Keymaster65/copper2go-workflows.git",
                 "/src/workflow/java"
         );
-        return new Copper2GoEngineImpl(
+        return new EngineImpl(
                 10,
                 workflowRepositoryConfig,
                 replyChannelStoreImpl
