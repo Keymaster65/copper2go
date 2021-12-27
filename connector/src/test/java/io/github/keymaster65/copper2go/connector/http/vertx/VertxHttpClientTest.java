@@ -86,7 +86,7 @@ class VertxHttpClientTest {
         final Handler<HttpResponse<Buffer>> handler = VertxHttpClient.successHandler(CORRELATION_ID, copper2GoEngine);
         handler.handle(response);
 
-        Mockito.verify(copper2GoEngine).notify(CORRELATION_ID, BODY);
+        Mockito.verify(copper2GoEngine).receive(CORRELATION_ID, BODY);
     }
 
     @Example
@@ -99,7 +99,7 @@ class VertxHttpClientTest {
         Mockito.when(response.getMessage()).thenReturn(EXCEPTION_MESSAGE);
         handler.handle(response);
 
-        Mockito.verify(copper2GoEngine).notifyError(CORRELATION_ID, EXCEPTION_MESSAGE);
+        Mockito.verify(copper2GoEngine).receiveError(CORRELATION_ID, EXCEPTION_MESSAGE);
     }
 
     @Example

@@ -62,7 +62,7 @@ class KafkaRequestChannelImplTest {
 
         requestChannel.handleSendSuccess(CORR_ID, metadata);
 
-        Mockito.verify(engine).notify(CORR_ID, "{}");
+        Mockito.verify(engine).receive(CORR_ID, "{}");
         Assertions.assertThat(requestChannel.getSuccessCount()).isOne();
         Assertions.assertThat(requestChannel.getFailCount()).isZero();
     }
@@ -80,7 +80,7 @@ class KafkaRequestChannelImplTest {
         final RuntimeException testException = new RuntimeException("Test");
         requestChannel.handleSendFailure(CORR_ID, testException);
 
-        Mockito.verify(engine).notifyError(CORR_ID, testException.getMessage());
+        Mockito.verify(engine).receiveError(CORR_ID, testException.getMessage());
         Assertions.assertThat(requestChannel.getSuccessCount()).isZero();
         Assertions.assertThat(requestChannel.getFailCount()).isOne();
     }

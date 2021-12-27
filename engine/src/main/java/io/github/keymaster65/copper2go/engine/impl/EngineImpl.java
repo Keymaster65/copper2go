@@ -161,20 +161,13 @@ public class EngineImpl implements Engine {
     }
 
     @Override
-    public void waitForIdleEngine() {
-        while (engine != null && engine.getNumberOfWorkflowInstances() > 0) {
-            LockSupport.parkNanos(100000000L);
-        }
-    }
-
-    @Override
-    public void notify(final String correlationId, final String response) {
+    public void receive(final String correlationId, final String response) {
         Response<String> copperResponse = new Response<>(correlationId, response, null);
         engine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
     }
 
     @Override
-    public void notifyError(final String correlationId, final String response) {
+    public void receiveError(final String correlationId, final String response) {
         Response<String> copperResponse = new Response<>(correlationId, response, new RuntimeException(response));
         engine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
     }
@@ -201,5 +194,11 @@ public class EngineImpl implements Engine {
         }
         waitForIdleEngine();
         engine = null;
+    }
+
+    private void waitForIdleEngine() {
+        while (engine != null && engine.getNumberOfWorkflowInstances() > 0) {
+            LockSupport.parkNanos(100000000L);
+        }
     }
 }

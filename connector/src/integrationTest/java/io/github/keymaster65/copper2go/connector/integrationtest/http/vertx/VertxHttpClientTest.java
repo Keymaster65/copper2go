@@ -59,7 +59,7 @@ class VertxHttpClientTest {
             vertx.close();
         }
 
-        Mockito.verify(engine).notify(CORRELATION_ID, successResponse);
+        Mockito.verify(engine).receive(CORRELATION_ID, successResponse);
     }
 
     // hanging on Jenkins
@@ -70,8 +70,8 @@ class VertxHttpClientTest {
         vertxHttpClient.request(HttpMethod.GET, "Fault test.", CORRELATION_ID);
         Thread.sleep(5L * 1000); // connection refused max time
         vertxHttpClient.close();
-        Mockito.verify(engine).notifyError(ArgumentMatchers.eq(CORRELATION_ID), ArgumentMatchers.anyString());
-        Mockito.verify(engine, Mockito.times(0)).notify(ArgumentMatchers.any(), ArgumentMatchers.any());
+        Mockito.verify(engine).receiveError(ArgumentMatchers.eq(CORRELATION_ID), ArgumentMatchers.anyString());
+        Mockito.verify(engine, Mockito.times(0)).receive(ArgumentMatchers.any(), ArgumentMatchers.any());
     }
 
     @Test

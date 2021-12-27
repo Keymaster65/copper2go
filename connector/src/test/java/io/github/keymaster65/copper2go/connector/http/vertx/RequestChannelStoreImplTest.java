@@ -73,7 +73,7 @@ class RequestChannelStoreImplTest {
         requestChannelStore.request(channelName, "request", "responseCorrelationId");
         LockSupport.parkNanos(6L * 1000 * 1000 * 1000);
 
-        Mockito.verify(engine).notifyError(Mockito.any(), Mockito.any());
+        Mockito.verify(engine).receiveError(Mockito.any(), Mockito.any());
     }
 
     @Example

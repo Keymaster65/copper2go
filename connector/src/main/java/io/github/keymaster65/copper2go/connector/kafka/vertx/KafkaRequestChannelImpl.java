@@ -52,12 +52,12 @@ public class KafkaRequestChannelImpl implements RequestChannel, AutoCloseable {
     }
 
     void handleSendFailure(final String responseCorrelationId, final Throwable throwable) {
-        engine.notifyError(responseCorrelationId, throwable.getMessage());
+        engine.receiveError(responseCorrelationId, throwable.getMessage());
         failCount.incrementAndGet();
     }
 
     void handleSendSuccess(final String responseCorrelationId, final Future<RecordMetadata> send) {
-        engine.notify(responseCorrelationId, createResponse(send));
+        engine.receive(responseCorrelationId, createResponse(send));
         successCount.incrementAndGet();
     }
 

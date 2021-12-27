@@ -108,7 +108,7 @@ public class VertxHttpClient implements Copper2GoHttpClient {
             if (log.isDebugEnabled()) {
                 log.debug(String.format("Result=%s", result.bodyAsString()));
             }
-            engine.notify(responseCorrelationId, result.bodyAsString());
+            engine.receive(responseCorrelationId, result.bodyAsString());
         };
     }
 
@@ -117,7 +117,7 @@ public class VertxHttpClient implements Copper2GoHttpClient {
             if (log.isDebugEnabled()) {
                 log.debug(String.format("Failure=%s", throwable.getMessage()));
             }
-            engine.notifyError(responseCorrelationId, throwable.getMessage());
+            engine.receiveError(responseCorrelationId, throwable.getMessage());
         };
     }
 

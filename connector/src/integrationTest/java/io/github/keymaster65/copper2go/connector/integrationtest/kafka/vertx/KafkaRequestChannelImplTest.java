@@ -59,7 +59,7 @@ class KafkaRequestChannelImplTest {
                 soft.assertThat(requestChannel.getFailCount()).isEqualTo(0L);
             });
         }
-        verify(engine).notify(Mockito.eq(CORR_ID), Mockito.startsWith("{"));
+        verify(engine).receive(Mockito.eq(CORR_ID), Mockito.startsWith("{"));
     }
 
     @Test
@@ -82,6 +82,6 @@ class KafkaRequestChannelImplTest {
                 soft.assertThat(requestChannel.getFailCount()).isEqualTo(1L);
             });
         }
-        verify(engine).notifyError(CORR_ID, "Invalid topics: []");
+        verify(engine).receiveError(CORR_ID, "Invalid topics: []");
     }
 }
