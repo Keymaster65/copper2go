@@ -176,10 +176,15 @@ The copper2go Workflow's API is hosted in the Maven Central. It can be found at 
 #### Application API
 
 [![GitHub release](https://img.shields.io/github/release/Keymaster65/copper2go)](https://GitHub.com/Keymaster65/copper2go/releases/)
+[![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
 
-The configuration of the application and the shipped dependencies will be listed here as Application API in the 
-"Released" chapter. The releases are hosted at github: 
+The configuration of the application and the shipped dependencies will be listed here as Application API in the
+"Released" chapter. No Java code except of Workflow's API is released as an API. Of course, you can fork the project,
+if you want to make extensions.
+
+The releases are hosted at github:
 https://github.com/Keymaster65/copper2go/releases
+
 
 Docker images can be found here: https://hub.docker.com/r/keymaster65/copper2go
 
