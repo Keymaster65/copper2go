@@ -21,26 +21,13 @@ import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 import io.github.keymaster65.copper2go.util.Copper2goDependencyInjector;
 import org.assertj.core.api.Assertions;
 import org.copperengine.core.DependencyInjector;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class EngineImplTest {
 
-    private static Engine engine;
-    private static ReplyChannelStoreImpl replyChannelStoreImpl = new ReplyChannelStoreImpl();
-    private final DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
-            replyChannelStoreImpl,
-            null,
-            null
-    );
-
-    @BeforeAll
-    static void createEngine() {
-        engine = createCopper2GoEngine();
-    }
-
     @Test
     void receiveInitialPayloadEngineNotStarted() {
+        Engine engine = createCopper2GoEngine();
         Assertions
                 .assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> engine.receive("", null, "Hello", 1L, 0L))
@@ -49,11 +36,20 @@ class EngineImplTest {
 
     @Test
     void receiveInitialPayload() throws EngineException {
+        final ReplyChannelStoreImpl replyChannelStoreImpl = new ReplyChannelStoreImpl();
+        final DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
+                replyChannelStoreImpl,
+                null,
+                null
+        );
+        Engine engine = createCopper2GoEngine();
         try {
             engine.start(dependencyInjector);
+
             Assertions
                     .assertThatNoException()
                     .isThrownBy(() -> engine.receive("", null, "Hello", 1L, 0L));
+
         } finally {
             engine.stop();
         }
@@ -61,6 +57,7 @@ class EngineImplTest {
 
 
     public static Engine createCopper2GoEngine() {
+        final ReplyChannelStoreImpl replyChannelStoreImpl = new ReplyChannelStoreImpl();
         WorkflowRepositoryConfig workflowRepositoryConfig = new WorkflowRepositoryConfig(
                 "release/2",
                 "https://github.com/Keymaster65/copper2go-workflows.git",
@@ -70,6 +67,6 @@ class EngineImplTest {
                 10,
                 workflowRepositoryConfig,
                 replyChannelStoreImpl
-                );
+        );
     }
 }
