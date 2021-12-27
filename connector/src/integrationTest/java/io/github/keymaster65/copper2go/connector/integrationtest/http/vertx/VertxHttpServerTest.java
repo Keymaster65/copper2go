@@ -53,7 +53,7 @@ class VertxHttpServerTest {
         // Exception should lead to normal response.end() if no workflow does
         Mockito.doThrow(new EngineException("Simulated exception."))
                 .when(engine)
-                .callWorkflow(
+                .receive(
                         ArgumentMatchers.any(),
                         ArgumentMatchers.any (),
                         ArgumentMatchers.any(),
@@ -70,7 +70,7 @@ class VertxHttpServerTest {
             vertxHttpServer.stop();
         }
 
-        Mockito.verify(engine).callWorkflow(
+        Mockito.verify(engine).receive(
                 ArgumentMatchers.any(),
                 ArgumentMatchers.any(),
                 ArgumentMatchers.any(),

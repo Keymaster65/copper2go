@@ -44,7 +44,7 @@ class KafkaConsumerHandlerTest {
 
         kafkaConsumerHandler.handle(event);
 
-        Mockito.verify(copper2GoEngine).callWorkflow(
+        Mockito.verify(copper2GoEngine).receive(
                 Mockito.any(),
                 Mockito.any(),
                 Mockito.any(),
@@ -63,7 +63,7 @@ class KafkaConsumerHandlerTest {
         final KafkaConsumerRecord<String, String>  event = Mockito.mock(KafkaConsumerRecord.class);
         final Engine copper2GoEngine = Mockito.mock(Engine.class);
         final KafkaConsumerHandler kafkaConsumerHandler = createKafkaConsumerHandler(copper2GoEngine);
-        Mockito.doThrow(new RuntimeException("Test")).when(copper2GoEngine).callWorkflow(
+        Mockito.doThrow(new RuntimeException("Test")).when(copper2GoEngine).receive(
                 Mockito.any(),
                 Mockito.any(),
                 Mockito.any(),
@@ -74,7 +74,7 @@ class KafkaConsumerHandlerTest {
 
         kafkaConsumerHandler.handle(event);
 
-        Mockito.verify(copper2GoEngine).callWorkflow(
+        Mockito.verify(copper2GoEngine).receive(
                 Mockito.any(),
                 Mockito.any(),
                 Mockito.any(),

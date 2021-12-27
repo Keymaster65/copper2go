@@ -68,7 +68,7 @@ public class KafkaConsumerHandler implements Handler<KafkaConsumerRecord<String,
     public void handle(final KafkaConsumerRecord<String, String> event) {
         try {
             log.info("Call workflow {} for topic {}.", this.workflowName, topic);
-            copper2GoEngine.callWorkflow(
+            copper2GoEngine.receive(
                     event.value(),
                     createAttributes(event.headers()),
                     null,

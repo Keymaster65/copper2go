@@ -40,7 +40,7 @@ public class StandardInOutListener {
                 if ("exit".equals(line1)) {
                     throw new StandardInOutException("Input canceled by 'exit' line.");
                 }
-                copper2GoEngine.callWorkflow(line1, new StandardInOutReplyChannelImpl(), "Hello", 1, 0);
+                copper2GoEngine.receive(line1, new StandardInOutReplyChannelImpl(), "Hello", 1, 0);
                 copper2GoEngine.waitForIdleEngine();
             } catch (Exception e) {
                 throw new StandardInOutException("Exception while getting input.", e);

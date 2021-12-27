@@ -43,7 +43,7 @@ class Copper2GoEngineImplTest {
     void callWorkflowEngineNotStarted() {
         Assertions
                 .assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> copper2GoEngine.callWorkflow("", null, "Hello", 1L, 0L))
+                .isThrownBy(() -> copper2GoEngine.receive("", null, "Hello", 1L, 0L))
                 .withMessage("No engine found. May be it must be started first.");
     }
 
@@ -53,7 +53,7 @@ class Copper2GoEngineImplTest {
             copper2GoEngine.start(dependencyInjector);
             Assertions
                     .assertThatNoException()
-                    .isThrownBy(() -> copper2GoEngine.callWorkflow("", null, "Hello", 1L, 0L));
+                    .isThrownBy(() -> copper2GoEngine.receive("", null, "Hello", 1L, 0L));
         } finally {
             copper2GoEngine.stop();
         }

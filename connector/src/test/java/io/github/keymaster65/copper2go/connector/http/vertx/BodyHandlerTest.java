@@ -154,7 +154,7 @@ class BodyHandlerTest {
 
         handler.handle(buffer);
 
-        verify(copper2GoEngine).callWorkflow(
+        verify(copper2GoEngine).receive(
                 any(),
                 eq(attributes),
                 any(),

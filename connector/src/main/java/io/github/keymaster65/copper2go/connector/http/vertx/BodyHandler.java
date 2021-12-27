@@ -72,7 +72,7 @@ public class BodyHandler implements Handler<Buffer> {
             if (uri.startsWith(BodyHandler.COPPER2GO_2_API + "request/") || uri.startsWith(BodyHandler.COPPER2GO_2_API + "event/")) {
                 var workflowVersion = WorkflowVersion.of(uri);
                 log.debug("Call Workflow on engine {}.", copper2GoEngine);
-                copper2GoEngine.callWorkflow(
+                copper2GoEngine.receive(
                         requestBody,
                         attributes,
                         new HttpReplyChannelImpl(response),

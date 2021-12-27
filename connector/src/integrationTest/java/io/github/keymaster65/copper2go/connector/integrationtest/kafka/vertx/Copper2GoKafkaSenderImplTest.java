@@ -64,7 +64,7 @@ class Copper2GoKafkaSenderImplTest {
             soft.assertThat(handler.getSuccessCount()).isOne();
             soft.assertThat(handler.getFailCount()).isZero();
         });
-        verify(engine).callWorkflow(
+        verify(engine).receive(
                 eq(REQUEST),
                 any(),
                 any(),
@@ -84,7 +84,7 @@ class Copper2GoKafkaSenderImplTest {
         Mockito
                 .doThrow(new EngineException("Simulated exception."))
                 .when(engine)
-                .callWorkflow(
+                .receive(
                         eq(REQUEST),
                         any(),
                         any(),
@@ -99,7 +99,7 @@ class Copper2GoKafkaSenderImplTest {
             soft.assertThat(handler.getSuccessCount()).isZero();
             soft.assertThat(handler.getFailCount()).isOne();
         });
-        verify(engine).callWorkflow(
+        verify(engine).receive(
                 eq(REQUEST),
                 any(),
                 any(),

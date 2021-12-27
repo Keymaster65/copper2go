@@ -69,7 +69,7 @@ public class EngineImpl implements Engine {
     }
 
     @Override
-    public void callWorkflow(
+    public void receive(
             final String payload,
             final Map<String, String> attributes,
             final ReplyChannel replyChannel,
