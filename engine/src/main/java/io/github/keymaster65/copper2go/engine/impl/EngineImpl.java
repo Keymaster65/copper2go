@@ -18,16 +18,12 @@ package io.github.keymaster65.copper2go.engine.impl;
 import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineException;
 import io.github.keymaster65.copper2go.engine.EngineRuntimeException;
+import io.github.keymaster65.copper2go.engine.InitialPayloadReceiver;
 import io.github.keymaster65.copper2go.engine.ReplyChannel;
+import io.github.keymaster65.copper2go.engine.ResponseReceiver;
 import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
-import io.github.keymaster65.copper2go.workflowapi.WorkflowData;
-import org.copperengine.core.Acknowledge;
-import org.copperengine.core.CopperException;
 import org.copperengine.core.DependencyInjector;
 import org.copperengine.core.EngineState;
-import org.copperengine.core.Response;
-import org.copperengine.core.WorkflowInstanceDescr;
-import org.copperengine.core.WorkflowVersion;
 import org.copperengine.core.common.DefaultTicketPoolManager;
 import org.copperengine.core.common.SimpleJmxExporter;
 import org.copperengine.core.common.TicketPool;
@@ -52,7 +48,7 @@ import java.util.concurrent.locks.LockSupport;
 public class EngineImpl implements Engine {
 
     private static final Logger log = LoggerFactory.getLogger(EngineImpl.class);
-    public static final String NO_ENIGINE_FOUND_MESSAGE = "No engine found. May be it must be started first.";
+    static final String NO_ENGINE_FOUND_MESSAGE = "No engine found. May be it must be started first.";
 
     private final WorkflowRepositoryConfig workflowRepositoryConfig;
     private final ReplyChannelStoreImpl replyChannelStore;
@@ -61,6 +57,9 @@ public class EngineImpl implements Engine {
     private TransientScottyEngine scottyEngine;
     private SimpleJmxExporter exporter;
     private LoggingStatisticCollector statisticsCollector;
+
+    private InitialPayloadReceiver initialPayloadReceiver;
+    private ResponseReceiver responseReceiver;
 
     public EngineImpl(final int availableTickets, WorkflowRepositoryConfig workflowRepositoryConfig, final ReplyChannelStoreImpl replyChannelStore) {
         this.workflowRepositoryConfig = workflowRepositoryConfig;
@@ -71,6 +70,8 @@ public class EngineImpl implements Engine {
     public synchronized void start(final DependencyInjector dependencyInjector) throws EngineException {
         log.info("start engine");
         scottyEngine = startScotty(dependencyInjector);
+        initialPayloadReceiver = new InitialPayloadReceiverImpl(scottyEngine, replyChannelStore);
+        responseReceiver = new ResponseReceiverImpl(scottyEngine);
     }
 
     @Override
@@ -102,36 +103,30 @@ public class EngineImpl implements Engine {
             final long major,
             final long minor
     ) throws EngineException {
-        Objects.requireNonNull(scottyEngine, NO_ENIGINE_FOUND_MESSAGE);
+        Objects.requireNonNull(initialPayloadReceiver, NO_ENGINE_FOUND_MESSAGE);
 
-        WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>(workflow);
-        WorkflowVersion version = scottyEngine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
-        workflowInstanceDescr.setVersion(version);
-
-        String uuid = scottyEngine.createUUID();
-        workflowInstanceDescr.setData(new WorkflowData(uuid, payload, attributes));
-        replyChannelStore.store(uuid, replyChannel);
-        try {
-            scottyEngine.run(workflowInstanceDescr);
-        } catch (CopperException e) {
-            throw new EngineException("Exception while running workflow. ", e);
-        }
+        initialPayloadReceiver.receive(
+                payload,
+                attributes,
+                replyChannel,
+                workflow,
+                major,
+                minor
+        );
     }
 
     @Override
     public void receive(final String responseCorrelationId, final String response) {
-        Objects.requireNonNull(scottyEngine, NO_ENIGINE_FOUND_MESSAGE);
+        Objects.requireNonNull(responseReceiver, NO_ENGINE_FOUND_MESSAGE);
 
-        Response<String> copperResponse = new Response<>(responseCorrelationId, response, null);
-        scottyEngine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
+        responseReceiver.receive(responseCorrelationId, response);
     }
 
     @Override
     public void receiveError(final String responseCorrelationId, final String response) {
-        Objects.requireNonNull(scottyEngine, NO_ENIGINE_FOUND_MESSAGE);
+        Objects.requireNonNull(responseReceiver, NO_ENGINE_FOUND_MESSAGE);
 
-        Response<String> copperResponse = new Response<>(responseCorrelationId, response, new RuntimeException(response));
-        scottyEngine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
+        responseReceiver.receiveError(responseCorrelationId, response);
     }
 
     private TransientScottyEngine startScotty(DependencyInjector dependencyInjector) throws EngineException {
