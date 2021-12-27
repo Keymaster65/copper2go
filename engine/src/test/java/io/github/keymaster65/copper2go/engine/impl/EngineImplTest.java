@@ -24,9 +24,9 @@ import org.copperengine.core.DependencyInjector;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-class Copper2GoEngineImplTest {
+class EngineImplTest {
 
-    private static Engine copper2GoEngine;
+    private static Engine engine;
     private static ReplyChannelStoreImpl replyChannelStoreImpl = new ReplyChannelStoreImpl();
     private final DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
             replyChannelStoreImpl,
@@ -36,26 +36,26 @@ class Copper2GoEngineImplTest {
 
     @BeforeAll
     static void createEngine() {
-        copper2GoEngine = createCopper2GoEngine();
+        engine = createCopper2GoEngine();
     }
 
     @Test
-    void callWorkflowEngineNotStarted() {
+    void receiveInitialPayloadEngineNotStarted() {
         Assertions
                 .assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> copper2GoEngine.receive("", null, "Hello", 1L, 0L))
+                .isThrownBy(() -> engine.receive("", null, "Hello", 1L, 0L))
                 .withMessage("No engine found. May be it must be started first.");
     }
 
     @Test
-    void callWorkflow() throws EngineException {
+    void receiveInitialPayload() throws EngineException {
         try {
-            copper2GoEngine.start(dependencyInjector);
+            engine.start(dependencyInjector);
             Assertions
                     .assertThatNoException()
-                    .isThrownBy(() -> copper2GoEngine.receive("", null, "Hello", 1L, 0L));
+                    .isThrownBy(() -> engine.receive("", null, "Hello", 1L, 0L));
         } finally {
-            copper2GoEngine.stop();
+            engine.stop();
         }
     }
 

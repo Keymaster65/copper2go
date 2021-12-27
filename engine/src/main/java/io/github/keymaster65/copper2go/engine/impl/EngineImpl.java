@@ -51,14 +51,13 @@ import java.util.concurrent.locks.LockSupport;
 
 public class EngineImpl implements Engine {
 
-
     private static final Logger log = LoggerFactory.getLogger(EngineImpl.class);
 
     private final WorkflowRepositoryConfig workflowRepositoryConfig;
     private final ReplyChannelStoreImpl replyChannelStore;
     private final int availableTickets;
 
-    private TransientScottyEngine engine;
+    private TransientScottyEngine scottyEngine;
     private SimpleJmxExporter exporter;
     private LoggingStatisticCollector statisticsCollector;
 
@@ -66,6 +65,11 @@ public class EngineImpl implements Engine {
         this.workflowRepositoryConfig = workflowRepositoryConfig;
         this.replyChannelStore = replyChannelStore;
         this.availableTickets = availableTickets;
+    }
+
+    public synchronized void start(final DependencyInjector dependencyInjector) throws EngineException {
+        log.info("start engine");
+        scottyEngine = startScotty(dependencyInjector);
     }
 
     @Override
@@ -77,20 +81,52 @@ public class EngineImpl implements Engine {
             final long major,
             final long minor
     ) throws EngineException {
-        Objects.requireNonNull(engine, "No engine found. May be it must be started first.");
+        Objects.requireNonNull(scottyEngine, "No engine found. May be it must be started first.");
 
         WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>(workflow);
-        WorkflowVersion version = engine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
+        WorkflowVersion version = scottyEngine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
         workflowInstanceDescr.setVersion(version);
 
-        String uuid = engine.createUUID();
+        String uuid = scottyEngine.createUUID();
         workflowInstanceDescr.setData(new WorkflowData(uuid, payload, attributes));
         replyChannelStore.store(uuid, replyChannel);
         try {
-            engine.run(workflowInstanceDescr);
+            scottyEngine.run(workflowInstanceDescr);
         } catch (CopperException e) {
             throw new EngineException("Exception while running workflow. ", e);
         }
+    }
+
+    @Override
+    public synchronized void stop() throws EngineException {
+        if (scottyEngine != null) {
+            scottyEngine.shutdown();
+        }
+        if (statisticsCollector != null) {
+            statisticsCollector.shutdown();
+        }
+
+        try {
+            if (exporter != null) {
+                exporter.shutdown();
+            }
+        } catch (MBeanRegistrationException | InstanceNotFoundException e) {
+            throw new EngineException("Could not shutdown exporter.", e);
+        }
+        waitForIdleEngine();
+        scottyEngine = null;
+    }
+
+    @Override
+    public void receive(final String correlationId, final String response) {
+        Response<String> copperResponse = new Response<>(correlationId, response, null);
+        scottyEngine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
+    }
+
+    @Override
+    public void receiveError(final String correlationId, final String response) {
+        Response<String> copperResponse = new Response<>(correlationId, response, new RuntimeException(response));
+        scottyEngine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
     }
 
     private TransientScottyEngine startScotty(DependencyInjector dependencyInjector) throws EngineException {
@@ -160,44 +196,8 @@ public class EngineImpl implements Engine {
         return newExporter;
     }
 
-    @Override
-    public void receive(final String correlationId, final String response) {
-        Response<String> copperResponse = new Response<>(correlationId, response, null);
-        engine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
-    }
-
-    @Override
-    public void receiveError(final String correlationId, final String response) {
-        Response<String> copperResponse = new Response<>(correlationId, response, new RuntimeException(response));
-        engine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
-    }
-
-    public synchronized void start(final DependencyInjector dependencyInjector) throws EngineException {
-        log.info("start engine");
-        engine = startScotty(dependencyInjector);
-    }
-
-    public synchronized void stop() throws EngineException {
-        if (engine != null) {
-            engine.shutdown();
-        }
-        if (statisticsCollector != null) {
-            statisticsCollector.shutdown();
-        }
-
-        try {
-            if (exporter != null) {
-                exporter.shutdown();
-            }
-        } catch (MBeanRegistrationException | InstanceNotFoundException e) {
-            throw new EngineException("Could not shutdown exporter.", e);
-        }
-        waitForIdleEngine();
-        engine = null;
-    }
-
     private void waitForIdleEngine() {
-        while (engine != null && engine.getNumberOfWorkflowInstances() > 0) {
+        while (scottyEngine != null && scottyEngine.getNumberOfWorkflowInstances() > 0) {
             LockSupport.parkNanos(100000000L);
         }
     }
