@@ -17,8 +17,13 @@ package io.github.keymaster65.copper2go.engine;
 
 import org.copperengine.core.DependencyInjector;
 
-public interface EngineControl {
+public interface EngineControl extends AutoCloseable {
     void start(DependencyInjector dependencyInjector) throws EngineException;
 
     void stop() throws EngineException;
+
+    @Override
+    default void close() throws EngineException {
+        stop();
+    }
 }

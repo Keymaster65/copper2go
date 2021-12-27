@@ -16,7 +16,7 @@
 package io.github.keymaster65.copper2go.engine;
 
 public interface ResponseReceiver {
-    void receive(String correlationId, String response);
+    void receive(String responseCorrelationId, String response);
 
-    void receiveError(String correlationId, String response);
+    void receiveError(String responseCorrelationId, String response);
 }

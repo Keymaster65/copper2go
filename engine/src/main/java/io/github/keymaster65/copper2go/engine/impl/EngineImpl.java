@@ -52,6 +52,7 @@ import java.util.concurrent.locks.LockSupport;
 public class EngineImpl implements Engine {
 
     private static final Logger log = LoggerFactory.getLogger(EngineImpl.class);
+    public static final String NO_ENIGINE_FOUND_MESSAGE = "No engine found. May be it must be started first.";
 
     private final WorkflowRepositoryConfig workflowRepositoryConfig;
     private final ReplyChannelStoreImpl replyChannelStore;
@@ -70,31 +71,6 @@ public class EngineImpl implements Engine {
     public synchronized void start(final DependencyInjector dependencyInjector) throws EngineException {
         log.info("start engine");
         scottyEngine = startScotty(dependencyInjector);
-    }
-
-    @Override
-    public void receive(
-            final String payload,
-            final Map<String, String> attributes,
-            final ReplyChannel replyChannel,
-            final String workflow,
-            final long major,
-            final long minor
-    ) throws EngineException {
-        Objects.requireNonNull(scottyEngine, "No engine found. May be it must be started first.");
-
-        WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>(workflow);
-        WorkflowVersion version = scottyEngine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
-        workflowInstanceDescr.setVersion(version);
-
-        String uuid = scottyEngine.createUUID();
-        workflowInstanceDescr.setData(new WorkflowData(uuid, payload, attributes));
-        replyChannelStore.store(uuid, replyChannel);
-        try {
-            scottyEngine.run(workflowInstanceDescr);
-        } catch (CopperException e) {
-            throw new EngineException("Exception while running workflow. ", e);
-        }
     }
 
     @Override
@@ -118,14 +94,43 @@ public class EngineImpl implements Engine {
     }
 
     @Override
-    public void receive(final String correlationId, final String response) {
-        Response<String> copperResponse = new Response<>(correlationId, response, null);
+    public void receive(
+            final String payload,
+            final Map<String, String> attributes,
+            final ReplyChannel replyChannel,
+            final String workflow,
+            final long major,
+            final long minor
+    ) throws EngineException {
+        Objects.requireNonNull(scottyEngine, NO_ENIGINE_FOUND_MESSAGE);
+
+        WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>(workflow);
+        WorkflowVersion version = scottyEngine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
+        workflowInstanceDescr.setVersion(version);
+
+        String uuid = scottyEngine.createUUID();
+        workflowInstanceDescr.setData(new WorkflowData(uuid, payload, attributes));
+        replyChannelStore.store(uuid, replyChannel);
+        try {
+            scottyEngine.run(workflowInstanceDescr);
+        } catch (CopperException e) {
+            throw new EngineException("Exception while running workflow. ", e);
+        }
+    }
+
+    @Override
+    public void receive(final String responseCorrelationId, final String response) {
+        Objects.requireNonNull(scottyEngine, NO_ENIGINE_FOUND_MESSAGE);
+
+        Response<String> copperResponse = new Response<>(responseCorrelationId, response, null);
         scottyEngine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
     }
 
     @Override
-    public void receiveError(final String correlationId, final String response) {
-        Response<String> copperResponse = new Response<>(correlationId, response, new RuntimeException(response));
+    public void receiveError(final String responseCorrelationId, final String response) {
+        Objects.requireNonNull(scottyEngine, NO_ENIGINE_FOUND_MESSAGE);
+
+        Response<String> copperResponse = new Response<>(responseCorrelationId, response, new RuntimeException(response));
         scottyEngine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
     }
 

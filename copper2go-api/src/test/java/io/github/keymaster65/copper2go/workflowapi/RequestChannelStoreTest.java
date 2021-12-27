@@ -22,7 +22,7 @@ class RequestChannelStoreTest {
 
     public static final String CHANNEL_NAME = "channelName";
     public static final String REQUEST = "request";
-    public static final String RESPONSE_CORRELATION_ID = "responseCorrelationId";
+    public static final String RESPONSE_CORRELATION_ID = "RequestChannelStorerelationId";
 
     @Test
     void request() {
