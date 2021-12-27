@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.http.vertx;
 
-import io.github.keymaster65.copper2go.engine.Engine;
+import io.github.keymaster65.copper2go.engine.PayloadReceiver;
 import io.vertx.core.http.HttpServerRequest;
 import org.junit.jupiter.api.Test;
 
@@ -27,8 +27,8 @@ class RequestHandlerTest {
 
     @Test
     void handle() {
-        Engine engine = mock(Engine.class);
-        var handler = new RequestHandler(engine);
+        PayloadReceiver payloadReceiver = mock(PayloadReceiver.class);
+        var handler = new RequestHandler(payloadReceiver);
 
         HttpServerRequest request = mock(HttpServerRequest.class);
         handler.handle(request);

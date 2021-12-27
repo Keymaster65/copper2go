@@ -15,8 +15,8 @@
  */
 package io.github.keymaster65.copper2go.connector.http.vertx;
 
-import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineException;
+import io.github.keymaster65.copper2go.engine.PayloadReceiver;
 import io.vertx.core.MultiMap;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
@@ -98,9 +98,9 @@ class BodyHandlerTest {
     void handleLicense() {
         final HttpServerResponse response = mock(HttpServerResponse.class);
         final HttpServerRequest request = mock(HttpServerRequest.class);
-        final Engine copper2GoEngine = mock(Engine.class);
+        final PayloadReceiver payloadReceiver = mock(PayloadReceiver.class);
         final Buffer buffer = mock(Buffer.class);
-        BodyHandler handler = new BodyHandler(request, copper2GoEngine);
+        BodyHandler handler = new BodyHandler(request, payloadReceiver);
 
         when(buffer.getBytes()).thenReturn("Wolf".getBytes(StandardCharsets.UTF_8));
         when(request.uri()).thenReturn("/test.html");
@@ -132,9 +132,9 @@ class BodyHandlerTest {
 
     void handleWorkflowRequest(final String type, final HttpServerResponse response) throws EngineException {
         final HttpServerRequest request = mock(HttpServerRequest.class);
-        final Engine copper2GoEngine = mock(Engine.class);
+        final PayloadReceiver payloadReceiver = mock(PayloadReceiver.class);
         final Buffer buffer = mock(Buffer.class);
-        BodyHandler handler = new BodyHandler(request, copper2GoEngine);
+        BodyHandler handler = new BodyHandler(request, payloadReceiver);
 
         final String workflowName = "Hello";
         final long majorVersion = 2L;
@@ -154,7 +154,7 @@ class BodyHandlerTest {
 
         handler.handle(buffer);
 
-        verify(copper2GoEngine).receive(
+        verify(payloadReceiver).receive(
                 any(),
                 eq(attributes),
                 any(),
@@ -168,9 +168,9 @@ class BodyHandlerTest {
     void handleWorkflowBadUrl() {
         final HttpServerResponse response = mock(HttpServerResponse.class);
         final HttpServerRequest request = mock(HttpServerRequest.class);
-        final Engine copper2GoEngine = mock(Engine.class);
+        final PayloadReceiver payloadReceiver = mock(PayloadReceiver.class);
         final Buffer buffer = mock(Buffer.class);
-        BodyHandler handler = new BodyHandler(request, copper2GoEngine);
+        BodyHandler handler = new BodyHandler(request, payloadReceiver);
 
         when(buffer.getBytes()).thenReturn("Wolf".getBytes(StandardCharsets.UTF_8));
         when(request.uri()).thenReturn(COPPER2GO_2_API);

@@ -16,7 +16,7 @@
 package io.github.keymaster65.copper2go.engine.impl;
 
 import io.github.keymaster65.copper2go.engine.EngineException;
-import io.github.keymaster65.copper2go.engine.InitialPayloadReceiver;
+import io.github.keymaster65.copper2go.engine.PayloadReceiver;
 import io.github.keymaster65.copper2go.engine.ReplyChannel;
 import io.github.keymaster65.copper2go.workflowapi.WorkflowData;
 import org.copperengine.core.CopperException;
@@ -25,14 +25,13 @@ import org.copperengine.core.WorkflowVersion;
 import org.copperengine.core.tranzient.TransientScottyEngine;
 
 import java.util.Map;
-import java.util.Objects;
 
-public class InitialPayloadReceiverImpl implements InitialPayloadReceiver {
+public class PayloadReceiverImpl implements PayloadReceiver {
 
     private final TransientScottyEngine scottyEngine;
     private final ReplyChannelStoreImpl replyChannelStore;
 
-    InitialPayloadReceiverImpl(
+    PayloadReceiverImpl(
             final TransientScottyEngine scottyEngine,
             final ReplyChannelStoreImpl replyChannelStore
     ) {
@@ -50,8 +49,6 @@ public class InitialPayloadReceiverImpl implements InitialPayloadReceiver {
             final long major,
             final long minor
     ) throws EngineException {
-        Objects.requireNonNull(scottyEngine, EngineImpl.NO_ENGINE_FOUND_MESSAGE);
-
         WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>(workflow);
         WorkflowVersion version = scottyEngine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
         workflowInstanceDescr.setVersion(version);

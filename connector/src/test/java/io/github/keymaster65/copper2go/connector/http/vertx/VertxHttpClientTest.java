@@ -16,7 +16,7 @@
 package io.github.keymaster65.copper2go.connector.http.vertx;
 
 import ch.qos.logback.classic.LoggerContext;
-import io.github.keymaster65.copper2go.engine.Engine;
+import io.github.keymaster65.copper2go.engine.ResponseReceiver;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -78,28 +78,28 @@ class VertxHttpClientTest {
     @Example
     void successHandler() {
         resetLogContext();
-        final Engine copper2GoEngine = Mockito.mock(Engine.class);
+        final ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
         @SuppressWarnings("unchecked")
         HttpResponse<Buffer> response = Mockito.mock(HttpResponse.class);
         Mockito.when(response.bodyAsString()).thenReturn(BODY);
 
-        final Handler<HttpResponse<Buffer>> handler = VertxHttpClient.successHandler(CORRELATION_ID, copper2GoEngine);
+        final Handler<HttpResponse<Buffer>> handler = VertxHttpClient.successHandler(CORRELATION_ID, responseReceiver);
         handler.handle(response);
 
-        Mockito.verify(copper2GoEngine).receive(CORRELATION_ID, BODY);
+        Mockito.verify(responseReceiver).receive(CORRELATION_ID, BODY);
     }
 
     @Example
     void errorHandler() {
         resetLogContext();
-        final Engine copper2GoEngine = Mockito.mock(Engine.class);
-        final Handler<Throwable> handler = VertxHttpClient.errorHandler(CORRELATION_ID, copper2GoEngine);
+        final ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
+        final Handler<Throwable> handler = VertxHttpClient.errorHandler(CORRELATION_ID, responseReceiver);
 
         Throwable response = Mockito.mock(Throwable.class);
         Mockito.when(response.getMessage()).thenReturn(EXCEPTION_MESSAGE);
         handler.handle(response);
 
-        Mockito.verify(copper2GoEngine).receiveError(CORRELATION_ID, EXCEPTION_MESSAGE);
+        Mockito.verify(responseReceiver).receiveError(CORRELATION_ID, EXCEPTION_MESSAGE);
     }
 
     @Example
@@ -147,7 +147,7 @@ class VertxHttpClientTest {
                 "host",
                 0,
                 "uri",
-                Mockito.mock(Engine.class),
+                Mockito.mock(ResponseReceiver.class),
                 vertx,
                 webClient
         );

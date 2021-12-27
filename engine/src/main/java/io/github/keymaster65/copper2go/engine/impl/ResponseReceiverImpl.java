@@ -20,11 +20,6 @@ import org.copperengine.core.Acknowledge;
 import org.copperengine.core.Response;
 import org.copperengine.core.tranzient.TransientScottyEngine;
 
-import java.util.Objects;
-
-import static io.github.keymaster65.copper2go.engine.impl.EngineImpl.NO_ENGINE_FOUND_MESSAGE;
-
-
 public class ResponseReceiverImpl implements ResponseReceiver {
 
     private final TransientScottyEngine scottyEngine;
@@ -35,16 +30,12 @@ public class ResponseReceiverImpl implements ResponseReceiver {
 
     @Override
     public void receive(final String responseCorrelationId, final String response) {
-        Objects.requireNonNull(scottyEngine, NO_ENGINE_FOUND_MESSAGE);
-
         Response<String> copperResponse = new Response<>(responseCorrelationId, response, null);
         scottyEngine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
     }
 
     @Override
     public void receiveError(final String responseCorrelationId, final String response) {
-        Objects.requireNonNull(scottyEngine, NO_ENGINE_FOUND_MESSAGE);
-
         Response<String> copperResponse = new Response<>(responseCorrelationId, response, new RuntimeException(response));
         scottyEngine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
     }

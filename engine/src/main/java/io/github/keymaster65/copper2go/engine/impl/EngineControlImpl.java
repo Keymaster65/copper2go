@@ -15,12 +15,9 @@
  */
 package io.github.keymaster65.copper2go.engine.impl;
 
-import io.github.keymaster65.copper2go.engine.Engine;
+import io.github.keymaster65.copper2go.engine.EngineControl;
 import io.github.keymaster65.copper2go.engine.EngineException;
 import io.github.keymaster65.copper2go.engine.EngineRuntimeException;
-import io.github.keymaster65.copper2go.engine.InitialPayloadReceiver;
-import io.github.keymaster65.copper2go.engine.ReplyChannel;
-import io.github.keymaster65.copper2go.engine.ResponseReceiver;
 import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 import org.copperengine.core.DependencyInjector;
 import org.copperengine.core.EngineState;
@@ -41,104 +38,56 @@ import javax.management.InstanceNotFoundException;
 import javax.management.MBeanRegistrationException;
 import java.io.File;
 import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.locks.LockSupport;
 
-public class EngineImpl implements Engine {
+public class EngineControlImpl implements EngineControl {
 
-    private static final Logger log = LoggerFactory.getLogger(EngineImpl.class);
-    static final String NO_ENGINE_FOUND_MESSAGE = "No engine found. May be it must be started first.";
+    final TransientScottyEngine scottyEngine;
 
-    private final WorkflowRepositoryConfig workflowRepositoryConfig;
-    private final ReplyChannelStoreImpl replyChannelStore;
-    private final int availableTickets;
-
-    private TransientScottyEngine scottyEngine;
-    private SimpleJmxExporter exporter;
+    private static final Logger log = LoggerFactory.getLogger(EngineControlImpl.class);
     private LoggingStatisticCollector statisticsCollector;
+    private SimpleJmxExporter exporter;
 
-    private InitialPayloadReceiver initialPayloadReceiver;
-    private ResponseReceiver responseReceiver;
-
-    public EngineImpl(final int availableTickets, WorkflowRepositoryConfig workflowRepositoryConfig, final ReplyChannelStoreImpl replyChannelStore) {
-        this.workflowRepositoryConfig = workflowRepositoryConfig;
-        this.replyChannelStore = replyChannelStore;
-        this.availableTickets = availableTickets;
+    public EngineControlImpl(
+            final int availableTickets,
+            final WorkflowRepositoryConfig workflowRepositoryConfig
+    ) {
+        this.scottyEngine = createScotty(availableTickets, workflowRepositoryConfig);
     }
 
     public synchronized void start(final DependencyInjector dependencyInjector) throws EngineException {
         log.info("start engine");
-        scottyEngine = startScotty(dependencyInjector);
-        initialPayloadReceiver = new InitialPayloadReceiverImpl(scottyEngine, replyChannelStore);
-        responseReceiver = new ResponseReceiverImpl(scottyEngine);
+        scottyEngine.setDependencyInjector(dependencyInjector);
+        startScotty();
     }
+
 
     @Override
     public synchronized void stop() throws EngineException {
-        if (scottyEngine != null) {
-            scottyEngine.shutdown();
-        }
-        if (statisticsCollector != null) {
-            statisticsCollector.shutdown();
-        }
-
         try {
+            if (scottyEngine.getEngineState().equals(EngineState.STARTED)) {
+                scottyEngine.shutdown();
+            }
+            if (statisticsCollector != null) {
+                statisticsCollector.shutdown();
+            }
             if (exporter != null) {
                 exporter.shutdown();
             }
         } catch (MBeanRegistrationException | InstanceNotFoundException e) {
-            throw new EngineException("Could not shutdown exporter.", e);
+            throw new EngineException("Could not shutdown engine.", e);
         }
         waitForIdleEngine();
-        scottyEngine = null;
     }
 
-    @Override
-    public void receive(
-            final String payload,
-            final Map<String, String> attributes,
-            final ReplyChannel replyChannel,
-            final String workflow,
-            final long major,
-            final long minor
-    ) throws EngineException {
-        Objects.requireNonNull(initialPayloadReceiver, NO_ENGINE_FOUND_MESSAGE);
-
-        initialPayloadReceiver.receive(
-                payload,
-                attributes,
-                replyChannel,
-                workflow,
-                major,
-                minor
-        );
-    }
-
-    @Override
-    public void receive(final String responseCorrelationId, final String response) {
-        Objects.requireNonNull(responseReceiver, NO_ENGINE_FOUND_MESSAGE);
-
-        responseReceiver.receive(responseCorrelationId, response);
-    }
-
-    @Override
-    public void receiveError(final String responseCorrelationId, final String response) {
-        Objects.requireNonNull(responseReceiver, NO_ENGINE_FOUND_MESSAGE);
-
-        responseReceiver.receiveError(responseCorrelationId, response);
-    }
-
-    private TransientScottyEngine startScotty(DependencyInjector dependencyInjector) throws EngineException {
+    private TransientScottyEngine createScotty(
+            final int availableTickets,
+            final WorkflowRepositoryConfig workflowRepositoryConfig
+    ) {
         var factory = new TransientEngineFactory() {
             @Override
             protected File getWorkflowSourceDirectory() {
                 return new File("./.copper/clone");
-            }
-
-            @Override
-            protected DependencyInjector createDependencyInjector() {
-                return dependencyInjector;
             }
 
             @Override
@@ -167,14 +116,31 @@ public class EngineImpl implements Engine {
                     throw new EngineRuntimeException("Exception while creating workflow rfepository.", createException);
                 }
             }
+
+            @Override
+            public TransientScottyEngine create() {
+                TransientScottyEngine transientScottyEngine = new TransientScottyEngine();
+                transientScottyEngine.setEarlyResponseContainer(createEarlyResponseContainer());
+                transientScottyEngine.setEngineIdProvider(createEngineIdProvider());
+                transientScottyEngine.setIdFactory(createIdFactory());
+                transientScottyEngine.setPoolManager(createProcessorPoolManager());
+                transientScottyEngine.setStatisticsCollector(createRuntimeStatisticsCollector());
+                transientScottyEngine.setTicketPoolManager(createTicketPoolManager());
+                transientScottyEngine.setTimeoutManager(createTimeoutManager());
+                transientScottyEngine.setWfRepository(createWorkflowRepository());
+                return transientScottyEngine;
+            }
         };
-        final var transientScottyEngine = factory.create();
-        while (!transientScottyEngine.getEngineState().equals(EngineState.STARTED)) {
+        return factory.create();
+    }
+
+    private void startScotty() throws EngineException {
+        scottyEngine.startup();
+        while (!scottyEngine.getEngineState().equals(EngineState.STARTED)) {
             LockSupport.parkNanos(10L * 1000L * 1000L);
         }
 
-        exporter = startJmxExporter(transientScottyEngine);
-        return transientScottyEngine;
+        exporter = startJmxExporter(scottyEngine);
     }
 
     private SimpleJmxExporter startJmxExporter(final TransientScottyEngine engine) throws EngineException {

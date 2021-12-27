@@ -26,9 +26,9 @@ import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutEventChannelStoreImpl;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutListener;
-import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineException;
-import io.github.keymaster65.copper2go.engine.impl.EngineImpl;
+import io.github.keymaster65.copper2go.engine.PayloadReceiver;
+import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.impl.ReplyChannelStoreImpl;
 import io.github.keymaster65.copper2go.util.Copper2goDependencyInjector;
 import org.copperengine.core.DependencyInjector;
@@ -41,7 +41,7 @@ import java.util.Map;
 public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
-    private final Engine copper2GoEngine;
+    private final Copper2GoEngine copper2GoEngine;
     private final Copper2GoHttpServer httpServer;
     private final RequestChannelStoreImpl requestChannelStoreImpl;
     private final DependencyInjector dependencyInjector;
@@ -55,13 +55,13 @@ public class Application {
 
         final var requestChannelStoreImpl = new RequestChannelStoreImpl(
                 config.httpRequestChannelConfigs,
-                copper2GoEngine
+                copper2GoEngine.getResponseReceiver()
         );
         requestChannelStoreImpl.addKafkaRequestChannels(
                 config.kafkaHost,
                 config.kafkaPort,
                 config.kafkaRequestChannelConfigs,
-                copper2GoEngine
+                copper2GoEngine.getResponseReceiver()
         );
 
         DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
@@ -71,9 +71,9 @@ public class Application {
 
         Copper2GoHttpServer httpServer = new VertxHttpServer(
                 config.httpPort,
-                new RequestHandler(copper2GoEngine));
+                new RequestHandler(copper2GoEngine.getPayloadReceiver()));
 
-        Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap = createKafkaReceiverMap(config.kafkaHost, config.kafkaPort, config.kafkaReceiverConfigs, copper2GoEngine);
+        Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap = createKafkaReceiverMap(config.kafkaHost, config.kafkaPort, config.kafkaReceiverConfigs, copper2GoEngine.getPayloadReceiver());
         return new Application(
                 copper2GoEngine,
                 dependencyInjector,
@@ -83,14 +83,14 @@ public class Application {
         );
     }
 
-    public static Engine createCopper2GoEngine(final Config config, final ReplyChannelStoreImpl replyChannelStoreImpl) {
-        return new EngineImpl(
+    public static Copper2GoEngine createCopper2GoEngine(final Config config, final ReplyChannelStoreImpl replyChannelStoreImpl) {
+        return new Copper2GoEngine(
                 config.maxTickets,
                 config.workflowRepositoryConfig,
                 replyChannelStoreImpl);
     }
 
-    private static Map<String, Copper2GoKafkaReceiverImpl> createKafkaReceiverMap(final String kafkaHost, final int kafkaPort, final Map<String, KafkaReceiverConfig> kafkaReceiverConfigs, final Engine copper2GoEngine) {
+    private static Map<String, Copper2GoKafkaReceiverImpl> createKafkaReceiverMap(final String kafkaHost, final int kafkaPort, final Map<String, KafkaReceiverConfig> kafkaReceiverConfigs, final PayloadReceiver copper2GoEngine) {
         Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap = new HashMap<>();
         if (kafkaReceiverConfigs != null) {
             for (Map.Entry<String, KafkaReceiverConfig> entry : kafkaReceiverConfigs.entrySet()) {
@@ -118,7 +118,7 @@ public class Application {
     }
 
     public Application(
-            final Engine copper2GoEngine,
+            final Copper2GoEngine copper2GoEngine,
             final DependencyInjector dependencyInjector,
             final Copper2GoHttpServer httpServer,
             final RequestChannelStoreImpl requestChannelStoreImpl,
@@ -132,7 +132,7 @@ public class Application {
 
     public synchronized void start() throws EngineException {
         log.info("start application");
-        copper2GoEngine.start(dependencyInjector);
+        copper2GoEngine.getEngineControl().start(dependencyInjector);
         httpServer.start();
         for (Map.Entry<String, Copper2GoKafkaReceiverImpl> entry : kafkaReceiverMap.entrySet()) {
             entry.getValue().start();
@@ -142,13 +142,13 @@ public class Application {
     public synchronized void startWithStdInOut() throws EngineException, StandardInOutException {
         start();
         final var standardInOutListener = new StandardInOutListener();
-        standardInOutListener.listenLocalStream(copper2GoEngine);
+        standardInOutListener.listenLocalStream(copper2GoEngine.getPayloadReceiver());
     }
 
     public synchronized void stop() throws EngineException {
         log.info("stop application");
         stopRequested = true;
-        copper2GoEngine.stop();
+        copper2GoEngine.getEngineControl().stop();
         try {
             httpServer.stop();
         } catch (Exception e) {

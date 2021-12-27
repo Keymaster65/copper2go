@@ -15,5 +15,25 @@
  */
 package io.github.keymaster65.copper2go.engine;
 
-public interface Engine extends EngineControl, InitialPayloadReceiver, ResponseReceiver {
+import java.util.Map;
+
+public interface PayloadReceiver {
+    default void receive(
+            final String payload,
+            final ReplyChannel replyChannel,
+            final String workflow,
+            final long major,
+            final long minor
+    ) throws EngineException{
+        receive(payload, null, replyChannel, workflow, major, minor);
+    }
+
+    void receive(
+            String payload,
+            Map<String, String> attributes,
+            ReplyChannel replyChannel,
+            String workflow,
+            long major,
+            long minor
+    ) throws EngineException;
 }
