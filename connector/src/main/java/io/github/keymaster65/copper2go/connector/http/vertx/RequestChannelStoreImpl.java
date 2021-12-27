@@ -19,7 +19,7 @@ import io.github.keymaster65.copper2go.connector.http.HttpRequestChannelConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaSenderImpl;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelImpl;
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineRuntimeException;
 import io.github.keymaster65.copper2go.engine.RequestChannel;
 import io.github.keymaster65.copper2go.workflowapi.RequestChannelStore;
@@ -35,7 +35,7 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
 
     public RequestChannelStoreImpl(
             final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs,
-            final Copper2GoEngine engine
+            final Engine engine
     ) {
         Objects.requireNonNull(engine, "Engine must be not null.");
 
@@ -61,12 +61,12 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
             final String kafkaHost,
             final int kafkaPort,
             final Map<String, KafkaRequestChannelConfig> kafkaRequestChannelConfigs,
-            final Copper2GoEngine engine
+            final Engine engine
     ) {
         putKafkaRequestChannels(kafkaHost, kafkaPort, kafkaRequestChannelConfigs, engine);
     }
 
-    private void putHttpRequestChannels(final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs, final Copper2GoEngine engine) {
+    private void putHttpRequestChannels(final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs, final Engine engine) {
         if (httpRequestChannelConfigs != null) {
             for (Map.Entry<String, HttpRequestChannelConfig> entry : httpRequestChannelConfigs.entrySet()) {
                 HttpRequestChannelConfig config = entry.getValue();
@@ -86,7 +86,7 @@ public class RequestChannelStoreImpl implements RequestChannelStore {
         }
     }
 
-    private void putKafkaRequestChannels(final String kafkaHost, final int kafkaPort, final Map<String, KafkaRequestChannelConfig> kafkaRequestChannelConfigs, final Copper2GoEngine engine) {
+    private void putKafkaRequestChannels(final String kafkaHost, final int kafkaPort, final Map<String, KafkaRequestChannelConfig> kafkaRequestChannelConfigs, final Engine engine) {
         if (kafkaRequestChannelConfigs != null) {
             for (Map.Entry<String, KafkaRequestChannelConfig> entry : kafkaRequestChannelConfigs.entrySet()) {
                 KafkaRequestChannelConfig config = entry.getValue();

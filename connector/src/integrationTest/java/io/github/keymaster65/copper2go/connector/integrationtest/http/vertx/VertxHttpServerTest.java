@@ -18,7 +18,7 @@ package io.github.keymaster65.copper2go.connector.integrationtest.http.vertx;
 import io.github.keymaster65.copper2go.connector.http.TestHttpClient;
 import io.github.keymaster65.copper2go.connector.http.vertx.RequestHandler;
 import io.github.keymaster65.copper2go.connector.http.vertx.VertxHttpServer;
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineException;
 import io.vertx.core.Vertx;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ class VertxHttpServerTest {
 
     @Test
     void startStop() {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, new RequestHandler(engine));
         try {
             vertxHttpServer.start();
@@ -48,12 +48,12 @@ class VertxHttpServerTest {
 
     @Test
     void post() throws InterruptedException, EngineException, IOException {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
 
         // Exception should lead to normal response.end() if no workflow does
         Mockito.doThrow(new EngineException("Simulated exception."))
                 .when(engine)
-                .callWorkflow(
+                .receive(
                         ArgumentMatchers.any(),
                         ArgumentMatchers.any (),
                         ArgumentMatchers.any(),
@@ -70,7 +70,7 @@ class VertxHttpServerTest {
             vertxHttpServer.stop();
         }
 
-        Mockito.verify(engine).callWorkflow(
+        Mockito.verify(engine).receive(
                 ArgumentMatchers.any(),
                 ArgumentMatchers.any(),
                 ArgumentMatchers.any(),

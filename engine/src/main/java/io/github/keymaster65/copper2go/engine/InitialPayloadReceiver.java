@@ -15,36 +15,25 @@
  */
 package io.github.keymaster65.copper2go.engine;
 
-import org.copperengine.core.DependencyInjector;
-
 import java.util.Map;
 
-public interface Copper2GoEngine {
-    void start(DependencyInjector dependencyInjector) throws EngineException;
-
-    void stop() throws EngineException;
-
-    default void callWorkflow(
+public interface InitialPayloadReceiver {
+    default void receive(
             final String payload,
             final ReplyChannel replyChannel,
             final String workflow,
             final long major,
             final long minor
     ) throws EngineException{
-        callWorkflow(payload, null, replyChannel, workflow, major, minor);
+        receive(payload, null, replyChannel, workflow, major, minor);
     }
 
-    void callWorkflow(
-            final String payload,
-            final Map<String, String> attributes,
-            final ReplyChannel replyChannel,
-            final String workflow,
-            final long major,
-            final long minor
+    void receive(
+            String payload,
+            Map<String, String> attributes,
+            ReplyChannel replyChannel,
+            String workflow,
+            long major,
+            long minor
     ) throws EngineException;
-    void waitForIdleEngine();
-
-    void notify(final String correlationId, String response);
-
-    void notifyError(final String correlationId, String response);
 }

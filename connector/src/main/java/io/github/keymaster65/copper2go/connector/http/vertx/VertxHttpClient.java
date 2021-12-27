@@ -17,7 +17,7 @@ package io.github.keymaster65.copper2go.connector.http.vertx;
 
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpClient;
 import io.github.keymaster65.copper2go.connector.http.HttpMethod;
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -34,7 +34,7 @@ public class VertxHttpClient implements Copper2GoHttpClient {
     private final String host;
     private final int port;
     private final String uri;
-    private final Copper2GoEngine engine;
+    private final Engine engine;
     private final Vertx vertx;
     private final WebClient client;
     private static final Logger log = LoggerFactory.getLogger(VertxHttpClient.class);
@@ -43,7 +43,7 @@ public class VertxHttpClient implements Copper2GoHttpClient {
             final String host,
             final int port,
             final String uri,
-            final Copper2GoEngine engine
+            final Engine engine
     ) {
         this(host, port, uri, engine, Vertx.vertx());
     }
@@ -52,7 +52,7 @@ public class VertxHttpClient implements Copper2GoHttpClient {
             final String host,
             final int port,
             final String uri,
-            final Copper2GoEngine engine,
+            final Engine engine,
             final Vertx vertx
     ) {
         this(host, port, uri, engine, Vertx.vertx(), WebClient.create(vertx));
@@ -62,7 +62,7 @@ public class VertxHttpClient implements Copper2GoHttpClient {
             final String host,
             final int port,
             final String uri,
-            final Copper2GoEngine engine,
+            final Engine engine,
             final Vertx vertx,
             final WebClient client
     ) {
@@ -103,21 +103,21 @@ public class VertxHttpClient implements Copper2GoHttpClient {
         );
     }
 
-    static Handler<HttpResponse<Buffer>> successHandler(final String responseCorrelationId, final Copper2GoEngine engine) {
+    static Handler<HttpResponse<Buffer>> successHandler(final String responseCorrelationId, final Engine engine) {
         return result -> {
             if (log.isDebugEnabled()) {
                 log.debug(String.format("Result=%s", result.bodyAsString()));
             }
-            engine.notify(responseCorrelationId, result.bodyAsString());
+            engine.receive(responseCorrelationId, result.bodyAsString());
         };
     }
 
-    static Handler<Throwable> errorHandler(final String responseCorrelationId, final Copper2GoEngine engine) {
+    static Handler<Throwable> errorHandler(final String responseCorrelationId, final Engine engine) {
         return throwable -> {
             if (log.isDebugEnabled()) {
                 log.debug(String.format("Failure=%s", throwable.getMessage()));
             }
-            engine.notifyError(responseCorrelationId, throwable.getMessage());
+            engine.receiveError(responseCorrelationId, throwable.getMessage());
         };
     }
 

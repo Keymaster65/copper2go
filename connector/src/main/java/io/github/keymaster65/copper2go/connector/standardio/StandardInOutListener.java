@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.standardio;
 
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +26,7 @@ public class StandardInOutListener {
 
     private static final Logger log = LoggerFactory.getLogger(StandardInOutListener.class);
 
-    public void listenLocalStream(final Copper2GoEngine copper2GoEngine) throws StandardInOutException {
+    public void listenLocalStream(final Engine copper2GoEngine) throws StandardInOutException {
         var reader = new BufferedReader(new InputStreamReader(System.in));
         //noinspection InfiniteLoopStatement
         while (true) {
@@ -40,8 +40,7 @@ public class StandardInOutListener {
                 if ("exit".equals(line1)) {
                     throw new StandardInOutException("Input canceled by 'exit' line.");
                 }
-                copper2GoEngine.callWorkflow(line1, new StandardInOutReplyChannelImpl(), "Hello", 1, 0);
-                copper2GoEngine.waitForIdleEngine();
+                copper2GoEngine.receive(line1, new StandardInOutReplyChannelImpl(), "Hello", 1, 0);
             } catch (Exception e) {
                 throw new StandardInOutException("Exception while getting input.", e);
             }

@@ -18,7 +18,7 @@ package io.github.keymaster65.copper2go.connector.http.vertx;
 import io.github.keymaster65.copper2go.connector.http.HttpRequestChannelConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelImpl;
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineRuntimeException;
 import net.jqwik.api.Example;
 import org.apache.kafka.common.KafkaException;
@@ -35,7 +35,7 @@ class RequestChannelStoreImplTest {
 
     @Example
     void addDuplicateRequestChannels() {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs = new HashMap<>();
         final String channelName = "channelName";
         httpRequestChannelConfigs.put(
@@ -55,7 +55,7 @@ class RequestChannelStoreImplTest {
 
     @Example
     void addRequestChannels() {
-        RequestChannelStoreImpl requestChannelStore = createHttpRequestChannelStore(Mockito.mock(Copper2GoEngine.class));
+        RequestChannelStoreImpl requestChannelStore = createHttpRequestChannelStore(Mockito.mock(Engine.class));
 
         final String channelName2 = "channelName2";
         Assertions.assertThatCode(() ->
@@ -66,19 +66,19 @@ class RequestChannelStoreImplTest {
 
     @Example
     void request() {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         final String channelName = "channelName";
         RequestChannelStoreImpl requestChannelStore = createHttpRequestChannelStore(engine);
 
         requestChannelStore.request(channelName, "request", "responseCorrelationId");
         LockSupport.parkNanos(6L * 1000 * 1000 * 1000);
 
-        Mockito.verify(engine).notifyError(Mockito.any(), Mockito.any());
+        Mockito.verify(engine).receiveError(Mockito.any(), Mockito.any());
     }
 
     @Example
     void putKafkaRequestChannels() {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         RequestChannelStoreImpl requestChannelStore = new RequestChannelStoreImpl(null, engine);
         final String channelName = "channelName";
         final Map<String, KafkaRequestChannelConfig> kafkaRequestChannelConfigs = new HashMap<>();
@@ -102,7 +102,7 @@ class RequestChannelStoreImplTest {
 
     @Example
     void putKafkaRequestChannelsNull() {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         RequestChannelStoreImpl requestChannelStore = createEmptyRequestChannelStore(engine);
 
         Assertions.assertThatCode(() ->
@@ -117,7 +117,7 @@ class RequestChannelStoreImplTest {
 
     @Example
     void close() {
-        RequestChannelStoreImpl requestChannelStore = createEmptyRequestChannelStore(Mockito.mock(Copper2GoEngine.class));
+        RequestChannelStoreImpl requestChannelStore = createEmptyRequestChannelStore(Mockito.mock(Engine.class));
 
         Assertions.assertThatCode(requestChannelStore::close)
                 .doesNotThrowAnyException();
@@ -135,7 +135,7 @@ class RequestChannelStoreImplTest {
                 .hasMessage("Missing required configuration \"key.serializer\" which has no default value.");
     }
 
-    private RequestChannelStoreImpl createHttpRequestChannelStore(final Copper2GoEngine engine) {
+    private RequestChannelStoreImpl createHttpRequestChannelStore(final Engine engine) {
         final Map<String, HttpRequestChannelConfig> httpRequestChannelConfigs = new HashMap<>();
         final String channelName = "channelName";
         httpRequestChannelConfigs.put(
@@ -149,7 +149,7 @@ class RequestChannelStoreImplTest {
         return new RequestChannelStoreImpl(httpRequestChannelConfigs, engine);
     }
 
-    private RequestChannelStoreImpl createEmptyRequestChannelStore(final Copper2GoEngine engine) {
+    private RequestChannelStoreImpl createEmptyRequestChannelStore(final Engine engine) {
         return new RequestChannelStoreImpl(null, engine);
     }
 }

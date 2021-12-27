@@ -16,7 +16,7 @@
 package io.github.keymaster65.copper2go.connector.http.vertx;
 
 import com.google.common.io.CharStreams;
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineException;
 import io.github.keymaster65.copper2go.engine.WorkflowVersion;
 import io.vertx.core.Handler;
@@ -40,11 +40,11 @@ public class BodyHandler implements Handler<Buffer> {
     public static final String COPPER2GO_2_API = "/copper2go/2/api/";
 
     private final HttpServerRequest request;
-    private final Copper2GoEngine copper2GoEngine;
+    private final Engine copper2GoEngine;
 
     private static final Logger log = LoggerFactory.getLogger(BodyHandler.class);
 
-    BodyHandler(final HttpServerRequest request, final Copper2GoEngine copper2GoEngine) {
+    BodyHandler(final HttpServerRequest request, final Engine copper2GoEngine) {
         this.request = request;
         this.copper2GoEngine = copper2GoEngine;
     }
@@ -72,7 +72,7 @@ public class BodyHandler implements Handler<Buffer> {
             if (uri.startsWith(BodyHandler.COPPER2GO_2_API + "request/") || uri.startsWith(BodyHandler.COPPER2GO_2_API + "event/")) {
                 var workflowVersion = WorkflowVersion.of(uri);
                 log.debug("Call Workflow on engine {}.", copper2GoEngine);
-                copper2GoEngine.callWorkflow(
+                copper2GoEngine.receive(
                         requestBody,
                         attributes,
                         new HttpReplyChannelImpl(response),

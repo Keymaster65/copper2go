@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.vertx.core.Future;
 import io.vertx.kafka.client.producer.RecordMetadata;
 import org.assertj.core.api.Assertions;
@@ -29,7 +29,7 @@ class KafkaRequestChannelImplTest {
 
     @Test
     void request() {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
         @SuppressWarnings("unchecked")
         Future<RecordMetadata> metadata = Mockito.mock(Future.class);
@@ -50,7 +50,7 @@ class KafkaRequestChannelImplTest {
 
     @Test
     void handleSendSuccess() {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
         @SuppressWarnings("unchecked")
         Future<RecordMetadata> metadata = Mockito.mock(Future.class);
@@ -62,14 +62,14 @@ class KafkaRequestChannelImplTest {
 
         requestChannel.handleSendSuccess(CORR_ID, metadata);
 
-        Mockito.verify(engine).notify(CORR_ID, "{}");
+        Mockito.verify(engine).receive(CORR_ID, "{}");
         Assertions.assertThat(requestChannel.getSuccessCount()).isOne();
         Assertions.assertThat(requestChannel.getFailCount()).isZero();
     }
 
     @Test
     void handleSendFailure() {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
 
         KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
@@ -80,7 +80,7 @@ class KafkaRequestChannelImplTest {
         final RuntimeException testException = new RuntimeException("Test");
         requestChannel.handleSendFailure(CORR_ID, testException);
 
-        Mockito.verify(engine).notifyError(CORR_ID, testException.getMessage());
+        Mockito.verify(engine).receiveError(CORR_ID, testException.getMessage());
         Assertions.assertThat(requestChannel.getSuccessCount()).isZero();
         Assertions.assertThat(requestChannel.getFailCount()).isOne();
     }
@@ -109,7 +109,7 @@ class KafkaRequestChannelImplTest {
 
     @Test
     void close() {
-        Copper2GoEngine engine = Mockito.mock(Copper2GoEngine.class);
+        Engine engine = Mockito.mock(Engine.class);
         Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
 
         KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(

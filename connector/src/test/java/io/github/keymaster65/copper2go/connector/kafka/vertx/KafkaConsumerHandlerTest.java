@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineException;
 import io.vertx.kafka.client.consumer.KafkaConsumerRecord;
 import io.vertx.kafka.client.producer.impl.KafkaHeaderImpl;
@@ -35,7 +35,7 @@ class KafkaConsumerHandlerTest {
     @Test
     void handleSucess() throws EngineException {
 
-        final Copper2GoEngine copper2GoEngine = Mockito.mock(Copper2GoEngine.class);
+        final Engine copper2GoEngine = Mockito.mock(Engine.class);
 
         final KafkaConsumerHandler kafkaConsumerHandler = createKafkaConsumerHandler(copper2GoEngine);
 
@@ -44,7 +44,7 @@ class KafkaConsumerHandlerTest {
 
         kafkaConsumerHandler.handle(event);
 
-        Mockito.verify(copper2GoEngine).callWorkflow(
+        Mockito.verify(copper2GoEngine).receive(
                 Mockito.any(),
                 Mockito.any(),
                 Mockito.any(),
@@ -61,9 +61,9 @@ class KafkaConsumerHandlerTest {
 
         @SuppressWarnings("unchecked")
         final KafkaConsumerRecord<String, String>  event = Mockito.mock(KafkaConsumerRecord.class);
-        final Copper2GoEngine copper2GoEngine = Mockito.mock(Copper2GoEngine.class);
+        final Engine copper2GoEngine = Mockito.mock(Engine.class);
         final KafkaConsumerHandler kafkaConsumerHandler = createKafkaConsumerHandler(copper2GoEngine);
-        Mockito.doThrow(new RuntimeException("Test")).when(copper2GoEngine).callWorkflow(
+        Mockito.doThrow(new RuntimeException("Test")).when(copper2GoEngine).receive(
                 Mockito.any(),
                 Mockito.any(),
                 Mockito.any(),
@@ -74,7 +74,7 @@ class KafkaConsumerHandlerTest {
 
         kafkaConsumerHandler.handle(event);
 
-        Mockito.verify(copper2GoEngine).callWorkflow(
+        Mockito.verify(copper2GoEngine).receive(
                 Mockito.any(),
                 Mockito.any(),
                 Mockito.any(),
@@ -86,7 +86,7 @@ class KafkaConsumerHandlerTest {
         Assertions.assertThat(kafkaConsumerHandler.getFailCount()).isOne();
     }
 
-    private KafkaConsumerHandler createKafkaConsumerHandler(final Copper2GoEngine copper2GoEngine) {
+    private KafkaConsumerHandler createKafkaConsumerHandler(final Engine copper2GoEngine) {
         return new KafkaConsumerHandler(
                 "topic",
                 copper2GoEngine,

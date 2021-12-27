@@ -26,9 +26,9 @@ import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutEventChannelStoreImpl;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutListener;
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineException;
-import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngineImpl;
+import io.github.keymaster65.copper2go.engine.impl.EngineImpl;
 import io.github.keymaster65.copper2go.engine.impl.ReplyChannelStoreImpl;
 import io.github.keymaster65.copper2go.util.Copper2goDependencyInjector;
 import org.copperengine.core.DependencyInjector;
@@ -41,7 +41,7 @@ import java.util.Map;
 public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
-    private final Copper2GoEngine copper2GoEngine;
+    private final Engine copper2GoEngine;
     private final Copper2GoHttpServer httpServer;
     private final RequestChannelStoreImpl requestChannelStoreImpl;
     private final DependencyInjector dependencyInjector;
@@ -83,14 +83,14 @@ public class Application {
         );
     }
 
-    public static Copper2GoEngine createCopper2GoEngine(final Config config, final ReplyChannelStoreImpl replyChannelStoreImpl) {
-        return new Copper2GoEngineImpl(
+    public static Engine createCopper2GoEngine(final Config config, final ReplyChannelStoreImpl replyChannelStoreImpl) {
+        return new EngineImpl(
                 config.maxTickets,
                 config.workflowRepositoryConfig,
                 replyChannelStoreImpl);
     }
 
-    private static Map<String, Copper2GoKafkaReceiverImpl> createKafkaReceiverMap(final String kafkaHost, final int kafkaPort, final Map<String, KafkaReceiverConfig> kafkaReceiverConfigs, final Copper2GoEngine copper2GoEngine) {
+    private static Map<String, Copper2GoKafkaReceiverImpl> createKafkaReceiverMap(final String kafkaHost, final int kafkaPort, final Map<String, KafkaReceiverConfig> kafkaReceiverConfigs, final Engine copper2GoEngine) {
         Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap = new HashMap<>();
         if (kafkaReceiverConfigs != null) {
             for (Map.Entry<String, KafkaReceiverConfig> entry : kafkaReceiverConfigs.entrySet()) {
@@ -118,7 +118,7 @@ public class Application {
     }
 
     public Application(
-            final Copper2GoEngine copper2GoEngine,
+            final Engine copper2GoEngine,
             final DependencyInjector dependencyInjector,
             final Copper2GoHttpServer httpServer,
             final RequestChannelStoreImpl requestChannelStoreImpl,

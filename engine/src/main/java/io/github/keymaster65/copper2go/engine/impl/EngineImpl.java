@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.engine.impl;
 
-import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Engine;
 import io.github.keymaster65.copper2go.engine.EngineException;
 import io.github.keymaster65.copper2go.engine.EngineRuntimeException;
 import io.github.keymaster65.copper2go.engine.ReplyChannel;
@@ -49,26 +49,52 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.locks.LockSupport;
 
-public class Copper2GoEngineImpl implements Copper2GoEngine {
+public class EngineImpl implements Engine {
 
-
-    private static final Logger log = LoggerFactory.getLogger(Copper2GoEngineImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(EngineImpl.class);
+    public static final String NO_ENIGINE_FOUND_MESSAGE = "No engine found. May be it must be started first.";
 
     private final WorkflowRepositoryConfig workflowRepositoryConfig;
     private final ReplyChannelStoreImpl replyChannelStore;
     private final int availableTickets;
 
-    private TransientScottyEngine engine;
+    private TransientScottyEngine scottyEngine;
     private SimpleJmxExporter exporter;
     private LoggingStatisticCollector statisticsCollector;
 
-    public Copper2GoEngineImpl(final int availableTickets, WorkflowRepositoryConfig workflowRepositoryConfig, final ReplyChannelStoreImpl replyChannelStore) {
+    public EngineImpl(final int availableTickets, WorkflowRepositoryConfig workflowRepositoryConfig, final ReplyChannelStoreImpl replyChannelStore) {
         this.workflowRepositoryConfig = workflowRepositoryConfig;
         this.replyChannelStore = replyChannelStore;
         this.availableTickets = availableTickets;
     }
 
-    public void callWorkflow(
+    public synchronized void start(final DependencyInjector dependencyInjector) throws EngineException {
+        log.info("start engine");
+        scottyEngine = startScotty(dependencyInjector);
+    }
+
+    @Override
+    public synchronized void stop() throws EngineException {
+        if (scottyEngine != null) {
+            scottyEngine.shutdown();
+        }
+        if (statisticsCollector != null) {
+            statisticsCollector.shutdown();
+        }
+
+        try {
+            if (exporter != null) {
+                exporter.shutdown();
+            }
+        } catch (MBeanRegistrationException | InstanceNotFoundException e) {
+            throw new EngineException("Could not shutdown exporter.", e);
+        }
+        waitForIdleEngine();
+        scottyEngine = null;
+    }
+
+    @Override
+    public void receive(
             final String payload,
             final Map<String, String> attributes,
             final ReplyChannel replyChannel,
@@ -76,20 +102,36 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
             final long major,
             final long minor
     ) throws EngineException {
-        Objects.requireNonNull(engine, "No engine found. May be it must be started first.");
+        Objects.requireNonNull(scottyEngine, NO_ENIGINE_FOUND_MESSAGE);
 
         WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>(workflow);
-        WorkflowVersion version = engine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
+        WorkflowVersion version = scottyEngine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
         workflowInstanceDescr.setVersion(version);
 
-        String uuid = engine.createUUID();
+        String uuid = scottyEngine.createUUID();
         workflowInstanceDescr.setData(new WorkflowData(uuid, payload, attributes));
         replyChannelStore.store(uuid, replyChannel);
         try {
-            engine.run(workflowInstanceDescr);
+            scottyEngine.run(workflowInstanceDescr);
         } catch (CopperException e) {
             throw new EngineException("Exception while running workflow. ", e);
         }
+    }
+
+    @Override
+    public void receive(final String responseCorrelationId, final String response) {
+        Objects.requireNonNull(scottyEngine, NO_ENIGINE_FOUND_MESSAGE);
+
+        Response<String> copperResponse = new Response<>(responseCorrelationId, response, null);
+        scottyEngine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
+    }
+
+    @Override
+    public void receiveError(final String responseCorrelationId, final String response) {
+        Objects.requireNonNull(scottyEngine, NO_ENIGINE_FOUND_MESSAGE);
+
+        Response<String> copperResponse = new Response<>(responseCorrelationId, response, new RuntimeException(response));
+        scottyEngine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
     }
 
     private TransientScottyEngine startScotty(DependencyInjector dependencyInjector) throws EngineException {
@@ -159,45 +201,9 @@ public class Copper2GoEngineImpl implements Copper2GoEngine {
         return newExporter;
     }
 
-    public void waitForIdleEngine() {
-        while (engine != null && engine.getNumberOfWorkflowInstances() > 0) {
+    private void waitForIdleEngine() {
+        while (scottyEngine != null && scottyEngine.getNumberOfWorkflowInstances() > 0) {
             LockSupport.parkNanos(100000000L);
         }
-    }
-
-    @Override
-    public void notify(final String correlationId, final String response) {
-        Response<String> copperResponse = new Response<>(correlationId, response, null);
-        engine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
-    }
-
-    @Override
-    public void notifyError(final String correlationId, final String response) {
-        Response<String> copperResponse = new Response<>(correlationId, response, new RuntimeException(response));
-        engine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
-    }
-
-    public synchronized void start(final DependencyInjector dependencyInjector) throws EngineException {
-        log.info("start engine");
-        engine = startScotty(dependencyInjector);
-    }
-
-    public synchronized void stop() throws EngineException {
-        if (engine != null) {
-            engine.shutdown();
-        }
-        if (statisticsCollector != null) {
-            statisticsCollector.shutdown();
-        }
-
-        try {
-            if (exporter != null) {
-                exporter.shutdown();
-            }
-        } catch (MBeanRegistrationException | InstanceNotFoundException e) {
-            throw new EngineException("Could not shutdown exporter.", e);
-        }
-        waitForIdleEngine();
-        engine = null;
     }
 }

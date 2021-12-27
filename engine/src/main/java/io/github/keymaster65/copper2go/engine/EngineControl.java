@@ -13,27 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.connector.http.vertx;
+package io.github.keymaster65.copper2go.engine;
 
-import io.github.keymaster65.copper2go.engine.Engine;
-import io.vertx.core.http.HttpServerRequest;
-import org.junit.jupiter.api.Test;
+import org.copperengine.core.DependencyInjector;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+public interface EngineControl extends AutoCloseable {
+    void start(DependencyInjector dependencyInjector) throws EngineException;
 
-class RequestHandlerTest {
+    void stop() throws EngineException;
 
-    @Test
-    void handle() {
-        Engine engine = mock(Engine.class);
-        var handler = new RequestHandler(engine);
-
-        HttpServerRequest request = mock(HttpServerRequest.class);
-        handler.handle(request);
-
-        verify(request).bodyHandler(any());
-
+    @Override
+    default void close() throws EngineException {
+        stop();
     }
 }
