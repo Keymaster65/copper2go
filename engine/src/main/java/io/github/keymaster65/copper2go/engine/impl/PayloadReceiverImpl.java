@@ -59,7 +59,7 @@ public class PayloadReceiverImpl implements PayloadReceiver {
         try {
             scottyEngine.run(workflowInstanceDescr);
         } catch (CopperException e) {
-            throw new EngineException("Exception while running workflow. ", e);
+            throw new EngineException("Exception while running workflow.", e);
         }
     }
 }
