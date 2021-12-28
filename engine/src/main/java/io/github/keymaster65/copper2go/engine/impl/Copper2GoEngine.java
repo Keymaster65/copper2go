@@ -36,6 +36,16 @@ public class Copper2GoEngine {
         this.responseReceiver = new ResponseReceiverImpl(engineControl.scottyEngine);
     }
 
+    Copper2GoEngine(
+            final PayloadReceiver payloadReceiver,
+            final ResponseReceiver responseReceiver,
+            final EngineControlImpl engineControl
+    ) {
+        this.payloadReceiver = payloadReceiver;
+        this.responseReceiver = responseReceiver;
+        this.engineControl = engineControl;
+    }
+
     public EngineControl getEngineControl() {
         return engineControl;
     }

@@ -35,8 +35,4 @@ public final class WorkflowRepositoryConfig {
         this.workflowGitURI = workflowGitURI;
         this.workflowBase = workflowBase;
     }
-
-    public WorkflowRepositoryConfig withBranch(final String branch){
-        return new WorkflowRepositoryConfig(branch, this.workflowGitURI, this.workflowBase);
-    }
 }
