@@ -39,7 +39,7 @@ class RequestChannelConfiguratorTest {
         defaultRequestChannelStore.request(CHANNEL_NAME, REQUEST, RESPONSE_CORRELATION_ID);
         LockSupport.parkNanos(6L * 1000 * 1000 * 1000);
 
-        Mockito.verify(responseReceiver).receiveError(RESPONSE_CORRELATION_ID, "Failed to resolve 'httpHost' after 3 queries ");
+        Mockito.verify(responseReceiver).receiveError(Mockito.eq(RESPONSE_CORRELATION_ID), Mockito.any());
     }
 
     private DefaultRequestChannelStore createDefaultHttpRequestChannelStore(final ResponseReceiver responseReceiver) {
