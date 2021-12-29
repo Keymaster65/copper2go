@@ -15,13 +15,18 @@
  */
 package io.github.keymaster65.copper2go.engine;
 
-public class EngineException extends Exception {
+import java.io.Serial;
+
+public class EngineRuntimeException extends RuntimeException {
+
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    public EngineException(final String message) {
+    public EngineRuntimeException(final String message) {
         super(message);
     }
-    public EngineException(final String message, final Exception cause) {
+
+    public EngineRuntimeException(final String message, final Exception cause) {
         super(message, cause);
     }
 }

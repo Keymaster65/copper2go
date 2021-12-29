@@ -1,5 +1,6 @@
 dependencies {
     implementation(project(":copper2go-api"))
+    implementation(project(":connector-api"))
 
     implementation("org.copper-engine:copper-coreengine:5.4.1")
     implementation("org.copper-engine:copper-jmx-interface:5.4.1")
