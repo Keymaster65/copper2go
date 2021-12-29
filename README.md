@@ -213,23 +213,32 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "Kafka/Http Bridge" Release Plan Release Bridge Workflow 1.0
+### "Kafka/Http Bridge" Release Plan
 
-### "Kafka/Http Bridge" Release Plan Release Workflow API 2.1
+#### Release Bridge Workflow 1.0
 
-* [ ] Support HTTP URL parameter (in and out)
-* [ ] Support Kafka Header (parameter) (in and out)
+* [ ] New Repository for Bridge Workflow
+* [ ] System tests
+* [ ] Add use case in Developer's Guide
+
+#### Release Workflow API 3.0
+
+* [x] Support HTTP URL parameter (in but no out)
+* [x] Support Kafka Header (parameter) (in and out)
+* [ ] Require Java 17
 
 ### Application API 3.0
 
 * [x] Support for Java 17
 * [x] Add Bridge Workflow
 * [x] Add quality badges
-* [ ] Support HTTP URL parameter (in and out)
-* [ ] Support Kafka Header (parameter) (in and out)
+* [x] Support HTTP URL parameter (in but no out)
+* [x] Support Kafka Header (parameter) (in and out)
 * [ ] Add use case in Developer's Guide
-* [x] Improve unit test coverage up to 50%
+* [x] Improve unit test coverage up to 80% or more
 * [x] Update many used jars
+* [ ] Refactor engine subproject for tests and extracting engine-api and connector-api
+* [ ] Refactor connector subproject for tests and extracting more modules
 
 ### "Java 17" Release Plan Release Workflow API 3.0
 
@@ -253,7 +262,9 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ### Backlog
 
-* Fix memory leak in ReplyChannelStore
+* Fix memory leak in ReplyChannelStore (may be: add a release method or garbage collection)
+* Add "vanilla" engine implementation
+* Add new Repository Performancetest 
 * Improve unit test coverage up to 50+%
 * STDIN/OUT support in config and container (or remove it)
 * Redesign DefaultRequestChannel (like Kafka). Use WARN instead of ERROR?
