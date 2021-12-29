@@ -15,8 +15,8 @@
  */
 package io.github.keymaster65.copper2go.connector.http.vertx;
 
-import io.github.keymaster65.copper2go.engine.EngineException;
-import io.github.keymaster65.copper2go.engine.PayloadReceiver;
+import io.github.keymaster65.copper2go.connectorapi.EngineException;
+import io.github.keymaster65.copper2go.connectorapi.PayloadReceiver;
 import io.vertx.core.MultiMap;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;

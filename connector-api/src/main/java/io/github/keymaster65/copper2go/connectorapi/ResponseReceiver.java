@@ -13,20 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine;
+package io.github.keymaster65.copper2go.connectorapi;
 
-import java.io.Serial;
+public interface ResponseReceiver {
+    void receive(String responseCorrelationId, String response);
 
-public class EngineRuntimeException extends RuntimeException {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    public EngineRuntimeException(final String message) {
-        super(message);
-    }
-
-    public EngineRuntimeException(final String message, final Exception cause) {
-        super(message, cause);
-    }
+    void receiveError(String responseCorrelationId, String response);
 }

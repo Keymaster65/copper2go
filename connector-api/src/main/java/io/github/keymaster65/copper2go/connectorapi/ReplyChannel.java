@@ -13,10 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine;
+package io.github.keymaster65.copper2go.connectorapi;
 
-public interface ResponseReceiver {
-    void receive(String responseCorrelationId, String response);
+import java.util.Map;
 
-    void receiveError(String responseCorrelationId, String response);
+public interface ReplyChannel {
+    default void reply(final String message) {
+        reply(message, null);
+    }
+    void reply(final String message, final Map<String, String> attributes);
+
+    default void replyError(final String message) {
+        replyError(message, null);
+    }
+    void replyError(final String message, final Map<String, String> attributes);
 }

@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine;
+package io.github.keymaster65.copper2go.connectorapi;
 
-import java.util.Map;
+import java.io.Serial;
 
-public interface EventChannel {
-    default void event(final String message) {
-        event(message, null);
+public class EngineException extends Exception {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    public EngineException(final String message) {
+        super(message);
     }
-    void event(final String message, final Map<String, String> attributes);
-
-    default void errorEvent(final String message){
-        errorEvent(message, null);
+    public EngineException(final String message, final Exception cause) {
+        super(message, cause);
     }
-    void errorEvent(final String message, final Map<String, String> attributes);
 }

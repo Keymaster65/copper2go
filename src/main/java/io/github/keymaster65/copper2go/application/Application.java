@@ -17,7 +17,7 @@ package io.github.keymaster65.copper2go.application;
 
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
-import io.github.keymaster65.copper2go.connector.http.vertx.RequestChannelStoreImpl;
+import io.github.keymaster65.copper2go.connector.http.vertx.RequestChannelConfigurator;
 import io.github.keymaster65.copper2go.connector.http.vertx.RequestHandler;
 import io.github.keymaster65.copper2go.connector.http.vertx.VertxHttpServer;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaReceiverImpl;
@@ -26,8 +26,9 @@ import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutEventChannelStoreImpl;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutListener;
-import io.github.keymaster65.copper2go.engine.EngineException;
-import io.github.keymaster65.copper2go.engine.PayloadReceiver;
+import io.github.keymaster65.copper2go.connectorapi.DefaultRequestChannelStore;
+import io.github.keymaster65.copper2go.connectorapi.EngineException;
+import io.github.keymaster65.copper2go.connectorapi.PayloadReceiver;
 import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.impl.ReplyChannelStoreImpl;
 import io.github.keymaster65.copper2go.util.Copper2goDependencyInjector;
@@ -37,15 +38,16 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
     private final Copper2GoEngine copper2GoEngine;
     private final Copper2GoHttpServer httpServer;
-    private final RequestChannelStoreImpl requestChannelStoreImpl;
+    private final DefaultRequestChannelStore defaultRequestChannelStore;
     private final DependencyInjector dependencyInjector;
-    private boolean stopRequested;
+    private final AtomicBoolean stopRequested = new AtomicBoolean(false);
     private final Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap;
 
     public static Application of(final Config config) {
@@ -53,21 +55,27 @@ public class Application {
         var replyChannelStoreImpl = new ReplyChannelStoreImpl();
         var copper2GoEngine = createCopper2GoEngine(config, replyChannelStoreImpl);
 
-        final var requestChannelStoreImpl = new RequestChannelStoreImpl(
+        final DefaultRequestChannelStore defaultRequestChannelStore = new DefaultRequestChannelStore();
+
+        RequestChannelConfigurator.putHttpRequestChannels(
                 config.httpRequestChannelConfigs,
-                copper2GoEngine.getResponseReceiver()
+                copper2GoEngine.getResponseReceiver(),
+                defaultRequestChannelStore
         );
-        requestChannelStoreImpl.addKafkaRequestChannels(
+
+        io.github.keymaster65.copper2go.connector.kafka.vertx.RequestChannelConfigurator.addKafkaRequestChannels(
                 config.kafkaHost,
                 config.kafkaPort,
                 config.kafkaRequestChannelConfigs,
-                copper2GoEngine.getResponseReceiver()
+                copper2GoEngine.getResponseReceiver(),
+                defaultRequestChannelStore
         );
 
         DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
                 replyChannelStoreImpl,
                 new StandardInOutEventChannelStoreImpl(),
-                requestChannelStoreImpl);
+                defaultRequestChannelStore
+        );
 
         Copper2GoHttpServer httpServer = new VertxHttpServer(
                 config.httpPort,
@@ -78,7 +86,7 @@ public class Application {
                 copper2GoEngine,
                 dependencyInjector,
                 httpServer,
-                requestChannelStoreImpl,
+                defaultRequestChannelStore,
                 kafkaReceiverMap
         );
     }
@@ -121,12 +129,12 @@ public class Application {
             final Copper2GoEngine copper2GoEngine,
             final DependencyInjector dependencyInjector,
             final Copper2GoHttpServer httpServer,
-            final RequestChannelStoreImpl requestChannelStoreImpl,
+            final DefaultRequestChannelStore defaultRequestChannelStore,
             final Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap) {
         this.copper2GoEngine = copper2GoEngine;
         this.dependencyInjector = dependencyInjector;
         this.httpServer = httpServer;
-        this.requestChannelStoreImpl = requestChannelStoreImpl;
+        this.defaultRequestChannelStore = defaultRequestChannelStore;
         this.kafkaReceiverMap = kafkaReceiverMap;
     }
 
@@ -147,7 +155,7 @@ public class Application {
 
     public synchronized void stop() throws EngineException {
         log.info("stop application");
-        stopRequested = true;
+        stopRequested.set(true);
         copper2GoEngine.getEngineControl().stop();
         try {
             httpServer.stop();
@@ -158,10 +166,10 @@ public class Application {
             entry.getValue().close();
         }
 
-        requestChannelStoreImpl.close();
+        defaultRequestChannelStore.close();
     }
 
     public synchronized boolean isStopRequested() {
-        return this.stopRequested;
+        return this.stopRequested.get();
     }
 }

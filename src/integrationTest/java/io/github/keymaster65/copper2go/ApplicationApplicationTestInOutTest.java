@@ -19,7 +19,7 @@ import io.github.keymaster65.copper2go.application.Application;
 import io.github.keymaster65.copper2go.application.Data;
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
-import io.github.keymaster65.copper2go.engine.EngineException;
+import io.github.keymaster65.copper2go.connectorapi.EngineException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -17,7 +17,7 @@ package io.github.keymaster65.copper2go.connector.integrationtest.kafka.vertx;
 
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaSender;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelImpl;
-import io.github.keymaster65.copper2go.engine.ResponseReceiver;
+import io.github.keymaster65.copper2go.connectorapi.ResponseReceiver;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

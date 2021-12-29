@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.standardio;
 
-import io.github.keymaster65.copper2go.engine.PayloadReceiver;
+import io.github.keymaster65.copper2go.connectorapi.PayloadReceiver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

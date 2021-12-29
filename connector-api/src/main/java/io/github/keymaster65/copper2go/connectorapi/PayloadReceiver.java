@@ -13,18 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine;
+package io.github.keymaster65.copper2go.connectorapi;
 
 import java.util.Map;
 
-public interface ReplyChannel {
-    default void reply(final String message) {
-        reply(message, null);
+public interface PayloadReceiver {
+    default void receive(
+            final String payload,
+            final ReplyChannel replyChannel,
+            final String workflow,
+            final long major,
+            final long minor
+    ) throws EngineException{
+        receive(payload, null, replyChannel, workflow, major, minor);
     }
-    void reply(final String message, final Map<String, String> attributes);
 
-    default void replyError(final String message) {
-        replyError(message, null);
-    }
-    void replyError(final String message, final Map<String, String> attributes);
+    void receive(
+            String payload,
+            Map<String, String> attributes,
+            ReplyChannel replyChannel,
+            String workflow,
+            long major,
+            long minor
+    ) throws EngineException;
 }

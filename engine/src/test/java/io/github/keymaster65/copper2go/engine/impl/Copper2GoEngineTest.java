@@ -15,8 +15,8 @@
  */
 package io.github.keymaster65.copper2go.engine.impl;
 
-import io.github.keymaster65.copper2go.engine.PayloadReceiver;
-import io.github.keymaster65.copper2go.engine.ResponseReceiver;
+import io.github.keymaster65.copper2go.connectorapi.PayloadReceiver;
+import io.github.keymaster65.copper2go.connectorapi.ResponseReceiver;
 import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

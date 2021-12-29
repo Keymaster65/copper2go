@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
-import io.github.keymaster65.copper2go.engine.ResponseReceiver;
+import io.github.keymaster65.copper2go.connectorapi.ResponseReceiver;
 import io.vertx.core.Future;
 import io.vertx.kafka.client.producer.RecordMetadata;
 import org.assertj.core.api.Assertions;

@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.standardio;
 
-import io.github.keymaster65.copper2go.engine.ReplyChannel;
+import io.github.keymaster65.copper2go.connectorapi.ReplyChannel;
 
 import java.util.Map;
 

@@ -26,5 +26,6 @@ public interface Copper2GoKafkaSender extends AutoCloseable {
     }
 
     Future<RecordMetadata> send(final String request, final Map<String, String> attributes);
+
     void close();
 }

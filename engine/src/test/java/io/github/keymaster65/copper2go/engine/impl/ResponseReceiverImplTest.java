@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.engine.impl;
 
-import io.github.keymaster65.copper2go.engine.ResponseReceiver;
+import io.github.keymaster65.copper2go.connectorapi.ResponseReceiver;
 import org.assertj.core.api.Assertions;
 import org.copperengine.core.tranzient.TransientScottyEngine;
 import org.junit.jupiter.api.Test;

@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.engine.impl;
 
-import io.github.keymaster65.copper2go.engine.ReplyChannel;
+import io.github.keymaster65.copper2go.connectorapi.ReplyChannel;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;

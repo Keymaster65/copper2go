@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.http.vertx;
 
-import io.github.keymaster65.copper2go.engine.ReplyChannel;
+import io.github.keymaster65.copper2go.connectorapi.ReplyChannel;
 import io.vertx.core.http.HttpServerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

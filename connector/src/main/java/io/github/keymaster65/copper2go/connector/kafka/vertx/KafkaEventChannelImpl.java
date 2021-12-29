@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
-import io.github.keymaster65.copper2go.engine.EventChannel;
+import io.github.keymaster65.copper2go.connectorapi.EventChannel;
 
 import java.util.Map;
 

@@ -17,7 +17,7 @@ package io.github.keymaster65.copper2go;
 
 import io.github.keymaster65.copper2go.application.Application;
 import io.github.keymaster65.copper2go.application.config.Config;
-import io.github.keymaster65.copper2go.engine.EngineException;
+import io.github.keymaster65.copper2go.connectorapi.EngineException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
-import io.github.keymaster65.copper2go.engine.PayloadReceiver;
+import io.github.keymaster65.copper2go.connectorapi.PayloadReceiver;
 import io.vertx.core.Handler;
 import io.vertx.kafka.client.consumer.KafkaConsumerRecord;
 import io.vertx.kafka.client.producer.KafkaHeader;
