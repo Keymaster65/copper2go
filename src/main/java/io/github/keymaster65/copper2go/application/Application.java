@@ -26,9 +26,9 @@ import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutEventChannelStoreImpl;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutListener;
-import io.github.keymaster65.copper2go.connectorapi.DefaultRequestChannelStore;
-import io.github.keymaster65.copper2go.connectorapi.EngineException;
-import io.github.keymaster65.copper2go.connectorapi.PayloadReceiver;
+import io.github.keymaster65.copper2go.api.connector.DefaultRequestChannelStore;
+import io.github.keymaster65.copper2go.api.connector.EngineException;
+import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.impl.ReplyChannelStoreImpl;
 import io.github.keymaster65.copper2go.api.util.Copper2goDependencyInjector;

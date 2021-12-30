@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.engine.impl;
 
-import io.github.keymaster65.copper2go.connectorapi.EngineRuntimeException;
+import io.github.keymaster65.copper2go.api.connector.EngineRuntimeException;
 import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 import org.copperengine.core.common.DefaultTicketPoolManager;
 import org.copperengine.core.common.TicketPool;

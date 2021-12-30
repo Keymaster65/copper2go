@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.engine.impl;
 
-import io.github.keymaster65.copper2go.connectorapi.ResponseReceiver;
+import io.github.keymaster65.copper2go.api.connector.ResponseReceiver;
 import org.copperengine.core.Acknowledge;
 import org.copperengine.core.Response;
 import org.copperengine.core.tranzient.TransientScottyEngine;

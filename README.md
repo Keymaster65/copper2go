@@ -245,7 +245,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### "Binding" Release Plan Application API 3.1
 
 * [ ] Workflow with Json binding
-* [ ] Workflow with XML binding
+* [ ] Workflow with XML binding (may be not ;-)
 
 ### "State Pattern" Release Plan Application API 3.1
 

@@ -25,7 +25,9 @@ dependencies {
     implementation(project(":copper2go-api"))
     implementation(project(":connector-api"))
     implementation(project(":engine"))
-    implementation(project(":connector"))
+    implementation(project(":connector-http-vertx"))
+    implementation(project(":connector-kafka-vertx"))
+    implementation(project(":connector-standardio"))
 
     implementation("org.copper-engine:copper-coreengine:5.4.1")
 
