@@ -23,12 +23,13 @@ import io.github.keymaster65.copper2go.connector.http.vertx.VertxHttpServer;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaReceiverImpl;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaConsumerHandler;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig;
-import io.github.keymaster65.copper2go.connector.standardio.StandardInOutEventChannelStoreImpl;
+import io.github.keymaster65.copper2go.api.connector.DefaultEventChannelStore;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutListener;
 import io.github.keymaster65.copper2go.api.connector.DefaultRequestChannelStore;
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
+import io.github.keymaster65.copper2go.connector.standardio.StandardOutEventChannelImpl;
 import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.impl.ReplyChannelStoreImpl;
 import io.github.keymaster65.copper2go.api.util.Copper2goDependencyInjector;
@@ -42,6 +43,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
+    public static final String SYSTEM_STDOUT_EVENT_CHANNEL_NAME = "System.stdout";
 
     private final Copper2GoEngine copper2GoEngine;
     private final Copper2GoHttpServer httpServer;
@@ -71,9 +73,12 @@ public class Application {
                 defaultRequestChannelStore
         );
 
+        final DefaultEventChannelStore defaultEventChannelStore = new DefaultEventChannelStore();
+        defaultEventChannelStore. put(SYSTEM_STDOUT_EVENT_CHANNEL_NAME, new StandardOutEventChannelImpl());
+
         DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
                 replyChannelStoreImpl,
-                new StandardInOutEventChannelStoreImpl(),
+                defaultEventChannelStore,
                 defaultRequestChannelStore
         );
 

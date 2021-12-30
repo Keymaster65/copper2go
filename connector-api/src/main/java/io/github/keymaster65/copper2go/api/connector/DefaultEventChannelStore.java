@@ -13,23 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.connector.standardio;
+package io.github.keymaster65.copper2go.api.connector;
 
-import io.github.keymaster65.copper2go.api.connector.EventChannel;
 import io.github.keymaster65.copper2go.api.workflow.EventChannelStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class StandardInOutEventChannelStoreImpl implements EventChannelStore {
-    private static final Logger log = LoggerFactory.getLogger(StandardInOutEventChannelStoreImpl.class);
+public class DefaultEventChannelStore implements EventChannelStore {
+    private static final Logger log = LoggerFactory.getLogger(DefaultEventChannelStore.class);
 
     private Map<String, EventChannel> eventChannelMap = new ConcurrentHashMap<>();
 
-    public StandardInOutEventChannelStoreImpl() {
-        eventChannelMap.put("System.stdout", new StandardOutEventChannelImpl());
+    public void put(final String name, final EventChannel eventChannel) {
+        final EventChannel oldEventChannel = eventChannelMap.putIfAbsent(name, eventChannel);
+        if (oldEventChannel != null) {
+            throw new EngineRuntimeException(String.format("Duplicate EventChannel %s found: %s", name, oldEventChannel));
+        }
     }
 
     @Override
@@ -38,10 +41,13 @@ public class StandardInOutEventChannelStoreImpl implements EventChannelStore {
             final String event,
             final Map<String, String> attributes
     ) {
+        final EventChannel eventChannel = eventChannelMap.get(channelName);
+        Objects.requireNonNull(eventChannel, String.format("EventChannel with name %s must not be null.", channelName));
+
         if (attributes != null) {
             log.warn("Ignore attributes {}", attributes);
         }
-        eventChannelMap.get(channelName).event(event);
+        eventChannel.event(event);
     }
 
     @Override
@@ -50,9 +56,12 @@ public class StandardInOutEventChannelStoreImpl implements EventChannelStore {
             final String event,
             final Map<String, String> attributes
     ) {
+        final EventChannel eventChannel = eventChannelMap.get(channelName);
+        Objects.requireNonNull(eventChannel, String.format("EventChannel with name %s must not be null.", channelName));
+
         if (attributes != null) {
             log.warn("Ignore attributes {}", attributes);
         }
-        eventChannelMap.get(channelName).errorEvent(event);
+        eventChannel.errorEvent(event);
     }
 }
