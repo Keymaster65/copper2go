@@ -15,10 +15,10 @@
  */
 package io.github.keymaster65.copper2go.engine.impl;
 
-import io.github.keymaster65.copper2go.connectorapi.EngineException;
-import io.github.keymaster65.copper2go.connectorapi.PayloadReceiver;
-import io.github.keymaster65.copper2go.connectorapi.ReplyChannel;
-import io.github.keymaster65.copper2go.workflowapi.WorkflowData;
+import io.github.keymaster65.copper2go.api.connector.EngineException;
+import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
+import io.github.keymaster65.copper2go.api.connector.ReplyChannel;
+import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
 import org.copperengine.core.CopperException;
 import org.copperengine.core.WorkflowInstanceDescr;
 import org.copperengine.core.WorkflowVersion;

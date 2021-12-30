@@ -15,8 +15,8 @@
  */
 package io.github.keymaster65.copper2go.engine.impl;
 
-import io.github.keymaster65.copper2go.connectorapi.ReplyChannel;
-import io.github.keymaster65.copper2go.workflowapi.ReplyChannelStore;
+import io.github.keymaster65.copper2go.api.connector.ReplyChannel;
+import io.github.keymaster65.copper2go.api.workflow.ReplyChannelStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

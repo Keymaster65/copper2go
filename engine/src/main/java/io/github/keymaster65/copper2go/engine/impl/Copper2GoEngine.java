@@ -16,8 +16,8 @@
 package io.github.keymaster65.copper2go.engine.impl;
 
 import io.github.keymaster65.copper2go.engine.EngineControl;
-import io.github.keymaster65.copper2go.connectorapi.PayloadReceiver;
-import io.github.keymaster65.copper2go.connectorapi.ResponseReceiver;
+import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
+import io.github.keymaster65.copper2go.api.connector.ResponseReceiver;
 import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 
 public class Copper2GoEngine {

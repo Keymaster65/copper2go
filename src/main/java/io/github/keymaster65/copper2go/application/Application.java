@@ -15,6 +15,11 @@
  */
 package io.github.keymaster65.copper2go.application;
 
+import io.github.keymaster65.copper2go.api.connector.DefaultEventChannelStore;
+import io.github.keymaster65.copper2go.api.connector.DefaultRequestChannelStore;
+import io.github.keymaster65.copper2go.api.connector.EngineException;
+import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
+import io.github.keymaster65.copper2go.api.util.Copper2goDependencyInjector;
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
 import io.github.keymaster65.copper2go.connector.http.vertx.RequestChannelConfigurator;
@@ -23,25 +28,24 @@ import io.github.keymaster65.copper2go.connector.http.vertx.VertxHttpServer;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaReceiverImpl;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaConsumerHandler;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig;
-import io.github.keymaster65.copper2go.connector.standardio.StandardInOutEventChannelStoreImpl;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
-import io.github.keymaster65.copper2go.connector.standardio.StandardInOutListener;
-import io.github.keymaster65.copper2go.connectorapi.DefaultRequestChannelStore;
-import io.github.keymaster65.copper2go.connectorapi.EngineException;
-import io.github.keymaster65.copper2go.connectorapi.PayloadReceiver;
+import io.github.keymaster65.copper2go.connector.standardio.event.StandardOutEventChannel;
+import io.github.keymaster65.copper2go.connector.standardio.receiver.StandardInOutReceiver;
 import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.impl.ReplyChannelStoreImpl;
-import io.github.keymaster65.copper2go.util.Copper2goDependencyInjector;
 import org.copperengine.core.DependencyInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
+    public static final String SYSTEM_STDOUT_EVENT_CHANNEL_NAME = "System.stdout";
 
     private final Copper2GoEngine copper2GoEngine;
     private final Copper2GoHttpServer httpServer;
@@ -71,9 +75,12 @@ public class Application {
                 defaultRequestChannelStore
         );
 
+        final DefaultEventChannelStore defaultEventChannelStore = new DefaultEventChannelStore();
+        defaultEventChannelStore.put(SYSTEM_STDOUT_EVENT_CHANNEL_NAME, new StandardOutEventChannel(System.out, System.err)); // NOSONAR
+
         DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
                 replyChannelStoreImpl,
-                new StandardInOutEventChannelStoreImpl(),
+                defaultEventChannelStore,
                 defaultRequestChannelStore
         );
 
@@ -149,7 +156,7 @@ public class Application {
 
     public synchronized void startWithStdInOut() throws EngineException, StandardInOutException {
         start();
-        final var standardInOutListener = new StandardInOutListener();
+        final var standardInOutListener = new StandardInOutReceiver(new BufferedReader(new InputStreamReader(System.in)));
         standardInOutListener.listenLocalStream(copper2GoEngine.getPayloadReceiver());
     }
 

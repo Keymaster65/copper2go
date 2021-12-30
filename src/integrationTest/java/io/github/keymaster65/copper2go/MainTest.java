@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go;
 
-import io.github.keymaster65.copper2go.connectorapi.EngineException;
+import io.github.keymaster65.copper2go.api.connector.EngineException;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
