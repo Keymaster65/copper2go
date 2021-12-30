@@ -16,7 +16,6 @@
 package io.github.keymaster65.copper2go.connector.standardio.reply;
 
 import io.github.keymaster65.copper2go.api.connector.ReplyChannel;
-import io.github.keymaster65.copper2go.connector.standardio.event.StandardOutEventChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
