@@ -13,23 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.connector.standardio;
+package io.github.keymaster65.copper2go.connector.standardio.event;
 
 import io.github.keymaster65.copper2go.api.connector.EventChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.PrintStream;
 import java.util.Map;
 
-public class StandardOutEventChannelImpl implements EventChannel {
-    private static final Logger log = LoggerFactory.getLogger(StandardOutEventChannelImpl.class);
+public class StandardOutEventChannel implements EventChannel {
+    private static final Logger log = LoggerFactory.getLogger(StandardOutEventChannel.class);
+    private final PrintStream printStream;
+    private final PrintStream errorPrintStream;
 
+    public StandardOutEventChannel(
+            final PrintStream printStream,
+            final PrintStream errorPrintStream
+    ) {
+
+        this.printStream = printStream;
+        this.errorPrintStream = errorPrintStream;
+    }
     @Override
     public void event(final String event, final Map<String, String> attributes) {
         if (attributes != null) {
             log.warn("Ignore attributes {}", attributes);
         }
-        System.out.println(event); // NOSONAR
+        printStream.println(event); // NOSONAR
     }
 
     @Override
@@ -37,6 +48,6 @@ public class StandardOutEventChannelImpl implements EventChannel {
         if (attributes != null) {
             log.warn("Ignore attributes {}", attributes);
         }
-        System.err.println(event); // NOSONAR
+        errorPrintStream.println(event); // NOSONAR
     }
 }

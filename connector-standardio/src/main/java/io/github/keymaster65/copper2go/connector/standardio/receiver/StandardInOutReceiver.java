@@ -13,21 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.connector.standardio;
+package io.github.keymaster65.copper2go.connector.standardio.receiver;
 
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
+import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
+import io.github.keymaster65.copper2go.connector.standardio.reply.StandardInOutReplyChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
-public class StandardInOutListener {
+public class StandardInOutReceiver {
 
-    private static final Logger log = LoggerFactory.getLogger(StandardInOutListener.class);
+    private static final Logger log = LoggerFactory.getLogger(StandardInOutReceiver.class);
+    private final BufferedReader reader;
+
+    public StandardInOutReceiver(final BufferedReader reader) {
+        this.reader = reader;
+    }
 
     public void listenLocalStream(final PayloadReceiver payloadReceiver) throws StandardInOutException {
-        var reader = new BufferedReader(new InputStreamReader(System.in));
         //noinspection InfiniteLoopStatement
         while (true) {
             try {
@@ -40,7 +45,13 @@ public class StandardInOutListener {
                 if ("exit".equals(line1)) {
                     throw new StandardInOutException("Input canceled by 'exit' line.");
                 }
-                payloadReceiver.receive(line1, new StandardInOutReplyChannelImpl(), "Hello", 1, 0);
+                payloadReceiver.receive(
+                        line1,
+                        new StandardInOutReplyChannel(System.out, System.err), // NOSONAR
+                        "Hello",
+                        1,
+                        0)
+                ;
             } catch (Exception e) {
                 throw new StandardInOutException("Exception while getting input.", e);
             }
