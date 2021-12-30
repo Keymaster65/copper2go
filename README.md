@@ -213,19 +213,21 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "Kafka/Http Bridge" Release Plan
+### "Kafka/Http Bridge and Java 17" Release Plan
 
 #### Release Bridge Workflow 1.0
 
-* [ ] New Repository for Bridge Workflow
-* [ ] System tests
+* [x] New Repository for Bridge Workflow
+* [x] System tests
 * [ ] Add use case in Developer's Guide
 
 #### Release Workflow API 3.0
 
 * [x] Support HTTP URL parameter (in but no out)
 * [x] Support Kafka Header (parameter) (in and out)
+* [ ] Remove payload member from WorkflowData
 * [ ] Require Java 17
+* [ ] Restructure packages
 
 ### Application API 3.0
 
@@ -239,11 +241,6 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Update many used jars
 * [ ] Refactor engine subproject for tests and extracting engine-api and connector-api
 * [ ] Refactor connector subproject for tests and extracting more modules
-
-### "Java 17" Release Plan Release Workflow API 3.0
-
-* [ ] Support for Java 17
-* [ ] Remove payload member from WorkflowData
 
 ### "Binding" Release Plan Application API 3.1
 
