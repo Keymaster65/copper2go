@@ -17,7 +17,7 @@ package io.github.keymaster65.copper2go.engine.impl;
 
 import io.github.keymaster65.copper2go.connectorapi.EngineException;
 import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
-import io.github.keymaster65.copper2go.util.Copper2goDependencyInjector;
+import io.github.keymaster65.copper2go.api.util.Copper2goDependencyInjector;
 import org.assertj.core.api.Assertions;
 import org.copperengine.core.DependencyInjector;
 import org.copperengine.ext.wfrepo.git.GitWorkflowRepository;
@@ -27,7 +27,7 @@ class Copper2GoEngineTest {
 
     @Test
     void startStop() throws EngineException {
-        Copper2GoEngine engine = createStartedEngine("release/2");
+        Copper2GoEngine engine = createStartedEngine("release/3");
         Assertions
                 .assertThatNoException()
                 .isThrownBy(() -> engine.getEngineControl().close());

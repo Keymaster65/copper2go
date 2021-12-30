@@ -31,7 +31,7 @@ import io.github.keymaster65.copper2go.connectorapi.EngineException;
 import io.github.keymaster65.copper2go.connectorapi.PayloadReceiver;
 import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.impl.ReplyChannelStoreImpl;
-import io.github.keymaster65.copper2go.util.Copper2goDependencyInjector;
+import io.github.keymaster65.copper2go.api.util.Copper2goDependencyInjector;
 import org.copperengine.core.DependencyInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.workflowapi;
+package io.github.keymaster65.copper2go.api.workflow;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -24,7 +24,12 @@ import java.util.Map;
  */
 public final class WorkflowData implements Serializable {
 
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 3L;
+
+    /**
+     * The initial payload.
+     */
+    private final String payload; // NOSONAR
 
     /**
      * Identifies the payload and can be used for replies
@@ -82,13 +87,6 @@ public final class WorkflowData implements Serializable {
     }
 
     /**
-     * Clears the payload, so that resources are not wasted when play is not needed any more.
-     */
-    public void clearPayload() {
-        payload = null; // NOSONAR
-    }
-
-    /**
      * Gets the attribute value.
      *
      * @param name of the attribute
@@ -112,12 +110,4 @@ public final class WorkflowData implements Serializable {
         }
         return new HashMap<>(attributes);
     }
-
-    /**
-     * Might become invisible in later major releases.
-     * @deprecated Use {link {@link #getPayload()}} or {link {@link #clearPayload()}}
-     */
-    @SuppressWarnings("DeprecatedIsStillUsed")
-    @Deprecated(since = "2.0.1")
-    public String payload; // NOSONAR
 }

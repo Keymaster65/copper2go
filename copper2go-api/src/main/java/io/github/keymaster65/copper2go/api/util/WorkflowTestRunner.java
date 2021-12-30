@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.util;
+package io.github.keymaster65.copper2go.api.util;
 
-import io.github.keymaster65.copper2go.workflowapi.WorkflowData;
+import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
 import org.copperengine.core.CopperException;
 import org.copperengine.core.DependencyInjector;
 import org.copperengine.core.EngineState;

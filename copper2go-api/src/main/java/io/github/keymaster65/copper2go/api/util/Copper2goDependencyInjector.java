@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.util;
+package io.github.keymaster65.copper2go.api.util;
 
-import io.github.keymaster65.copper2go.workflowapi.EventChannelStore;
-import io.github.keymaster65.copper2go.workflowapi.ReplyChannelStore;
-import io.github.keymaster65.copper2go.workflowapi.RequestChannelStore;
+import io.github.keymaster65.copper2go.api.workflow.EventChannelStore;
+import io.github.keymaster65.copper2go.api.workflow.ReplyChannelStore;
+import io.github.keymaster65.copper2go.api.workflow.RequestChannelStore;
 import org.copperengine.core.util.PojoDependencyInjector;
 
 /**

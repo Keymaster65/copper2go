@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.util.workflow;
+package io.github.keymaster65.copper2go.api.util.workflow;
 
-import io.github.keymaster65.copper2go.workflowapi.ReplyChannelStore;
-import io.github.keymaster65.copper2go.workflowapi.WorkflowData;
+import io.github.keymaster65.copper2go.api.workflow.ReplyChannelStore;
+import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
 import org.copperengine.core.AutoWire;
 import org.copperengine.core.Workflow;
 import org.copperengine.core.WorkflowDescription;

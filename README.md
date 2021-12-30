@@ -225,9 +225,9 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 * [x] Support HTTP URL parameter (in but no out)
 * [x] Support Kafka Header (parameter) (in and out)
-* [ ] Remove payload member from WorkflowData
-* [ ] Require Java 17
-* [ ] Restructure packages
+* [x] Remove payload member from WorkflowData
+* [x] Require Java 17
+* [x] Restructure packages
 
 ### Application API 3.0
 

@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connectorapi;
 
-import io.github.keymaster65.copper2go.workflowapi.RequestChannelStore;
+import io.github.keymaster65.copper2go.api.workflow.RequestChannelStore;
 
 import java.util.Map;
 import java.util.Objects;

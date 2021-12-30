@@ -16,7 +16,7 @@
 package io.github.keymaster65.copper2go.connector.standardio;
 
 import io.github.keymaster65.copper2go.connectorapi.EventChannel;
-import io.github.keymaster65.copper2go.workflowapi.EventChannelStore;
+import io.github.keymaster65.copper2go.api.workflow.EventChannelStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
