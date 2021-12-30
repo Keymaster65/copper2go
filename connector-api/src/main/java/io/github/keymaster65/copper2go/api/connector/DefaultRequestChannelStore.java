@@ -39,8 +39,10 @@ public class DefaultRequestChannelStore implements RequestChannelStore {
             Map<String, String> attributes,
             final String responseCorrelationId
     ) {
-        Objects.requireNonNull(requestChannelMap.get(channelName), String.format("Channel with name %s must not be null.", channelName));
-        requestChannelMap.get(channelName).request(request, attributes, responseCorrelationId);
+        final RequestChannel requestChannel = requestChannelMap.get(channelName);
+        Objects.requireNonNull(requestChannel, String.format("RequestChannel with name %s must not be null.", channelName));
+
+        requestChannel.request(request, attributes, responseCorrelationId);
     }
 
     public void close() {

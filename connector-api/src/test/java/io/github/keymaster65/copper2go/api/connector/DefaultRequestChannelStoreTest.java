@@ -33,7 +33,7 @@ class DefaultRequestChannelStoreTest {
         Assertions.assertThatCode(() ->
                         defaultRequestChannelStore.request(NAME, REQUEST, RESPONSE_CORRELATION_ID)
                 ).isInstanceOf(NullPointerException.class)
-                .hasMessage("Channel with name NAME must not be null.");
+                .hasMessage("RequestChannel with name NAME must not be null.");
     }
 
     @Test
@@ -77,50 +77,6 @@ class DefaultRequestChannelStoreTest {
         final DefaultRequestChannelStore defaultRequestChannelStore = new DefaultRequestChannelStore();
 
         Assertions.assertThatCode(defaultRequestChannelStore::close).doesNotThrowAnyException();
-    }
-
-    static class EngineExceptionTest {
-
-        public static final String MESSAGE = "message";
-        public static final String MESSAGE2 = "message2";
-
-        @Example
-        void constructorMessage() {
-            final EngineException engineException = new EngineException(MESSAGE);
-
-            Assertions.assertThat(engineException.getMessage()).isEqualTo(MESSAGE);
-        }
-
-        @Example
-        void constructorMessageCause() {
-            final EngineException cause = new EngineException(MESSAGE2);
-            final EngineException engineException = new EngineException(MESSAGE, cause);
-
-            Assertions.assertThat(engineException.getMessage()).isEqualTo(MESSAGE);
-            Assertions.assertThat(engineException.getCause()).isSameAs(cause);
-        }
-    }
-
-    static class EngineRuntimeExceptionTest {
-
-        public static final String MESSAGE = "message";
-        public static final String MESSAGE2 = "message2";
-
-        @Example
-        void constructorMessage() {
-            final EngineRuntimeException engineRuntimeException = new EngineRuntimeException(MESSAGE);
-
-            Assertions.assertThat(engineRuntimeException.getMessage()).isEqualTo(MESSAGE);
-        }
-
-        @Example
-        void constructorMessageCause() {
-            final EngineException cause = new EngineException(MESSAGE2);
-            final EngineRuntimeException engineRuntimeException = new EngineRuntimeException(MESSAGE, cause);
-
-            Assertions.assertThat(engineRuntimeException.getMessage()).isEqualTo(MESSAGE);
-            Assertions.assertThat(engineRuntimeException.getCause()).isSameAs(cause);
-        }
     }
 
 }
