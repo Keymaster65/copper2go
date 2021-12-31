@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.connector.kafka.vertx;
+package io.github.keymaster65.copper2go.connector.kafka.vertx.receiver;
 
 import io.vertx.core.Handler;
 import io.vertx.kafka.client.consumer.KafkaConsumer;

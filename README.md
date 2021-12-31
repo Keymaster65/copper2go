@@ -277,6 +277,7 @@ URL "/" shows licence information.
 
 ### Backlog
 
+* Finish support kafka events
 * Add "vanilla" engine implementation
 * Add new Repository Performancetest 
 * Improve unit test coverage up to 50+%

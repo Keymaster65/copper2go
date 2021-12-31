@@ -19,8 +19,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.keymaster65.copper2go.connector.http.vertx.request.HttpRequestChannelConfig;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelConfig;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiverConfig;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.request.KafkaRequestChannelConfig;
 import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 
 import java.io.IOException;

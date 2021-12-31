@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.connector.kafka.vertx;
+package io.github.keymaster65.copper2go.connector.kafka.vertx.event;
 
+import io.github.keymaster65.copper2go.connector.kafka.vertx.request.Copper2GoKafkaSender;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

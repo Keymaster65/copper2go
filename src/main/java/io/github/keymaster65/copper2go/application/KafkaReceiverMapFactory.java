@@ -16,9 +16,9 @@
 package io.github.keymaster65.copper2go.application;
 
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.Copper2GoKafkaReceiverImpl;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaConsumerHandler;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.Copper2GoKafkaReceiverImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaConsumerHandler;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiverConfig;
 
 import java.util.HashMap;
 import java.util.Map;

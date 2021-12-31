@@ -17,6 +17,9 @@ package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.Copper2GoKafkaReceiverImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaConsumerHandler;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.request.Copper2GoKafkaSenderImpl;
 import io.vertx.core.Future;
 import io.vertx.kafka.client.producer.RecordMetadata;
 import org.assertj.core.api.Assertions;

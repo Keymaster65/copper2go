@@ -15,6 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
+import io.github.keymaster65.copper2go.connector.kafka.vertx.request.Copper2GoKafkaSenderImpl;
 import io.vertx.core.Vertx;
 import io.vertx.kafka.client.producer.KafkaProducer;
 import org.slf4j.Logger;
