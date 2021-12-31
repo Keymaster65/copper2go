@@ -225,9 +225,9 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 * [x] Support HTTP URL parameter (in but no out)
 * [x] Support Kafka Header (parameter) (in and out)
-* [x] Remove payload member from WorkflowData
-* [x] Require Java 17
-* [x] Restructure packages
+* [x] Remove payload member from WorkflowData (breaking change)
+* [x] Require Java 17 (breaking change)
+* [x] Restructure packages (breaking change)
 
 ### Application API 3.0
 
@@ -236,16 +236,18 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Add quality badges
 * [x] Support HTTP URL parameter (in but no out)
 * [x] Support Kafka Header (parameter) (in and out)
-* [ ] Add use case in Developer's Guide
-* [x] Improve unit test coverage up to 80% or more
+* [x] Improve unit test coverage up to 90% or more
 * [x] Update many used jars
+* [ ] Add use case in Developer's Guide
 * [ ] Refactor engine subproject for tests and extracting engine-api and connector-api
 * [ ] Refactor connector subproject for tests and extracting more modules
+* [ ] Fix memory leak in ReplyChannelStore (may be: add a release method or garbage collection; do not add if not needed)
+* [ ] Use term "oneway" instead of (incoming) "event" (breaking change)
 
 ### "Binding" Release Plan Application API 3.1
 
 * [ ] Workflow with Json binding
-* [ ] Workflow with XML binding (may be not ;-)
+* [ ] Split copper2go-workflows
 
 ### "State Pattern" Release Plan Application API 3.1
 
@@ -259,11 +261,11 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ### Backlog
 
-* Fix memory leak in ReplyChannelStore (may be: add a release method or garbage collection)
 * Add "vanilla" engine implementation
 * Add new Repository Performancetest 
 * Improve unit test coverage up to 50+%
 * STDIN/OUT support in config and container (or remove it)
+* Workflow with XML binding (may be not ;-)
 * Redesign DefaultRequestChannel (like Kafka). Use WARN instead of ERROR?
 * Redesign RequestChannel/EventChannel: Is the difference needed? Why 2 errorEvent (was inspired by STDOUR/ERR)?
 * Collect Statistics and other (may be useful for Tests like Bridge-Test)
