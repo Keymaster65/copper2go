@@ -23,19 +23,19 @@ import io.vertx.kafka.client.producer.RecordMetadata;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class KafkaRequestChannelImpl implements RequestChannel, AutoCloseable {
+public class KafkaRequestChannel implements RequestChannel, AutoCloseable {
 
-    private final Copper2GoKafkaSender copper2GoKafkaSender;
+    private final KafkaSender kafkaSender;
     private final ResponseReceiver responseReceiver;
 
     private final AtomicLong successCount = new AtomicLong(0);
     private final AtomicLong failCount = new AtomicLong(0);
 
-    public KafkaRequestChannelImpl(
-            final Copper2GoKafkaSender copper2GoKafkaSender,
+    public KafkaRequestChannel(
+            final KafkaSender kafkaSender,
             final ResponseReceiver responseReceiver
     ) {
-        this.copper2GoKafkaSender = copper2GoKafkaSender;
+        this.kafkaSender = kafkaSender;
         this.responseReceiver = responseReceiver;
     }
 
@@ -45,7 +45,7 @@ public class KafkaRequestChannelImpl implements RequestChannel, AutoCloseable {
             final Map<String, String> attributes,
             final String responseCorrelationId
     ) {
-        final Future<RecordMetadata> send = copper2GoKafkaSender.send(request, attributes);
+        final Future<RecordMetadata> send = kafkaSender.send(request, attributes);
         send
                 .onSuccess(metadata -> handleSendSuccess(responseCorrelationId, send))
                 .onFailure(throwable -> handleSendFailure(responseCorrelationId, throwable));
@@ -70,7 +70,7 @@ public class KafkaRequestChannelImpl implements RequestChannel, AutoCloseable {
 
     @Override
     public void close() {
-        copper2GoKafkaSender.close();
+        kafkaSender.close();
     }
 
     public long getSuccessCount() {

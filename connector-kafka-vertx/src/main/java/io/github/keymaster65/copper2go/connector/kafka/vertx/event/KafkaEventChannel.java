@@ -16,25 +16,25 @@
 package io.github.keymaster65.copper2go.connector.kafka.vertx.event;
 
 import io.github.keymaster65.copper2go.api.connector.EventChannel;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.request.Copper2GoKafkaSender;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.request.KafkaSender;
 
 import java.util.Map;
 
-public class KafkaEventChannelImpl implements EventChannel {
+public class KafkaEventChannel implements EventChannel {
 
-    private final Copper2GoKafkaSender copper2GoKafkaSender;
-    private final Copper2GoKafkaSender copper2GoKafkaErrorSender;
+    private final KafkaSender kafkaSender;
+    private final KafkaSender copper2GoKafkaErrorSender;
 
-    public KafkaEventChannelImpl(
-            final Copper2GoKafkaSender copper2GoKafkaSender,
-            final Copper2GoKafkaSender copper2GoKafkaErrorSender
+    public KafkaEventChannel(
+            final KafkaSender kafkaSender,
+            final KafkaSender copper2GoKafkaErrorSender
     ) {
-        this.copper2GoKafkaSender = copper2GoKafkaSender;
+        this.kafkaSender = kafkaSender;
         this.copper2GoKafkaErrorSender = copper2GoKafkaErrorSender;
     }
     @Override
     public void event(final String event, final Map<String, String> attributes) {
-        copper2GoKafkaSender.send(event, attributes);
+        kafkaSender.send(event, attributes);
     }
 
     @Override

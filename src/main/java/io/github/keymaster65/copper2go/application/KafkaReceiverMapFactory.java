@@ -16,7 +16,7 @@
 package io.github.keymaster65.copper2go.application;
 
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.Copper2GoKafkaReceiverImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiver;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaConsumerHandler;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiverConfig;
 
@@ -26,13 +26,13 @@ import java.util.Map;
 public class KafkaReceiverMapFactory {
     private KafkaReceiverMapFactory() {}
 
-    static Map<String, Copper2GoKafkaReceiverImpl> create(
+    static Map<String, KafkaReceiver> create(
             final String kafkaHost,
             final int kafkaPort,
             final Map<String, KafkaReceiverConfig> kafkaReceiverConfigs,
             final PayloadReceiver payloadReceiver
     ) {
-        Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap = new HashMap<>();
+        Map<String, KafkaReceiver> kafkaReceiverMap = new HashMap<>();
         if (kafkaReceiverConfigs != null) {
             for (Map.Entry<String, KafkaReceiverConfig> entry : kafkaReceiverConfigs.entrySet()) {
                 KafkaReceiverConfig config = entry.getValue();
@@ -45,7 +45,7 @@ public class KafkaReceiverMapFactory {
                 );
                 kafkaReceiverMap.put(
                         entry.getKey(),
-                        new Copper2GoKafkaReceiverImpl(
+                        new KafkaReceiver(
                                 kafkaHost,
                                 kafkaPort,
                                 config.topic,

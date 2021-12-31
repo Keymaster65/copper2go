@@ -19,7 +19,7 @@ import io.github.keymaster65.copper2go.api.connector.DefaultRequestChannelStore;
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.Copper2GoKafkaReceiverImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiver;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
 import io.github.keymaster65.copper2go.engine.EngineControl;
 import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngine;
@@ -42,8 +42,8 @@ class ApplicationTest {
         final DependencyInjector dependencyInjector = Mockito.mock(DependencyInjector.class);
         final Copper2GoHttpServer httpServer = Mockito.mock(Copper2GoHttpServer.class);
         final DefaultRequestChannelStore defaultRequestChannelStore = Mockito.mock(DefaultRequestChannelStore.class);
-        final Copper2GoKafkaReceiverImpl kafkaReceiver = Mockito.mock(Copper2GoKafkaReceiverImpl.class);
-        final Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap = Map.of("name", kafkaReceiver);
+        final KafkaReceiver kafkaReceiver = Mockito.mock(KafkaReceiver.class);
+        final Map<String, KafkaReceiver> kafkaReceiverMap = Map.of("name", kafkaReceiver);
 
         final Application application = new Application(
                 copper2GoEngine,
@@ -68,7 +68,7 @@ class ApplicationTest {
         final Copper2GoEngine copper2GoEngine = Mockito.mock(Copper2GoEngine.class);
         Mockito.when(copper2GoEngine.getEngineControl()).thenReturn(engineControl);
         final Copper2GoHttpServer httpServer = Mockito.mock(Copper2GoHttpServer.class);
-        final Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap = Map.of();
+        final Map<String, KafkaReceiver> kafkaReceiverMap = Map.of();
 
         final Application application = new Application(
                 copper2GoEngine,
@@ -94,8 +94,8 @@ class ApplicationTest {
         final DependencyInjector dependencyInjector = Mockito.mock(DependencyInjector.class);
         final Copper2GoHttpServer httpServer = Mockito.mock(Copper2GoHttpServer.class);
         final DefaultRequestChannelStore defaultRequestChannelStore = Mockito.mock(DefaultRequestChannelStore.class);
-        final Copper2GoKafkaReceiverImpl kafkaReceiver = Mockito.mock(Copper2GoKafkaReceiverImpl.class);
-        final Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap = Map.of("name", kafkaReceiver);
+        final KafkaReceiver kafkaReceiver = Mockito.mock(KafkaReceiver.class);
+        final Map<String, KafkaReceiver> kafkaReceiverMap = Map.of("name", kafkaReceiver);
 
         final Application application = new Application(
                 copper2GoEngine,
@@ -123,8 +123,8 @@ class ApplicationTest {
         final DependencyInjector dependencyInjector = Mockito.mock(DependencyInjector.class);
         final Copper2GoHttpServer httpServer = Mockito.mock(Copper2GoHttpServer.class);
         final DefaultRequestChannelStore defaultRequestChannelStore = Mockito.mock(DefaultRequestChannelStore.class);
-        final Copper2GoKafkaReceiverImpl kafkaReceiver = Mockito.mock(Copper2GoKafkaReceiverImpl.class);
-        final Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap = Map.of("name", kafkaReceiver);
+        final KafkaReceiver kafkaReceiver = Mockito.mock(KafkaReceiver.class);
+        final Map<String, KafkaReceiver> kafkaReceiverMap = Map.of("name", kafkaReceiver);
         Mockito.doThrow(new NullPointerException("Test")).when(httpServer).stop();
 
         final Application application = new Application(

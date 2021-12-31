@@ -18,7 +18,7 @@ package io.github.keymaster65.copper2go.application;
 import io.github.keymaster65.copper2go.api.connector.DefaultRequestChannelStore;
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.Copper2GoKafkaReceiverImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiver;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
 import io.github.keymaster65.copper2go.connector.standardio.receiver.StandardInOutReceiver;
 import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngine;
@@ -40,14 +40,14 @@ public class Application {
     private final DefaultRequestChannelStore defaultRequestChannelStore;
     private final DependencyInjector dependencyInjector;
     private final AtomicBoolean stopRequested = new AtomicBoolean(false);
-    private final Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap;
+    private final Map<String, KafkaReceiver> kafkaReceiverMap;
 
     public Application(
             final Copper2GoEngine copper2GoEngine,
             final DependencyInjector dependencyInjector,
             final Copper2GoHttpServer httpServer,
             final DefaultRequestChannelStore defaultRequestChannelStore,
-            final Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap) {
+            final Map<String, KafkaReceiver> kafkaReceiverMap) {
         this.copper2GoEngine = copper2GoEngine;
         this.dependencyInjector = dependencyInjector;
         this.httpServer = httpServer;
@@ -59,7 +59,7 @@ public class Application {
         log.info("start application");
         copper2GoEngine.getEngineControl().start(dependencyInjector);
         httpServer.start();
-        for (Map.Entry<String, Copper2GoKafkaReceiverImpl> entry : kafkaReceiverMap.entrySet()) {
+        for (Map.Entry<String, KafkaReceiver> entry : kafkaReceiverMap.entrySet()) {
             entry.getValue().start();
         }
     }
@@ -78,7 +78,7 @@ public class Application {
         } catch (Exception e) {
             log.warn("Exception while stopping HTTP server.", e);
         }
-        for (Map.Entry<String, Copper2GoKafkaReceiverImpl> entry : kafkaReceiverMap.entrySet()) {
+        for (Map.Entry<String, KafkaReceiver> entry : kafkaReceiverMap.entrySet()) {
             entry.getValue().close();
         }
         defaultRequestChannelStore.close();

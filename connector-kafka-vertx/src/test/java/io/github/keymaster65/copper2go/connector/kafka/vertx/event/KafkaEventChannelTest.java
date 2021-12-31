@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx.event;
 
-import io.github.keymaster65.copper2go.connector.kafka.vertx.request.Copper2GoKafkaSender;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.request.KafkaSender;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -24,15 +24,15 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class KafkaEventChannelImplTest {
+class KafkaEventChannelTest {
 
     public static final String EVENT = "event";
 
     @Test
     void event() {
-        Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
-        Copper2GoKafkaSender errorSender = Mockito.mock(Copper2GoKafkaSender.class);
-        KafkaEventChannelImpl kafkaEventChannel = new KafkaEventChannelImpl(sender, errorSender);
+        KafkaSender sender = Mockito.mock(KafkaSender.class);
+        KafkaSender errorSender = Mockito.mock(KafkaSender.class);
+        KafkaEventChannel kafkaEventChannel = new KafkaEventChannel(sender, errorSender);
 
         kafkaEventChannel.event(EVENT);
 
@@ -43,9 +43,9 @@ class KafkaEventChannelImplTest {
 
     @Test
     void errorEvent() {
-        Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
-        Copper2GoKafkaSender errorSender = Mockito.mock(Copper2GoKafkaSender.class);
-        KafkaEventChannelImpl kafkaEventChannel = new KafkaEventChannelImpl(sender, errorSender);
+        KafkaSender sender = Mockito.mock(KafkaSender.class);
+        KafkaSender errorSender = Mockito.mock(KafkaSender.class);
+        KafkaEventChannel kafkaEventChannel = new KafkaEventChannel(sender, errorSender);
 
         kafkaEventChannel.errorEvent(EVENT);
 

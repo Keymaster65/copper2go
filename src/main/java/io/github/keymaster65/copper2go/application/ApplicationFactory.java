@@ -23,7 +23,7 @@ import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
 import io.github.keymaster65.copper2go.connector.http.vertx.request.RequestChannelConfigurator;
 import io.github.keymaster65.copper2go.connector.http.vertx.receiver.RequestHandler;
 import io.github.keymaster65.copper2go.connector.http.vertx.receiver.VertxHttpServer;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.Copper2GoKafkaReceiverImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiver;
 import io.github.keymaster65.copper2go.connector.standardio.event.StandardOutEventChannel;
 import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.impl.ReplyChannelStoreImpl;
@@ -69,7 +69,7 @@ public class ApplicationFactory {
                 config.httpPort,
                 new RequestHandler(copper2GoEngine.getPayloadReceiver()));
 
-        Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap = KafkaReceiverMapFactory.create(config.kafkaHost, config.kafkaPort, config.kafkaReceiverConfigs, copper2GoEngine.getPayloadReceiver());
+        Map<String, KafkaReceiver> kafkaReceiverMap = KafkaReceiverMapFactory.create(config.kafkaHost, config.kafkaPort, config.kafkaReceiverConfigs, copper2GoEngine.getPayloadReceiver());
         return new Application(
                 copper2GoEngine,
                 dependencyInjector,

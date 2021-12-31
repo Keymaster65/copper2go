@@ -16,8 +16,8 @@
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
 import io.github.keymaster65.copper2go.api.connector.ResponseReceiver;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.request.Copper2GoKafkaSender;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.request.KafkaRequestChannelImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.request.KafkaSender;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.request.KafkaRequestChannel;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -29,9 +29,9 @@ import java.util.concurrent.locks.LockSupport;
 
 import static org.mockito.Mockito.verify;
 
-class KafkaRequestChannelImplTest {
+class KafkaRequestChannelTest {
 
-    private static final Logger log = LoggerFactory.getLogger(KafkaRequestChannelImplTest.class);
+    private static final Logger log = LoggerFactory.getLogger(KafkaRequestChannelTest.class);
     public static final String CORR_ID = "corrId";
 
     @BeforeAll
@@ -41,9 +41,9 @@ class KafkaRequestChannelImplTest {
 
     @Test
     void requestSuccess() {
-        Copper2GoKafkaSender sender = Commons.createCopper2GoKafkaSender(Commons.kafka, "testTopic");
+        KafkaSender sender = Commons.createCopper2GoKafkaSender(Commons.kafka, "testTopic");
         ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
-        try (KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
+        try (KafkaRequestChannel requestChannel = new KafkaRequestChannel(
                 sender,
                 responseReceiver
         )) {
@@ -64,9 +64,9 @@ class KafkaRequestChannelImplTest {
 
     @Test
     void requestFail() {
-        Copper2GoKafkaSender sender = Commons.createCopper2GoKafkaSender(Commons.kafka, "");
+        KafkaSender sender = Commons.createCopper2GoKafkaSender(Commons.kafka, "");
         ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
-        try (KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
+        try (KafkaRequestChannel requestChannel = new KafkaRequestChannel(
                 sender,
                 responseReceiver
         )) {

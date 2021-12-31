@@ -26,14 +26,14 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Copper2GoKafkaReceiverImpl implements AutoCloseable {
+public class KafkaReceiver implements AutoCloseable {
 
     private final KafkaConsumer<String, String> consumer;
     private final String topic;
 
-    private static final Logger log = LoggerFactory.getLogger(Copper2GoKafkaReceiverImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(KafkaReceiver.class);
 
-    public Copper2GoKafkaReceiverImpl(
+    public KafkaReceiver(
             final String host,
             final int port,
             final String topic,
@@ -43,7 +43,7 @@ public class Copper2GoKafkaReceiverImpl implements AutoCloseable {
         this(topic, createConsumer(host, port, groupId, handler));
     }
 
-    public Copper2GoKafkaReceiverImpl(
+    public KafkaReceiver(
             final String topic,
             final KafkaConsumer<String, String> consumer
     ) {

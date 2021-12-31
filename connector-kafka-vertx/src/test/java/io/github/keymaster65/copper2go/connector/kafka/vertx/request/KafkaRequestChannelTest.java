@@ -22,7 +22,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-class KafkaRequestChannelImplTest {
+class KafkaRequestChannelTest {
 
     public static final String CORR_ID = "corrId";
     public static final String REQUEST = "request";
@@ -30,14 +30,14 @@ class KafkaRequestChannelImplTest {
     @Test
     void request() {
         ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
-        Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
+        KafkaSender sender = Mockito.mock(KafkaSender.class);
         @SuppressWarnings("unchecked")
         Future<RecordMetadata> metadata = Mockito.mock(Future.class);
         Mockito.when(sender.send(Mockito.eq(REQUEST), Mockito.any())).thenReturn(metadata);
         Mockito.when(metadata.onSuccess(Mockito.any())).thenReturn(metadata);
         Mockito.when(metadata.onFailure(Mockito.any())).thenReturn(metadata);
 
-        KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
+        KafkaRequestChannel requestChannel = new KafkaRequestChannel(
                 sender,
                 responseReceiver
         );
@@ -51,11 +51,11 @@ class KafkaRequestChannelImplTest {
     @Test
     void handleSendSuccess() {
         ResponseReceiver engine = Mockito.mock(ResponseReceiver.class);
-        Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
+        KafkaSender sender = Mockito.mock(KafkaSender.class);
         @SuppressWarnings("unchecked")
         Future<RecordMetadata> metadata = Mockito.mock(Future.class);
 
-        KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
+        KafkaRequestChannel requestChannel = new KafkaRequestChannel(
                 sender,
                 engine
         );
@@ -70,9 +70,9 @@ class KafkaRequestChannelImplTest {
     @Test
     void handleSendFailure() {
         ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
-        Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
+        KafkaSender sender = Mockito.mock(KafkaSender.class);
 
-        KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
+        KafkaRequestChannel requestChannel = new KafkaRequestChannel(
                 sender,
                 responseReceiver
         );
@@ -92,7 +92,7 @@ class KafkaRequestChannelImplTest {
         final RecordMetadata value = new RecordMetadata();
         Mockito.when(metadata.result()).thenReturn(value);
 
-        final String response = KafkaRequestChannelImpl.createResponse(metadata);
+        final String response = KafkaRequestChannel.createResponse(metadata);
 
         Assertions.assertThat(response).isEqualTo("{\"checksum\":0,\"offset\":0,\"partition\":0,\"timestamp\":0,\"topic\":null}");
     }
@@ -102,7 +102,7 @@ class KafkaRequestChannelImplTest {
         @SuppressWarnings("unchecked")
         Future<RecordMetadata> metadata = Mockito.mock(Future.class);
 
-        final String response = KafkaRequestChannelImpl.createResponse(metadata);
+        final String response = KafkaRequestChannel.createResponse(metadata);
 
         Assertions.assertThat(response).isEqualTo("{}");
     }
@@ -110,9 +110,9 @@ class KafkaRequestChannelImplTest {
     @Test
     void close() {
         ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
-        Copper2GoKafkaSender sender = Mockito.mock(Copper2GoKafkaSender.class);
+        KafkaSender sender = Mockito.mock(KafkaSender.class);
 
-        KafkaRequestChannelImpl requestChannel = new KafkaRequestChannelImpl(
+        KafkaRequestChannel requestChannel = new KafkaRequestChannel(
                 sender,
                 responseReceiver
         );

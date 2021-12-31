@@ -17,9 +17,9 @@ package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.Copper2GoKafkaReceiverImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiver;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaConsumerHandler;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.request.Copper2GoKafkaSenderImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.request.KafkaSenderImpl;
 import io.vertx.core.Future;
 import io.vertx.kafka.client.producer.RecordMetadata;
 import org.assertj.core.api.Assertions;
@@ -38,12 +38,12 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-class Copper2GoKafkaSenderImplTest {
+class KafkaSenderImplTest {
 
     public static final String REQUEST = "request";
     public static final String TOPIC = "test";
 
-    private static final Logger log = LoggerFactory.getLogger(Copper2GoKafkaSenderImplTest.class);
+    private static final Logger log = LoggerFactory.getLogger(KafkaSenderImplTest.class);
 
     @BeforeAll
     static void startContainer() {
@@ -53,7 +53,7 @@ class Copper2GoKafkaSenderImplTest {
     @Test
     void sendAndReceive() throws EngineException {
 
-        Copper2GoKafkaSenderImpl sender = createCopper2GoKafkaSenderAndSend();
+        KafkaSenderImpl sender = createCopper2GoKafkaSenderAndSend();
         sender.close();
 
         PayloadReceiver payloadReceiver = mock(PayloadReceiver.class);
@@ -77,7 +77,7 @@ class Copper2GoKafkaSenderImplTest {
     @Test
     void sendAndReceiveFail() throws EngineException {
 
-        Copper2GoKafkaSenderImpl sender = createCopper2GoKafkaSenderAndSend();
+        KafkaSenderImpl sender = createCopper2GoKafkaSenderAndSend();
         sender.close();
 
         PayloadReceiver payloadReceiver = mock(PayloadReceiver.class);
@@ -111,7 +111,7 @@ class Copper2GoKafkaSenderImplTest {
 
     @Test
     void close() {
-        Copper2GoKafkaSenderImpl copper2GoKafkaSender = Commons.createCopper2GoKafkaSender(Commons.kafka, TOPIC);
+        KafkaSenderImpl copper2GoKafkaSender = Commons.createCopper2GoKafkaSender(Commons.kafka, TOPIC);
         copper2GoKafkaSender.close();
     }
 
@@ -123,7 +123,7 @@ class Copper2GoKafkaSenderImplTest {
                 1L,
                 0L
         );
-        Copper2GoKafkaReceiverImpl receiver = new Copper2GoKafkaReceiverImpl(
+        KafkaReceiver receiver = new KafkaReceiver(
                 Commons.kafka.getHost(),
                 Commons.kafka.getFirstMappedPort(),
                 TOPIC,
@@ -139,8 +139,8 @@ class Copper2GoKafkaSenderImplTest {
         return handler;
     }
 
-    private Copper2GoKafkaSenderImpl createCopper2GoKafkaSenderAndSend() {
-        Copper2GoKafkaSenderImpl sender = Commons.createCopper2GoKafkaSender(Commons.kafka, TOPIC);
+    private KafkaSenderImpl createCopper2GoKafkaSenderAndSend() {
+        KafkaSenderImpl sender = Commons.createCopper2GoKafkaSender(Commons.kafka, TOPIC);
         Future<RecordMetadata> future = sender.send(REQUEST);
         while (!future.isComplete()) {
             log.info("Wait for send completion.");

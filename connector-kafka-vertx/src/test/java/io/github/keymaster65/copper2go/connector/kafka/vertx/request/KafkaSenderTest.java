@@ -22,31 +22,31 @@ import org.mockito.Mockito;
 
 import java.util.Map;
 
-class Copper2GoKafkaSenderTest {
+class KafkaSenderTest {
 
     public static final String REQUEST = "request";
 
     @Test
     void send() {
-        Copper2GoKafkaSender mockedCopper2GoKafkaSender = Mockito.mock(Copper2GoKafkaSender.class);
-        Copper2GoKafkaSender copper2GoKafkaSender = createCopper2GoKafkaSender(mockedCopper2GoKafkaSender);
+        KafkaSender mockedKafkaSender = Mockito.mock(KafkaSender.class);
+        KafkaSender kafkaSender = createCopper2GoKafkaSender(mockedKafkaSender);
 
-        copper2GoKafkaSender.send(REQUEST);
+        kafkaSender.send(REQUEST);
 
-        Mockito.verify(mockedCopper2GoKafkaSender).send(REQUEST, null);
+        Mockito.verify(mockedKafkaSender).send(REQUEST, null);
     }
 
-    private Copper2GoKafkaSender createCopper2GoKafkaSender(final Copper2GoKafkaSender mockedCopper2GoKafkaSender) {
-        return new Copper2GoKafkaSender() {
+    private KafkaSender createCopper2GoKafkaSender(final KafkaSender mockedKafkaSender) {
+        return new KafkaSender() {
 
             @Override
             public Future<RecordMetadata> send(final String request, final Map<String, String> attributes) {
-                return mockedCopper2GoKafkaSender.send(request, attributes);
+                return mockedKafkaSender.send(request, attributes);
             }
 
             @Override
             public void close() {
-                mockedCopper2GoKafkaSender.close();
+                mockedKafkaSender.close();
             }
         };
     }

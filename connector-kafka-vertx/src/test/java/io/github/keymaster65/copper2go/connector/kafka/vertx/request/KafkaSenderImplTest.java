@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-class Copper2GoKafkaSenderImplTest {
+class KafkaSenderImplTest {
 
     @Test
     void send() {
@@ -44,8 +44,8 @@ class Copper2GoKafkaSenderImplTest {
         Mockito.when(producer.send(Mockito.any())).thenReturn(sendFuture);
         Mockito.when(producerFactory.apply(Mockito.any())).thenReturn(producer);
 
-        try (final Copper2GoKafkaSender copper2GoKafkaSender = createCopper2GoKafkaSender(producerFactory)) {
-            copper2GoKafkaSender.send(
+        try (final KafkaSender kafkaSender = createCopper2GoKafkaSender(producerFactory)) {
+            kafkaSender.send(
                     "request",
                     Map.of()
             );
@@ -61,7 +61,7 @@ class Copper2GoKafkaSenderImplTest {
     void createHeader() {
         Map<String, String> attributes = new HashMap<>();
         attributes.put("a", "A");
-        final List<KafkaHeader> header = Copper2GoKafkaSenderImpl.createHeader(attributes);
+        final List<KafkaHeader> header = KafkaSenderImpl.createHeader(attributes);
         Assertions.assertThat(header).hasSize(1);
         Assertions.assertThat(header.get(0).key()).isEqualTo("a");
         Assertions.assertThat(header.get(0).value().toString(StandardCharsets.UTF_8)).isEqualTo("A");
@@ -70,16 +70,16 @@ class Copper2GoKafkaSenderImplTest {
     @Test
     void createHeaderEmpty() {
         Map<String, String> attributes = new HashMap<>();
-        Assertions.assertThat(Copper2GoKafkaSenderImpl.createHeader(attributes)).isEmpty();
+        Assertions.assertThat(KafkaSenderImpl.createHeader(attributes)).isEmpty();
     }
 
     @Test
     void createHeaderNull() {
-        Assertions.assertThat(Copper2GoKafkaSenderImpl.createHeader(null)).isEmpty();
+        Assertions.assertThat(KafkaSenderImpl.createHeader(null)).isEmpty();
     }
 
-    private Copper2GoKafkaSenderImpl createCopper2GoKafkaSender(final Function<Map<String, String>, KafkaProducer<String, String>> producerFactory) {
-        return new Copper2GoKafkaSenderImpl(
+    private KafkaSenderImpl createCopper2GoKafkaSender(final Function<Map<String, String>, KafkaProducer<String, String>> producerFactory) {
+        return new KafkaSenderImpl(
                 "host",
                 0,
                 "topic",

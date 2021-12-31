@@ -15,7 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.kafka.vertx;
 
-import io.github.keymaster65.copper2go.connector.kafka.vertx.request.Copper2GoKafkaSenderImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.request.KafkaSenderImpl;
 import io.vertx.core.Vertx;
 import io.vertx.kafka.client.producer.KafkaProducer;
 import org.slf4j.Logger;
@@ -43,11 +43,11 @@ class Commons {
         log.info("Kafka server: {} with port {}. Exposed: {}", kafka.getBootstrapServers(), kafka.getFirstMappedPort(), kafka.getExposedPorts());
     }
 
-    static Copper2GoKafkaSenderImpl createCopper2GoKafkaSender(
+    static KafkaSenderImpl createCopper2GoKafkaSender(
             final KafkaContainer kafka,
             final String topic
     ) {
-        return new Copper2GoKafkaSenderImpl(
+        return new KafkaSenderImpl(
                 kafka.getHost(),
                 kafka.getFirstMappedPort(),
                 topic,

@@ -16,7 +16,7 @@
 package io.github.keymaster65.copper2go.application;
 
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.Copper2GoKafkaReceiverImpl;
+import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiver;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiverConfig;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ class KafkaReceiverMapFactoryTest {
         );
         Mockito.when(entry.getValue()).thenReturn(kafkaReceiverConfig);
 
-        final Map<String, Copper2GoKafkaReceiverImpl> kafkaReceiverMap = KafkaReceiverMapFactory.create(
+        final Map<String, KafkaReceiver> kafkaReceiverMap = KafkaReceiverMapFactory.create(
                 "localhost",
                 0,
                 kafkaReceiverConfigs,

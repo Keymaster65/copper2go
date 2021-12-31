@@ -28,12 +28,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class Copper2GoKafkaSenderImpl implements Copper2GoKafkaSender {
+public class KafkaSenderImpl implements KafkaSender {
 
     private final KafkaProducer<String, String> producer;
     private final String topic;
 
-    public Copper2GoKafkaSenderImpl(
+    public KafkaSenderImpl(
             final String host,
             final int port,
             final String topic,

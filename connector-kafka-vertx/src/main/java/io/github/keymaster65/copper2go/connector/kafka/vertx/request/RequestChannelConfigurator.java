@@ -38,8 +38,8 @@ public class RequestChannelConfigurator {
                 KafkaRequestChannelConfig config = entry.getValue();
                 defaultRequestChannelStore.put(
                         entry.getKey(),
-                        new KafkaRequestChannelImpl(
-                                new Copper2GoKafkaSenderImpl(
+                        new KafkaRequestChannel(
+                                new KafkaSenderImpl(
                                         kafkaHost,
                                         kafkaPort,
                                         config.topic,

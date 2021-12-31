@@ -20,7 +20,7 @@ import io.vertx.kafka.client.producer.RecordMetadata;
 
 import java.util.Map;
 
-public interface Copper2GoKafkaSender extends AutoCloseable {
+public interface KafkaSender extends AutoCloseable {
     default Future<RecordMetadata> send(final String request) {
         return send(request, null);
     }
