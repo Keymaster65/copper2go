@@ -23,6 +23,8 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
@@ -63,7 +65,7 @@ class BodyHandlerTest {
     @Test
     void createAttributesEmpty() {
         MultiMap multiMap = MultiMap.caseInsensitiveMultiMap();
-        
+
         Assertions.assertThat(BodyHandler.createAttributes(multiMap)).isEmpty();
     }
 
@@ -72,15 +74,16 @@ class BodyHandlerTest {
         Assertions.assertThat(BodyHandler.createAttributes(null)).isEmpty();
     }
 
-    @Test
-    void handleLicenseNotFound() {
+    @ParameterizedTest
+    @ValueSource(strings = {"/", "/.", "/notFound.html"})
+    void handleLicenseNotFound(final String path) {
         HttpServerResponse response = mock(HttpServerResponse.class);
         when(response.setStatusCode(HttpURLConnection.HTTP_NOT_FOUND)).thenReturn(response);
 
-        BodyHandler.handleLicense(response, "/notFound.html");
+        BodyHandler.handleLicense(response, path);
 
         verify(response).setStatusCode(HttpURLConnection.HTTP_NOT_FOUND);
-        verify(response).end(anyString());
+        verify(response).end("Exception while getting licenses from uri %s. null" .formatted(path));
     }
 
     @Test
@@ -102,7 +105,7 @@ class BodyHandlerTest {
         final Buffer buffer = mock(Buffer.class);
         BodyHandler handler = new BodyHandler(request, payloadReceiver);
 
-        when(buffer.getBytes()).thenReturn("Wolf".getBytes(StandardCharsets.UTF_8));
+        when(buffer.getBytes()).thenReturn("Wolf" .getBytes(StandardCharsets.UTF_8));
         when(request.uri()).thenReturn("/test.html");
         when(request.response()).thenReturn(response);
         when(response.setStatusCode(HttpURLConnection.HTTP_OK)).thenReturn(response);
@@ -139,7 +142,7 @@ class BodyHandlerTest {
         final String workflowName = "Hello";
         final long majorVersion = 2L;
         final long minorVersion = 0L;
-        when(buffer.getBytes()).thenReturn("Wolf".getBytes(StandardCharsets.UTF_8));
+        when(buffer.getBytes()).thenReturn("Wolf" .getBytes(StandardCharsets.UTF_8));
         when(request.uri()).thenReturn(String.format("%s%s/%d.%d/%s", COPPER2GO_2_API, type, majorVersion, minorVersion, workflowName));
         var multiMap = MultiMap.caseInsensitiveMultiMap();
         final String key = "a";
@@ -149,7 +152,7 @@ class BodyHandlerTest {
         when(request.response()).thenReturn(response);
 
 
-        Map<String,String> attributes = new HashMap<>();
+        Map<String, String> attributes = new HashMap<>();
         attributes.put(key, value);
 
         handler.handle(buffer);
@@ -172,7 +175,7 @@ class BodyHandlerTest {
         final Buffer buffer = mock(Buffer.class);
         BodyHandler handler = new BodyHandler(request, payloadReceiver);
 
-        when(buffer.getBytes()).thenReturn("Wolf".getBytes(StandardCharsets.UTF_8));
+        when(buffer.getBytes()).thenReturn("Wolf" .getBytes(StandardCharsets.UTF_8));
         when(request.uri()).thenReturn(COPPER2GO_2_API);
         when(request.response()).thenReturn(response);
         when(response.setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR)).thenReturn(response);
