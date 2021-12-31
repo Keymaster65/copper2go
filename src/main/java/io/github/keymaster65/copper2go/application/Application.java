@@ -73,7 +73,6 @@ public class Application {
     public synchronized void stop() throws EngineException {
         log.info("stop application");
         stopRequested.set(true);
-        copper2GoEngine.getEngineControl().stop();
         try {
             httpServer.stop();
         } catch (Exception e) {
@@ -82,8 +81,8 @@ public class Application {
         for (Map.Entry<String, Copper2GoKafkaReceiverImpl> entry : kafkaReceiverMap.entrySet()) {
             entry.getValue().close();
         }
-
         defaultRequestChannelStore.close();
+        copper2GoEngine.getEngineControl().stop();
     }
 
     public synchronized boolean isStopRequested() {
