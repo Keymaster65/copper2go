@@ -19,7 +19,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.channels.UnresolvedAddressException;

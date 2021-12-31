@@ -17,8 +17,6 @@ package io.github.keymaster65.copper2go.connector.http.vertx.receiver;
 
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
-import io.github.keymaster65.copper2go.connector.http.vertx.receiver.ApiPath;
-import io.github.keymaster65.copper2go.connector.http.vertx.receiver.WorkflowHandler;
 import io.vertx.core.http.HttpServerResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

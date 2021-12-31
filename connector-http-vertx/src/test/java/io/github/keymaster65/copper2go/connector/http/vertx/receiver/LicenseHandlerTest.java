@@ -15,7 +15,6 @@
  */
 package io.github.keymaster65.copper2go.connector.http.vertx.receiver;
 
-import io.github.keymaster65.copper2go.connector.http.vertx.receiver.LicenseHandler;
 import io.vertx.core.http.HttpServerResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -15,11 +15,11 @@
  */
 package io.github.keymaster65.copper2go.connector.integrationtest.http.vertx;
 
+import io.github.keymaster65.copper2go.api.connector.EngineException;
+import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.github.keymaster65.copper2go.connector.http.TestHttpClient;
 import io.github.keymaster65.copper2go.connector.http.vertx.receiver.RequestHandler;
 import io.github.keymaster65.copper2go.connector.http.vertx.receiver.VertxHttpServer;
-import io.github.keymaster65.copper2go.api.connector.EngineException;
-import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.vertx.core.Vertx;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
