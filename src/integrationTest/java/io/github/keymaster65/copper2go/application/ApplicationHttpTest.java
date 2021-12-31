@@ -18,6 +18,7 @@ package io.github.keymaster65.copper2go.application;
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.http.TestHttpClient;
 import io.github.keymaster65.copper2go.api.connector.EngineException;
+import io.github.keymaster65.copper2go.connector.http.vertx.receiver.ApiPath;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
@@ -26,8 +27,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpResponse;
-
-import static io.github.keymaster65.copper2go.connector.http.vertx.receiver.ApiPath.COPPER2GO_2_API;
 
 class ApplicationHttpTest {
 
@@ -41,7 +40,7 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
-            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "request/1.0/Hello?a=1"), name);
+            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + "1.0/Hello?a=1"), name);
         } finally {
             application.stop();
         }
@@ -57,7 +56,7 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
-            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "request/2.0/Hello"), name);
+            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + "2.0/Hello"), name);
         } finally {
 
             application.stop();
@@ -74,7 +73,7 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
-            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "request/2.0/Hello"), name);
+            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + "2.0/Hello"), name);
         } finally {
             application.stop();
         }
@@ -94,7 +93,7 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
-            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + COPPER2GO_2_API + "event/2.0/Hello"), name);
+            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.ONEWAY_PATH + "2.0/Hello"), name);
         } finally {
             application.stop();
         }

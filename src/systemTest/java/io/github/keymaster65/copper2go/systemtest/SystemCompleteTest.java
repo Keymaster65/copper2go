@@ -52,7 +52,7 @@ class SystemCompleteTest {
     void systemTest() throws URISyntaxException, IOException, InterruptedException {
         String name = "name=Wolf";
         HttpResponse<String> response = TestHttpClient.post(
-                Commons.getUri("/copper2go/2/api/request/1.0/SystemTest", copper2GoContainer),
+                Commons.getUri("/copper2go/3/api/twoway/1.0/SystemTest", copper2GoContainer),
                 name);
         Assertions.assertThat(response.body()).contains(name);
     }

@@ -38,7 +38,7 @@
       "method": "GET",
       "host": "copper2go",
       "port": "59665",
-      "path": "/copper2go/2/api/request/1.0/Pricing"
+      "path": "/copper2go/3/api/twoway/1.0/Pricing"
     }
   },
   "kafkaRequestChannelConfigs": {

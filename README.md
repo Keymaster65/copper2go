@@ -236,7 +236,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Add quality badges
 * [x] Support HTTP URL parameter (in but no out)
 * [x] Support Kafka Header (parameter) (in and out)
-* [x] Improve unit test coverage up to 90% or more
+* [x] Improve unit test coverage up to 95% or more
 * [x] Update many used jars
 * [ ] Add use case in Developer's Guide
 * [x] Refactor engine subproject for tests and extracting engine-api and connector-api

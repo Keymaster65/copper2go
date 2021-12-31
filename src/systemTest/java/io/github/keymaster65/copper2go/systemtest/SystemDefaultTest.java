@@ -44,7 +44,7 @@ class SystemDefaultTest {
     void hello2() throws URISyntaxException, IOException, InterruptedException {
         String name = "Wolf";
         HttpResponse<String> response = TestHttpClient.post(
-                Commons.getUri("/copper2go/2/api/request/2.0/Hello", copper2GoContainer),
+                Commons.getUri("/copper2go/3/api/twoway/2.0/Hello", copper2GoContainer),
                 name);
         Assertions.assertThat(response.body()).contains(Data.getExpectedHello2Mapping(name));
     }
@@ -54,7 +54,7 @@ class SystemDefaultTest {
     void hello() throws URISyntaxException, IOException, InterruptedException {
         String name = "Wolf";
         HttpResponse<String> response = TestHttpClient.post(
-                Commons.getUri("/copper2go/2/api/request/1.0/Hello", copper2GoContainer),
+                Commons.getUri("/copper2go/3/api/twoway/1.0/Hello", copper2GoContainer),
                 name);
         Assertions.assertThat(response.body()).contains(Data.getExpectedHello(name));
     }
@@ -70,7 +70,7 @@ class SystemDefaultTest {
     @Test
     void exception2() throws URISyntaxException, IOException, InterruptedException {
         HttpResponse<String> response = TestHttpClient.post(
-                Commons.getUri("/copper2go/2/api/request/1.0/Bad", copper2GoContainer),
+                Commons.getUri("/copper2go/3/api/twoway/1.0/Bad", copper2GoContainer),
                 "name");
         Assertions.assertThat(response.body()).contains("Exception: Exception while running workflow.");
     }

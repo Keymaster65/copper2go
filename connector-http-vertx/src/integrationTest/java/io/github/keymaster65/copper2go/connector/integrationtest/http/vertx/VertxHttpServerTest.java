@@ -18,6 +18,7 @@ package io.github.keymaster65.copper2go.connector.integrationtest.http.vertx;
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.github.keymaster65.copper2go.connector.http.TestHttpClient;
+import io.github.keymaster65.copper2go.connector.http.vertx.receiver.ApiPath;
 import io.github.keymaster65.copper2go.connector.http.vertx.receiver.RequestHandler;
 import io.github.keymaster65.copper2go.connector.http.vertx.receiver.VertxHttpServer;
 import io.vertx.core.Vertx;
@@ -28,7 +29,6 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.net.URI;
 
-import static io.github.keymaster65.copper2go.connector.http.vertx.receiver.ApiPath.COPPER2GO_2_API;
 import static org.mockito.ArgumentMatchers.eq;
 
 class VertxHttpServerTest {
@@ -65,7 +65,7 @@ class VertxHttpServerTest {
         final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, vertx, new RequestHandler(payloadReceiver));
         try {
             vertxHttpServer.start();
-            TestHttpClient.post(URI.create("http://localhost:" + SERVER_PORT + COPPER2GO_2_API + "request/1.0/Hello"), "Wolf\r\n");
+            TestHttpClient.post(URI.create("http://localhost:" + SERVER_PORT + ApiPath.TWOWAY_PATH + "1.0/Hello"), "Wolf\r\n");
         } finally {
             vertxHttpServer.stop();
         }

@@ -38,7 +38,7 @@ class ConfigTest {
         assertThat(httpRequestChannelConfig.method).isEqualTo(HttpMethod.GET);
         assertThat(httpRequestChannelConfig.host).isEqualTo("localhost");
         assertThat(httpRequestChannelConfig.port).isEqualTo(59665);
-        assertThat(httpRequestChannelConfig.path).isEqualTo("/copper2go/2/api/request/1.0/Pricing");
+        assertThat(httpRequestChannelConfig.path).isEqualTo("/copper2go/3/api/twoway/1.0/Pricing");
 
         assertThat(config.kafkaRequestChannelConfigs).isNull();
     }
@@ -56,7 +56,7 @@ class ConfigTest {
         assertThat(httpRequestChannelConfig.method).isEqualTo(HttpMethod.GET);
         assertThat(httpRequestChannelConfig.host).isEqualTo("copper2go");
         assertThat(httpRequestChannelConfig.port).isEqualTo(59665);
-        assertThat(httpRequestChannelConfig.path).isEqualTo("/copper2go/2/api/request/1.0/Pricing");
+        assertThat(httpRequestChannelConfig.path).isEqualTo("/copper2go/3/api/twoway/1.0/Pricing");
 
         assertKafka(config);
     }
