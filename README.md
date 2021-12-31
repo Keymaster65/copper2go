@@ -241,7 +241,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [ ] Add use case in Developer's Guide
 * [x] Refactor engine subproject for tests and extracting engine-api and connector-api
 * [x] Refactor connector subproject for tests and extracting more modules
-* [ ] Fix memory leak in ReplyChannelStore (may be: add a release method or garbage collection; do not add if not needed)
+* [x] Fix memory leak in ReplyChannelStore
+* [x] UUID might not be set in WorkflowData (breaking change)
 * [x] Use term "oneway" instead of (incoming) "event" in code (breaking change)
 * [ ] Use term "oneway" instead of (incoming) "event" in this README
 
@@ -252,7 +253,7 @@ where
 * The '3' relates to the Application API major version
 * The '2' Application API major version is still supported but DEPRECATED
 * TYPE can be
-    * "reply" if a body is expected in the reply. The HTTP response is submitted during workflow processing.
+    * "twoway" if a body is expected in the reply. The HTTP response is submitted during workflow processing.
     * "oneway if, no body is expected in the reply. The HTTP response is submitted when workflow is initiated
 * MAJOR.MINOR is the version of the workflow
 * WORKFLOW-NAME is the target workflow of the request
