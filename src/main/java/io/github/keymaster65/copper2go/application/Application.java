@@ -125,8 +125,8 @@ public class Application {
 
     public synchronized void startWithStdInOut() throws EngineException, StandardInOutException {
         start();
-        final var standardInOutListener = new StandardInOutReceiver(new BufferedReader(new InputStreamReader(System.in)));
-        standardInOutListener.listenLocalStream(copper2GoEngine.getPayloadReceiver());
+        final var standardInOutReceiver = new StandardInOutReceiver(new BufferedReader(new InputStreamReader(System.in)));
+        standardInOutReceiver.listenLocalStream(copper2GoEngine.getPayloadReceiver());
     }
 
     public synchronized void stop() throws EngineException {
