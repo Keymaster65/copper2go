@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.connector.http.vertx;
+package io.github.keymaster65.copper2go.connector.http.vertx.reply;
 
 import io.github.keymaster65.copper2go.api.connector.ReplyChannel;
 import io.vertx.core.http.HttpServerResponse;

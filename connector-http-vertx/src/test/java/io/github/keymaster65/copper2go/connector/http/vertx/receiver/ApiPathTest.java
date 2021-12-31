@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.connector.http.vertx;
+package io.github.keymaster65.copper2go.connector.http.vertx.receiver;
 
+import io.github.keymaster65.copper2go.connector.http.vertx.receiver.ApiPath;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

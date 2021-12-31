@@ -16,8 +16,8 @@
 package io.github.keymaster65.copper2go.connector.integrationtest.http.vertx;
 
 import io.github.keymaster65.copper2go.connector.http.TestHttpClient;
-import io.github.keymaster65.copper2go.connector.http.vertx.RequestHandler;
-import io.github.keymaster65.copper2go.connector.http.vertx.VertxHttpServer;
+import io.github.keymaster65.copper2go.connector.http.vertx.receiver.RequestHandler;
+import io.github.keymaster65.copper2go.connector.http.vertx.receiver.VertxHttpServer;
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.vertx.core.Vertx;
@@ -28,7 +28,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.net.URI;
 
-import static io.github.keymaster65.copper2go.connector.http.vertx.ApiPath.COPPER2GO_2_API;
+import static io.github.keymaster65.copper2go.connector.http.vertx.receiver.ApiPath.COPPER2GO_2_API;
 import static org.mockito.ArgumentMatchers.eq;
 
 class VertxHttpServerTest {

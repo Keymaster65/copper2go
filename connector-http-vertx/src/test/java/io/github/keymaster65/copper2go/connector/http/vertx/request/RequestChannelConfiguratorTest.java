@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.connector.http.vertx;
+package io.github.keymaster65.copper2go.connector.http.vertx.request;
 
 import io.github.keymaster65.copper2go.api.connector.DefaultRequestChannelStore;
 import io.github.keymaster65.copper2go.api.connector.ResponseReceiver;
-import io.github.keymaster65.copper2go.connector.http.HttpRequestChannelConfig;
 import net.jqwik.api.Example;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;

@@ -16,7 +16,7 @@
 package io.github.keymaster65.copper2go.application.config;
 
 import io.github.keymaster65.copper2go.connector.http.HttpMethod;
-import io.github.keymaster65.copper2go.connector.http.HttpRequestChannelConfig;
+import io.github.keymaster65.copper2go.connector.http.vertx.request.HttpRequestChannelConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaReceiverConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.KafkaRequestChannelConfig;
 import org.junit.jupiter.api.Test;

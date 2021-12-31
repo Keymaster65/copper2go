@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.connector.http.vertx;
+package io.github.keymaster65.copper2go.connector.http.vertx.receiver;
 
+import io.github.keymaster65.copper2go.connector.http.vertx.receiver.VertxHttpServer;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
