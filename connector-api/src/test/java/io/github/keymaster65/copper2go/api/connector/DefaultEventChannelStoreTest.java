@@ -19,6 +19,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.Map;
+
 
 class DefaultEventChannelStoreTest {
 
@@ -52,8 +54,9 @@ class DefaultEventChannelStoreTest {
 
         defaultEventChannelStore.put(NAME, eventChannel);
         defaultEventChannelStore.event(NAME, EVENT);
+        defaultEventChannelStore.event(NAME, EVENT, Map.of());
 
-        Mockito.verify(eventChannel).event(EVENT);
+        Mockito.verify(eventChannel, Mockito.times(2)).event(EVENT);
     }
 
     @Test
@@ -63,8 +66,9 @@ class DefaultEventChannelStoreTest {
 
         defaultEventChannelStore.put(NAME, eventChannel);
         defaultEventChannelStore.errorEvent(NAME, EVENT);
+        defaultEventChannelStore.errorEvent(NAME, EVENT, Map.of());
 
-        Mockito.verify(eventChannel).errorEvent(EVENT);
+        Mockito.verify(eventChannel, Mockito.times(2)).errorEvent(EVENT);
     }
 
     @Test
@@ -75,7 +79,7 @@ class DefaultEventChannelStoreTest {
         defaultEventChannelStore.put(NAME, eventChannel);
 
         Assertions.assertThatCode(() ->
-                defaultEventChannelStore.put(NAME, eventChannel)
+                        defaultEventChannelStore.put(NAME, eventChannel)
                 ).isInstanceOf(EngineRuntimeException.class)
                 .hasMessageStartingWith("Duplicate EventChannel");
     }
