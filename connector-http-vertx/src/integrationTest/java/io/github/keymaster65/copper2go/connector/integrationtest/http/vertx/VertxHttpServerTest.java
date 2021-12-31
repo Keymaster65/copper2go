@@ -28,7 +28,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.net.URI;
 
-import static io.github.keymaster65.copper2go.connector.http.vertx.BodyHandler.COPPER2GO_2_API;
+import static io.github.keymaster65.copper2go.connector.http.vertx.ApiPath.COPPER2GO_2_API;
 import static org.mockito.ArgumentMatchers.eq;
 
 class VertxHttpServerTest {

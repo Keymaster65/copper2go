@@ -244,6 +244,22 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [ ] Fix memory leak in ReplyChannelStore (may be: add a release method or garbage collection; do not add if not needed)
 * [ ] Use term "oneway" instead of (incoming) "event" (breaking change)
 
+URLs path should be "/copper2go/3/api/TYPE/MAJOR.MINOR/WORKFLOW-NAME
+
+where
+
+* The '3' relates to the Application API major version
+* The '2' Application API major version is still supported but DEPRECATED
+* TYPE can be
+    * "reply" if a body is expected in the reply. The HTTP response is submitted during workflow processing.
+    * "oneway if, no body is expected in the reply. The HTTP response is submitted when workflow is initiated
+* MAJOR.MINOR is the version of the workflow
+* WORKFLOW-NAME is the target workflow of the request
+
+URL "/" shows licence information.
+
+
+
 ### "Binding" Release Plan Application API 3.1
 
 * [ ] Workflow with Json binding
