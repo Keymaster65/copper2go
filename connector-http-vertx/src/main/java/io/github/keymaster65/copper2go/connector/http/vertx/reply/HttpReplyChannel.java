@@ -23,10 +23,10 @@ import org.slf4j.LoggerFactory;
 import java.net.HttpURLConnection;
 import java.util.Map;
 
-public class HttpReplyChannelImpl implements ReplyChannel {
+public class HttpReplyChannel implements ReplyChannel {
     private final HttpServerResponse response;
-    private static final Logger log = LoggerFactory.getLogger(HttpReplyChannelImpl.class);
-    public HttpReplyChannelImpl(final HttpServerResponse response) {
+    private static final Logger log = LoggerFactory.getLogger(HttpReplyChannel.class);
+    public HttpReplyChannel(final HttpServerResponse response) {
         this.response = response;
     }
 

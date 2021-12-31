@@ -29,7 +29,7 @@ import org.mockito.Mockito;
 import java.util.Map;
 
 
-class HttpRequestChannelImplTest {
+class HttpRequestChannelTest {
 
     public static final String REQUEST = "request";
     public static final String RESPONSE_CORRELATION_ID = "responseCorrelationId";
@@ -46,7 +46,7 @@ class HttpRequestChannelImplTest {
     @Property
     void request(@ForAll final HttpMethod httpMethod, @ForAll("attributes") @WithNull final Map<String, String> attributes) {
         final Copper2GoHttpClient httpClient = Mockito.mock(Copper2GoHttpClient.class);
-        final HttpRequestChannelImpl httpRequestChannel = new HttpRequestChannelImpl(
+        final HttpRequestChannel httpRequestChannel = new HttpRequestChannel(
                 httpMethod,
                 httpClient
         );
@@ -64,7 +64,7 @@ class HttpRequestChannelImplTest {
     void close() {
         final Copper2GoHttpClient httpClient = Mockito.mock(Copper2GoHttpClient.class);
         final HttpMethod httpMethod = HttpMethod.GET;
-        final HttpRequestChannelImpl httpRequestChannel = new HttpRequestChannelImpl(
+        final HttpRequestChannel httpRequestChannel = new HttpRequestChannel(
                 httpMethod,
                 httpClient
         );

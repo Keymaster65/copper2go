@@ -23,14 +23,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class HttpRequestChannelImpl implements RequestChannel {
+public class HttpRequestChannel implements RequestChannel {
 
-    private static final Logger log = LoggerFactory.getLogger(HttpRequestChannelImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(HttpRequestChannel.class);
 
     private final Copper2GoHttpClient httpClient;
     private final HttpMethod httpMethod;
 
-    public HttpRequestChannelImpl(final HttpMethod httpMethod, final Copper2GoHttpClient httpClient) {
+    public HttpRequestChannel(final HttpMethod httpMethod, final Copper2GoHttpClient httpClient) {
         this.httpClient = httpClient;
         this.httpMethod = httpMethod;
     }

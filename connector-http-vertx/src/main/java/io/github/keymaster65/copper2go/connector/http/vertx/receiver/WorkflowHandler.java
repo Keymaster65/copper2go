@@ -18,7 +18,7 @@ package io.github.keymaster65.copper2go.connector.http.vertx.receiver;
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.github.keymaster65.copper2go.api.connector.WorkflowVersion;
-import io.github.keymaster65.copper2go.connector.http.vertx.reply.HttpReplyChannelImpl;
+import io.github.keymaster65.copper2go.connector.http.vertx.reply.HttpReplyChannel;
 import io.vertx.core.http.HttpServerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class WorkflowHandler {
                 payloadReceiver.receive(
                         requestBody,
                         attributes,
-                        new HttpReplyChannelImpl(response),
+                        new HttpReplyChannel(response),
                         workflowVersion.name,
                         workflowVersion.major,
                         workflowVersion.minor

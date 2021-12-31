@@ -22,14 +22,14 @@ import org.mockito.Mockito;
 import java.net.HttpURLConnection;
 import java.util.Map;
 
-class HttpReplyChannelImplTest {
+class HttpReplyChannelTest {
 
     public static final String REPLY = "reply";
 
     @Test
     void reply() {
         final HttpServerResponse response = Mockito.mock(HttpServerResponse.class);
-        final HttpReplyChannelImpl httpReplyChannel = new HttpReplyChannelImpl(response);
+        final HttpReplyChannel httpReplyChannel = new HttpReplyChannel(response);
 
         httpReplyChannel.reply(REPLY);
 
@@ -40,7 +40,7 @@ class HttpReplyChannelImplTest {
     @Test
     void replyWithAttributes() {
         final HttpServerResponse response = Mockito.mock(HttpServerResponse.class);
-        final HttpReplyChannelImpl httpReplyChannel = new HttpReplyChannelImpl(response);
+        final HttpReplyChannel httpReplyChannel = new HttpReplyChannel(response);
 
         httpReplyChannel.reply(REPLY, Map.of());
 
@@ -50,7 +50,7 @@ class HttpReplyChannelImplTest {
     @Test
     void replyError() {
         final HttpServerResponse response = Mockito.mock(HttpServerResponse.class);
-        final HttpReplyChannelImpl httpReplyChannel = new HttpReplyChannelImpl(response);
+        final HttpReplyChannel httpReplyChannel = new HttpReplyChannel(response);
         Mockito.when(response.setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR)).thenReturn(response);
 
         httpReplyChannel.replyError(REPLY);
@@ -62,7 +62,7 @@ class HttpReplyChannelImplTest {
     @Test
     void replyErrorWithAttributes() {
         final HttpServerResponse response = Mockito.mock(HttpServerResponse.class);
-        final HttpReplyChannelImpl httpReplyChannel = new HttpReplyChannelImpl(response);
+        final HttpReplyChannel httpReplyChannel = new HttpReplyChannel(response);
         Mockito.when(response.setStatusCode(HttpURLConnection.HTTP_INTERNAL_ERROR)).thenReturn(response);
 
         httpReplyChannel.replyError(REPLY, Map.of());

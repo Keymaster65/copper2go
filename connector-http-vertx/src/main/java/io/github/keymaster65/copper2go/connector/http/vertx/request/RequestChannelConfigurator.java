@@ -35,7 +35,7 @@ public class RequestChannelConfigurator {
             for (Map.Entry<String, HttpRequestChannelConfig> entry : httpRequestChannelConfigs.entrySet()) {
                 HttpRequestChannelConfig config = entry.getValue();
                 defaultRequestChannelStore.put(entry.getKey(),
-                        new HttpRequestChannelImpl(
+                        new HttpRequestChannel(
                                 config.method,
                                 new VertxHttpClient(
                                         config.host,
