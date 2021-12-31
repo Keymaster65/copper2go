@@ -20,8 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jqwik.api.Example;
 import org.assertj.core.api.Assertions;
 
-import java.text.MessageFormat;
-
 class WorkflowRepositoryConfigTest {
 
     public static final String BRANCH = "/branch";
@@ -50,5 +48,14 @@ class WorkflowRepositoryConfigTest {
         Assertions.assertThat(workflowRepositoryConfig.branch).isEqualTo(BRANCH);
         Assertions.assertThat(workflowRepositoryConfig.workflowGitURI).isEqualTo(WORKFLOW_GIT_URI);
         Assertions.assertThat(workflowRepositoryConfig.workflowBase).isEqualTo(WORKFLOW_BASE);
+    }
+
+    @Example
+    void constructorException() {
+        Assertions.assertThatCode(() ->
+                        objectMapper.readValue("{}", WorkflowRepositoryConfig.class)
+                )
+                .isNotInstanceOf(IllegalArgumentException.class)
+                .hasMessageStartingWith("Missing required creator property 'branch'");
     }
 }
