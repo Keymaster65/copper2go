@@ -53,9 +53,12 @@ public class PayloadReceiverImpl implements PayloadReceiver {
         WorkflowVersion version = scottyEngine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
         workflowInstanceDescr.setVersion(version);
 
-        String uuid = scottyEngine.createUUID();
+        String uuid = null;
+        if (replyChannel != null) {
+            uuid = scottyEngine.createUUID();
+            replyChannelStore.store(uuid, replyChannel);
+        }
         workflowInstanceDescr.setData(new WorkflowData(uuid, payload, attributes));
-        replyChannelStore.store(uuid, replyChannel);
         try {
             scottyEngine.run(workflowInstanceDescr);
         } catch (CopperException e) {

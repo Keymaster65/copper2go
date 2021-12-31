@@ -29,9 +29,38 @@ class PayloadReceiverImplTest {
     @Test
     void receive() throws EngineException, CopperException {
         final TransientScottyEngine scottyEngine = Mockito.mock(TransientScottyEngine.class);
+        final ReplyChannelStoreImpl replyChannelStore = Mockito.mock(ReplyChannelStoreImpl.class);
         final PayloadReceiverImpl payloadReceiver = new PayloadReceiverImpl(
                 scottyEngine,
-                Mockito.mock(ReplyChannelStoreImpl.class)
+                replyChannelStore
+        );
+        final WorkflowRepository workflowRepository = Mockito.mock(WorkflowRepository.class);
+        Mockito.when(scottyEngine.getWfRepository()).thenReturn(workflowRepository);
+        // needs final mocking enabled
+        Mockito.when(scottyEngine.createUUID()).thenReturn("uuid");
+        final ReplyChannel replyChannel = Mockito.mock(ReplyChannel.class);
+
+        payloadReceiver.receive(
+                "payload",
+                null,
+                replyChannel
+                , "Ignore"
+                , 1
+                , 0
+
+        );
+
+        Mockito.verify(scottyEngine).run(Mockito.any());
+        Mockito.verify(replyChannelStore).store(Mockito.any(), Mockito.eq(replyChannel));
+    }
+
+    @Test
+    void receiveNoReply() throws EngineException, CopperException {
+        final TransientScottyEngine scottyEngine = Mockito.mock(TransientScottyEngine.class);
+        final ReplyChannelStoreImpl replyChannelStore = Mockito.mock(ReplyChannelStoreImpl.class);
+        final PayloadReceiverImpl payloadReceiver = new PayloadReceiverImpl(
+                scottyEngine,
+                replyChannelStore
         );
         final WorkflowRepository workflowRepository = Mockito.mock(WorkflowRepository.class);
         Mockito.when(scottyEngine.getWfRepository()).thenReturn(workflowRepository);
@@ -41,7 +70,7 @@ class PayloadReceiverImplTest {
         payloadReceiver.receive(
                 "payload",
                 null,
-                Mockito.mock(ReplyChannel.class)
+                null
                 , "Ignore"
                 , 1
                 , 0
@@ -49,6 +78,7 @@ class PayloadReceiverImplTest {
         );
 
         Mockito.verify(scottyEngine).run(Mockito.any());
+        Mockito.verify(replyChannelStore, Mockito.never()).store(Mockito.any(), Mockito.any());
     }
 
     @Test
