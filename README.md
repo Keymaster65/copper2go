@@ -242,7 +242,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Refactor engine subproject for tests and extracting engine-api and connector-api
 * [x] Refactor connector subproject for tests and extracting more modules
 * [ ] Fix memory leak in ReplyChannelStore (may be: add a release method or garbage collection; do not add if not needed)
-* [ ] Use term "oneway" instead of (incoming) "event" (breaking change)
+* [x] Use term "oneway" instead of (incoming) "event" in code (breaking change)
+* [ ] Use term "oneway" instead of (incoming) "event" in this README
 
 URLs path should be "/copper2go/3/api/TYPE/MAJOR.MINOR/WORKFLOW-NAME
 
