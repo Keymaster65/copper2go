@@ -55,7 +55,7 @@ class RequestChannelConfiguratorTest {
         final DefaultRequestChannelStore defaultRequestChannelStore = createDefaultHttpRequestChannelStore(responseReceiver);
 
         defaultRequestChannelStore.request(CHANNEL_NAME, REQUEST, RESPONSE_CORRELATION_ID);
-        LockSupport.parkNanos(6L * 1000 * 1000 * 1000);
+        LockSupport.parkNanos(10L * 1000 * 1000 * 1000);
 
         Mockito.verify(responseReceiver).receiveError(Mockito.eq(RESPONSE_CORRELATION_ID), Mockito.any());
     }
