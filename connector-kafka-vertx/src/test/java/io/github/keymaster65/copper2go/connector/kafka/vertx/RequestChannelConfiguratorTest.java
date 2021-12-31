@@ -40,7 +40,7 @@ class RequestChannelConfiguratorTest {
                 new KafkaRequestChannelConfig("topic"));
 
         Assertions.assertThatCode(() ->
-                        RequestChannelConfigurator.addKafkaRequestChannels(
+                        RequestChannelConfigurator.putKafkaRequestChannels(
                                 "kafkaHost",
                                 0,
                                 kafkaRequestChannelConfigs,
@@ -64,7 +64,7 @@ class RequestChannelConfiguratorTest {
                 new KafkaRequestChannelConfig("topic"));
 
         Assertions.assertThatCode(() ->
-                        RequestChannelConfigurator.addKafkaRequestChannels(
+                        RequestChannelConfigurator.putKafkaRequestChannels(
                                 "localhost",
                                 58888,
                                 kafkaRequestChannelConfigs,
@@ -80,7 +80,7 @@ class RequestChannelConfiguratorTest {
         final DefaultRequestChannelStore defaultRequestChannelStore = new DefaultRequestChannelStore();
 
         Assertions.assertThatCode(() ->
-                        RequestChannelConfigurator.addKafkaRequestChannels(
+                        RequestChannelConfigurator.putKafkaRequestChannels(
                                 "kafkaHost",
                                 0,
                                 null,

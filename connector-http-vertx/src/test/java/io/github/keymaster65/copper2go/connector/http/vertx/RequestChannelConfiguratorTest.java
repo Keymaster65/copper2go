@@ -15,10 +15,11 @@
  */
 package io.github.keymaster65.copper2go.connector.http.vertx;
 
-import io.github.keymaster65.copper2go.connector.http.HttpRequestChannelConfig;
 import io.github.keymaster65.copper2go.api.connector.DefaultRequestChannelStore;
 import io.github.keymaster65.copper2go.api.connector.ResponseReceiver;
+import io.github.keymaster65.copper2go.connector.http.HttpRequestChannelConfig;
 import net.jqwik.api.Example;
+import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 
 import java.util.HashMap;
@@ -30,6 +31,24 @@ class RequestChannelConfiguratorTest {
     public static final String CHANNEL_NAME = "channelName";
     public static final String RESPONSE_CORRELATION_ID = "responseCorrelationId";
     public static final String REQUEST = "request";
+
+    @Example
+    void putHttpRequestChannels() {
+        final ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
+        Assertions.assertThatCode(() ->
+                        createDefaultHttpRequestChannelStore(responseReceiver)
+                )
+                .doesNotThrowAnyException();
+    }
+
+    @Example
+    void putHttpRequestChannelsNull() {
+        final ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
+        Assertions.assertThatCode(() ->
+                        RequestChannelConfigurator.putHttpRequestChannels(null, null, null)
+                )
+                .doesNotThrowAnyException();
+    }
 
     @Example
     void requestError() {

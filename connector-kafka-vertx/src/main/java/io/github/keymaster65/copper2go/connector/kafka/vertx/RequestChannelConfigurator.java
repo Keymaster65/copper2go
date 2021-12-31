@@ -25,7 +25,7 @@ import java.util.Map;
 public class RequestChannelConfigurator {
     private RequestChannelConfigurator() {}
 
-    public static void addKafkaRequestChannels(
+    public static void putKafkaRequestChannels(
             final String kafkaHost,
             final int kafkaPort,
             final Map<String, KafkaRequestChannelConfig> kafkaRequestChannelConfigs,

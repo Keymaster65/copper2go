@@ -48,7 +48,7 @@ public class ApplicationFactory {
                 defaultRequestChannelStore
         );
 
-        io.github.keymaster65.copper2go.connector.kafka.vertx.RequestChannelConfigurator.addKafkaRequestChannels(
+        io.github.keymaster65.copper2go.connector.kafka.vertx.RequestChannelConfigurator.putKafkaRequestChannels(
                 config.kafkaHost,
                 config.kafkaPort,
                 config.kafkaRequestChannelConfigs,
