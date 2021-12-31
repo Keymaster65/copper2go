@@ -209,7 +209,7 @@ Issues are very welcome, too.
 * https://copper-engine.org/blog/2019-12-09-/copper-5.1-released/
 * https://github.com/factoryfx
 
-## Planning
+## Ongoing
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
@@ -239,8 +239,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Improve unit test coverage up to 90% or more
 * [x] Update many used jars
 * [ ] Add use case in Developer's Guide
-* [ ] Refactor engine subproject for tests and extracting engine-api and connector-api
-* [ ] Refactor connector subproject for tests and extracting more modules
+* [x] Refactor engine subproject for tests and extracting engine-api and connector-api
+* [x] Refactor connector subproject for tests and extracting more modules
 * [ ] Fix memory leak in ReplyChannelStore (may be: add a release method or garbage collection; do not add if not needed)
 * [ ] Use term "oneway" instead of (incoming) "event" (breaking change)
 
@@ -258,7 +258,7 @@ where
 
 URL "/" shows licence information.
 
-
+## Planning
 
 ### "Binding" Release Plan Application API 3.1
 
