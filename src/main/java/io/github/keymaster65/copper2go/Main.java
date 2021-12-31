@@ -16,6 +16,7 @@
 package io.github.keymaster65.copper2go;
 
 import io.github.keymaster65.copper2go.application.Application;
+import io.github.keymaster65.copper2go.application.ApplicationFactory;
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ public class Main {
     private final AtomicBoolean started = new AtomicBoolean(false);
 
     public Main() throws IOException {
-        this(Application.of(createConfig()));
+        this(ApplicationFactory.of(createConfig()));
     }
 
     public Main(final Application theApplication) {

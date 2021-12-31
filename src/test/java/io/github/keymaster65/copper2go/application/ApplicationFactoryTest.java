@@ -19,25 +19,11 @@ import io.github.keymaster65.copper2go.application.config.Config;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
-class ApplicationTest {
+class ApplicationFactoryTest {
 
     @Test
-    void stop() throws IOException {
-        final Application application = ApplicationFactory.of(Config.of());
-
-        Assertions.assertThatCode(application::stop)
+    void of() {
+        Assertions.assertThatCode(() -> ApplicationFactory.of(Config.of()))
                 .doesNotThrowAnyException();
-
-        Assertions.assertThat(application.isStopRequested()).isTrue();
-    }
-
-    @Test
-    void isStopRequestedWithOutStop() throws IOException {
-        final Application application = ApplicationFactory.of(Config.of());
-
-        Assertions.assertThat(application.isStopRequested()).isFalse();
-
     }
 }

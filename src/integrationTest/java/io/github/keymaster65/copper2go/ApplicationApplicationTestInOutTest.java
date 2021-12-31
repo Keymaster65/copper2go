@@ -16,6 +16,7 @@
 package io.github.keymaster65.copper2go;
 
 import io.github.keymaster65.copper2go.application.Application;
+import io.github.keymaster65.copper2go.application.ApplicationFactory;
 import io.github.keymaster65.copper2go.application.Data;
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
@@ -44,7 +45,7 @@ class ApplicationApplicationTestInOutTest {
         String input = name + "\r\nexit\r\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Config config = Config.of();
-        Application application = Application.of(config);
+        Application application = ApplicationFactory.of(config);
         Assertions.assertThatExceptionOfType(StandardInOutException.class).isThrownBy(application::startWithStdInOut);
         application.stop();
         return byteArrayOutputStream.toString(StandardCharsets.UTF_8).replace("\r", "").replace("\n", "");

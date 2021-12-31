@@ -37,7 +37,7 @@ class ApplicationHttpTest {
     void masterHelloTest() throws IOException, EngineException, InterruptedException {
         String name = Data.getName();
         Config config = Config.of();
-        Application application = Application.of(config);
+        Application application = ApplicationFactory.of(config);
         HttpResponse<String> response;
         try {
             application.start();
@@ -53,7 +53,7 @@ class ApplicationHttpTest {
     void masterHello2MappingTest() throws IOException, EngineException, InterruptedException {
         String name = Data.getName();
         Config config = Config.of();
-        Application application = Application.of(config);
+        Application application = ApplicationFactory.of(config);
         HttpResponse<String> response;
         try {
             application.start();
@@ -70,7 +70,7 @@ class ApplicationHttpTest {
     void masterHello2EmptyNameTest() throws IOException, EngineException, InterruptedException {
         String name = "";
         Config config = Config.of();
-        Application application = Application.of(config);
+        Application application = ApplicationFactory.of(config);
         HttpResponse<String> response;
         try {
             application.start();
@@ -90,7 +90,7 @@ class ApplicationHttpTest {
     void masterHello2EmptyNameEventTest() throws IOException, EngineException, InterruptedException {
         String name = "";
         Config config = Config.of();
-        Application application = Application.of(config);
+        Application application = ApplicationFactory.of(config);
         HttpResponse<String> response;
         try {
             application.start();
