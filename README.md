@@ -32,17 +32,17 @@ This picture shows a first overview:
 In your container you can run workflows that are accessible via git. Just start with the ones
 in  https://github.com/Keymaster65/copper2go-workflows.
 
-
 [![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
+
 * Start container
-  * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v2.0`
+    * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:3`
 * In Browser you can see the used licenses
     * `http://localhost:59665/`
-      * `http://localhost:59665/copper2go/2/api/request/2.0/Hello` will deliver a "IllegalArgumentException: A name must
-        be specified."
+    * `http://localhost:59665/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name
+      must be specified."
 * Use any other HTTP-Client and POST your name to the URL
-    * Example: `curl --data Wolf http://localhost:59665/copper2go/2/api/request/2.0/Hello`
-      * Will produce someting like `Hello Wolf! Please transfer 4 cent`
+    * Example: `curl --data Wolf http://localhost:59665/copper2go/3/api/twoway/2.0/Hello`
+        * Will produce someting like `Hello Wolf! Please transfer 4 cent`
 
 ### Change Workflows
 
@@ -51,18 +51,18 @@ You want to develop your own workflows? You may start with the existing ones.
 * Clone or fork the copper2go-workflows **gradle** project: https://github.com/Keymaster65/copper2go-workflows
 * Modify configuration and store it into environment variable C2G_CONFIG.
     * Start with
-      file: https://github.com/Keymaster65/copper2go/blob/release/2.0/src/main/resources/io/github/keymaster65/copper2go/application/config/config.json
-      * store it in your local docker host `config.json`
-      * Typically, modify workflowGitURI location
+      file: https://github.com/Keymaster65/copper2go/blob/release/3/src/main/resources/io/github/keymaster65/copper2go/application/config/config.json
+        * store it in your local docker host `config.json`
+        * Typically, modify workflowGitURI location
 * Start Container with your configuration:
-    * `docker run -d -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:v2.0`
+    * `docker run -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:3`
 
-## More Motivation 
+## More Motivation
 
-COPPER was developed as an Orchestration Engine. For more than 10 years now, in 2021, many high
-performance systems are in production. The Online Configuration capability of this workflow engine is used seldom. To
-fill this gap, by using this feature as a main concept, copper2go was developed. By adding connectors, the development
-of Orchestration Services will become easier for Java developers.
+COPPER was developed as an Orchestration Engine. For more than 10 years now, in 2021, many high performance systems are
+in production. The Online Configuration capability of this workflow engine is used seldom. To fill this gap, by using
+this feature as a main concept, copper2go was developed. By adding connectors, the development of Orchestration Services
+will become easier for Java developers.
 
 You can see copper2go as a "Plattform as a Service", if you want to enable your clients to write and support their own
 COPPER workflows.
@@ -133,15 +133,26 @@ https://github.com/Keymaster65/copper2go/issues
 
 I am looking for feedback.
 
-#### Utilities
+#### copper2go Architecture
 
-To Do:
+The Architecture overview
 
-* HTTP-Kafka Bridge
+![The Architecture overview](copper2goComponents.png)
 
-### Workflow's API
+shows the main packages, classes and infaces of copper2go. Beside the workflows and the workflow api,
+you should be aware of the connector capabilities.
 
-To Do:
+#### Connector Capabilities
+
+TO DO
+
+#### More Samples
+
+https://github.com/Keymaster65/copper2go-tools-bridge
+
+### Workflow's API Detail
+
+Visit the sources of and examples
 
 * WorkflowData
 * ReplyChannel
@@ -150,7 +161,9 @@ To Do:
 
 ### Application Configuration
 
-To Do:
+https://github.com/Keymaster65/copper2go/blob/release/3/src/main/resources/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json
+
+you find examples for the configuration od
 
 * COPPER Workflows (workflowRepositoryConfig)
 * HTTP Server (httpPort)
@@ -179,12 +192,11 @@ The copper2go Workflow's API is hosted in the Maven Central. It can be found at 
 [![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
 
 The configuration of the application and the shipped dependencies will be listed here as Application API in the
-"Released" chapter. No Java code except of Workflow's API is released as an API. Of course, you can fork the project,
-if you want to make extensions.
+"Released" chapter. No Java code except of Workflow's API is released as an API. Of course, you can fork the project, if
+you want to make extensions.
 
 The releases are hosted at github:
 https://github.com/Keymaster65/copper2go/releases
-
 
 Docker images can be found here: https://hub.docker.com/r/keymaster65/copper2go
 
@@ -213,21 +225,7 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "Kafka/Http Bridge and Java 17" Release Plan
-
-#### Release Bridge Workflow 1.0
-
-* [x] New Repository for Bridge Workflow
-* [x] System tests
-* [ ] Add use case in Developer's Guide
-
-#### Release Workflow API 3.0
-
-* [x] Support HTTP URL parameter (in but no out)
-* [x] Support Kafka Header (parameter) (in and out)
-* [x] Remove payload member from WorkflowData (breaking change)
-* [x] Require Java 17 (breaking change)
-* [x] Restructure packages (breaking change)
+### "Kafka/Http Bridge, Quality and Java 17" Release Plan
 
 ### Application API 3.0
 
@@ -281,7 +279,7 @@ URL "/" shows licence information.
 
 * Finish support kafka events
 * Add "vanilla" engine implementation
-* Add new Repository Performancetest 
+* Add new Repository Performancetest
 * Improve unit test coverage up to 50+%
 * STDIN/OUT support in config and container (or remove it)
 * Workflow with XML binding (may be not ;-)
@@ -316,6 +314,22 @@ URL "/" shows licence information.
 * On demand only: extend workflow attributes to a MultiMap
 
 ## Released
+
+### "Kafka/Http Bridge, Quality and Java 17" Release
+
+#### Release Workflow API 3.0
+
+* [x] Support HTTP URL parameter (in but no out)
+* [x] Support Kafka Header (parameter) (in and out)
+* [x] Remove payload member from WorkflowData (breaking change)
+* [x] Require Java 17 (breaking change)
+* [x] Restructure packages (breaking change)
+
+#### Release Bridge Workflow 1.0
+
+* [x] New Repository for Bridge Workflow
+* [x] System tests
+* [x] Add use case in Developer's Guide
 
 ### "Kafka" Release Application API 2.1
 
