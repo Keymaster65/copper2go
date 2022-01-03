@@ -38,8 +38,8 @@ in  https://github.com/Keymaster65/copper2go-workflows.
     * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:3`
 * In Browser you can see the used licenses
     * `http://localhost:59665/`
-    * `http://localhost:59665/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name
-      must be specified."
+    * `http://localhost:59665/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name must be
+      specified."
 * Use any other HTTP-Client and POST your name to the URL
     * Example: `curl --data Wolf http://localhost:59665/copper2go/3/api/twoway/2.0/Hello`
         * Will produce someting like `Hello Wolf! Please transfer 4 cent`
@@ -139,8 +139,8 @@ The Architecture overview
 
 ![The Architecture overview](copper2goComponents.png)
 
-shows the main packages, classes and infaces of copper2go. Beside the workflows and the workflow api,
-you should be aware of the connector capabilities.
+shows the main packages, classes and infaces of copper2go. Beside the workflows and the workflow api, you should be
+aware of the connector capabilities.
 
 #### Connector Capabilities
 
@@ -199,6 +199,22 @@ The releases are hosted at github:
 https://github.com/Keymaster65/copper2go/releases
 
 Docker images can be found here: https://hub.docker.com/r/keymaster65/copper2go
+
+##### HTTP Receiver API
+
+URLs path should be "/copper2go/3/api/TYPE/MAJOR.MINOR/WORKFLOW-NAME
+
+where
+
+* The '3' relates to the Application API major version
+* The '2' Application API major version is still supported but DEPRECATED
+* TYPE can be
+    * "twoway" if a body is expected in the reply. The HTTP reply is submitted during workflow processing.
+    * "oneway if, no body is expected in the reply. The HTTP reply is submitted when workflow is initiated
+* MAJOR.MINOR is the version of the workflow
+* WORKFLOW-NAME is the target workflow of the request
+
+URL "/" shows licence information.
 
 #### Missing Features?
 
@@ -308,8 +324,8 @@ where
 * The '3' relates to the Application API major version
 * The '2' Application API major version is still supported but DEPRECATED
 * TYPE can be
-  * "twoway" if a body is expected in the reply. The HTTP response is submitted during workflow processing.
-  * "oneway if, no body is expected in the reply. The HTTP response is submitted when workflow is initiated
+    * "twoway" if a body is expected in the reply. The HTTP reply is submitted during workflow processing.
+    * "oneway if, no body is expected in the reply. The HTTP reply is submitted when workflow is initiated
 * MAJOR.MINOR is the version of the workflow
 * WORKFLOW-NAME is the target workflow of the request
 
