@@ -240,6 +240,8 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
+* [x] Remove vulnerabilities in dependencies
+
 ## Planning
 
 ### "Binding" Release Plan Application API 3.1
