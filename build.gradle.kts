@@ -11,6 +11,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.1.4"
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
+    id("org.owasp.dependencycheck") version "6.5.2"
 }
 
 publishing {
@@ -33,7 +34,7 @@ dependencies {
 
     configurations.implementation {
         // due to license issue and I guess I currently do not need it
-        exclude("io.netty","netty-tcnative-classes")
+        exclude("io.netty", "netty-tcnative-classes")
     }
     implementation("io.vertx:vertx-core:4.2.+")
     implementation("io.vertx:vertx-kafka-client:4.2.+")
@@ -72,6 +73,7 @@ allprojects {
     apply(plugin = "org.unbroken-dome.test-sets")
     apply(plugin = "org.sonarqube")
     apply(plugin = "jacoco")
+    apply(plugin = "org.owasp.dependencycheck")
 
     // https://docs.gradle.org/current/userguide/jacoco_plugin.html
     tasks.jacocoTestReport {
@@ -117,8 +119,60 @@ allprojects {
         testImplementation("net.jqwik:jqwik:1.+")
         testImplementation("org.junit.jupiter:junit-jupiter:5.+")
         testImplementation("org.mockito:mockito-core:4.+")
-        testImplementation("org.mock-server:mockserver-netty:5.+")
 
+        constraints {
+            implementation("commons-io:commons-io:2.11.0") {
+                because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
+            }
+            implementation("com.google.guava:guava:31.0.1-jre") {
+                because("Security scan found 23.4-jre")
+            }
+            implementation("io.netty:netty-buffer:4.1.72.Final") {
+                because("Security scan found 4.1.53.Final")
+            }
+            implementation("io.netty:netty-codec:4.1.72.Final") {
+                because("Security scan found 4.1.53.Final")
+            }
+            implementation("io.netty:netty-codec-http:4.1.72.Final") {
+                because("Security scan found 4.1.53.Final")
+            }
+            implementation("io.netty:netty-codec-socks:4.1.72.Final") {
+                because("Security scan found 4.1.53.Final")
+            }
+            implementation("io.netty:netty-common:4.1.72.Final") {
+                because("Security scan found 4.1.53.Final")
+            }
+            implementation("io.netty:netty-handler:4.1.72.Final") {
+                because("Security scan found 4.1.53.Final")
+            }
+            implementation("io.netty:netty-handler-proxy:4.1.72.Final") {
+                because("Security scan found 4.1.53.Final")
+            }
+            implementation("io.netty:netty-resolver:4.1.72.Final") {
+                because("Security scan found 4.1.53.Final")
+            }
+            implementation("io.netty:netty-transport:4.1.72.Final") {
+                because("Security scan found 4.1.53.Final")
+            }
+            implementation("net.minidev:accessors-smart:2.4.7") {
+                because("Security scan found 1.2")
+            }
+            implementation("org.apache.httpcomponents:httpclient:4.5.13") {
+                because("Security scan found 4.5.2")
+            }
+            implementation("net.minidev:json-smart:2.4.7") {
+                because("Security scan found 2.3")
+            }
+            implementation("org.apache.velocity:velocity-engine-core:2.3") {
+                because("Security scan found 2.2")
+            }
+            implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
+                because("Security scan found 2.2")
+            }
+            implementation("org.apache.kafka:kafka-clients:2.8.1") {
+                because("Security scan found 2.6")
+            }
+        }
     }
 
     testSets {
@@ -161,7 +215,12 @@ licenseReport {
     excludeOwnGroup = true
     allowedLicensesFile = File("$projectDir/allowed-licenses.json")
     excludes = arrayOf<String>("com.fasterxml.jackson:jackson-bom") // is apache 2.0 but license tool say "null"
-    filters = arrayOf<LicenseBundleNormalizer>(LicenseBundleNormalizer("""$projectDir/license-normalizer-bundle.json""", true))
+    filters = arrayOf<LicenseBundleNormalizer>(
+        LicenseBundleNormalizer(
+            """$projectDir/license-normalizer-bundle.json""",
+            true
+        )
+    )
 }
 
 tasks.assemble {
@@ -186,11 +245,11 @@ jib {
     container {
         mainClass = "io.github.keymaster65.copper2go.Main"
         jvmFlags = listOf(
-                "-XX:+UseContainerSupport",
-                "-Dfile.encoding=UTF-8",
-                "-Duser.country=DE",
-                "-Duser.language=de",
-                "-Duser.timezone=Europe/Berlin"
+            "-XX:+UseContainerSupport",
+            "-Dfile.encoding=UTF-8",
+            "-Duser.country=DE",
+            "-Duser.language=de",
+            "-Duser.timezone=Europe/Berlin"
         )
         workingDirectory = "/"
     }

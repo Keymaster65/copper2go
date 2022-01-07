@@ -11,7 +11,7 @@ dependencies {
     implementation("io.vertx:vertx-web:4.2.+")
     implementation("io.vertx:vertx-kafka-client:4.2.+")
 
-    implementation("com.google.guava:guava:30.+")
+    implementation("com.google.guava:guava:31.+")
 
     testImplementation("org.testcontainers:kafka:1.+")
 }
