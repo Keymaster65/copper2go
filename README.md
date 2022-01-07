@@ -180,7 +180,6 @@ you find examples for the configuration od
 
 The copper2go Workflow's API is hosted in the Maven Central. It can be found at several places
 
-* https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
 * https://search.maven.org/search?q=copper2go
 * https://mvnrepository.com/artifact/io.github.keymaster65/copper2go-api
 
