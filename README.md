@@ -35,7 +35,7 @@ in  https://github.com/Keymaster65/copper2go-workflows.
 [![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
 
 * Start container
-    * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:3`
+    * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4`
 * In Browser you can see the used licenses
     * `http://localhost:59665/`
     * `http://localhost:59665/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name must be
@@ -55,7 +55,7 @@ You want to develop your own workflows? You may start with the existing ones.
         * store it in your local docker host `config.json`
         * Typically, modify workflowGitURI location
 * Start Container with your configuration:
-    * `docker run -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:3`
+    * `docker run -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4`
 
 ## More Motivation
 
@@ -205,7 +205,7 @@ URLs path should be "/copper2go/3/api/TYPE/MAJOR.MINOR/WORKFLOW-NAME
 
 where
 
-* The '3' relates to the Application API major version
+* The '3' relates to the HTTP Receiver API major version
 * The '2' Application API major version is still supported but DEPRECATED
 * TYPE can be
     * "twoway" if a body is expected in the reply. The HTTP reply is submitted during workflow processing.
@@ -240,11 +240,6 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "Security" Release Application API 4
-
-* [x] Remove vulnerabilities in dependencies
-* [x] Upgrade to higher libs, copper2go depends on
-
 ## Planning
 
 ### "Binding" Release Application API 4.1
@@ -264,6 +259,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ### Backlog
 
+* Remove version 2 of HTTP Receiver API
 * Finish support kafka events
 * Add "vanilla" engine implementation
 * Add new Repository Performancetest
@@ -305,6 +301,11 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ## Released
 
 ### "Kafka/Http Bridge, Quality and Java 17" Release
+
+### "Security" Release Application API 4
+
+* [x] Remove vulnerabilities in dependencies
+* [x] Upgrade to higher libs, copper2go depends on
 
 #### Application API 3.0
 
