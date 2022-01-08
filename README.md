@@ -300,12 +300,15 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ## Released
 
-### "Kafka/Http Bridge, Quality and Java 17" Release
 
-### "Security" Release Application API 4
+### "Security" Release
+
+#### Application API 4
 
 * [x] Remove vulnerabilities in dependencies
 * [x] Upgrade to higher libs, copper2go depends on
+
+### "Kafka/Http Bridge, Quality and Java 17" Release
 
 #### Application API 3.0
 
