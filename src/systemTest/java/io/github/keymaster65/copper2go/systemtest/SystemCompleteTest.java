@@ -74,7 +74,7 @@ class SystemCompleteTest {
     }
 
     static void startKafkaContainer() {
-        kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3")) // NOSONAR
+        kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:6.2.2")) // NOSONAR
                 .withNetwork(network)
                 .withNetworkAliases("kafka");
         kafka.start();

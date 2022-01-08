@@ -34,7 +34,7 @@ class Commons {
     static KafkaContainer kafka;
 
     static void startContainer() {
-        kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3"));
+        kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:6.2.2"));
         kafka.start();
         while (!kafka.isRunning()) {
             log.info("Wait for kafka running.");
