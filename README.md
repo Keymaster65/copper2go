@@ -240,20 +240,23 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
+### "Security" Release Application API 4
+
 * [x] Remove vulnerabilities in dependencies
+* [x] Upgrade to higher libs, copper2go depends on
 
 ## Planning
 
-### "Binding" Release Plan Application API 3.1
+### "Binding" Release Application API 4.1
 
 * [ ] Workflow with Json binding
 * [ ] Split copper2go-workflows
 
-### "State Pattern" Release Plan Application API 3.1
+### "State Pattern" Release Application API 4.1
 
 * [ ] Spike: Workflow using State Pattern or other defined strategy
 
-### "Operator" Release Plan Application API 3.2
+### "Operator" Release Application API 4.2
 
 * [ ] configure thread pool size, client pool size and more
 * [ ] Support of COPPER core GUI
@@ -264,6 +267,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Finish support kafka events
 * Add "vanilla" engine implementation
 * Add new Repository Performancetest
+* Replace vertx HTTP components with simpler implementation
+* Replace vertx Kafka components with simpler implementation
 * Improve unit test coverage up to 50+%
 * STDIN/OUT support in config and container (or remove it)
 * Workflow with XML binding (may be not ;-)
