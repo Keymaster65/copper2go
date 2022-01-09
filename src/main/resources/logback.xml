@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  -->
-<configuration scan="true" scanPeriod="3 seconds">
+<configuration>
     <appender name="STDOUT"
               class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -23,13 +23,13 @@
     <root level="warn">
         <appender-ref ref="STDOUT"/>
     </root>
-    <logger name="io.github.keymaster65.copper2go" level="debug" additivity="false">
+    <logger name="io.github.keymaster65.copper2go" level="${LOG_LEVEL_COPPER2GO:-warn}" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
-    <logger name="de.wolfsvl.copper2go.workflow" level="debug" additivity="false">
+    <logger name="de.wolfsvl.copper2go.workflow" level="${LOG_LEVEL_WORKFLOW:-info}" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
-    <logger name="org.copperengine" level="debug" additivity="false">
+    <logger name="org.copperengine" level="${LOG_LEVEL_COPPER:-warn}" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 </configuration>
