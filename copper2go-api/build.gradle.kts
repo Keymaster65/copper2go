@@ -1,8 +1,9 @@
 group = "io.github.keymaster65"
-version = "3.0.1"
+version = "3.1.0"
 
 plugins {
     `maven-publish`
+    `java-library`
 }
 
 java {
@@ -42,7 +43,9 @@ publishing {
 }
 
 dependencies {
-    implementation("org.copper-engine:copper-coreengine:5.4.1")
+    api("org.copper-engine:copper-coreengine:5.4.1")
+    api("org.slf4j:slf4j-api:2.0.0-alpha5")
+    api("com.fasterxml.jackson.core:jackson-databind:2.13.1")
 
     testImplementation("org.assertj:assertj-assertions-generator:2.+")
 }

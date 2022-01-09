@@ -51,7 +51,7 @@ You want to develop your own workflows? You may start with the existing ones.
 * Clone or fork the copper2go-workflows **gradle** project: https://github.com/Keymaster65/copper2go-workflows
 * Modify configuration and store it into environment variable C2G_CONFIG.
     * Start with
-      file: https://github.com/Keymaster65/copper2go/blob/release/3/src/main/resources/io/github/keymaster65/copper2go/application/config/config.json
+      file: https://github.com/Keymaster65/copper2go/blob/release/4/src/main/resources/io/github/keymaster65/copper2go/application/config/config.json
         * store it in your local docker host `config.json`
         * Typically, modify workflowGitURI location
 * Start Container with your configuration:
@@ -76,8 +76,14 @@ Of course, copper2go containers can be run wherever you want. So the container m
 * Intranet Workflows, if hosted in a company
 * Desktop Workflows, if run on your system
 
-  In times of automated build pipelines the needs for Workflow systems reduced, but a more lightweight **git** based
-  pipeline might even better fit your needs.
+In times of automated build pipelines the needs for Workflow systems reduced, but a more lightweight **git** based
+pipeline might even better fit your needs.
+
+## Vulnerability
+
+The copper2go application is checked using the https://plugins.gradle.org/plugin/org.owasp.dependencycheck, 
+so engine do not contain any open known security issue. 
+As workflows can not extend the used jars this check is sufficient for all workflow use cases.
 
 ## Developer's Guide
 
@@ -150,7 +156,25 @@ TO DO
 
 https://github.com/Keymaster65/copper2go-tools-bridge
 
-### Workflow's API Detail
+#### Versioning and API
+
+##### Workflow API
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api)
+
+The copper2go Workflow's API is hosted in the Maven Central. It can be found at several places
+
+* https://mvnrepository.com/artifact/io.github.keymaster65/copper2go-api
+* https://search.maven.org/search?q=copper2go
+* https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
+
+Starting with Workflow API 3.1.0 it also contains some compile dependencies, that extend the API.
+
+Changes will be listed here in the "Released" chapter. In addition, you have the API to the COPPER framework.
+
+Last but not least, the Java7 API can be used and is container in the copper2go application.
+
+##### Workflow's API Detail
 
 Visit the sources of and examples
 
@@ -158,40 +182,17 @@ Visit the sources of and examples
 * ReplyChannel
 * RequestChannel
 * EventChannel
+* and others
 
-### Application Configuration
-
-https://github.com/Keymaster65/copper2go/blob/release/3/src/main/resources/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json
-
-you find examples for the configuration od
-
-* COPPER Workflows (workflowRepositoryConfig)
-* HTTP Server (httpPort)
-* HTTP Request/Response (httpRequestChannelConfigs)
-* Kafka Server (kafkaHost, kafkaPort)
-* Kafka Receiver (kafkaReceiverConfigs)
-* Kafka Request/Response (kafkaRequestChannelConfigs)
-
-### Versioning and API
-
-#### Workflow's API
-
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api)
-
-The copper2go Workflow's API is hosted in the Maven Central. It can be found at several places
-
-* https://search.maven.org/search?q=copper2go
-* https://mvnrepository.com/artifact/io.github.keymaster65/copper2go-api
-
-  Changes will be listed here in the "Released" chapter. In addition, you have the API to the COPPER framework.
-
-#### Application API
+##### Application API
 
 [![GitHub release](https://img.shields.io/github/release/Keymaster65/copper2go)](https://GitHub.com/Keymaster65/copper2go/releases/)
 [![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
 
-The configuration of the application and the shipped dependencies will be listed here as Application API in the
-"Released" chapter. No Java code except of Workflow's API is released as an API. Of course, you can fork the project, if
+The configuration of the application and the receiver's APIs will be listed here as Application API in the
+"Released" chapter. 
+
+No Java code except of Workflow's API is released as an API. Of course, you can fork the project, if
 you want to make extensions.
 
 The releases are hosted at github:
@@ -199,7 +200,20 @@ https://github.com/Keymaster65/copper2go/releases
 
 Docker images can be found here: https://hub.docker.com/r/keymaster65/copper2go
 
-##### HTTP Receiver API
+###### Application Configuration
+
+https://github.com/Keymaster65/copper2go/blob/release/4/src/main/resources/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json
+
+you find examples for the configuration of
+
+* COPPER Workflows (workflowRepositoryConfig)
+* HTTP Receiver (Server) (httpPort)
+* HTTP Request/Response (httpRequestChannelConfigs)
+* Kafka Server (kafkaHost, kafkaPort)
+* Kafka Receiver (kafkaReceiverConfigs)
+* Kafka Request/Response (kafkaRequestChannelConfigs)
+
+###### HTTP Receiver API
 
 URLs path should be "/copper2go/3/api/TYPE/MAJOR.MINOR/WORKFLOW-NAME
 
@@ -215,7 +229,15 @@ where
 
 URL "/" shows licence information.
 
-#### Missing Features?
+###### Kafka Receiver API
+
+TODO
+
+###### StandardInOut Receiver API
+
+TODO
+
+### Missing Features?
 
 If you want to add something, you may contribute with pull requests or forks. In a fork you might add 3rd party libs as
 wished.
@@ -239,6 +261,11 @@ Issues are very welcome, too.
 ## Ongoing
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
+
+### "3rd Party" Release Workflow API 3.1.0
+
+* [x] Add 3rd party libs to supported Workflow API
+* [ ] Make logLevel accessible via environment
 
 ## Planning
 
