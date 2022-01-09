@@ -25,7 +25,7 @@ changes in the technical part of the application outside the business workflows 
 pipeline.
 
 This picture shows a first overview:
-![This picture shows a first overview](copper2goOverview.svg)
+![This picture shows a first overview](copper2goOverview.png)
 
 ## Quick Start
 
