@@ -172,6 +172,8 @@ Starting with Workflow API 3.1.0 it also contains some compile dependencies, tha
 
 Changes will be listed here in the "Released" chapter. In addition, you have the API to the COPPER framework.
 
+Last but not least, the Java7 API can be used and is container in the copper2go application.
+
 ##### Workflow's API Detail
 
 Visit the sources of and examples
