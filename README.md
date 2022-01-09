@@ -272,10 +272,6 @@ Issues are very welcome, too.
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
 
-### "3rd Party" Release Workflow API 3.1.0
-
-* [x] Add 3rd party libs to supported Workflow API
-
 ## Planning
 
 ### "Binding" Release Application API 4.1
@@ -335,6 +331,10 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * On demand only: extend workflow attributes to a MultiMap
 
 ## Released
+
+### "3rd Party" Release Workflow API 3.1.0
+
+* [x] Add 3rd party libs to supported Workflow API
 
 ### "Log Config" Release Application API 4.1
 
