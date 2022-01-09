@@ -264,6 +264,6 @@ jib {
             username = "keymaster65"
             password = System.getenv("DOCKER_HUB_PASSWORD")
         }
-        tags = setOf("4")
+        tags = setOf("4.1")
     }
 }
