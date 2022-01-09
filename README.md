@@ -51,7 +51,7 @@ You want to develop your own workflows? You may start with the existing ones.
 * Clone or fork the copper2go-workflows **gradle** project: https://github.com/Keymaster65/copper2go-workflows
 * Modify configuration and store it into environment variable C2G_CONFIG.
     * Start with
-      file: https://github.com/Keymaster65/copper2go/blob/release/3/src/main/resources/io/github/keymaster65/copper2go/application/config/config.json
+      file: https://github.com/Keymaster65/copper2go/blob/release/4/src/main/resources/io/github/keymaster65/copper2go/application/config/config.json
         * store it in your local docker host `config.json`
         * Typically, modify workflowGitURI location
 * Start Container with your configuration:
@@ -161,12 +161,12 @@ Visit the sources of and examples
 
 ### Application Configuration
 
-https://github.com/Keymaster65/copper2go/blob/release/3/src/main/resources/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json
+https://github.com/Keymaster65/copper2go/blob/release/4/src/main/resources/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json
 
-you find examples for the configuration od
+you find examples for the configuration of
 
 * COPPER Workflows (workflowRepositoryConfig)
-* HTTP Server (httpPort)
+* HTTP Receiver (Server) (httpPort)
 * HTTP Request/Response (httpRequestChannelConfigs)
 * Kafka Server (kafkaHost, kafkaPort)
 * Kafka Receiver (kafkaReceiverConfigs)
