@@ -202,6 +202,8 @@ Docker images can be found here: https://hub.docker.com/r/keymaster65/copper2go
 
 ###### Application Configuration
 
+###### Main Configuration
+
 https://github.com/Keymaster65/copper2go/blob/release/4/src/main/resources/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json
 
 you find examples for the configuration of
@@ -212,6 +214,13 @@ you find examples for the configuration of
 * Kafka Server (kafkaHost, kafkaPort)
 * Kafka Receiver (kafkaReceiverConfigs)
 * Kafka Request/Response (kafkaRequestChannelConfigs)
+
+###### Logging Configuration
+
+The logback logging is defined in
+https://github.com/Keymaster65/copper2go/blob/release/4/src/main/resources/logback.xml
+
+There you can find the environment variables, that can be used to control logging at container start.
 
 ###### HTTP Receiver API
 
@@ -262,10 +271,10 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
+
 ### "3rd Party" Release Workflow API 3.1.0
 
 * [x] Add 3rd party libs to supported Workflow API
-* [ ] Make logLevel accessible via environment
 
 ## Planning
 
@@ -327,6 +336,10 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ## Released
 
+### "Log Config" Release Application API 4.1
+
+* [x] Make logLevel accessible via environment
+* [x] Add log configuration here
 
 ### "Security" Release
 
