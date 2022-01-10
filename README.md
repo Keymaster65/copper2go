@@ -25,7 +25,7 @@ changes in the technical part of the application outside the business workflows 
 pipeline.
 
 This picture shows a first overview:
-![This picture shows a first overview](copper2goOverview.png)
+![This picture shows a first overview](copper2goOverview.svg)
 
 ## Quick Start
 
@@ -143,7 +143,7 @@ I am looking for feedback.
 
 The Architecture overview
 
-![The Architecture overview](copper2goComponents.png)
+![The Architecture overview](copper2goComponents.svg)
 
 shows the main packages, classes and infaces of copper2go. Beside the workflows and the workflow api, you should be
 aware of the connector capabilities.
