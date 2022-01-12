@@ -142,7 +142,7 @@ allprojects {
             implementation("io.netty:netty-common:4.1.72.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-handler:4.1.72.Final") {
+            implementation("io.netty:netty-handler:4.1.73.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-handler-proxy:4.1.72.Final") {
