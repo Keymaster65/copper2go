@@ -18,7 +18,6 @@ package io.github.keymaster65.copper2go.engine.impl;
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
-import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 import io.github.keymaster65.copper2go.api.util.Copper2goDependencyInjector;
 import org.assertj.core.api.Assertions;
 import org.copperengine.core.DependencyInjector;

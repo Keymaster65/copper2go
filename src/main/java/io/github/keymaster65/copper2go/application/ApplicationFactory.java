@@ -26,7 +26,7 @@ import io.github.keymaster65.copper2go.connector.http.vertx.request.RequestChann
 import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiver;
 import io.github.keymaster65.copper2go.connector.standardio.event.StandardOutEventChannel;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
-import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
+import io.github.keymaster65.copper2go.engine.impl.WorkflowRepositoryConfig;
 import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngineFactory;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
 import org.copperengine.core.DependencyInjector;
