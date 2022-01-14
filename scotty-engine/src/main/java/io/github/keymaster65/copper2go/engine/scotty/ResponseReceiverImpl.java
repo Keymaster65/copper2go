@@ -13,19 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.vanilla;
+package io.github.keymaster65.copper2go.engine.scotty;
 
 import io.github.keymaster65.copper2go.api.connector.ResponseReceiver;
+import org.copperengine.core.Acknowledge;
+import org.copperengine.core.Response;
+import org.copperengine.core.tranzient.TransientScottyEngine;
 
 public class ResponseReceiverImpl implements ResponseReceiver {
 
+    private final TransientScottyEngine scottyEngine;
+
+    ResponseReceiverImpl(final TransientScottyEngine scottyEngine) {
+        this.scottyEngine = scottyEngine;
+    }
+
     @Override
     public void receive(final String responseCorrelationId, final String response) {
-
+        Response<String> copperResponse = new Response<>(responseCorrelationId, response, null);
+        scottyEngine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
     }
 
     @Override
     public void receiveError(final String responseCorrelationId, final String response) {
-
+        Response<String> copperResponse = new Response<>(responseCorrelationId, response, new RuntimeException(response));
+        scottyEngine.notify(copperResponse, new Acknowledge.BestEffortAcknowledge());
     }
+
 }

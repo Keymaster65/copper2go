@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.keymaster65.copper2go.connector.http.vertx.request.HttpRequestChannelConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiverConfig;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.request.KafkaRequestChannelConfig;
-import io.github.keymaster65.copper2go.engine.impl.WorkflowRepositoryConfig;
+import io.github.keymaster65.copper2go.engine.scotty.WorkflowRepositoryConfig;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

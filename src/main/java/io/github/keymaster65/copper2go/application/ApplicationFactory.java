@@ -26,8 +26,8 @@ import io.github.keymaster65.copper2go.connector.http.vertx.request.RequestChann
 import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiver;
 import io.github.keymaster65.copper2go.connector.standardio.event.StandardOutEventChannel;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
-import io.github.keymaster65.copper2go.engine.impl.WorkflowRepositoryConfig;
-import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngineFactory;
+import io.github.keymaster65.copper2go.engine.scotty.WorkflowRepositoryConfig;
+import io.github.keymaster65.copper2go.engine.scotty.Copper2GoEngineFactory;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
 import org.copperengine.core.DependencyInjector;
 
@@ -54,7 +54,9 @@ public class ApplicationFactory {
                 config.maxTickets,
                 config.workflowRepositoryConfig,
                 replyChannelStoreImpl,
-                dependencyInjector
+                dependencyInjector,
+                defaultEventChannelStore,
+                defaultRequestChannelStore
         );
 
 
@@ -89,11 +91,14 @@ public class ApplicationFactory {
             final int maxTickets,
             final WorkflowRepositoryConfig workflowRepositoryConfig,
             final ReplyChannelStoreImpl replyChannelStoreImpl,
-            final DependencyInjector dependencyInjector
-    ) {
+            final DependencyInjector dependencyInjector,
+            final DefaultEventChannelStore defaultEventChannelStore,
+            final DefaultRequestChannelStore defaultRequestChannelStore) {
         if (maxTickets == 0) {
             return io.github.keymaster65.copper2go.engine.vanilla.Copper2GoEngineFactory.create(
-                    replyChannelStoreImpl
+                    replyChannelStoreImpl,
+                    defaultRequestChannelStore,
+                    defaultEventChannelStore
             );
         }
         return Copper2GoEngineFactory.create(

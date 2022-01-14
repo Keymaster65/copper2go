@@ -15,10 +15,12 @@
  */
 package io.github.keymaster65.copper2go.engine.vanilla;
 
-import io.github.keymaster65.copper2go.api.connector.EngineException;
+import io.github.keymaster65.copper2go.api.connector.DefaultEventChannelStore;
+import io.github.keymaster65.copper2go.api.connector.DefaultRequestChannelStore;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
-import io.github.keymaster65.copper2go.engine.EngineControl;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
+
+import java.util.concurrent.Executors;
 
 public class Copper2GoEngineFactory {
 
@@ -26,24 +28,20 @@ public class Copper2GoEngineFactory {
     }
 
     public static Copper2GoEngine create(
-            final ReplyChannelStoreImpl replyChannelStore
+            final ReplyChannelStoreImpl replyChannelStore,
+            final DefaultRequestChannelStore defaultRequestChannelStore,
+            final DefaultEventChannelStore defaultEventChannelStore
     ) {
-        return new Copper2GoEngine(
-                new PayloadReceiverImpl(replyChannelStore),
-                new ResponseReceiverImpl(),
-                new EngineControl() {
-
-                    @Override
-                    public void start() throws EngineException {
-
-                    }
-
-                    @Override
-                    public void stop() throws EngineException {
-
-                    }
-                }
+        final VanillaEngine vanillaEngine = new VanillaEngine(
+                replyChannelStore,
+                defaultRequestChannelStore,
+                defaultEventChannelStore,
+                Executors.newFixedThreadPool(10)
         );
-
+        return new Copper2GoEngine(
+                vanillaEngine,
+                vanillaEngine,
+                new EngineControlImpl()
+        );
     }
 }

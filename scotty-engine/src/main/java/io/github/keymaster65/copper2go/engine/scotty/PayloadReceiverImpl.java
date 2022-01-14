@@ -13,24 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.vanilla;
+package io.github.keymaster65.copper2go.engine.scotty;
 
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
-import io.github.keymaster65.copper2go.api.connector.DefaultEventChannelStore;
-import io.github.keymaster65.copper2go.api.connector.DefaultRequestChannelStore;
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.github.keymaster65.copper2go.api.connector.ReplyChannel;
 import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
+import org.copperengine.core.CopperException;
+import org.copperengine.core.WorkflowInstanceDescr;
+import org.copperengine.core.WorkflowVersion;
+import org.copperengine.core.tranzient.TransientScottyEngine;
 
 import java.util.Map;
-import java.util.UUID;
 
 public class PayloadReceiverImpl implements PayloadReceiver {
 
+    private final TransientScottyEngine scottyEngine;
     private final ReplyChannelStoreImpl replyChannelStore;
 
-    public PayloadReceiverImpl(final ReplyChannelStoreImpl replyChannelStore) {
+    PayloadReceiverImpl(
+            final TransientScottyEngine scottyEngine,
+            final ReplyChannelStoreImpl replyChannelStore
+    ) {
+
+        this.scottyEngine = scottyEngine;
         this.replyChannelStore = replyChannelStore;
     }
 
@@ -41,19 +48,22 @@ public class PayloadReceiverImpl implements PayloadReceiver {
             final ReplyChannel replyChannel,
             final String workflow,
             final long major,
-            final long minor) throws EngineException {
+            final long minor
+    ) throws EngineException {
+        WorkflowInstanceDescr<WorkflowData> workflowInstanceDescr = new WorkflowInstanceDescr<>(workflow);
+        WorkflowVersion version = scottyEngine.getWfRepository().findLatestMinorVersion(workflowInstanceDescr.getWfName(), major, minor);
+        workflowInstanceDescr.setVersion(version);
+
         String uuid = null;
         if (replyChannel != null) {
-            uuid = UUID.randomUUID().toString();
+            uuid = scottyEngine.createUUID();
             replyChannelStore.store(uuid, replyChannel);
         }
-
-        new Hello_1(
-                replyChannelStore,
-                new DefaultRequestChannelStore(),
-                new DefaultEventChannelStore()
-
-        ).main(new WorkflowData(uuid, payload));
-
+        workflowInstanceDescr.setData(new WorkflowData(uuid, payload, attributes));
+        try {
+            scottyEngine.run(workflowInstanceDescr);
+        } catch (CopperException e) {
+            throw new EngineException("Exception while running workflow.", e);
+        }
     }
 }
