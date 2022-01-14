@@ -18,32 +18,9 @@ package io.github.keymaster65.copper2go.engine;
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.github.keymaster65.copper2go.api.connector.ResponseReceiver;
 
-public class Copper2GoEngine {
-
-    private final PayloadReceiver payloadReceiver;
-    private final ResponseReceiver responseReceiver;
-    private final EngineControl engineControl;
-
-    public Copper2GoEngine(
-            final PayloadReceiver payloadReceiver,
-            final ResponseReceiver responseReceiver,
-            final EngineControl engineControl
-    ) {
-        this.payloadReceiver = payloadReceiver;
-        this.responseReceiver = responseReceiver;
-        this.engineControl = engineControl;
-    }
-
-    public EngineControl getEngineControl() {
-        return engineControl;
-    }
-
-    public PayloadReceiver getPayloadReceiver() {
-        return payloadReceiver;
-    }
-
-    public ResponseReceiver getResponseReceiver() {
-        return responseReceiver;
-    }
-
+public record Copper2GoEngine(
+        PayloadReceiver payloadReceiver,
+        ResponseReceiver responseReceiver,
+        EngineControl engineControl
+) {
 }

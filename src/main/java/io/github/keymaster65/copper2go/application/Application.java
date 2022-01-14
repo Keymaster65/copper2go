@@ -53,7 +53,7 @@ public class Application {
 
     public synchronized void start() throws EngineException {
         log.info("start application");
-        copper2GoEngine.getEngineControl().start();
+        copper2GoEngine.engineControl().start();
         httpServer.start();
         for (Map.Entry<String, KafkaReceiver> entry : kafkaReceiverMap.entrySet()) {
             entry.getValue().start();
@@ -63,7 +63,7 @@ public class Application {
     public synchronized void startWithStdInOut() throws EngineException, StandardInOutException {
         start();
         final var standardInOutReceiver = new StandardInOutReceiver(new BufferedReader(new InputStreamReader(System.in)));
-        standardInOutReceiver.listenLocalStream(copper2GoEngine.getPayloadReceiver());
+        standardInOutReceiver.listenLocalStream(copper2GoEngine.payloadReceiver());
     }
 
     public synchronized void stop() throws EngineException {
@@ -78,7 +78,7 @@ public class Application {
             entry.getValue().close();
         }
         defaultRequestChannelStore.close();
-        copper2GoEngine.getEngineControl().stop();
+        copper2GoEngine.engineControl().stop();
     }
 
     public synchronized boolean isStopRequested() {

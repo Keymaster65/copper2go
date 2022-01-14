@@ -34,7 +34,7 @@ class Copper2GoEngineTest {
                 Mockito.mock(EngineControlImpl.class)
         );
 
-        Assertions.assertThat(copper2GoEngine.getPayloadReceiver()).isSameAs(payloadReceiver);
+        Assertions.assertThat(copper2GoEngine.payloadReceiver()).isSameAs(payloadReceiver);
     }
 
     @Test
@@ -46,7 +46,7 @@ class Copper2GoEngineTest {
                 Mockito.mock(EngineControlImpl.class)
         );
 
-        Assertions.assertThat(copper2GoEngine.getResponseReceiver()).isSameAs(responseReceiver);
+        Assertions.assertThat(copper2GoEngine.responseReceiver()).isSameAs(responseReceiver);
     }
 
     @Test
@@ -58,6 +58,6 @@ class Copper2GoEngineTest {
                 engineControl
         );
 
-        Assertions.assertThat(copper2GoEngine.getEngineControl()).isSameAs(engineControl);
+        Assertions.assertThat(copper2GoEngine.engineControl()).isSameAs(engineControl);
     }
 }

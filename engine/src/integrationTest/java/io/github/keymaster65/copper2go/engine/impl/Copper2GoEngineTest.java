@@ -32,9 +32,9 @@ class Copper2GoEngineTest {
         Copper2GoEngine engine = createStartedEngine("release/3");
         Assertions
                 .assertThatNoException()
-                .isThrownBy(() -> engine.getEngineControl().close());
+                .isThrownBy(() -> engine.engineControl().close());
         Assertions
-                .assertThatCode(() -> engine.getEngineControl().close())
+                .assertThatCode(() -> engine.engineControl().close())
                 .isInstanceOf(EngineException.class);
     }
 
@@ -48,7 +48,7 @@ class Copper2GoEngineTest {
 
     private static Copper2GoEngine createStartedEngine(final String branch) throws EngineException {
         Copper2GoEngine engine = createEngine(branch);
-        engine.getEngineControl().start();
+        engine.engineControl().start();
 
         return engine;
     }

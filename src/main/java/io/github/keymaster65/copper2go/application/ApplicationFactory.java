@@ -60,7 +60,7 @@ public class ApplicationFactory {
 
         RequestChannelConfigurator.putHttpRequestChannels(
                 config.httpRequestChannelConfigs,
-                copper2GoEngine.getResponseReceiver(),
+                copper2GoEngine.responseReceiver(),
                 defaultRequestChannelStore
         );
 
@@ -68,15 +68,15 @@ public class ApplicationFactory {
                 config.kafkaHost,
                 config.kafkaPort,
                 config.kafkaRequestChannelConfigs,
-                copper2GoEngine.getResponseReceiver(),
+                copper2GoEngine.responseReceiver(),
                 defaultRequestChannelStore
         );
 
         Copper2GoHttpServer httpServer = new VertxHttpServer(
                 config.httpPort,
-                new RequestHandler(copper2GoEngine.getPayloadReceiver()));
+                new RequestHandler(copper2GoEngine.payloadReceiver()));
 
-        Map<String, KafkaReceiver> kafkaReceiverMap = KafkaReceiverMapFactory.create(config.kafkaHost, config.kafkaPort, config.kafkaReceiverConfigs, copper2GoEngine.getPayloadReceiver());
+        Map<String, KafkaReceiver> kafkaReceiverMap = KafkaReceiverMapFactory.create(config.kafkaHost, config.kafkaPort, config.kafkaReceiverConfigs, copper2GoEngine.payloadReceiver());
         return new Application(
                 copper2GoEngine,
                 httpServer,
