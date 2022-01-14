@@ -91,11 +91,6 @@ public class ApplicationFactory {
             final ReplyChannelStoreImpl replyChannelStoreImpl,
             final DependencyInjector dependencyInjector
     ) {
-        if (maxTickets == 0) {
-            return io.github.keymaster65.copper2go.engine.vanilla.Copper2GoEngineFactory.create(
-                    replyChannelStoreImpl
-            );
-        }
         return Copper2GoEngineFactory.create(
                 maxTickets,
                 workflowRepositoryConfig,
