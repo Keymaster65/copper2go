@@ -15,7 +15,9 @@
  */
 package io.github.keymaster65.copper2go.engine.vanilla;
 
+import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.EngineControl;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
 
 public class Copper2GoEngineFactory {
@@ -29,7 +31,18 @@ public class Copper2GoEngineFactory {
         return new Copper2GoEngine(
                 new PayloadReceiverImpl(replyChannelStore),
                 new ResponseReceiverImpl(),
-                new EngineControlImpl()
+                new EngineControl() {
+
+                    @Override
+                    public void start() throws EngineException {
+
+                    }
+
+                    @Override
+                    public void stop() throws EngineException {
+
+                    }
+                }
         );
 
     }
