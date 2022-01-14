@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.impl;
+package io.github.keymaster65.copper2go.engine.scotty;
 
 import org.copperengine.core.common.SimpleJmxExporter;
 import org.copperengine.core.monitoring.LoggingStatisticCollector;

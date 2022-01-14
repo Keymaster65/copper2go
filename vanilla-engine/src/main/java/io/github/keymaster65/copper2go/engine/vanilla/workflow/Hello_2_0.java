@@ -13,34 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.vanilla;
+package io.github.keymaster65.copper2go.engine.vanilla.workflow;
 
 import io.github.keymaster65.copper2go.api.workflow.EventChannelStore;
 import io.github.keymaster65.copper2go.api.workflow.ReplyChannelStore;
 import io.github.keymaster65.copper2go.api.workflow.RequestChannelStore;
 import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
+import io.github.keymaster65.copper2go.engine.vanilla.VanillaEngine;
+import io.github.keymaster65.copper2go.engine.vanilla.Workflow;
 
-public class Hello_1 {
+import java.util.function.Consumer;
 
+public class Hello_2_0 implements Workflow {
+
+    private final VanillaEngine vanillaEngine;
     private final ReplyChannelStore replyChannelStore;
     private final RequestChannelStore requestChannelStore;
-    private final EventChannelStore eventChannelStore;
+    private WorkflowData workflowData;
 
-    public Hello_1(
+    public Hello_2_0(
+            final VanillaEngine vanillaEngine,
             final ReplyChannelStore replyChannelStore,
             final RequestChannelStore requestChannelStore,
-            final EventChannelStore eventChannelStore
+            @SuppressWarnings("unused") final EventChannelStore eventChannelStore
     ) {
-
+        this.vanillaEngine = vanillaEngine;
         this.replyChannelStore = replyChannelStore;
         this.requestChannelStore = requestChannelStore;
-        this.eventChannelStore = eventChannelStore;
     }
 
     public void main(final WorkflowData workflowData) {
+        Consumer<String> continuation = this::continuation;
+        this.workflowData = workflowData;
+        final String responseCorrelationId = vanillaEngine.createUUID();
+        requestChannelStore.request("Pricing.centPerMinute", "request", responseCorrelationId);
+        vanillaEngine.continueAsSync(responseCorrelationId, continuation);
+    }
+
+    public void continuation(final String response) {
         final String uuid = workflowData.getUUID();
         if (uuid != null) {
-            replyChannelStore.reply(uuid, "Hello " + workflowData.getPayload());
+            replyChannelStore.reply(uuid, "Hello " + workflowData.getPayload() + " Response: " + response);
         }
     }
 }
