@@ -297,7 +297,6 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Add new Repository Performancetest
 * Replace vertx HTTP components with simpler implementation
 * Replace vertx Kafka components with simpler implementation
-* Improve unit test coverage up to 50+%
 * STDIN/OUT support in config and container (or remove it)
 * Workflow with XML binding (may be not ;-)
 * Redesign DefaultRequestChannel (like Kafka). Use WARN instead of ERROR?
@@ -306,7 +305,6 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Add test coverage for workflows to copper2go-workflows
 * Release internet workflow application as copper2go-webapp (see branch experiment/webapp)
 * Multi workflow support and REST level
-* Vertx Bus Connector
 * HTTP Security
 * Kafka Security
 * Add information "How Tos" to developer's guide
@@ -329,6 +327,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Async idempotent DB API
 * On demand only: factoryfx integration
 * On demand only: extend workflow attributes to a MultiMap
+* Withdrawn: Vertx Bus Connector
 
 ## Released
 
