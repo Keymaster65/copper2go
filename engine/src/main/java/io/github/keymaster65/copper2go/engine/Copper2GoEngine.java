@@ -13,33 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.impl;
+package io.github.keymaster65.copper2go.engine;
 
-import io.github.keymaster65.copper2go.engine.EngineControl;
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.github.keymaster65.copper2go.api.connector.ResponseReceiver;
-import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 
 public class Copper2GoEngine {
 
     private final PayloadReceiver payloadReceiver;
     private final ResponseReceiver responseReceiver;
-    private final EngineControlImpl engineControl;
+    private final EngineControl engineControl;
 
     public Copper2GoEngine(
-            final int availableTickets,
-            final WorkflowRepositoryConfig workflowRepositoryConfig,
-            final ReplyChannelStoreImpl replyChannelStore
-    ) {
-        this.engineControl = new EngineControlImpl(availableTickets, workflowRepositoryConfig);
-        this.payloadReceiver = new PayloadReceiverImpl(engineControl.scottyEngine, replyChannelStore);
-        this.responseReceiver = new ResponseReceiverImpl(engineControl.scottyEngine);
-    }
-
-    Copper2GoEngine(
             final PayloadReceiver payloadReceiver,
             final ResponseReceiver responseReceiver,
-            final EngineControlImpl engineControl
+            final EngineControl engineControl
     ) {
         this.payloadReceiver = payloadReceiver;
         this.responseReceiver = responseReceiver;

@@ -21,8 +21,7 @@ import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiver;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
 import io.github.keymaster65.copper2go.connector.standardio.receiver.StandardInOutReceiver;
-import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngine;
-import org.copperengine.core.DependencyInjector;
+import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,18 +37,15 @@ public class Application {
     private final Copper2GoEngine copper2GoEngine;
     private final Copper2GoHttpServer httpServer;
     private final DefaultRequestChannelStore defaultRequestChannelStore;
-    private final DependencyInjector dependencyInjector;
     private final AtomicBoolean stopRequested = new AtomicBoolean(false);
     private final Map<String, KafkaReceiver> kafkaReceiverMap;
 
     public Application(
             final Copper2GoEngine copper2GoEngine,
-            final DependencyInjector dependencyInjector,
             final Copper2GoHttpServer httpServer,
             final DefaultRequestChannelStore defaultRequestChannelStore,
             final Map<String, KafkaReceiver> kafkaReceiverMap) {
         this.copper2GoEngine = copper2GoEngine;
-        this.dependencyInjector = dependencyInjector;
         this.httpServer = httpServer;
         this.defaultRequestChannelStore = defaultRequestChannelStore;
         this.kafkaReceiverMap = kafkaReceiverMap;
@@ -57,7 +53,7 @@ public class Application {
 
     public synchronized void start() throws EngineException {
         log.info("start application");
-        copper2GoEngine.getEngineControl().start(dependencyInjector);
+        copper2GoEngine.getEngineControl().start();
         httpServer.start();
         for (Map.Entry<String, KafkaReceiver> entry : kafkaReceiverMap.entrySet()) {
             entry.getValue().start();
