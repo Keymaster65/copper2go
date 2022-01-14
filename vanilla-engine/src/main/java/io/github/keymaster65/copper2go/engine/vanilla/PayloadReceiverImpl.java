@@ -15,13 +15,13 @@
  */
 package io.github.keymaster65.copper2go.engine.vanilla;
 
+import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
 import io.github.keymaster65.copper2go.api.connector.DefaultEventChannelStore;
 import io.github.keymaster65.copper2go.api.connector.DefaultRequestChannelStore;
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.github.keymaster65.copper2go.api.connector.ReplyChannel;
 import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
-import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
 
 import java.util.Map;
 import java.util.UUID;

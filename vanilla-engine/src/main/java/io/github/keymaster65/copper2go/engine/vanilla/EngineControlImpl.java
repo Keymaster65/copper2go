@@ -15,8 +15,8 @@
  */
 package io.github.keymaster65.copper2go.engine.vanilla;
 
-import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.engine.EngineControl;
+import io.github.keymaster65.copper2go.api.connector.EngineException;
 
 public class EngineControlImpl implements EngineControl {
 

@@ -27,6 +27,8 @@ dependencies {
     implementation(project(":copper2go-api"))
     implementation(project(":connector-api"))
     implementation(project(":engine-api"))
+    implementation(project(":scotty-engine"))
+    implementation(project(":vanilla-engine"))
     implementation(project(":connector-http-vertx"))
     implementation(project(":connector-kafka-vertx"))
     implementation(project(":connector-standardio"))
