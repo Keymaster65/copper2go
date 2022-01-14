@@ -17,7 +17,6 @@ package io.github.keymaster65.copper2go.engine.impl;
 
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
-import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 import org.copperengine.core.DependencyInjector;
 
 public class Copper2GoEngineFactory {

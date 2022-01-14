@@ -16,7 +16,6 @@
 package io.github.keymaster65.copper2go.engine.impl;
 
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
-import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 import org.assertj.core.api.Assertions;
 import org.copperengine.core.DependencyInjector;
 import org.junit.jupiter.api.Test;

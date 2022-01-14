@@ -15,7 +15,6 @@
  */
 package io.github.keymaster65.copper2go.engine.impl;
 
-import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 import org.assertj.core.api.Assertions;
 import org.copperengine.core.common.SimpleJmxExporter;
 import org.copperengine.core.monitoring.LoggingStatisticCollector;

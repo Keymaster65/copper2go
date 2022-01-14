@@ -16,7 +16,6 @@
 package io.github.keymaster65.copper2go.engine.impl;
 
 import io.github.keymaster65.copper2go.engine.EngineControl;
-import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import org.copperengine.core.DependencyInjector;
 import org.copperengine.core.EngineState;
