@@ -343,6 +343,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Remove version 2 of HTTP Receiver API
 * Implement loom-engine
 * Finish support kafka events
+* Add new Repository Performancetest
 * Replace vertx HTTP components with simpler implementation
 * Replace vertx Kafka components with simpler implementation
 * STDIN/OUT support in config and container (or remove it)
