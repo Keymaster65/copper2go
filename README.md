@@ -271,6 +271,8 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
+* [x] Update jqwik-api:1.6.3
+* [x] Add "vanilla" engine implementation
 
 ## Planning
 
@@ -291,9 +293,9 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ### Backlog
 
+* Add loom-engine
 * Remove version 2 of HTTP Receiver API
 * Finish support kafka events
-* Add "vanilla" engine implementation
 * Add new Repository Performancetest
 * Replace vertx HTTP components with simpler implementation
 * Replace vertx Kafka components with simpler implementation
