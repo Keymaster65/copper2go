@@ -15,29 +15,28 @@
  */
 package io.github.keymaster65.copper2go.engine.vanilla;
 
-import io.github.keymaster65.copper2go.api.connector.EngineException;
-import io.github.keymaster65.copper2go.engine.EngineControl;
+import io.github.keymaster65.copper2go.api.connector.ResponseReceiver;
 
-public class EngineControlImpl implements EngineControl {
-
+public class ResponseReceiverImpl implements ResponseReceiver {
     private final VanillaEngineImpl vanillaEngineImpl;
 
-    public EngineControlImpl(final VanillaEngineImpl vanillaEngineImpl) {
+    public ResponseReceiverImpl(final VanillaEngineImpl vanillaEngineImpl) {
         this.vanillaEngineImpl = vanillaEngineImpl;
     }
 
     @Override
-    public void start() throws EngineException {
-        if (vanillaEngineImpl.executorService == null) {
-            throw new EngineException("VanillaEngine has no executorService.");
+    public void receive(final String responseCorrelationId, final String response) {
+        ContinuationStore.Continuation waiting = vanillaEngineImpl.continuationStore.put(responseCorrelationId, new ContinuationStore.Continuation(response));
+        if (waiting != null) {
+            vanillaEngineImpl.continuationStore.remove(responseCorrelationId);
+            vanillaEngineImpl.executorService.submit(() ->
+                    waiting.consumer().accept(response)
+            );
         }
     }
 
     @Override
-    public void stop() throws EngineException {
-        if (vanillaEngineImpl.executorService == null) {
-            throw new EngineException("VanillaEngine has no executorService.");
-        }
-        vanillaEngineImpl.executorService.shutdown();
+    public void receiveError(final String responseCorrelationId, final String response) {
+        receive(responseCorrelationId, response);
     }
 }

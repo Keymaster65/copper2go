@@ -15,30 +15,24 @@
  */
 package io.github.keymaster65.copper2go.engine.vanilla.workflow;
 
-import io.github.keymaster65.copper2go.api.workflow.EventChannelStore;
-import io.github.keymaster65.copper2go.api.workflow.ReplyChannelStore;
-import io.github.keymaster65.copper2go.api.workflow.RequestChannelStore;
 import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
 import io.github.keymaster65.copper2go.engine.vanilla.VanillaEngine;
 import io.github.keymaster65.copper2go.engine.vanilla.Workflow;
 
 public class Pricing_1_0 implements Workflow {
 
-    private final ReplyChannelStore replyChannelStore;
+    private final VanillaEngine vanillaEngine;
 
     public Pricing_1_0(
-            @SuppressWarnings("unused") final VanillaEngine vanillaEngine,
-            final ReplyChannelStore replyChannelStore,
-            @SuppressWarnings("unused") final RequestChannelStore requestChannelStore,
-            @SuppressWarnings("unused") final EventChannelStore eventChannelStore
+            final VanillaEngine vanillaEngine
     ) {
-        this.replyChannelStore = replyChannelStore;
+        this.vanillaEngine = vanillaEngine;
     }
 
     public void main(final WorkflowData workflowData) {
         final String uuid = workflowData.getUUID();
         if (uuid != null) {
-            replyChannelStore.reply(uuid, "Price is 5 cent.");
+            vanillaEngine.reply(uuid, "5 cent.");
         }
     }
 

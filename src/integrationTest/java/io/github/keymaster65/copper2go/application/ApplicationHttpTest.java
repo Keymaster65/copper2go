@@ -22,6 +22,8 @@ import io.github.keymaster65.copper2go.connector.http.vertx.receiver.ApiPath;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -31,16 +33,18 @@ import java.net.http.HttpResponse;
 class ApplicationHttpTest {
 
     public static final String HTTP_LOCALHOST = "http://localhost:";
+    public static final String HELLO_2 = "2.0/Hello";
+    public static final String HELLO_1 = "1.0/Hello?a=1";
 
     @Test()
-    void masterHelloTest() throws IOException, EngineException, InterruptedException {
+    void helloTest() throws IOException, EngineException, InterruptedException {
         String name = Data.getName();
         Config config = Config.of();
         Application application = ApplicationFactory.of(config);
         HttpResponse<String> response;
         try {
             application.start();
-            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + "1.0/Hello?a=1"), name);
+            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + HELLO_1), name);
         } finally {
             application.stop();
         }
@@ -48,15 +52,19 @@ class ApplicationHttpTest {
         Assertions.assertThat(response.body()).contains(Data.getExpectedHello(name));
     }
 
-    @Test()
-    void masterHello2MappingTest() throws IOException, EngineException, InterruptedException {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "configVanilla.json",
+            "config.json"
+    })    void hello2MappingTest(final String configName) throws IOException, EngineException, InterruptedException {
         String name = Data.getName();
-        Config config = Config.of();
+        Config config = Config.ofResource("/io/github/keymaster65/copper2go/application/config/" + configName);
+
         Application application = ApplicationFactory.of(config);
         HttpResponse<String> response;
         try {
             application.start();
-            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + "2.0/Hello"), name);
+            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + HELLO_2), name);
         } finally {
 
             application.stop();
@@ -73,7 +81,7 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
-            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + "2.0/Hello"), name);
+            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + HELLO_2), name);
         } finally {
             application.stop();
         }
@@ -93,7 +101,7 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
-            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.ONEWAY_PATH + "2.0/Hello"), name);
+            response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.ONEWAY_PATH + HELLO_2), name);
         } finally {
             application.stop();
         }

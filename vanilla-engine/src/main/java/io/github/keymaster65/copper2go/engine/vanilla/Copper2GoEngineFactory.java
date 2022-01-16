@@ -20,6 +20,7 @@ import io.github.keymaster65.copper2go.api.connector.DefaultRequestChannelStore;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 
 public class Copper2GoEngineFactory {
@@ -32,16 +33,18 @@ public class Copper2GoEngineFactory {
             final DefaultRequestChannelStore defaultRequestChannelStore,
             final DefaultEventChannelStore defaultEventChannelStore
     ) {
-        final VanillaEngine vanillaEngine = new VanillaEngine(
+        final VanillaEngineImpl vanillaEngineImpl = new VanillaEngineImpl(
                 replyChannelStore,
                 defaultRequestChannelStore,
                 defaultEventChannelStore,
-                Executors.newFixedThreadPool(10)
+                Executors.newFixedThreadPool(10),
+                new ContinuationStore(new ConcurrentHashMap<>())
         );
+
         return new Copper2GoEngine(
-                vanillaEngine,
-                vanillaEngine,
-                new EngineControlImpl()
+                new PayloadReceiverImpl(vanillaEngineImpl),
+                new ResponseReceiverImpl(vanillaEngineImpl),
+                new EngineControlImpl(vanillaEngineImpl)
         );
     }
 }
