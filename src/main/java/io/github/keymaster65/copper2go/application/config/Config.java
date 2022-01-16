@@ -68,7 +68,7 @@ public class Config {
         return ofResource("/io/github/keymaster65/copper2go/application/config/config.json");
     }
 
-    static Config ofResource(final String resourcePath) throws IOException {
+    public static Config ofResource(final String resourcePath) throws IOException {
 
         return objectMapper.readValue(
                 new InputStreamReader(Objects.requireNonNull(Config.class.getResourceAsStream(resourcePath)), StandardCharsets.UTF_8),
