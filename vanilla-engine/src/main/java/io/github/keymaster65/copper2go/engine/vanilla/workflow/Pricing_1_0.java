@@ -29,6 +29,7 @@ public class Pricing_1_0 implements Workflow {
         this.vanillaEngine = vanillaEngine;
     }
 
+    @Override
     public void main(final WorkflowData workflowData) {
         final String uuid = workflowData.getUUID();
         if (uuid != null) {

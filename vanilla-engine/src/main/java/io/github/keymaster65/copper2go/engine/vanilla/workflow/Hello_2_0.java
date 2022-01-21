@@ -32,6 +32,7 @@ public class Hello_2_0 implements Workflow {
         this.vanillaEngine = vanillaEngine;
     }
 
+    @Override
     public void main(final WorkflowData workflowData) {
         vanillaEngine.event("System.stdout", "workflow " + Hello_2_0.class.getSimpleName());
         Consumer<String> continuation = this::continuation;
