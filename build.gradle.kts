@@ -38,11 +38,11 @@ dependencies {
         // due to license issue and I guess I currently do not need it
         exclude("io.netty", "netty-tcnative-classes")
     }
-    implementation("io.vertx:vertx-core:4.2.+")
-    implementation("io.vertx:vertx-kafka-client:4.2.+")
+    implementation("io.vertx:vertx-core:4.2.2")
+    implementation("io.vertx:vertx-kafka-client:4.2.2")
 
-    testImplementation("org.testcontainers:testcontainers:1.+")
-    testImplementation("org.testcontainers:kafka:1.+")
+    testImplementation("org.testcontainers:testcontainers:1.16.2")
+    testImplementation("org.testcontainers:kafka:1.16.2")
 }
 
 application {
@@ -122,10 +122,10 @@ allprojects {
 
         implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
 
-        testImplementation("org.assertj:assertj-assertions-generator:2.+")
-        testImplementation("net.jqwik:jqwik:1.+")
-        testImplementation("org.junit.jupiter:junit-jupiter:5.+")
-        testImplementation("org.mockito:mockito-core:4.+")
+        testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
+        testImplementation("net.jqwik:jqwik:1.6.3")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+        testImplementation("org.mockito:mockito-core:4.2.0")
 
         constraints {
             implementation("commons-io:commons-io:2.11.0") {

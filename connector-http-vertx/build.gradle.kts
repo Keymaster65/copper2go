@@ -7,9 +7,9 @@ dependencies {
         exclude("io.netty","netty-tcnative-classes")
     }
 
-    implementation("io.vertx:vertx-core:4.2.+")
-    implementation("io.vertx:vertx-web:4.2.+")
-    implementation("io.vertx:vertx-web-client:4.2.+")
+    implementation("io.vertx:vertx-core:4.2.2")
+    implementation("io.vertx:vertx-web:4.2.2")
+    implementation("io.vertx:vertx-web-client:4.2.2")
 
-    implementation("com.google.guava:guava:31.+")
+    implementation("com.google.guava:guava:31.0.1-jre")
 }
