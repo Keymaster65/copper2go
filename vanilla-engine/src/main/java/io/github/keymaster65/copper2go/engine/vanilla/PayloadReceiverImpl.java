@@ -26,6 +26,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class PayloadReceiverImpl implements PayloadReceiver {
 
@@ -45,15 +47,25 @@ public class PayloadReceiverImpl implements PayloadReceiver {
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new EngineException("Can't create workflow instance.", e);
         }
+
         WorkflowData workflowData = storeReplyChannel(payload, attributes, replyChannel);
-        vanillaEngineImpl.executorService.submit(() -> {
-                    try {
-                        workflowInstance.main(workflowData);
-                    } catch (Exception e) {
-                        log.error("Exception in workflowInstance.", e);
-                    }
-                }
+        final Future<?> workflowInstanceFuture = vanillaEngineImpl.executorService.submit(() ->
+                workflowInstance.main(workflowData)
         );
+        handleWorkflowInstanceResult(workflowInstanceFuture);
+    }
+
+    private void handleWorkflowInstanceResult(final Future<?> workflowInstanceFuture) {
+        // TODO continue future observation
+        if (workflowInstanceFuture.isDone()) {
+            try {
+                workflowInstanceFuture.get();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } catch (ExecutionException e) {
+                log.error("Exception in workflowInstance.", e);
+            }
+        }
     }
 
 
