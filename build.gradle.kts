@@ -11,7 +11,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.1.4"
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
-    id("org.owasp.dependencycheck") version "6.5.2.1"
+    id("org.owasp.dependencycheck") version "6.5.3"
 }
 
 publishing {
@@ -109,6 +109,11 @@ allprojects {
         setSkipExistingHeaders(false)
         exclude("**/*.json")
         exclude("**/test.html")
+    }
+
+    dependencyCheck {
+        analyzers.assemblyEnabled = false
+        failBuildOnCVSS = 0F
     }
 
     dependencies {
