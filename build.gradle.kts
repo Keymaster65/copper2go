@@ -85,7 +85,6 @@ allprojects {
         reports {
             xml.getRequired().set(true)
             csv.getRequired().set(false)
-            //html.destination = layout.buildDirectory.dir("jacocoHtml").get().asFile
         }
     }
 
