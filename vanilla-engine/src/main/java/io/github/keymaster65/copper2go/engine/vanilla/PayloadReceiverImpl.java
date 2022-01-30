@@ -26,7 +26,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class PayloadReceiverImpl implements PayloadReceiver {
@@ -34,9 +33,11 @@ public class PayloadReceiverImpl implements PayloadReceiver {
     private static final Logger log = LoggerFactory.getLogger(PayloadReceiverImpl.class);
 
     private final VanillaEngineImpl vanillaEngineImpl;
+    private final WorkflowInstanceHolder workflowInstanceHolder;
 
-    public PayloadReceiverImpl(final VanillaEngineImpl vanillaEngineImpl) {
+    public PayloadReceiverImpl(final VanillaEngineImpl vanillaEngineImpl, final WorkflowInstanceHolder workflowInstanceHolder) {
         this.vanillaEngineImpl = vanillaEngineImpl;
+        this.workflowInstanceHolder = workflowInstanceHolder;
     }
 
     @Override
@@ -49,31 +50,25 @@ public class PayloadReceiverImpl implements PayloadReceiver {
         }
 
         WorkflowData workflowData = storeReplyChannel(payload, attributes, replyChannel);
-        final Future<?> workflowInstanceFuture = vanillaEngineImpl.executorService.submit(() ->
-                workflowInstance.main(workflowData)
-        );
-        handleWorkflowInstanceResult(workflowInstanceFuture);
+        final Future<?> workflowInstanceFuture = vanillaEngineImpl.executorService
+                .submit(() -> workflowInstance.main(workflowData));
+        handleWorkflowInstanceResult(workflowInstanceFuture, workflowInstance);
     }
 
-    private void handleWorkflowInstanceResult(final Future<?> workflowInstanceFuture) {
-        // TODO continue future observation
-        if (workflowInstanceFuture.isDone()) {
-            try {
-                workflowInstanceFuture.get();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            } catch (ExecutionException e) {
-                log.error("Exception in workflowInstance.", e);
-            }
-        }
+    private void handleWorkflowInstanceResult(final Future<?> workflowInstanceFuture, final Workflow workflowInstance) {
+        workflowInstanceHolder.add(workflowInstanceFuture, workflowInstance);
     }
 
 
+    // TODO split this method
     private WorkflowData storeReplyChannel(final String payload, final Map<String, String> attributes, final ReplyChannel replyChannel) {
         String uuid = null;
         if (replyChannel != null) {
             uuid = UUID.randomUUID().toString();
+            log.debug("Store replyChannel with uuid {}: {}", uuid, replyChannel);
             vanillaEngineImpl.replyChannelStore.store(uuid, replyChannel);
+        } else {
+            log.debug("Ignore empty replyChannel.");
         }
         return new WorkflowData(uuid, payload, attributes);
     }
