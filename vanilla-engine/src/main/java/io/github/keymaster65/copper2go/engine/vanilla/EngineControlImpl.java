@@ -17,13 +17,22 @@ package io.github.keymaster65.copper2go.engine.vanilla;
 
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.engine.EngineControl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
+import java.util.concurrent.locks.LockSupport;
 
 public class EngineControlImpl implements EngineControl {
 
     private final VanillaEngineImpl vanillaEngineImpl;
+    private final WorkflowInstanceHolder workflowInstanceHolder;
 
-    public EngineControlImpl(final VanillaEngineImpl vanillaEngineImpl) {
+    private static final Logger log = LoggerFactory.getLogger(EngineControlImpl.class);
+
+    public EngineControlImpl(final VanillaEngineImpl vanillaEngineImpl, final WorkflowInstanceHolder workflowInstanceHolder) {
         this.vanillaEngineImpl = vanillaEngineImpl;
+        this.workflowInstanceHolder = workflowInstanceHolder;
     }
 
     @Override
@@ -31,6 +40,7 @@ public class EngineControlImpl implements EngineControl {
         if (vanillaEngineImpl.executorService == null) {
             throw new EngineException("VanillaEngine has no executorService.");
         }
+        workflowInstanceHolder.start();
     }
 
     @Override
@@ -39,5 +49,10 @@ public class EngineControlImpl implements EngineControl {
             throw new EngineException("VanillaEngine has no executorService.");
         }
         vanillaEngineImpl.executorService.shutdown();
+        while (workflowInstanceHolder.getWorkflowInstanceCount() > 0) {
+            log.debug("Wait for instances to shut down {}", workflowInstanceHolder.getWorkflowInstanceCount());
+            LockSupport.parkNanos(Duration.ofMillis(100).getNano());
+        }
+        workflowInstanceHolder.stop();
     }
 }

@@ -18,9 +18,12 @@ package io.github.keymaster65.copper2go.engine.vanilla;
 import io.github.keymaster65.copper2go.api.workflow.EventChannelStore;
 import io.github.keymaster65.copper2go.api.workflow.RequestChannelStore;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
 public class VanillaEngineImpl implements VanillaEngine {
@@ -31,6 +34,7 @@ public class VanillaEngineImpl implements VanillaEngine {
     final ExecutorService executorService;
     final ContinuationStore continuationStore;
 
+    private static final Logger log = LoggerFactory.getLogger(VanillaEngineImpl.class);
     public VanillaEngineImpl(
             final ReplyChannelStoreImpl replyChannelStore,
             final RequestChannelStore requestChannelStore,
@@ -55,7 +59,9 @@ public class VanillaEngineImpl implements VanillaEngine {
         ContinuationStore.Continuation earlyResponse = continuationStore.put(responseCorrelationId, new ContinuationStore.Continuation(consumer));
         if (earlyResponse != null) {
             continuationStore.remove(responseCorrelationId);
-            executorService.submit(() ->
+            log.info("Found an early response");
+            // TODO log [x] and more: "Found an early response"
+            final Future<?> submit = executorService.submit(() ->
                     consumer.accept(earlyResponse.response())
             );
         }
