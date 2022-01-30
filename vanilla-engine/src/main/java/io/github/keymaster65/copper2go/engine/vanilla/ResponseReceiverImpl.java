@@ -16,9 +16,15 @@
 package io.github.keymaster65.copper2go.engine.vanilla;
 
 import io.github.keymaster65.copper2go.api.connector.ResponseReceiver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.Future;
 
 public class ResponseReceiverImpl implements ResponseReceiver {
     private final VanillaEngineImpl vanillaEngineImpl;
+
+    private static final Logger log = LoggerFactory.getLogger(ResponseReceiverImpl.class);
 
     public ResponseReceiverImpl(final VanillaEngineImpl vanillaEngineImpl) {
         this.vanillaEngineImpl = vanillaEngineImpl;
@@ -27,9 +33,12 @@ public class ResponseReceiverImpl implements ResponseReceiver {
     @Override
     public void receive(final String responseCorrelationId, final String response) {
         ContinuationStore.Continuation waiting = vanillaEngineImpl.continuationStore.put(responseCorrelationId, new ContinuationStore.Continuation(response));
+        // TODO log and more "Receive response for waiting Continuation"
         if (waiting != null) {
+            log.info("Receive response for waiting Continuation.");
+            log.debug("response={}", response);
             vanillaEngineImpl.continuationStore.remove(responseCorrelationId);
-            vanillaEngineImpl.executorService.submit(() ->
+            final Future<?> submit = vanillaEngineImpl.executorService.submit(() ->
                     waiting.consumer().accept(response)
             );
         }

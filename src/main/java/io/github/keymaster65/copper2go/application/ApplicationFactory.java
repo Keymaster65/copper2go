@@ -29,6 +29,7 @@ import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.scotty.WorkflowRepositoryConfig;
 import io.github.keymaster65.copper2go.engine.scotty.Copper2GoEngineFactory;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
+import io.github.keymaster65.copper2go.engine.vanilla.WorkflowInstanceHolder;
 import org.copperengine.core.DependencyInjector;
 
 import java.util.Map;
@@ -95,11 +96,13 @@ public class ApplicationFactory {
             final DefaultEventChannelStore defaultEventChannelStore,
             final DefaultRequestChannelStore defaultRequestChannelStore
     ) {
+        // TODO think about not hacky switch
         if (maxTickets == 0) {
             return io.github.keymaster65.copper2go.engine.vanilla.Copper2GoEngineFactory.create(
                     replyChannelStoreImpl,
                     defaultRequestChannelStore,
-                    defaultEventChannelStore
+                    defaultEventChannelStore,
+                    new WorkflowInstanceHolder()
             );
         }
         return Copper2GoEngineFactory.create(
