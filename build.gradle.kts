@@ -139,7 +139,7 @@ allprojects {
             implementation("io.netty:netty-codec-socks:4.1.72.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-common:4.1.72.Final") {
+            implementation("io.netty:netty-common:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-handler:4.1.72.Final") {
