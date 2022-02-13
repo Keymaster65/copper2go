@@ -81,9 +81,9 @@ pipeline might even better fit your needs.
 
 ## Vulnerability
 
-The copper2go application is checked using the https://plugins.gradle.org/plugin/org.owasp.dependencycheck, 
-so engine do not contain any open known security issue. 
-As workflows can not extend the used jars this check is sufficient for all workflow use cases.
+The copper2go application is checked using the https://plugins.gradle.org/plugin/org.owasp.dependencycheck, so engine do
+not contain any open known security issue. As workflows can not extend the used jars this check is sufficient for all
+workflow use cases.
 
 ## Developer's Guide
 
@@ -190,10 +190,10 @@ Visit the sources of and examples
 [![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
 
 The configuration of the application and the receiver's APIs will be listed here as Application API in the
-"Released" chapter. 
+"Released" chapter.
 
-No Java code except of Workflow's API is released as an API. Of course, you can fork the project, if
-you want to make extensions.
+No Java code except of Workflow's API is released as an API. Of course, you can fork the project, if you want to make
+extensions.
 
 The releases are hosted at github:
 https://github.com/Keymaster65/copper2go/releases
@@ -271,6 +271,17 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
+### "Vanilla" Release Application API 4.1
+
+* [ ] Add "vanilla" engine implementation
+* [x] Update io.netty from 4.1.72.Final to 4.1.74.Final
+* [ ] Update slf4j-api from 2.0.0-alph5 to 2.0.0-alph6
+* [ ] Update logback-classic from 1.3.0-alpha12 to 1.3.0-alpha14
+
+#### "slf4j-api alpha6" Workflow API 3.2.0
+
+* [ ] Update slf4j-api from 2.0.0-alpha5 to 2.0.0-alpha6
+
 
 ## Planning
 
@@ -293,7 +304,6 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 * Remove version 2 of HTTP Receiver API
 * Finish support kafka events
-* Add "vanilla" engine implementation
 * Add new Repository Performancetest
 * Replace vertx HTTP components with simpler implementation
 * Replace vertx Kafka components with simpler implementation
