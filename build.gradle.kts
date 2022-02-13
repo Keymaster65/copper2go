@@ -127,7 +127,7 @@ allprojects {
             implementation("com.google.guava:guava:31.0.1-jre") {
                 because("Security scan found 23.4-jre")
             }
-            implementation("io.netty:netty-buffer:4.1.72.Final") {
+            implementation("io.netty:netty-buffer:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-codec:4.1.72.Final") {
@@ -136,7 +136,7 @@ allprojects {
             implementation("io.netty:netty-codec-http:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec-socks:4.1.72.Final") {
+            implementation("io.netty:netty-codec-socks:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-common:4.1.74.Final") {
@@ -160,7 +160,7 @@ allprojects {
             implementation("org.apache.httpcomponents:httpclient:4.5.13") {
                 because("Security scan found 4.5.2")
             }
-            implementation("net.minidev:json-smart:2.4.7") {
+            implementation("net.minidev:json-smart:2.4.8") {
                 because("Security scan found 2.3")
             }
             implementation("org.apache.velocity:velocity-engine-core:2.3") {
