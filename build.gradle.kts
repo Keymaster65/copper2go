@@ -7,7 +7,7 @@ plugins {
     `maven-publish`
     jacoco
     id("org.sonarqube") version "3.3"
-    id("com.github.jk1.dependency-license-report") version "2.0"
+    id("com.github.jk1.dependency-license-report") version "2.1"
     id("com.google.cloud.tools.jib") version "3.1.4"
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
@@ -110,8 +110,8 @@ allprojects {
     }
 
     dependencies {
-        implementation("org.slf4j:slf4j-api:2.0.0-alpha5")
-        implementation("ch.qos.logback:logback-classic:1.3.0-alpha12")
+        implementation("org.slf4j:slf4j-api:2.0.0-alpha6")
+        implementation("ch.qos.logback:logback-classic:1.3.0-alpha14")
 
         implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
 
@@ -145,7 +145,7 @@ allprojects {
             implementation("io.netty:netty-handler:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-handler-proxy:4.1.72.Final") {
+            implementation("io.netty:netty-handler-proxy:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-resolver:4.1.72.Final") {
@@ -160,7 +160,7 @@ allprojects {
             implementation("org.apache.httpcomponents:httpclient:4.5.13") {
                 because("Security scan found 4.5.2")
             }
-            implementation("net.minidev:json-smart:2.4.7") {
+            implementation("net.minidev:json-smart:2.4.8") {
                 because("Security scan found 2.3")
             }
             implementation("org.apache.velocity:velocity-engine-core:2.3") {
