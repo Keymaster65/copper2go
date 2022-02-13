@@ -127,7 +127,7 @@ allprojects {
             implementation("com.google.guava:guava:31.0.1-jre") {
                 because("Security scan found 23.4-jre")
             }
-            implementation("io.netty:netty-buffer:4.1.72.Final") {
+            implementation("io.netty:netty-buffer:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-codec:4.1.72.Final") {
