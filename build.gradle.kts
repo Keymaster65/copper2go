@@ -7,7 +7,7 @@ plugins {
     `maven-publish`
     jacoco
     id("org.sonarqube") version "3.3"
-    id("com.github.jk1.dependency-license-report") version "2.0"
+    id("com.github.jk1.dependency-license-report") version "2.1"
     id("com.google.cloud.tools.jib") version "3.1.4"
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
@@ -133,16 +133,16 @@ allprojects {
             implementation("io.netty:netty-codec:4.1.72.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec-http:4.1.72.Final") {
+            implementation("io.netty:netty-codec-http:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-codec-socks:4.1.72.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-common:4.1.72.Final") {
+            implementation("io.netty:netty-common:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-handler:4.1.72.Final") {
+            implementation("io.netty:netty-handler:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-handler-proxy:4.1.72.Final") {
@@ -151,7 +151,7 @@ allprojects {
             implementation("io.netty:netty-resolver:4.1.72.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-transport:4.1.72.Final") {
+            implementation("io.netty:netty-transport:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("net.minidev:accessors-smart:2.4.7") {
