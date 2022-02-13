@@ -281,7 +281,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 #### "slf4j-api alpha6" Workflow API 3.2.0
 
-* [ ] Update slf4j-api from 2.0.0-alpha5 to 2.0.0-alpha6
+* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.0-alpha6
 
 
 ## Planning
