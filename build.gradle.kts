@@ -11,7 +11,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.1.4"
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
-    id("org.owasp.dependencycheck") version "6.5.2.1"
+    id("org.owasp.dependencycheck") version "6.5.3"
 }
 
 publishing {
@@ -49,7 +49,7 @@ application {
 }
 
 group = "io.github.keymaster65"
-version = "2.2"
+version = "4.2"
 
 tasks.sonarqube {
     dependsOn(tasks.test)
