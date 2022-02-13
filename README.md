@@ -275,8 +275,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 * [ ] Add "vanilla" engine implementation
 * [x] Update io.netty from 4.1.72.Final to 4.1.74.Final
-* [ ] Update slf4j-api from 2.0.0-alph5 to 2.0.0-alph6
-* [ ] Update logback-classic from 1.3.0-alpha12 to 1.3.0-alpha14
+* [x] Update slf4j-api from 2.0.0-alph5 to 2.0.0-alph6
+* [x] Update logback-classic from 1.3.0-alpha12 to 1.3.0-alpha14
 
 #### "slf4j-api alpha6" Workflow API 3.2.0
 
@@ -285,16 +285,18 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ## Planning
 
-### "Binding" Release Application API 4.1
+### "Binding" Release Application API 4.2
 
 * [ ] Workflow with Json binding
+* [ ] Workflow with XML binding (may be not ;-)
 * [ ] Split copper2go-workflows
+* [ ] Add new Workflow Repository for Performancetest
 
-### "State Pattern" Release Application API 4.1
+### "State Pattern" Release Application API 4.3
 
 * [ ] Spike: Workflow using State Pattern or other defined strategy
 
-### "Operator" Release Application API 4.2
+### "Operator" Release Application API 4.4
 
 * [ ] configure thread pool size, client pool size and more
 * [ ] Support of COPPER core GUI
@@ -304,11 +306,9 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 * Remove version 2 of HTTP Receiver API
 * Finish support kafka events
-* Add new Repository Performancetest
 * Replace vertx HTTP components with simpler implementation
 * Replace vertx Kafka components with simpler implementation
 * STDIN/OUT support in config and container (or remove it)
-* Workflow with XML binding (may be not ;-)
 * Redesign DefaultRequestChannel (like Kafka). Use WARN instead of ERROR?
 * Redesign RequestChannel/EventChannel: Is the difference needed? Why 2 errorEvent (was inspired by STDOUR/ERR)?
 * Collect Statistics and other (may be useful for Tests like Bridge-Test)
