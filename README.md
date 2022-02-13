@@ -277,6 +277,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Update io.netty from 4.1.72.Final to 4.1.74.Final
 * [x] Update slf4j-api from 2.0.0-alph5 to 2.0.0-alph6
 * [x] Update logback-classic from 1.3.0-alpha12 to 1.3.0-alpha14
+* [x] Update json-smart from 2.4.7 to 2.4.8
 
 #### "slf4j-api alpha6" Workflow API 3.2.0
 
