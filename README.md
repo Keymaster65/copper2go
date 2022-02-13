@@ -60,7 +60,7 @@ You want to develop your own workflows? You may start with the existing ones.
 ## More Motivation
 
 COPPER was developed as an Orchestration Engine. For more than 10 years now, in 2021, many high performance systems are
-in production. The Online Configuration capability of this workflow engine is used seldom. To fill this gap, by using
+in production. The online configuration capability of this workflow engine is used seldom. To fill this gap, by using
 this feature as a main concept, copper2go was developed. By adding connectors, the development of Orchestration Services
 will become easier for Java developers.
 
@@ -76,8 +76,18 @@ Of course, copper2go containers can be run wherever you want. So the container m
 * Intranet Workflows, if hosted in a company
 * Desktop Workflows, if run on your system
 
-In times of automated build pipelines the needs for Workflow systems reduced, but a more lightweight **git** based
-pipeline might even better fit your needs.
+In times of automated build pipelines the needs for workflow systems are reduced, but a more lightweight **git** based
+pipeline might even better fit your needs. Here are some more advantages:
+
+* If the developers want to break the limits, they can use the vanilla-engines as forks on github
+* Using git and git workflows in the development teams
+* Additional quality steps can be integrated into the git workflow
+* Lightweight pipeline form source code to deployment, because build is inside the copper2go container
+* Reuse of copper2go images might reduce costs for images in the cloud
+* Unified copper2go images
+* Secure copper2go images
+* Easy extensions of copper2go images as forks on github
+* Easy extensions of copper2go connectors as forks on github
 
 ## Vulnerability
 
@@ -306,6 +316,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### Backlog
 
 * Remove version 2 of HTTP Receiver API
+* Implement loom-engine
 * Finish support kafka events
 * Replace vertx HTTP components with simpler implementation
 * Replace vertx Kafka components with simpler implementation
@@ -319,13 +330,16 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * HTTP Security
 * Kafka Security
 * Add information "How Tos" to developer's guide
-    * Overview
-    * Request Channel Stores
-    * Event Channel Stores
-    * Configuration Reply Channel Store
-    * Tickets
-    * Workflow Development/Test
+      * Overview
+      * Request Channel Stores
+      * Event Channel Stores
+      * Configuration Reply Channel Store
+      * Tickets
+      * Workflow Development/Test
 * Load workflow subtree only from git
+* Use vanilla-engine without a github fork
+* Extend connectors without a github fork
+* Extend copper2go image without a github fork
 * Delete .copper on start (if still problems occurs)
 * Kafka choreography example
 * Support Binary data
