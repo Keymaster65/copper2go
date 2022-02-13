@@ -168,21 +168,22 @@ The copper2go Workflow's API is hosted in the Maven Central. It can be found at 
 * https://search.maven.org/search?q=copper2go
 * https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
 
-Starting with Workflow API 3.1.0 it also contains some compile dependencies, that extend the API.
+Starting with Workflow API 3.1.0 it also contains some dependencies, that extend the API.
 
 Changes will be listed here in the "Released" chapter. In addition, you have the API to the COPPER framework.
 
-Last but not least, the Java 17 API can be used and is container in the copper2go application.
+Last but not least, the Java 17 API can be used and is contained in the copper2go container.
 
 ##### Workflow's API Detail
 
-Visit the sources of and examples
+Visit the sources, tests, examples and JavaDocs:
 
-* WorkflowData
-* ReplyChannel
-* RequestChannel
-* EventChannel
-* and others
+| API       | Link to JavaDoc                                                                                       |
+|-----------|-------------------------------------------------------------------------------------------------------|
+| core      | [copper2go-api](https://www.javadoc.io/doc/io.github.keymaster65/copper2go-api/latest/index.html)     |
+| extension | [copper-coreengine](https://www.javadoc.io/doc/org.copper-engine/copper-coreengine/latest/index.html) |
+| extension | [slf4j-api](https://www.javadoc.io/doc/org.slf4j/slf4j-api/latest/org.slf4j/module-summary.html)      |
+| JDK       | [Java 17 API](https://docs.oracle.com/en/java/javase/17/docs/api/index.html)                          |
 
 ##### Application API
 
@@ -282,7 +283,6 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 #### "slf4j-api alpha6" Workflow API 3.2.0
 
 * [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.0-alpha6
-
 
 ## Planning
 

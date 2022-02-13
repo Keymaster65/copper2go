@@ -49,7 +49,7 @@ application {
 }
 
 group = "io.github.keymaster65"
-version = "4.2"
+version = "4.1"
 
 tasks.sonarqube {
     dependsOn(tasks.test)
