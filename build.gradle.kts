@@ -154,7 +154,7 @@ allprojects {
             implementation("io.netty:netty-transport:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("net.minidev:accessors-smart:2.4.7") {
+            implementation("net.minidev:accessors-smart:2.4.8") {
                 because("Security scan found 1.2")
             }
             implementation("org.apache.httpcomponents:httpclient:4.5.13") {
