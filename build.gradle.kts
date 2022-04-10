@@ -11,7 +11,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.2.1"
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
-    id("org.owasp.dependencycheck") version "6.5.3"
+    id("org.owasp.dependencycheck") version "7.0.4.1"
 }
 
 publishing {
@@ -113,7 +113,7 @@ allprojects {
         implementation("org.slf4j:slf4j-api:2.0.0-alpha6")
         implementation("ch.qos.logback:logback-classic:1.3.0-alpha14")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.+")
         testImplementation("net.jqwik:jqwik:1.+")
@@ -124,7 +124,7 @@ allprojects {
             implementation("commons-io:commons-io:2.11.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
-            implementation("com.google.guava:guava:31.0.1-jre") {
+            implementation("com.google.guava:guava:31.1-jre") {
                 because("Security scan found 23.4-jre")
             }
             implementation("io.netty:netty-buffer:4.1.74.Final") {
@@ -136,7 +136,7 @@ allprojects {
             implementation("io.netty:netty-codec-http:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec-socks:4.1.74.Final") {
+            implementation("io.netty:netty-codec-socks:4.1.75.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-common:4.1.74.Final") {
@@ -151,7 +151,7 @@ allprojects {
             implementation("io.netty:netty-resolver:4.1.75.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-transport:4.1.74.Final") {
+            implementation("io.netty:netty-transport:4.1.75.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("net.minidev:accessors-smart:2.4.8") {
