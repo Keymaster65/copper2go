@@ -151,7 +151,7 @@ allprojects {
             implementation("io.netty:netty-resolver:4.1.75.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-transport:4.1.74.Final") {
+            implementation("io.netty:netty-transport:4.1.75.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("net.minidev:accessors-smart:2.4.8") {
