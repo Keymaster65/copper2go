@@ -124,7 +124,7 @@ allprojects {
             implementation("commons-io:commons-io:2.11.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
-            implementation("com.google.guava:guava:31.0.1-jre") {
+            implementation("com.google.guava:guava:31.1-jre") {
                 because("Security scan found 23.4-jre")
             }
             implementation("io.netty:netty-buffer:4.1.74.Final") {
