@@ -8,7 +8,7 @@ plugins {
     jacoco
     id("org.sonarqube") version "3.3"
     id("com.github.jk1.dependency-license-report") version "2.1"
-    id("com.google.cloud.tools.jib") version "3.1.4"
+    id("com.google.cloud.tools.jib") version "3.2.1"
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
     id("org.owasp.dependencycheck") version "6.5.3"
@@ -130,7 +130,7 @@ allprojects {
             implementation("io.netty:netty-buffer:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec:4.1.72.Final") {
+            implementation("io.netty:netty-codec:4.1.75.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-codec-http:4.1.74.Final") {
@@ -148,13 +148,13 @@ allprojects {
             implementation("io.netty:netty-handler-proxy:4.1.74.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-resolver:4.1.72.Final") {
+            implementation("io.netty:netty-resolver:4.1.75.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-transport:4.1.74.Final") {
+            implementation("io.netty:netty-transport:4.1.75.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("net.minidev:accessors-smart:2.4.7") {
+            implementation("net.minidev:accessors-smart:2.4.8") {
                 because("Security scan found 1.2")
             }
             implementation("org.apache.httpcomponents:httpclient:4.5.13") {
