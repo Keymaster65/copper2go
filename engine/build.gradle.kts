@@ -7,6 +7,6 @@ dependencies {
     implementation("org.copper-engine:copper-ext:5.4.1")
 
     // needed for needed for GitAPIException
-    implementation("org.eclipse.jgit:org.eclipse.jgit:6.0.0.202111291000-r")
+    implementation("org.eclipse.jgit:org.eclipse.jgit:6.1.0.202203080745-r")
 
 }
