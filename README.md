@@ -270,10 +270,10 @@ Issues are very welcome, too.
 
 ### Release Tasks
 
-`gradle clean build -x systemTest`
-`gradle jib`
-`gradle systemTest`
-`gradle dependencyCheckAggregate`
+1) `gradle clean build -x systemTest`
+1) `gradle jib`
+1) `gradle systemTest`
+1) `gradle dependencyCheckAggregate`
 
 ### Links
 
@@ -289,13 +289,13 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "Vanilla" Release Application API 4.1
+### "3rd Party" Release Workflow API 3.2.0
+
+* [ ] Security Updates
+
+### "Vanilla" Release Application API 4.2
 
 * [ ] Add "vanilla" engine implementation
-* [x] Update io.netty from 4.1.72.Final to 4.1.74.Final
-* [x] Update slf4j-api from 2.0.0-alph5 to 2.0.0-alph6
-* [x] Update logback-classic from 1.3.0-alpha12 to 1.3.0-alpha14
-* [x] Update json-smart from 2.4.7 to 2.4.8
 
 #### "slf4j-api alpha6" Workflow API 3.2.0
 
@@ -303,18 +303,18 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ## Planning
 
-### "Binding" Release Application API 4.2
+### "Binding" Release Application API 4.3
 
 * [ ] Workflow with Json binding
 * [ ] Workflow with XML binding (may be not ;-)
 * [ ] Split copper2go-workflows
 * [ ] Add new Workflow Repository for Performancetest
 
-### "State Pattern" Release Application API 4.3
+### "State Pattern" Release Application API 4.4
 
 * [ ] Spike: Workflow using State Pattern or other defined strategy
 
-### "Operator" Release Application API 4.4
+### "Operator" Release Application API 4.5
 
 * [ ] configure thread pool size, client pool size and more
 * [ ] Support of COPPER core GUI
@@ -362,6 +362,11 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Withdrawn: Vertx Bus Connector
 
 ## Released
+
+### "Service" Release Application API 4.1.1
+
+* [x] Security Updates
+* [x] Version Updates
 
 ### "3rd Party" Release Workflow API 3.1.0
 

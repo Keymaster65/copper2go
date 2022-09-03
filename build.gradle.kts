@@ -8,10 +8,10 @@ plugins {
     jacoco
     id("org.sonarqube") version "3.4.0.2513"
     id("com.github.jk1.dependency-license-report") version "2.1"
-    id("com.google.cloud.tools.jib") version "3.2.1"
+    id("com.google.cloud.tools.jib") version "3.3.0"
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
-    id("org.owasp.dependencycheck") version "7.0.4.1"
+    id("org.owasp.dependencycheck") version "7.1.2"
     id("com.github.ben-manes.versions") version "0.42.0"
 }
 
@@ -114,7 +114,7 @@ allprojects {
         implementation("org.slf4j:slf4j-api:2.0.0")
         implementation("ch.qos.logback:logback-classic:1.4.0")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.+")
         testImplementation("net.jqwik:jqwik:1.+")
