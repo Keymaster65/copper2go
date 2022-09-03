@@ -268,7 +268,11 @@ Forks or Pull Requests are always very welcome.
 
 Issues are very welcome, too.
 
-### Releasing
+### Releasing and Maintenance
+
+* The master branch is maintained and released as "latest" image.
+* The newest version branch is maintained and released as a tagged image for example "4.1.1"
+* The newest Workflow API is maintained
 
 #### Release Tasks
 
@@ -276,6 +280,7 @@ Issues are very welcome, too.
 1) `gradle jib`
 1) `gradle systemTest`
 1) `gradle dependencyCheckAggregate`
+
 #### master
 
 1) Release Tasks
@@ -305,17 +310,14 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "3rd Party" Release Workflow API 3.2.0
-
-* [ ] Security Updates
-
 ### "Vanilla" Release Application API 4.2
 
 * [ ] Add "vanilla" engine implementation
 
 #### "slf4j-api alpha6" Workflow API 3.2.0
 
-* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.0-alpha6
+* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.0
+* [x] Update jackson-databind from 13.2.2 to 2.13.
 
 ## Planning
 
