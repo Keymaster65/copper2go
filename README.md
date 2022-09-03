@@ -268,12 +268,28 @@ Forks or Pull Requests are always very welcome.
 
 Issues are very welcome, too.
 
-### Release Tasks
+### Releasing
+
+#### Release Tasks
 
 1) `gradle clean build -x systemTest`
 1) `gradle jib`
 1) `gradle systemTest`
 1) `gradle dependencyCheckAggregate`
+#### master
+
+1) Release Tasks
+1) push master
+
+#### newest version branch
+
+1) checkout version branch
+1) merge master to version branch
+1) update version for jib
+1) update version in SystemCompleteTest.java
+1) execute "Release Tasks"
+1) push version branch
+1) "Draft a new release on github"
 
 ### Links
 
