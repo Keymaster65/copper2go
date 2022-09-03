@@ -178,7 +178,7 @@ allprojects {
             implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.kafka:kafka-clients:2.8.1") {
+            implementation("org.apache.kafka:kafka-clients:3.2.1") {
                 because("Security scan found 2.6")
             }
             implementation("org.yaml:snakeyaml:1.31") {
