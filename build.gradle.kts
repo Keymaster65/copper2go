@@ -6,7 +6,7 @@ plugins {
     distribution
     `maven-publish`
     jacoco
-    id("org.sonarqube") version "3.3"
+    id("org.sonarqube") version "3.4.0.2513"
     id("com.github.jk1.dependency-license-report") version "2.1"
     id("com.google.cloud.tools.jib") version "3.2.1"
     id("com.github.hierynomus.license-base") version "0.16.1"
@@ -180,6 +180,9 @@ allprojects {
                 because("Security scan found 2.2")
             }
             implementation("org.apache.kafka:kafka-clients:3.2.1") {
+                because("Security scan found 2.6")
+            }
+            implementation("org.yaml:snakeyaml:1.31") {
                 because("Security scan found 2.6")
             }
             implementation("org.yaml:snakeyaml:1.31") {
