@@ -130,7 +130,7 @@ allprojects {
             implementation("io.netty:netty-buffer:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec:4.1.75.Final") {
+            implementation("io.netty:netty-codec:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-codec-http:4.1.80.Final") {
@@ -145,14 +145,23 @@ allprojects {
             implementation("io.netty:netty-handler:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-handler-proxy:4.1.74.Final") {
+            implementation("io.netty:netty-handler-proxy:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-resolver:4.1.75.Final") {
+            implementation("io.netty:netty-resolver:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-transport:4.1.75.Final") {
+            implementation("io.netty:netty-transport:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
+            }
+            implementation("io.netty:netty-codec-dns:4.1.80.Final") {
+                because("Security scan found 4.1.74.Final")
+            }
+            implementation("io.netty:netty-codec-http2:4.1.80.Final") {
+                because("Security scan found 4.1.74.Final")
+            }
+            implementation("io.netty:netty-resolver-dns:4.1.80.Final") {
+                because("Security scan found 4.1.74.Final")
             }
             implementation("net.minidev:accessors-smart:2.4.8") {
                 because("Security scan found 1.2")
@@ -170,6 +179,9 @@ allprojects {
                 because("Security scan found 2.2")
             }
             implementation("org.apache.kafka:kafka-clients:2.8.1") {
+                because("Security scan found 2.6")
+            }
+            implementation("org.yaml:snakeyaml:1.31") {
                 because("Security scan found 2.6")
             }
         }
