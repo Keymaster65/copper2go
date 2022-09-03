@@ -6,7 +6,7 @@ plugins {
     distribution
     `maven-publish`
     jacoco
-    id("org.sonarqube") version "3.3"
+    id("org.sonarqube") version "3.4.0.2513"
     id("com.github.jk1.dependency-license-report") version "2.1"
     id("com.google.cloud.tools.jib") version "3.2.1"
     id("com.github.hierynomus.license-base") version "0.16.1"
@@ -130,29 +130,38 @@ allprojects {
             implementation("io.netty:netty-buffer:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec:4.1.75.Final") {
+            implementation("io.netty:netty-codec:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-codec-http:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec-socks:4.1.75.Final") {
+            implementation("io.netty:netty-codec-socks:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-common:4.1.75.Final") {
+            implementation("io.netty:netty-common:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-handler:4.1.74.Final") {
+            implementation("io.netty:netty-handler:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-handler-proxy:4.1.74.Final") {
+            implementation("io.netty:netty-handler-proxy:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-resolver:4.1.75.Final") {
+            implementation("io.netty:netty-resolver:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-transport:4.1.75.Final") {
+            implementation("io.netty:netty-transport:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
+            }
+            implementation("io.netty:netty-codec-dns:4.1.80.Final") {
+                because("Security scan found 4.1.74.Final")
+            }
+            implementation("io.netty:netty-codec-http2:4.1.80.Final") {
+                because("Security scan found 4.1.74.Final")
+            }
+            implementation("io.netty:netty-resolver-dns:4.1.80.Final") {
+                because("Security scan found 4.1.74.Final")
             }
             implementation("net.minidev:accessors-smart:2.4.8") {
                 because("Security scan found 1.2")
@@ -170,6 +179,9 @@ allprojects {
                 because("Security scan found 2.2")
             }
             implementation("org.apache.kafka:kafka-clients:2.8.1") {
+                because("Security scan found 2.6")
+            }
+            implementation("org.yaml:snakeyaml:1.31") {
                 because("Security scan found 2.6")
             }
         }
