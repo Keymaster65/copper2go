@@ -35,30 +35,37 @@ public class EngineControlImpl implements EngineControl {
     final TransientScottyEngine scottyEngine;
 
     private static final Logger log = LoggerFactory.getLogger(EngineControlImpl.class);
-    private LoggingStatisticCollector statisticsCollector;
-    private SimpleJmxExporter exporter;
+
+    private final DependencyInjector dependencyInjector;
+    private final LoggingStatisticCollector statisticsCollector;
+    private final SimpleJmxExporter exporter;
 
     public EngineControlImpl(
             final int availableTickets,
-            final WorkflowRepositoryConfig workflowRepositoryConfig
+            final WorkflowRepositoryConfig workflowRepositoryConfig,
+            final DependencyInjector dependencyInjector
     ) {
         scottyEngine = ScottyFactory.create(availableTickets, workflowRepositoryConfig);
         statisticsCollector = new LoggingStatisticCollector();
         exporter = SimpleJmxExporterFactory.create(scottyEngine, statisticsCollector);
         scottyEngine.setStatisticsCollector(statisticsCollector);
+        this.dependencyInjector = dependencyInjector;
     }
 
     EngineControlImpl(
             final TransientScottyEngine scottyEngine,
             final LoggingStatisticCollector statisticsCollector,
-            final SimpleJmxExporter exporter
+            final SimpleJmxExporter exporter,
+            final DependencyInjector dependencyInjector
     ) {
         this.scottyEngine = scottyEngine;
         this.statisticsCollector = statisticsCollector;
         this.exporter = exporter;
+        this.dependencyInjector = dependencyInjector;
     }
 
-    public synchronized void start(final DependencyInjector dependencyInjector) throws EngineException {
+    @Override
+    public synchronized void start() throws EngineException {
         log.info("start engine");
         scottyEngine.setDependencyInjector(dependencyInjector);
 

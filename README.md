@@ -60,7 +60,7 @@ You want to develop your own workflows? You may start with the existing ones.
 ## More Motivation
 
 COPPER was developed as an Orchestration Engine. For more than 10 years now, in 2021, many high performance systems are
-in production. The Online Configuration capability of this workflow engine is used seldom. To fill this gap, by using
+in production. The online configuration capability of this workflow engine is used seldom. To fill this gap, by using
 this feature as a main concept, copper2go was developed. By adding connectors, the development of Orchestration Services
 will become easier for Java developers.
 
@@ -76,14 +76,24 @@ Of course, copper2go containers can be run wherever you want. So the container m
 * Intranet Workflows, if hosted in a company
 * Desktop Workflows, if run on your system
 
-In times of automated build pipelines the needs for Workflow systems reduced, but a more lightweight **git** based
-pipeline might even better fit your needs.
+In times of automated build pipelines the needs for workflow systems are reduced, but a more lightweight **git** based
+pipeline might even better fit your needs. Here are some more advantages:
+
+* If the developers want to break the limits, they can use the vanilla-engines as forks on github
+* Using git and git workflows in the development teams
+* Additional quality steps can be integrated into the git workflow
+* Lightweight pipeline form source code to deployment, because build is inside the copper2go container
+* Reuse of copper2go images might reduce costs for images in the cloud
+* Unified copper2go images
+* Secure copper2go images
+* Easy extensions of copper2go images as forks on github
+* Easy extensions of copper2go connectors as forks on github
 
 ## Vulnerability
 
-The copper2go application is checked using the https://plugins.gradle.org/plugin/org.owasp.dependencycheck, 
-so engine do not contain any open known security issue. 
-As workflows can not extend the used jars this check is sufficient for all workflow use cases.
+The copper2go application is checked using the https://plugins.gradle.org/plugin/org.owasp.dependencycheck, so engine do
+not contain any open known security issue. As workflows can not extend the used jars this check is sufficient for all
+workflow use cases.
 
 ## Developer's Guide
 
@@ -143,7 +153,7 @@ I am looking for feedback.
 
 The Architecture overview
 
-![The Architecture overview](copper2goComponents.png)
+![The Architecture overview](copper2goComponents.svg)
 
 shows the main packages, classes and infaces of copper2go. Beside the workflows and the workflow api, you should be
 aware of the connector capabilities.
@@ -168,21 +178,22 @@ The copper2go Workflow's API is hosted in the Maven Central. It can be found at 
 * https://search.maven.org/search?q=copper2go
 * https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
 
-Starting with Workflow API 3.1.0 it also contains some compile dependencies, that extend the API.
+Starting with Workflow API 3.1.0 it also contains some dependencies, that extend the API.
 
 Changes will be listed here in the "Released" chapter. In addition, you have the API to the COPPER framework.
 
-Last but not least, the Java7 API can be used and is container in the copper2go application.
+Last but not least, the Java 17 API can be used and is contained in the copper2go container.
 
 ##### Workflow's API Detail
 
-Visit the sources of and examples
+Visit the sources, tests, examples and JavaDocs:
 
-* WorkflowData
-* ReplyChannel
-* RequestChannel
-* EventChannel
-* and others
+| API       | Link to JavaDoc                                                                                       |
+|-----------|-------------------------------------------------------------------------------------------------------|
+| core      | [copper2go-api](https://www.javadoc.io/doc/io.github.keymaster65/copper2go-api/latest/index.html)     |
+| extension | [copper-coreengine](https://www.javadoc.io/doc/org.copper-engine/copper-coreengine/latest/index.html) |
+| extension | [slf4j-api](https://www.javadoc.io/doc/org.slf4j/slf4j-api/latest/org.slf4j/module-summary.html)      |
+| JDK       | [Java 17 API](https://docs.oracle.com/en/java/javase/17/docs/api/index.html)                          |
 
 ##### Application API
 
@@ -190,10 +201,10 @@ Visit the sources of and examples
 [![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
 
 The configuration of the application and the receiver's APIs will be listed here as Application API in the
-"Released" chapter. 
+"Released" chapter.
 
-No Java code except of Workflow's API is released as an API. Of course, you can fork the project, if
-you want to make extensions.
+No Java code except of Workflow's API is released as an API. Of course, you can fork the project, if you want to make
+extensions.
 
 The releases are hosted at github:
 https://github.com/Keymaster65/copper2go/releases
@@ -257,6 +268,13 @@ Forks or Pull Requests are always very welcome.
 
 Issues are very welcome, too.
 
+### Release Tasks
+
+1) `gradle clean build -x systemTest`
+1) `gradle jib`
+1) `gradle systemTest`
+1) `gradle dependencyCheckAggregate`
+
 ### Links
 
 * https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
@@ -271,23 +289,32 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
+### "3rd Party" Release Workflow API 3.2.0
 
-### "3rd Party" Release Workflow API 3.1.0
+* [ ] Security Updates
 
-* [x] Add 3rd party libs to supported Workflow API
+### "Vanilla" Release Application API 4.2
+
+* [ ] Add "vanilla" engine implementation
+
+#### "slf4j-api alpha6" Workflow API 3.2.0
+
+* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.0-alpha6
 
 ## Planning
 
-### "Binding" Release Application API 4.1
+### "Binding" Release Application API 4.3
 
 * [ ] Workflow with Json binding
+* [ ] Workflow with XML binding (may be not ;-)
 * [ ] Split copper2go-workflows
+* [ ] Add new Workflow Repository for Performancetest
 
-### "State Pattern" Release Application API 4.1
+### "State Pattern" Release Application API 4.4
 
 * [ ] Spike: Workflow using State Pattern or other defined strategy
 
-### "Operator" Release Application API 4.2
+### "Operator" Release Application API 4.5
 
 * [ ] configure thread pool size, client pool size and more
 * [ ] Support of COPPER core GUI
@@ -296,31 +323,30 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### Backlog
 
 * Remove version 2 of HTTP Receiver API
+* Implement loom-engine
 * Finish support kafka events
-* Add "vanilla" engine implementation
-* Add new Repository Performancetest
 * Replace vertx HTTP components with simpler implementation
 * Replace vertx Kafka components with simpler implementation
-* Improve unit test coverage up to 50+%
 * STDIN/OUT support in config and container (or remove it)
-* Workflow with XML binding (may be not ;-)
 * Redesign DefaultRequestChannel (like Kafka). Use WARN instead of ERROR?
 * Redesign RequestChannel/EventChannel: Is the difference needed? Why 2 errorEvent (was inspired by STDOUR/ERR)?
 * Collect Statistics and other (may be useful for Tests like Bridge-Test)
 * Add test coverage for workflows to copper2go-workflows
 * Release internet workflow application as copper2go-webapp (see branch experiment/webapp)
 * Multi workflow support and REST level
-* Vertx Bus Connector
 * HTTP Security
 * Kafka Security
 * Add information "How Tos" to developer's guide
-    * Overview
-    * Request Channel Stores
-    * Event Channel Stores
-    * Configuration Reply Channel Store
-    * Tickets
-    * Workflow Development/Test
+      * Overview
+      * Request Channel Stores
+      * Event Channel Stores
+      * Configuration Reply Channel Store
+      * Tickets
+      * Workflow Development/Test
 * Load workflow subtree only from git
+* Use vanilla-engine without a github fork
+* Extend connectors without a github fork
+* Extend copper2go image without a github fork
 * Delete .copper on start (if still problems occurs)
 * Kafka choreography example
 * Support Binary data
@@ -333,8 +359,18 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Async idempotent DB API
 * On demand only: factoryfx integration
 * On demand only: extend workflow attributes to a MultiMap
+* Withdrawn: Vertx Bus Connector
 
 ## Released
+
+### "Service" Release Application API 4.1.1
+
+* [x] Security Updates
+* [x] Version Updates
+
+### "3rd Party" Release Workflow API 3.1.0
+
+* [x] Add 3rd party libs to supported Workflow API
 
 ### "Log Config" Release Application API 4.1
 

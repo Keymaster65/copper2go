@@ -22,7 +22,7 @@ import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiver;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
 import io.github.keymaster65.copper2go.engine.EngineControl;
-import io.github.keymaster65.copper2go.engine.impl.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import org.assertj.core.api.Assertions;
 import org.copperengine.core.DependencyInjector;
 import org.junit.jupiter.api.Test;
@@ -33,13 +33,11 @@ import java.util.Map;
 
 class ApplicationTest {
 
-
     @Test
     void start() throws EngineException {
         final EngineControl engineControl = Mockito.mock(EngineControl.class);
         final Copper2GoEngine copper2GoEngine = Mockito.mock(Copper2GoEngine.class);
-        Mockito.when(copper2GoEngine.getEngineControl()).thenReturn(engineControl);
-        final DependencyInjector dependencyInjector = Mockito.mock(DependencyInjector.class);
+        Mockito.when(copper2GoEngine.engineControl()).thenReturn(engineControl);
         final Copper2GoHttpServer httpServer = Mockito.mock(Copper2GoHttpServer.class);
         final DefaultRequestChannelStore defaultRequestChannelStore = Mockito.mock(DefaultRequestChannelStore.class);
         final KafkaReceiver kafkaReceiver = Mockito.mock(KafkaReceiver.class);
@@ -47,7 +45,6 @@ class ApplicationTest {
 
         final Application application = new Application(
                 copper2GoEngine,
-                dependencyInjector,
                 httpServer,
                 defaultRequestChannelStore,
                 kafkaReceiverMap
@@ -57,7 +54,7 @@ class ApplicationTest {
                 .doesNotThrowAnyException();
 
         Assertions.assertThat(application.isStopRequested()).isFalse();
-        Mockito.verify(engineControl).start(dependencyInjector);
+        Mockito.verify(engineControl).start();
         Mockito.verify(httpServer).start();
         Mockito.verify(kafkaReceiver).start();
     }
@@ -66,13 +63,12 @@ class ApplicationTest {
     void startWithStdInOut() {
         final EngineControl engineControl = Mockito.mock(EngineControl.class);
         final Copper2GoEngine copper2GoEngine = Mockito.mock(Copper2GoEngine.class);
-        Mockito.when(copper2GoEngine.getEngineControl()).thenReturn(engineControl);
+        Mockito.when(copper2GoEngine.engineControl()).thenReturn(engineControl);
         final Copper2GoHttpServer httpServer = Mockito.mock(Copper2GoHttpServer.class);
         final Map<String, KafkaReceiver> kafkaReceiverMap = Map.of();
 
         final Application application = new Application(
                 copper2GoEngine,
-                Mockito.mock(DependencyInjector.class),
                 httpServer,
                 Mockito.mock(DefaultRequestChannelStore.class),
                 kafkaReceiverMap
@@ -90,8 +86,7 @@ class ApplicationTest {
     void stop() throws EngineException {
         final EngineControl engineControl = Mockito.mock(EngineControl.class);
         final Copper2GoEngine copper2GoEngine = Mockito.mock(Copper2GoEngine.class);
-        Mockito.when(copper2GoEngine.getEngineControl()).thenReturn(engineControl);
-        final DependencyInjector dependencyInjector = Mockito.mock(DependencyInjector.class);
+        Mockito.when(copper2GoEngine.engineControl()).thenReturn(engineControl);
         final Copper2GoHttpServer httpServer = Mockito.mock(Copper2GoHttpServer.class);
         final DefaultRequestChannelStore defaultRequestChannelStore = Mockito.mock(DefaultRequestChannelStore.class);
         final KafkaReceiver kafkaReceiver = Mockito.mock(KafkaReceiver.class);
@@ -99,7 +94,6 @@ class ApplicationTest {
 
         final Application application = new Application(
                 copper2GoEngine,
-                dependencyInjector,
                 httpServer,
                 defaultRequestChannelStore,
                 kafkaReceiverMap
@@ -119,8 +113,7 @@ class ApplicationTest {
     void stopWithHttpServerException() throws EngineException {
         final EngineControl engineControl = Mockito.mock(EngineControl.class);
         final Copper2GoEngine copper2GoEngine = Mockito.mock(Copper2GoEngine.class);
-        Mockito.when(copper2GoEngine.getEngineControl()).thenReturn(engineControl);
-        final DependencyInjector dependencyInjector = Mockito.mock(DependencyInjector.class);
+        Mockito.when(copper2GoEngine.engineControl()).thenReturn(engineControl);
         final Copper2GoHttpServer httpServer = Mockito.mock(Copper2GoHttpServer.class);
         final DefaultRequestChannelStore defaultRequestChannelStore = Mockito.mock(DefaultRequestChannelStore.class);
         final KafkaReceiver kafkaReceiver = Mockito.mock(KafkaReceiver.class);
@@ -129,7 +122,6 @@ class ApplicationTest {
 
         final Application application = new Application(
                 copper2GoEngine,
-                dependencyInjector,
                 httpServer,
                 defaultRequestChannelStore,
                 kafkaReceiverMap

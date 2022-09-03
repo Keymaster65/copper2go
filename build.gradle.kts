@@ -6,12 +6,13 @@ plugins {
     distribution
     `maven-publish`
     jacoco
-    id("org.sonarqube") version "3.3"
-    id("com.github.jk1.dependency-license-report") version "2.0"
-    id("com.google.cloud.tools.jib") version "3.1.4"
+    id("org.sonarqube") version "3.4.0.2513"
+    id("com.github.jk1.dependency-license-report") version "2.1"
+    id("com.google.cloud.tools.jib") version "3.3.0"
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
-    id("org.owasp.dependencycheck") version "6.5.2.1"
+    id("org.owasp.dependencycheck") version "7.1.2"
+    id("com.github.ben-manes.versions") version "0.42.0"
 }
 
 publishing {
@@ -36,8 +37,8 @@ dependencies {
         // due to license issue and I guess I currently do not need it
         exclude("io.netty", "netty-tcnative-classes")
     }
-    implementation("io.vertx:vertx-core:4.2.+")
-    implementation("io.vertx:vertx-kafka-client:4.2.+")
+    implementation("io.vertx:vertx-core:4.3.+")
+    implementation("io.vertx:vertx-kafka-client:4.3.+")
 
     testImplementation("org.testcontainers:testcontainers:1.+")
     testImplementation("org.testcontainers:kafka:1.+")
@@ -49,7 +50,7 @@ application {
 }
 
 group = "io.github.keymaster65"
-version = "2.2"
+version = "4.1"
 
 tasks.sonarqube {
     dependsOn(tasks.test)
@@ -110,10 +111,10 @@ allprojects {
     }
 
     dependencies {
-        implementation("org.slf4j:slf4j-api:2.0.0-alpha5")
-        implementation("ch.qos.logback:logback-classic:1.3.0-alpha12")
+        implementation("org.slf4j:slf4j-api:2.0.0")
+        implementation("ch.qos.logback:logback-classic:1.4.0")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.+")
         testImplementation("net.jqwik:jqwik:1.+")
@@ -124,43 +125,52 @@ allprojects {
             implementation("commons-io:commons-io:2.11.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
-            implementation("com.google.guava:guava:31.0.1-jre") {
+            implementation("com.google.guava:guava:31.1-jre") {
                 because("Security scan found 23.4-jre")
             }
-            implementation("io.netty:netty-buffer:4.1.72.Final") {
+            implementation("io.netty:netty-buffer:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec:4.1.72.Final") {
+            implementation("io.netty:netty-codec:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec-http:4.1.72.Final") {
+            implementation("io.netty:netty-codec-http:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec-socks:4.1.72.Final") {
+            implementation("io.netty:netty-codec-socks:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-common:4.1.72.Final") {
+            implementation("io.netty:netty-common:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-handler:4.1.72.Final") {
+            implementation("io.netty:netty-handler:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-handler-proxy:4.1.72.Final") {
+            implementation("io.netty:netty-handler-proxy:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-resolver:4.1.72.Final") {
+            implementation("io.netty:netty-resolver:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-transport:4.1.72.Final") {
+            implementation("io.netty:netty-transport:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("net.minidev:accessors-smart:2.4.7") {
+            implementation("io.netty:netty-codec-dns:4.1.80.Final") {
+                because("Security scan found 4.1.74.Final")
+            }
+            implementation("io.netty:netty-codec-http2:4.1.80.Final") {
+                because("Security scan found 4.1.74.Final")
+            }
+            implementation("io.netty:netty-resolver-dns:4.1.80.Final") {
+                because("Security scan found 4.1.74.Final")
+            }
+            implementation("net.minidev:accessors-smart:2.4.8") {
                 because("Security scan found 1.2")
             }
             implementation("org.apache.httpcomponents:httpclient:4.5.13") {
                 because("Security scan found 4.5.2")
             }
-            implementation("net.minidev:json-smart:2.4.7") {
+            implementation("net.minidev:json-smart:2.4.8") {
                 because("Security scan found 2.3")
             }
             implementation("org.apache.velocity:velocity-engine-core:2.3") {
@@ -169,7 +179,11 @@ allprojects {
             implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.kafka:kafka-clients:2.8.1") {
+            implementation("org.apache.kafka:kafka-clients:3.2.1")
+            implementation("org.yaml:snakeyaml:1.31") {
+                because("Security scan found 2.6")
+            }
+            implementation("org.yaml:snakeyaml:1.31") {
                 because("Security scan found 2.6")
             }
         }

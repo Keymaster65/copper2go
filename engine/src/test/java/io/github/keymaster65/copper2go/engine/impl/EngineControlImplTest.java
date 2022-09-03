@@ -41,13 +41,14 @@ class EngineControlImplTest {
         final EngineControlImpl engineControl = new EngineControlImpl(
                 scottyEngine,
                 statisticsCollector,
-                exporter
+                exporter,
+                Mockito.mock(DependencyInjector.class)
         );
         Mockito.when(scottyEngine.getEngineState())
                 .thenReturn(EngineState.RAW)
                 .thenReturn(EngineState.STARTED);
 
-        engineControl.start(Mockito.mock(DependencyInjector.class));
+        engineControl.start();
 
         Mockito.verify(scottyEngine).startup();
         Mockito.verify(statisticsCollector).start();
@@ -62,7 +63,8 @@ class EngineControlImplTest {
         final EngineControlImpl engineControl = new EngineControlImpl(
                 scottyEngine,
                 statisticsCollector,
-                exporter
+                exporter,
+                Mockito.mock(DependencyInjector.class)
         );
         Mockito.when(scottyEngine.getEngineState()).thenReturn(EngineState.STARTED);
 

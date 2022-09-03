@@ -15,15 +15,12 @@
  */
 package io.github.keymaster65.copper2go.engine;
 
-import io.github.keymaster65.copper2go.api.connector.EngineException;
+import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
+import io.github.keymaster65.copper2go.api.connector.ResponseReceiver;
 
-public interface EngineControl extends AutoCloseable {
-    void start() throws EngineException;
-
-    void stop() throws EngineException;
-
-    @Override
-    default void close() throws EngineException {
-        stop();
-    }
+public record Copper2GoEngine(
+        PayloadReceiver payloadReceiver,
+        ResponseReceiver responseReceiver,
+        EngineControl engineControl
+) {
 }

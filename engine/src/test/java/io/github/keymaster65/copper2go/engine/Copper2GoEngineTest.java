@@ -13,27 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.impl;
+package io.github.keymaster65.copper2go.engine;
 
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.github.keymaster65.copper2go.api.connector.ResponseReceiver;
-import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
+import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.impl.EngineControlImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 class Copper2GoEngineTest {
-
-    @Test
-    void constructor() {
-        Assertions.assertThatCode(() ->
-                        new Copper2GoEngine(
-                                10,
-                                Mockito.mock(WorkflowRepositoryConfig.class),
-                                Mockito.mock(ReplyChannelStoreImpl.class)
-                        ))
-                .doesNotThrowAnyException();
-    }
 
     @Test
     void getPayloadReceiver() {
@@ -44,7 +34,7 @@ class Copper2GoEngineTest {
                 Mockito.mock(EngineControlImpl.class)
         );
 
-        Assertions.assertThat(copper2GoEngine.getPayloadReceiver()).isSameAs(payloadReceiver);
+        Assertions.assertThat(copper2GoEngine.payloadReceiver()).isSameAs(payloadReceiver);
     }
 
     @Test
@@ -56,7 +46,7 @@ class Copper2GoEngineTest {
                 Mockito.mock(EngineControlImpl.class)
         );
 
-        Assertions.assertThat(copper2GoEngine.getResponseReceiver()).isSameAs(responseReceiver);
+        Assertions.assertThat(copper2GoEngine.responseReceiver()).isSameAs(responseReceiver);
     }
 
     @Test
@@ -68,6 +58,6 @@ class Copper2GoEngineTest {
                 engineControl
         );
 
-        Assertions.assertThat(copper2GoEngine.getEngineControl()).isSameAs(engineControl);
+        Assertions.assertThat(copper2GoEngine.engineControl()).isSameAs(engineControl);
     }
 }

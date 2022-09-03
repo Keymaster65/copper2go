@@ -16,6 +16,8 @@
 package io.github.keymaster65.copper2go.engine.impl;
 
 import io.github.keymaster65.copper2go.api.connector.EngineException;
+import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
+import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
 import io.github.keymaster65.copper2go.engine.WorkflowRepositoryConfig;
 import io.github.keymaster65.copper2go.api.util.Copper2goDependencyInjector;
 import org.assertj.core.api.Assertions;
@@ -30,9 +32,9 @@ class Copper2GoEngineTest {
         Copper2GoEngine engine = createStartedEngine("release/3");
         Assertions
                 .assertThatNoException()
-                .isThrownBy(() -> engine.getEngineControl().close());
+                .isThrownBy(() -> engine.engineControl().close());
         Assertions
-                .assertThatCode(() -> engine.getEngineControl().close())
+                .assertThatCode(() -> engine.engineControl().close())
                 .isInstanceOf(EngineException.class);
     }
 
@@ -45,14 +47,8 @@ class Copper2GoEngineTest {
     }
 
     private static Copper2GoEngine createStartedEngine(final String branch) throws EngineException {
-        final ReplyChannelStoreImpl replyChannelStoreImpl = new ReplyChannelStoreImpl();
-        final DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
-                replyChannelStoreImpl,
-                null,
-                null
-        );
         Copper2GoEngine engine = createEngine(branch);
-        engine.getEngineControl().start(dependencyInjector);
+        engine.engineControl().start();
 
         return engine;
     }
@@ -64,10 +60,16 @@ class Copper2GoEngineTest {
                 "https://github.com/Keymaster65/copper2go-workflows.git",
                 "/src/workflow/java"
         );
-        return new Copper2GoEngine(
+        final DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
+                replyChannelStoreImpl,
+                null,
+                null
+        );
+        return Copper2GoEngineFactory.create(
                 10,
                 workflowRepositoryConfig,
-                replyChannelStoreImpl
+                replyChannelStoreImpl,
+                dependencyInjector
         );
     }
 }

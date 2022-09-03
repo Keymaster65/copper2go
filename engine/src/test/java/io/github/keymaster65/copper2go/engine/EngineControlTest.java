@@ -36,8 +36,8 @@ class EngineControlTest {
         return new EngineControl() {
 
             @Override
-            public void start(final DependencyInjector dependencyInjector) throws EngineException {
-                wrappedEngineControl.start(dependencyInjector);
+            public void start() throws EngineException {
+                wrappedEngineControl.start();
             }
 
             @Override
