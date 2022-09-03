@@ -110,8 +110,8 @@ allprojects {
     }
 
     dependencies {
-        implementation("org.slf4j:slf4j-api:2.0.0-alpha6")
-        implementation("ch.qos.logback:logback-classic:1.3.0-alpha14")
+        implementation("org.slf4j:slf4j-api:2.0.0")
+        implementation("ch.qos.logback:logback-classic:1.4.0")
 
         implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
 
@@ -127,19 +127,19 @@ allprojects {
             implementation("com.google.guava:guava:31.1-jre") {
                 because("Security scan found 23.4-jre")
             }
-            implementation("io.netty:netty-buffer:4.1.74.Final") {
+            implementation("io.netty:netty-buffer:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-codec:4.1.75.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec-http:4.1.74.Final") {
+            implementation("io.netty:netty-codec-http:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-codec-socks:4.1.75.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-common:4.1.75.Final") {
+            implementation("io.netty:netty-common:4.1.80.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-handler:4.1.74.Final") {
