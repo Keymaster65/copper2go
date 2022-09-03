@@ -92,7 +92,7 @@ class SystemCompleteTest {
                         StandardCharsets.UTF_8
                 )
         );
-        copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:latest")) // NOSONAR
+        copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:4.1.1")) // NOSONAR
                 .withExposedPorts(59665)
                 .withImagePullPolicy(imageName -> true)
                 .withNetworkAliases("copper2go")
