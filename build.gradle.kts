@@ -37,7 +37,7 @@ dependencies {
         // due to license issue and I guess I currently do not need it
         exclude("io.netty", "netty-tcnative-classes")
     }
-    implementation("io.vertx:vertx-core:4.2.+")
+    implementation("io.vertx:vertx-core:4.3.+")
     implementation("io.vertx:vertx-kafka-client:4.3.+")
 
     testImplementation("org.testcontainers:testcontainers:1.+")
@@ -179,9 +179,7 @@ allprojects {
             implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.kafka:kafka-clients:3.2.1") {
-                because("Security scan found 2.6")
-            }
+            implementation("org.apache.kafka:kafka-clients:3.2.1")
             implementation("org.yaml:snakeyaml:1.31") {
                 because("Security scan found 2.6")
             }

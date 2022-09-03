@@ -268,6 +268,13 @@ Forks or Pull Requests are always very welcome.
 
 Issues are very welcome, too.
 
+### Release Tasks
+
+`gradle clean build -x systemTest`
+`gradle jib`
+`gradle systemTest`
+`gradle dependencyCheckAggregate`
+
 ### Links
 
 * https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/

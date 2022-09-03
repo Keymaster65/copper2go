@@ -94,7 +94,7 @@ class KafkaRequestChannelTest {
 
         final String response = KafkaRequestChannel.createResponse(metadata);
 
-        Assertions.assertThat(response).isEqualTo("{\"checksum\":0,\"offset\":0,\"partition\":0,\"timestamp\":0,\"topic\":null}");
+        Assertions.assertThat(response).isEqualTo("{\"offset\":0,\"partition\":0,\"timestamp\":0,\"topic\":null}");
     }
 
     @Test
