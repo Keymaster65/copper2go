@@ -33,7 +33,7 @@ public class ResponseReceiverImpl implements ResponseReceiver {
     @Override
     public void receive(final String responseCorrelationId, final String response) {
         ContinuationStore.Continuation waiting = vanillaEngineImpl.continuationStore.put(responseCorrelationId, new ContinuationStore.Continuation(response));
-        // TODO log and more "Receive response for waiting Continuation"
+        // TODO log [x] and more "Receive response for waiting Continuation"
         if (waiting != null) {
             log.info("Receive response for waiting Continuation.");
             log.debug("response={}", response);
