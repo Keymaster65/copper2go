@@ -19,6 +19,8 @@ import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.github.keymaster65.copper2go.api.connector.ReplyChannel;
 import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
+import io.github.keymaster65.copper2go.engine.vanilla.workflow.Hello_2_0;
+import io.github.keymaster65.copper2go.engine.vanilla.workflow.Pricing_1_0;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +47,7 @@ public class PayloadReceiverImpl implements PayloadReceiver {
         Workflow workflowInstance;
         try {
             workflowInstance = createWorkflowInstance(workflow, major, minor);
-        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+        } catch (RuntimeException e) {
             throw new EngineException("Can't create workflow instance.", e);
         }
 
@@ -73,11 +75,16 @@ public class PayloadReceiverImpl implements PayloadReceiver {
         return new WorkflowData(uuid, payload, attributes);
     }
 
-    Workflow createWorkflowInstance(final String workflow, final long major, final long minor) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        final Class<?> clazz = Class.forName("io.github.keymaster65.copper2go.engine.vanilla.workflow." + workflow + "_" + major + "_" + minor);
-        final Constructor<?> constructor = clazz.getConstructor(VanillaEngine.class);
-        return (Workflow) constructor.newInstance(
-                vanillaEngineImpl
-        );
+    // TODO move this to a factory interface
+    Workflow createWorkflowInstance(final String workflow, final long major, final long minor) {
+        final String versionedWorkflow = "%s.%d.%d".formatted(workflow, major, minor);
+        switch (versionedWorkflow) {
+            case "Hello.2.0":
+                return new Hello_2_0(vanillaEngineImpl);
+            case "Pricing.1.0":
+                return new Pricing_1_0(vanillaEngineImpl);
+            default:
+                throw new IllegalArgumentException("Unknown workflow %s.".formatted(versionedWorkflow));
+        }
     }
 }
