@@ -41,6 +41,7 @@ public class ResponseReceiverImpl implements ResponseReceiver {
             final Future<?> submit = vanillaEngineImpl.executorService.submit(() ->
                     waiting.consumer().accept(response)
             );
+            vanillaEngineImpl.continuationStore.addFuture(submit, waiting);
         }
     }
 

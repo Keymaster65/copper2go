@@ -21,13 +21,13 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-class FutureHandler {
+class FutureHandler<T> {
 
     private static final Logger log = LoggerFactory.getLogger(FutureHandler.class);
 
-    private final Map<Future<?>, Workflow> observables;
+    private final Map<Future<?>, T> observables;
 
-    FutureHandler(final Map<Future<?>, Workflow> observables) {
+    FutureHandler(final Map<Future<?>, T> observables) {
         this.observables = observables;
     }
 
@@ -44,12 +44,12 @@ class FutureHandler {
             voidFuture.get();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            log.warn("InterruptedException caught in workflowInstance {}.", observables.get(voidFuture), e);
+            log.warn("InterruptedException caught in future {}.", observables.get(voidFuture), e);
         } catch (Exception e) {
-            log.warn("Exception caught in workflowInstance {}.", observables.get(voidFuture), e);
+            log.warn("Exception caught in future {}.", observables.get(voidFuture), e);
         } finally {
-            final Workflow workflow = observables.remove(voidFuture);
-            log.info("Removed workflowInstance {}.", workflow);
+            final T future = observables.remove(voidFuture);
+            log.info("Removed future {}.", future);
         }
     }
 }

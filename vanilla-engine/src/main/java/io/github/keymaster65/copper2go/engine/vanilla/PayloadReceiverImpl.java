@@ -24,8 +24,6 @@ import io.github.keymaster65.copper2go.engine.vanilla.workflow.Pricing_1_0;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Future;
@@ -58,7 +56,7 @@ public class PayloadReceiverImpl implements PayloadReceiver {
     }
 
     private void handleWorkflowInstanceResult(final Future<?> workflowInstanceFuture, final Workflow workflowInstance) {
-        workflowInstanceHolder.add(workflowInstanceFuture, workflowInstance);
+        workflowInstanceHolder.addFuture(workflowInstanceFuture, workflowInstance);
     }
 
 

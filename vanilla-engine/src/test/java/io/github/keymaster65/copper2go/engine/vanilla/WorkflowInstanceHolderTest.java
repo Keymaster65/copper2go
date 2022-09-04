@@ -23,8 +23,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class WorkflowInstanceHolderTest {
 
     @Test
@@ -63,7 +61,7 @@ class WorkflowInstanceHolderTest {
         final WorkflowInstanceHolder workflowInstanceHolder = new WorkflowInstanceHolder();
 
         Assertions.assertThat(workflowInstanceHolder.getWorkflowInstanceCount()).isZero();
-        workflowInstanceHolder.add(Mockito.mock(Future.class), Mockito.mock(Workflow.class));
+        workflowInstanceHolder.addFuture(Mockito.mock(Future.class), Mockito.mock(Workflow.class));
         Assertions.assertThat(workflowInstanceHolder.getWorkflowInstanceCount()).isOne();
     }
 

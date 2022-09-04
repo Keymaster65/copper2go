@@ -15,15 +15,85 @@
  */
 package io.github.keymaster65.copper2go.engine.vanilla;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class ContinuationStore {
 
+    public static final long INITIAL_DELAY = 0;
+    public static final long PERIOD = 500;
+    public static final TimeUnit TIME_UNIT = TimeUnit.MILLISECONDS;
+
+    private final Map<Future<?>, Continuation> continuations;
     private final Map<String, Continuation> expectedResponses;
+    private ScheduledExecutorService newSingleThreadScheduledExecutor;
+    private final FutureHandler<Continuation> futureHandler;
+
+    private static final Logger log = LoggerFactory.getLogger(ContinuationStore.class);
 
     ContinuationStore(final Map<String, Continuation> store) {
+        this(
+                store,
+                Executors.newSingleThreadScheduledExecutor(),
+                new ConcurrentHashMap<>()
+        );
+    }
+
+    ContinuationStore(
+            final Map<String, Continuation> store,
+            final ScheduledExecutorService newSingleThreadScheduledExecutor,
+            final ConcurrentHashMap<Future<?>, Continuation> continuations
+    ) {
+        this(
+                store,
+                newSingleThreadScheduledExecutor,
+                continuations,
+                new FutureHandler<>(continuations)
+        );
+    }
+
+    ContinuationStore(
+            final Map<String, Continuation> store,
+            final ScheduledExecutorService newSingleThreadScheduledExecutor,
+            final Map<Future<?>, Continuation> continuations,
+            final FutureHandler<Continuation> futureHandler
+    ) {
         expectedResponses = store;
+        this.newSingleThreadScheduledExecutor = newSingleThreadScheduledExecutor;
+        this.continuations = continuations;
+        this.futureHandler = futureHandler;
+    }
+
+
+    public void start() {
+        final ScheduledFuture<?> scheduledFuture = newSingleThreadScheduledExecutor.scheduleAtFixedRate(
+                futureHandler::handleDone,
+                INITIAL_DELAY,
+                PERIOD,
+                TIME_UNIT
+        );
+        FutureObserver.create(
+                scheduledFuture,
+                "ContinuationObserver"
+        ).start();
+    }
+
+    public void stop() {
+        newSingleThreadScheduledExecutor.shutdown();
+    }
+
+    public void addFuture(final Future<?> continuationFuture, final Continuation continuation) {
+        log.debug("Add workflow instance {}.", continuation);
+        continuations.put(continuationFuture, continuation);
     }
 
     record Continuation(
@@ -33,18 +103,23 @@ public class ContinuationStore {
         Continuation(String response) {
             this(null, response);
         }
+
         Continuation(Consumer<String> consumer
         ) {
             this(consumer, null);
         }
     }
 
-    Continuation put(final String key, final Continuation continuation)  {
+    Continuation put(final String key, final Continuation continuation) {
         return expectedResponses.put(key, continuation);
     }
 
-    Continuation remove(final String key)  {
+    Continuation remove(final String key) {
         return expectedResponses.remove(key);
+    }
+
+    public long getActiveContinuationsCount() {
+        return continuations.size();
     }
 
 }

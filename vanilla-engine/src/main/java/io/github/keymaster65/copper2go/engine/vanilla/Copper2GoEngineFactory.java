@@ -34,18 +34,19 @@ public class Copper2GoEngineFactory {
             final DefaultEventChannelStore defaultEventChannelStore,
             final WorkflowInstanceHolder workflowInstanceHolder
     ) {
+        final ContinuationStore continuationStore = new ContinuationStore(new ConcurrentHashMap<>());
         final VanillaEngineImpl vanillaEngineImpl = new VanillaEngineImpl(
                 replyChannelStore,
                 defaultRequestChannelStore,
                 defaultEventChannelStore,
                 Executors.newFixedThreadPool(10),
-                new ContinuationStore(new ConcurrentHashMap<>())
+                continuationStore
         );
 
         return new Copper2GoEngine(
                 new PayloadReceiverImpl(vanillaEngineImpl, workflowInstanceHolder),
                 new ResponseReceiverImpl(vanillaEngineImpl),
-                new EngineControlImpl(vanillaEngineImpl, workflowInstanceHolder)
+                new EngineControlImpl(vanillaEngineImpl, workflowInstanceHolder, continuationStore)
         );
     }
 }

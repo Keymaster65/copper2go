@@ -19,15 +19,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class WorkflowInstanceHolder {
 
@@ -39,7 +36,7 @@ public class WorkflowInstanceHolder {
 
     private final Map<Future<?>, Workflow> workflowInstances;
     private final ScheduledExecutorService futureHandlerService;
-    private final FutureHandler futureHandler;
+    private final FutureHandler<Workflow> futureHandler;
 
     public WorkflowInstanceHolder() {
         this(
@@ -52,13 +49,13 @@ public class WorkflowInstanceHolder {
             final ScheduledExecutorService futureHandlerService,
             final ConcurrentHashMap<Future<?>, Workflow> workflowInstances
     ) {
-        this(futureHandlerService, workflowInstances, new FutureHandler(workflowInstances));
+        this(futureHandlerService, workflowInstances, new FutureHandler<>(workflowInstances));
     }
 
     WorkflowInstanceHolder(
             final ScheduledExecutorService futureHandlerService,
             final Map<Future<?>, Workflow> workflowInstances,
-            final FutureHandler futureHandler
+            final FutureHandler<Workflow> futureHandler
     ) {
         this.futureHandlerService = futureHandlerService;
         this.workflowInstances = workflowInstances;
@@ -72,43 +69,19 @@ public class WorkflowInstanceHolder {
                 PERIOD,
                 TIME_UNIT
         );
-        new Thread(createHandlerServiceObserver(scheduledFuture), "HandlerServiceObserver").start();
+        FutureObserver.create(scheduledFuture, "WorkflowObserver").start();
     }
 
     public synchronized void stop() {
         futureHandlerService.shutdown();
     }
 
-    public void add(final Future<?> workflowInstanceFuture, final Workflow workflowInstance) {
+    public void addFuture(final Future<?> workflowInstanceFuture, final Workflow workflowInstance) {
         log.debug("Add workflow instance {}.", workflowInstance);
         workflowInstances.put(workflowInstanceFuture, workflowInstance);
     }
 
     public long getWorkflowInstanceCount() {
         return workflowInstances.size();
-    }
-
-    Runnable createHandlerServiceObserver(ScheduledFuture<?> scheduledFuture) {
-        return new Runnable() { // TODO improve messages
-            @Override
-            public void run() {
-                log.info("Start scheduledFuture.");
-                boolean canceled = false;
-                while (!canceled) {
-                    try {
-                        log.trace("Getting scheduledFuture now.");
-                        scheduledFuture.get(3, TimeUnit.SECONDS);
-                    } catch (ExecutionException | InterruptedException e) {
-                        log.error("Ignore exception while Getting scheduledFuture.", e);
-                    } catch (TimeoutException e) {
-                        log.trace("Ignore timeout while Getting scheduledFuture.");
-                    }
-                    catch (CancellationException e) {
-                        log.info("Cancel scheduledFuture.");
-                        canceled = true;
-                    }
-                }
-            }
-        };
     }
 }

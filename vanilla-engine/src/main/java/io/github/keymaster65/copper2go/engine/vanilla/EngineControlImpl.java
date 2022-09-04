@@ -27,12 +27,18 @@ public class EngineControlImpl implements EngineControl {
 
     private final VanillaEngineImpl vanillaEngineImpl;
     private final WorkflowInstanceHolder workflowInstanceHolder;
+    private final ContinuationStore continuationStore;
 
     private static final Logger log = LoggerFactory.getLogger(EngineControlImpl.class);
 
-    public EngineControlImpl(final VanillaEngineImpl vanillaEngineImpl, final WorkflowInstanceHolder workflowInstanceHolder) {
+    public EngineControlImpl(
+            final VanillaEngineImpl vanillaEngineImpl,
+            final WorkflowInstanceHolder workflowInstanceHolder,
+            final ContinuationStore continuationStore
+    ) {
         this.vanillaEngineImpl = vanillaEngineImpl;
         this.workflowInstanceHolder = workflowInstanceHolder;
+        this.continuationStore = continuationStore;
     }
 
     @Override
@@ -41,6 +47,7 @@ public class EngineControlImpl implements EngineControl {
             throw new EngineException("VanillaEngine has no executorService.");
         }
         workflowInstanceHolder.start();
+        continuationStore.start();
     }
 
     @Override
@@ -49,10 +56,15 @@ public class EngineControlImpl implements EngineControl {
             throw new EngineException("VanillaEngine has no executorService.");
         }
         vanillaEngineImpl.executorService.shutdown();
-        while (workflowInstanceHolder.getWorkflowInstanceCount() > 0) {
+        while (
+                workflowInstanceHolder.getWorkflowInstanceCount()
+                        + continuationStore.getActiveContinuationsCount()
+                        > 0
+        ) {
             log.debug("Wait for instances to shut down {}", workflowInstanceHolder.getWorkflowInstanceCount());
             LockSupport.parkNanos(Duration.ofMillis(100).toNanos());
         }
+        continuationStore.stop();
         workflowInstanceHolder.stop();
     }
 }
