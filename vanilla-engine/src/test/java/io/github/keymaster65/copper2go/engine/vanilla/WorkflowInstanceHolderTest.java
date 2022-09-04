@@ -28,7 +28,7 @@ class WorkflowInstanceHolderTest {
     @Test
     void start() {
         final ScheduledExecutorService futureHandlerService = Mockito.mock(ScheduledExecutorService.class);
-        final WorkflowInstanceHolder workflowInstanceHolder = new WorkflowInstanceHolder(
+        @SuppressWarnings("unchecked") final WorkflowInstanceHolder workflowInstanceHolder = new WorkflowInstanceHolder(
                 futureHandlerService,
                 Mockito.mock(ConcurrentHashMap.class)
         );
@@ -46,7 +46,7 @@ class WorkflowInstanceHolderTest {
     @Test
     void stop() {
         final ScheduledExecutorService futureHandlerService = Mockito.mock(ScheduledExecutorService.class);
-        final WorkflowInstanceHolder workflowInstanceHolder = new WorkflowInstanceHolder(
+        @SuppressWarnings("unchecked") final WorkflowInstanceHolder workflowInstanceHolder = new WorkflowInstanceHolder(
                 futureHandlerService,
                 Mockito.mock(ConcurrentHashMap.class)
         );
@@ -57,15 +57,18 @@ class WorkflowInstanceHolderTest {
     }
 
     @Test
-    void add() {
+    void addFuture() {
         final WorkflowInstanceHolder workflowInstanceHolder = new WorkflowInstanceHolder();
 
-        Assertions.assertThat(workflowInstanceHolder.getWorkflowInstanceCount()).isZero();
         workflowInstanceHolder.addFuture(Mockito.mock(Future.class), Mockito.mock(Workflow.class));
+
         Assertions.assertThat(workflowInstanceHolder.getWorkflowInstanceCount()).isOne();
     }
 
     @Test
     void getWorkflowInstanceCount() {
+        final WorkflowInstanceHolder workflowInstanceHolder = new WorkflowInstanceHolder();
+
+        Assertions.assertThat(workflowInstanceHolder.getWorkflowInstanceCount()).isZero();
     }
 }
