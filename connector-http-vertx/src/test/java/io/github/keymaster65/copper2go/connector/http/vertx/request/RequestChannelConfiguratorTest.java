@@ -42,7 +42,6 @@ class RequestChannelConfiguratorTest {
 
     @Example
     void putHttpRequestChannelsNull() {
-        final ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
         Assertions.assertThatCode(() ->
                         RequestChannelConfigurator.putHttpRequestChannels(null, null, null)
                 )
@@ -57,7 +56,10 @@ class RequestChannelConfiguratorTest {
         defaultRequestChannelStore.request(CHANNEL_NAME, REQUEST, RESPONSE_CORRELATION_ID);
         LockSupport.parkNanos(10L * 1000 * 1000 * 1000);
 
-        Mockito.verify(responseReceiver).receiveError(Mockito.eq(RESPONSE_CORRELATION_ID), Mockito.any());
+        Mockito.verify(responseReceiver).receiveError(
+                Mockito.eq(RESPONSE_CORRELATION_ID),
+                Mockito.startsWith("Failed to resolve 'httpHost' after")
+        );
     }
 
     private DefaultRequestChannelStore createDefaultHttpRequestChannelStore(final ResponseReceiver responseReceiver) {
