@@ -51,7 +51,7 @@ public class EngineControlImpl implements EngineControl {
         vanillaEngineImpl.executorService.shutdown();
         while (workflowInstanceHolder.getWorkflowInstanceCount() > 0) {
             log.debug("Wait for instances to shut down {}", workflowInstanceHolder.getWorkflowInstanceCount());
-            LockSupport.parkNanos(Duration.ofMillis(100).getNano());
+            LockSupport.parkNanos(Duration.ofMillis(100).toNanos());
         }
         workflowInstanceHolder.stop();
     }
