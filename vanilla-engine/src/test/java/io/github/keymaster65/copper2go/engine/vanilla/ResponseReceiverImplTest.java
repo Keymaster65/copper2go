@@ -20,6 +20,8 @@ import io.github.keymaster65.copper2go.api.workflow.RequestChannelStore;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
 import net.jqwik.api.Example;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,6 +32,8 @@ class ResponseReceiverImplTest {
 
     public static final String CORRELATION_ID = "correlationId";
     public static final String RESPONSE = "response";
+
+    private static final Logger log = LoggerFactory.getLogger(ResponseReceiverImplTest.class);
 
     @Example
     void receiveEarlyResponse() {
@@ -56,7 +60,7 @@ class ResponseReceiverImplTest {
     }
 
     @Example
-    void receive() throws InterruptedException {
+    void receive() {
         final ExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
         final ContinuationStore continuationStore = Mockito.mock(ContinuationStore.class);
@@ -77,8 +81,12 @@ class ResponseReceiverImplTest {
 
         responseReceiver.receive(CORRELATION_ID, RESPONSE);
         executorService.shutdown();
-        final boolean ignored = executorService.awaitTermination(10, TimeUnit.SECONDS);
-
+        try {
+            final boolean ignored = executorService.awaitTermination(30, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            log.warn("Ignore InterruptedException.");
+            final boolean ignored = Thread.currentThread().isInterrupted();
+        }
 
         Mockito.verify(consumer).accept(RESPONSE);
         Mockito.verify(continuationStore).addExpectedResponse(CORRELATION_ID, new Continuation(RESPONSE));
