@@ -128,10 +128,10 @@ allprojects {
             implementation("com.google.guava:guava:31.1-jre") {
                 because("Security scan found 23.4-jre")
             }
-            implementation("io.netty:netty-buffer:4.1.80.Final") {
+            implementation("io.netty:netty-buffer:4.1.81.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec:4.1.80.Final") {
+            implementation("io.netty:netty-codec:4.1.81.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-codec-http:4.1.81.Final") {
@@ -143,25 +143,25 @@ allprojects {
             implementation("io.netty:netty-common:4.1.81.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-handler:4.1.80.Final") {
+            implementation("io.netty:netty-handler:4.1.81.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-handler-proxy:4.1.81.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-resolver:4.1.80.Final") {
+            implementation("io.netty:netty-resolver:4.1.81.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-transport:4.1.81.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec-dns:4.1.80.Final") {
+            implementation("io.netty:netty-codec-dns:4.1.81.Final") {
                 because("Security scan found 4.1.74.Final")
             }
-            implementation("io.netty:netty-codec-http2:4.1.80.Final") {
+            implementation("io.netty:netty-codec-http2:4.1.81.Final") {
                 because("Security scan found 4.1.74.Final")
             }
-            implementation("io.netty:netty-resolver-dns:4.1.80.Final") {
+            implementation("io.netty:netty-resolver-dns:4.1.81.Final") {
                 because("Security scan found 4.1.74.Final")
             }
             implementation("net.minidev:accessors-smart:2.4.8") {
