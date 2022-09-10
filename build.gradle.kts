@@ -52,8 +52,8 @@ application {
 }
 
 group = "io.github.keymaster65"
-var version = "vanilla"
-
+var copper2goVersion = "vanilla"
+    
 tasks.sonarqube {
     dependsOn(tasks.test)
 }
@@ -219,6 +219,7 @@ allprojects {
             includeEngines.add("jqwik")
         }
         systemProperty("logback.configurationFile", "src/main/resources/logback.xml")
+        systemProperty("copper2go.version", copper2goVersion)
     }
 }
 
@@ -273,7 +274,7 @@ jib {
         image = "openjdk:17-jdk"
     }
     to {
-        image = "registry.hub.docker.com/keymaster65/copper2go:" + version
+        image = "registry.hub.docker.com/keymaster65/copper2go:" + copper2goVersion
         auth {
             username = "keymaster65"
             password = System.getenv("DOCKER_HUB_PASSWORD")

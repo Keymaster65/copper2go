@@ -42,6 +42,7 @@ import java.util.concurrent.locks.LockSupport;
 class SystemCompleteTest {
 
     private static final Logger log = LoggerFactory.getLogger(SystemCompleteTest.class);
+    public static final String SYSTEM_PROPERTY_COPPER2GO_VERSION = "copper2go.version";
     private static GenericContainer<?> copper2GoContainer;
     static KafkaContainer kafka;
 
@@ -92,7 +93,7 @@ class SystemCompleteTest {
                         StandardCharsets.UTF_8
                 )
         );
-        copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:latest")) // NOSONAR
+        copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:%s".formatted(System.getProperty(SYSTEM_PROPERTY_COPPER2GO_VERSION)))) // NOSONAR
                 .withExposedPorts(59665)
                 .withImagePullPolicy(imageName -> true)
                 .withNetworkAliases("copper2go")
