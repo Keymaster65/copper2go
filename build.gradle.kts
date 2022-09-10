@@ -52,7 +52,7 @@ application {
 }
 
 group = "io.github.keymaster65"
-version = "4.1"
+var version = "vanilla"
 
 tasks.sonarqube {
     dependsOn(tasks.test)
@@ -273,11 +273,10 @@ jib {
         image = "openjdk:17-jdk"
     }
     to {
-        image = "registry.hub.docker.com/keymaster65/copper2go"
+        image = "registry.hub.docker.com/keymaster65/copper2go:" + version
         auth {
             username = "keymaster65"
             password = System.getenv("DOCKER_HUB_PASSWORD")
         }
-        tags = setOf("latest")
     }
 }
