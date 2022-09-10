@@ -313,6 +313,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### "Vanilla" Release Application API 4.2
 
 * [ ] Add "vanilla" engine implementation
+* [x] Fix CVE-2022-38752 by excluding snakeyaml
 
 #### "slf4j-api alpha6" Workflow API 3.2.0
 
