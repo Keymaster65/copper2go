@@ -277,9 +277,9 @@ Issues are very welcome, too.
 #### Release Tasks
 
 1) `gradle clean build -x systemTest`
+1) `gradle dependencyCheckAggregate`
 1) `gradle jib`
 1) `gradle systemTest`
-1) `gradle dependencyCheckAggregate`
 
 #### master
 
