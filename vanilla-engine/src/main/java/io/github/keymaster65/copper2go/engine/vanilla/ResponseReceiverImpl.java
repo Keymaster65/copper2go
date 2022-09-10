@@ -32,12 +32,12 @@ public class ResponseReceiverImpl implements ResponseReceiver {
 
     @Override
     public void receive(final String responseCorrelationId, final String response) {
-        final ContinuationStore.Continuation responseContinuation = new ContinuationStore.Continuation(response);
-        ContinuationStore.Continuation waiting = vanillaEngineImpl.continuationStore.put(responseCorrelationId, responseContinuation);
+        final Continuation responseContinuation = new Continuation(response);
+        Continuation waiting = vanillaEngineImpl.continuationStore.put(responseCorrelationId, responseContinuation);
         // TODO log and more "Receive response for waiting Continuation"
         if (waiting != null) {
             log.trace("response={}", response);
-            final ContinuationStore.Continuation continuation = vanillaEngineImpl.continuationStore.remove(responseCorrelationId);
+            final Continuation continuation = vanillaEngineImpl.continuationStore.remove(responseCorrelationId);
             log.info("Receive response for waiting Continuation {}.", continuation);
             final Future<?> submit = vanillaEngineImpl.executorService.submit(() ->
                     waiting.consumer().accept(response)

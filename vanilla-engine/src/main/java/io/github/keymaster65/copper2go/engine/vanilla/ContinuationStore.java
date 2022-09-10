@@ -25,7 +25,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 public class ContinuationStore {
 
@@ -94,20 +93,6 @@ public class ContinuationStore {
     public void addFuture(final Future<?> continuationFuture, final Continuation continuation) {
         log.debug("Add continuation instance {}.", continuation);
         continuations.put(continuationFuture, continuation);
-    }
-
-    record Continuation(
-            Consumer<String> consumer,
-            String response
-    ) {
-        Continuation(String response) {
-            this(null, response);
-        }
-
-        Continuation(Consumer<String> consumer
-        ) {
-            this(consumer, null);
-        }
     }
 
     Continuation put(final String key, final Continuation continuation) {
