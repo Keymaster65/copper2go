@@ -36,7 +36,7 @@ public class WorkflowInstanceHolder {
 
     private final Map<Future<?>, Workflow> workflowInstances;
     private final ScheduledExecutorService futureHandlerService;
-    private final FutureHandler<Workflow> futureHandler;
+    private final DoneFutureExceptionHandler<Workflow> doneFutureExceptionHandler;
 
     public WorkflowInstanceHolder() {
         this(
@@ -49,22 +49,22 @@ public class WorkflowInstanceHolder {
             final ScheduledExecutorService futureHandlerService,
             final ConcurrentHashMap<Future<?>, Workflow> workflowInstances
     ) {
-        this(futureHandlerService, workflowInstances, new FutureHandler<>(workflowInstances));
+        this(futureHandlerService, workflowInstances, new DoneFutureExceptionHandler<>(workflowInstances));
     }
 
     WorkflowInstanceHolder(
             final ScheduledExecutorService futureHandlerService,
             final Map<Future<?>, Workflow> workflowInstances,
-            final FutureHandler<Workflow> futureHandler
+            final DoneFutureExceptionHandler<Workflow> doneFutureExceptionHandler
     ) {
         this.futureHandlerService = futureHandlerService;
         this.workflowInstances = workflowInstances;
-        this.futureHandler = futureHandler;
+        this.doneFutureExceptionHandler = doneFutureExceptionHandler;
     }
 
     public synchronized void start() {
         final ScheduledFuture<?> scheduledFuture = futureHandlerService.scheduleAtFixedRate(
-                futureHandler::handleDone,
+                doneFutureExceptionHandler::handleDone,
                 INITIAL_DELAY,
                 PERIOD,
                 TIME_UNIT

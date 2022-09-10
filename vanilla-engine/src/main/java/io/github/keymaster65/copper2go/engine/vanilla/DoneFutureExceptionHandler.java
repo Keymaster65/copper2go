@@ -19,15 +19,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-class FutureHandler<T> {
+class DoneFutureExceptionHandler<T> {
 
-    private static final Logger log = LoggerFactory.getLogger(FutureHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(DoneFutureExceptionHandler.class);
 
     private final Map<Future<?>, T> observables;
 
-    FutureHandler(final Map<Future<?>, T> observables) {
+    DoneFutureExceptionHandler(final Map<Future<?>, T> observables) {
         this.observables = observables;
     }
 
@@ -36,20 +38,22 @@ class FutureHandler<T> {
                 .keySet()
                 .stream()
                 .filter(Future::isDone)
-                .forEach(this::get);
+                .forEach(voidFuture -> getAndRemove(voidFuture, log));
     }
 
-    void get(final Future<?> voidFuture) {
+    Optional<T> getAndRemove(final Future<?> voidFuture, final Logger logger) {
+        final T value = observables.remove(voidFuture);
+        logger.info("Removed value {}.", value);
+        final Optional<T> optionalValue = Optional.ofNullable(value);
         try {
             voidFuture.get();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            log.warn("InterruptedException caught in future {}.", observables.get(voidFuture), e);
-        } catch (Exception e) {
-            log.warn("Exception caught in future {}.", observables.get(voidFuture), e);
-        } finally {
-            final T future = observables.remove(voidFuture);
-            log.info("Removed future {}.", future);
+            logger.warn("InterruptedException caught in future {}.", value, e);
+        } catch (ExecutionException e) {
+            logger.warn("Exception caught in future {}.", value, e);
         }
+
+        return optionalValue;
     }
 }

@@ -35,8 +35,8 @@ public class ContinuationStore {
 
     private final Map<Future<?>, Continuation> continuations;
     private final Map<String, Continuation> expectedResponses;
-    private ScheduledExecutorService newSingleThreadScheduledExecutor;
-    private final FutureHandler<Continuation> futureHandler;
+    private final ScheduledExecutorService newSingleThreadScheduledExecutor;
+    private final DoneFutureExceptionHandler<Continuation> doneFutureExceptionHandler;
 
     private static final Logger log = LoggerFactory.getLogger(ContinuationStore.class);
 
@@ -57,7 +57,7 @@ public class ContinuationStore {
                 store,
                 newSingleThreadScheduledExecutor,
                 continuations,
-                new FutureHandler<>(continuations)
+                new DoneFutureExceptionHandler<>(continuations)
         );
     }
 
@@ -65,18 +65,18 @@ public class ContinuationStore {
             final Map<String, Continuation> store,
             final ScheduledExecutorService newSingleThreadScheduledExecutor,
             final Map<Future<?>, Continuation> continuations,
-            final FutureHandler<Continuation> futureHandler
+            final DoneFutureExceptionHandler<Continuation> doneFutureExceptionHandler
     ) {
         expectedResponses = store;
         this.newSingleThreadScheduledExecutor = newSingleThreadScheduledExecutor;
         this.continuations = continuations;
-        this.futureHandler = futureHandler;
+        this.doneFutureExceptionHandler = doneFutureExceptionHandler;
     }
 
 
     public void start() {
         final ScheduledFuture<?> scheduledFuture = newSingleThreadScheduledExecutor.scheduleAtFixedRate(
-                futureHandler::handleDone,
+                doneFutureExceptionHandler::handleDone,
                 INITIAL_DELAY,
                 PERIOD,
                 TIME_UNIT
@@ -92,7 +92,7 @@ public class ContinuationStore {
     }
 
     public void addFuture(final Future<?> continuationFuture, final Continuation continuation) {
-        log.debug("Add workflow instance {}.", continuation);
+        log.debug("Add continuation instance {}.", continuation);
         continuations.put(continuationFuture, continuation);
     }
 
