@@ -26,33 +26,33 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class WorkflowInstanceHolder {
+public class WorkflowStore {
 
     public static final long INITIAL_DELAY = 0;
     public static final long PERIOD = 500;
     public static final TimeUnit TIME_UNIT = TimeUnit.MILLISECONDS;
 
-    private static final Logger log = LoggerFactory.getLogger(WorkflowInstanceHolder.class);
+    private static final Logger log = LoggerFactory.getLogger(WorkflowStore.class);
 
     private final Map<Future<?>, Workflow> workflowInstances;
     private final ScheduledExecutorService futureHandlerService;
     private final DoneFutureExceptionHandler<Workflow> doneFutureExceptionHandler;
 
-    public WorkflowInstanceHolder() {
+    public WorkflowStore() {
         this(
                 Executors.newSingleThreadScheduledExecutor(),
                 new ConcurrentHashMap<>()
         );
     }
 
-    WorkflowInstanceHolder(
+    WorkflowStore(
             final ScheduledExecutorService futureHandlerService,
             final ConcurrentHashMap<Future<?>, Workflow> workflowInstances
     ) {
         this(futureHandlerService, workflowInstances, new DoneFutureExceptionHandler<>(workflowInstances));
     }
 
-    WorkflowInstanceHolder(
+    WorkflowStore(
             final ScheduledExecutorService futureHandlerService,
             final Map<Future<?>, Workflow> workflowInstances,
             final DoneFutureExceptionHandler<Workflow> doneFutureExceptionHandler

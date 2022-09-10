@@ -56,15 +56,17 @@ public class VanillaEngineImpl implements VanillaEngine {
 
     @Override
     public void continueAsync(final String responseCorrelationId, final Consumer<String> consumer) {
-        Continuation earlyResponseContinuation = continuationStore.put(responseCorrelationId, new Continuation(consumer));
+        Continuation earlyResponseContinuation = continuationStore.addExpectedResponse(responseCorrelationId, new Continuation(consumer));
         if (earlyResponseContinuation != null) {
-            continuationStore.remove(responseCorrelationId);
-            log.info("Found an early response");
+            continuationStore.removeExpectedResponse(responseCorrelationId);
+            log.info("Found an early response (responseCorrelationId={}).", responseCorrelationId);
             // TODO log [x] and more: "Found an early response"
             final Future<?> submit = executorService.submit(() ->
                     consumer.accept(earlyResponseContinuation.response())
             );
             continuationStore.addFuture(submit, earlyResponseContinuation);
+        } else {
+            log.info("Add expected response (responseCorrelationId={}) to continuation store for async continuation.", responseCorrelationId);
         }
     }
 

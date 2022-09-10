@@ -22,53 +22,66 @@ import org.mockito.Mockito;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 
-class WorkflowInstanceHolderTest {
+class WorkflowStoreTest {
 
     @Test
     void start() {
         final ScheduledExecutorService futureHandlerService = Mockito.mock(ScheduledExecutorService.class);
-        @SuppressWarnings("unchecked") final WorkflowInstanceHolder workflowInstanceHolder = new WorkflowInstanceHolder(
+        @SuppressWarnings("unchecked") final WorkflowStore workflowStore = new WorkflowStore(
                 futureHandlerService,
                 Mockito.mock(ConcurrentHashMap.class)
         );
+        @SuppressWarnings("rawtypes") final ScheduledFuture future = Mockito.mock(ScheduledFuture.class);
+        //noinspection unchecked
+        Mockito
+                .when(
+                        futureHandlerService.scheduleAtFixedRate(
+                                Mockito.any(),
+                                Mockito.eq(WorkflowStore.INITIAL_DELAY),
+                                Mockito.eq(WorkflowStore.PERIOD),
+                                Mockito.eq(WorkflowStore.TIME_UNIT)
+                        )
+                )
+                .thenReturn(future);
 
-        workflowInstanceHolder.start();
+        workflowStore.start();
 
         Mockito.verify(futureHandlerService).scheduleAtFixedRate(
                 Mockito.any(),
-                Mockito.eq(WorkflowInstanceHolder.INITIAL_DELAY),
-                Mockito.eq(WorkflowInstanceHolder.PERIOD),
-                Mockito.eq(WorkflowInstanceHolder.TIME_UNIT)
+                Mockito.eq(WorkflowStore.INITIAL_DELAY),
+                Mockito.eq(WorkflowStore.PERIOD),
+                Mockito.eq(WorkflowStore.TIME_UNIT)
         );
     }
 
     @Test
     void stop() {
         final ScheduledExecutorService futureHandlerService = Mockito.mock(ScheduledExecutorService.class);
-        @SuppressWarnings("unchecked") final WorkflowInstanceHolder workflowInstanceHolder = new WorkflowInstanceHolder(
+        @SuppressWarnings("unchecked") final WorkflowStore workflowStore = new WorkflowStore(
                 futureHandlerService,
                 Mockito.mock(ConcurrentHashMap.class)
         );
 
-        workflowInstanceHolder.stop();
+        workflowStore.stop();
 
         Mockito.verify(futureHandlerService).shutdown();
     }
 
     @Test
     void addFuture() {
-        final WorkflowInstanceHolder workflowInstanceHolder = new WorkflowInstanceHolder();
+        final WorkflowStore workflowStore = new WorkflowStore();
 
-        workflowInstanceHolder.addFuture(Mockito.mock(Future.class), Mockito.mock(Workflow.class));
+        workflowStore.addFuture(Mockito.mock(Future.class), Mockito.mock(Workflow.class));
 
-        Assertions.assertThat(workflowInstanceHolder.getWorkflowInstanceCount()).isOne();
+        Assertions.assertThat(workflowStore.getWorkflowInstanceCount()).isOne();
     }
 
     @Test
     void getWorkflowInstanceCount() {
-        final WorkflowInstanceHolder workflowInstanceHolder = new WorkflowInstanceHolder();
+        final WorkflowStore workflowStore = new WorkflowStore();
 
-        Assertions.assertThat(workflowInstanceHolder.getWorkflowInstanceCount()).isZero();
+        Assertions.assertThat(workflowStore.getWorkflowInstanceCount()).isZero();
     }
 }

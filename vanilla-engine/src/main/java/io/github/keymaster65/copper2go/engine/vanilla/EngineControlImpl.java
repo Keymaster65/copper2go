@@ -26,18 +26,18 @@ import java.util.concurrent.locks.LockSupport;
 public class EngineControlImpl implements EngineControl {
 
     private final VanillaEngineImpl vanillaEngineImpl;
-    private final WorkflowInstanceHolder workflowInstanceHolder;
+    private final WorkflowStore workflowStore;
     private final ContinuationStore continuationStore;
 
     private static final Logger log = LoggerFactory.getLogger(EngineControlImpl.class);
 
     public EngineControlImpl(
             final VanillaEngineImpl vanillaEngineImpl,
-            final WorkflowInstanceHolder workflowInstanceHolder,
+            final WorkflowStore workflowStore,
             final ContinuationStore continuationStore
     ) {
         this.vanillaEngineImpl = vanillaEngineImpl;
-        this.workflowInstanceHolder = workflowInstanceHolder;
+        this.workflowStore = workflowStore;
         this.continuationStore = continuationStore;
     }
 
@@ -46,7 +46,7 @@ public class EngineControlImpl implements EngineControl {
         if (vanillaEngineImpl.executorService == null) {
             throw new EngineException("VanillaEngine has no executorService.");
         }
-        workflowInstanceHolder.start();
+        workflowStore.start();
         continuationStore.start();
     }
 
@@ -57,14 +57,14 @@ public class EngineControlImpl implements EngineControl {
         }
         vanillaEngineImpl.executorService.shutdown();
         while (
-                workflowInstanceHolder.getWorkflowInstanceCount()
+                workflowStore.getWorkflowInstanceCount()
                         + continuationStore.getActiveContinuationsCount()
                         > 0
         ) {
-            log.debug("Wait for instances to shut down {}", workflowInstanceHolder.getWorkflowInstanceCount());
+            log.debug("Wait for instances to shut down {}", workflowStore.getWorkflowInstanceCount());
             LockSupport.parkNanos(Duration.ofMillis(100).toNanos());
         }
         continuationStore.stop();
-        workflowInstanceHolder.stop();
+        workflowStore.stop();
     }
 }

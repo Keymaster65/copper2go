@@ -33,19 +33,31 @@ public class ResponseReceiverImpl implements ResponseReceiver {
     @Override
     public void receive(final String responseCorrelationId, final String response) {
         final Continuation responseContinuation = new Continuation(response);
-        Continuation waiting = vanillaEngineImpl.continuationStore.put(responseCorrelationId, responseContinuation);
-        // TODO log and more "Receive response for waiting Continuation"
-        if (waiting != null) {
-            log.trace("response={}", response);
-            final Continuation continuation = vanillaEngineImpl.continuationStore.remove(responseCorrelationId);
-            log.info("Receive response for waiting Continuation {}.", continuation);
-            final Future<?> submit = vanillaEngineImpl.executorService.submit(() ->
-                    waiting.consumer().accept(response)
-            );
-            vanillaEngineImpl.continuationStore.addFuture(submit, waiting);
+        Continuation waitingConsumer = vanillaEngineImpl.continuationStore.addExpectedResponse(responseCorrelationId, responseContinuation);
+        if (waitingConsumer != null) {
+            consumeResponse(responseCorrelationId, response, waitingConsumer);
         } else {
-            log.info("Receive response for waiting Continuation {}.", responseContinuation);
+            handleEarlyResonse(responseCorrelationId, responseContinuation);
         }
+    }
+
+    private static void handleEarlyResonse(final String responseCorrelationId, final Continuation responseContinuation) {
+        log.info(
+                "Receive early response (responseCorrelationId={}). Add Continuation {}.",
+                responseCorrelationId,
+                responseContinuation
+        );
+    }
+
+    private void consumeResponse(final String responseCorrelationId, final String response, final Continuation waitingConsumer) {
+        log.info("Receive response (responseCorrelationId={}) for waitingConsumer Continuation {}.", responseCorrelationId, waitingConsumer);
+        log.trace("response={}", response);
+        final Continuation continuation = vanillaEngineImpl.continuationStore.removeExpectedResponse(responseCorrelationId);
+        log.debug("Remove expected response {}.", continuation);
+        final Future<?> submit = vanillaEngineImpl.executorService.submit(() ->
+                waitingConsumer.consumer().accept(response)
+        );
+        vanillaEngineImpl.continuationStore.addFuture(submit, waitingConsumer);
     }
 
     @Override

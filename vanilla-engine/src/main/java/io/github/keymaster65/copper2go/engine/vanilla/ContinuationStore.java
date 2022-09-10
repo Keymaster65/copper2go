@@ -61,12 +61,12 @@ public class ContinuationStore {
     }
 
     ContinuationStore(
-            final Map<String, Continuation> store,
+            final Map<String, Continuation> expectedResponses,
             final ScheduledExecutorService newSingleThreadScheduledExecutor,
             final Map<Future<?>, Continuation> continuations,
             final DoneFutureExceptionHandler<Continuation> doneFutureExceptionHandler
     ) {
-        expectedResponses = store;
+        this.expectedResponses = expectedResponses;
         this.newSingleThreadScheduledExecutor = newSingleThreadScheduledExecutor;
         this.continuations = continuations;
         this.doneFutureExceptionHandler = doneFutureExceptionHandler;
@@ -95,12 +95,12 @@ public class ContinuationStore {
         continuations.put(continuationFuture, continuation);
     }
 
-    Continuation put(final String key, final Continuation continuation) {
-        return expectedResponses.put(key, continuation);
+    Continuation addExpectedResponse(final String responseCorrelationId, final Continuation continuation) {
+        return expectedResponses.put(responseCorrelationId, continuation);
     }
 
-    Continuation remove(final String key) {
-        return expectedResponses.remove(key);
+    Continuation removeExpectedResponse(final String responseCorrelationId) {
+        return expectedResponses.remove(responseCorrelationId);
     }
 
     public long getActiveContinuationsCount() {

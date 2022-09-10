@@ -29,7 +29,7 @@ import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.scotty.WorkflowRepositoryConfig;
 import io.github.keymaster65.copper2go.engine.scotty.Copper2GoEngineFactory;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
-import io.github.keymaster65.copper2go.engine.vanilla.WorkflowInstanceHolder;
+import io.github.keymaster65.copper2go.engine.vanilla.WorkflowStore;
 import org.copperengine.core.DependencyInjector;
 
 import java.util.Map;
@@ -102,7 +102,7 @@ public class ApplicationFactory {
                     replyChannelStoreImpl,
                     defaultRequestChannelStore,
                     defaultEventChannelStore,
-                    new WorkflowInstanceHolder()
+                    new WorkflowStore()
             );
         }
         return Copper2GoEngineFactory.create(

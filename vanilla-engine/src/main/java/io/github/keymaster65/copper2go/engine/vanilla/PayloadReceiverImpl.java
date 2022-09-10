@@ -33,11 +33,11 @@ public class PayloadReceiverImpl implements PayloadReceiver {
     private static final Logger log = LoggerFactory.getLogger(PayloadReceiverImpl.class);
 
     private final VanillaEngineImpl vanillaEngineImpl;
-    private final WorkflowInstanceHolder workflowInstanceHolder;
+    private final WorkflowStore workflowStore;
 
-    public PayloadReceiverImpl(final VanillaEngineImpl vanillaEngineImpl, final WorkflowInstanceHolder workflowInstanceHolder) {
+    public PayloadReceiverImpl(final VanillaEngineImpl vanillaEngineImpl, final WorkflowStore workflowStore) {
         this.vanillaEngineImpl = vanillaEngineImpl;
-        this.workflowInstanceHolder = workflowInstanceHolder;
+        this.workflowStore = workflowStore;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class PayloadReceiverImpl implements PayloadReceiver {
     }
 
     private void handleWorkflowInstanceResult(final Future<?> workflowInstanceFuture, final Workflow workflowInstance) {
-        workflowInstanceHolder.addFuture(workflowInstanceFuture, workflowInstance);
+        workflowStore.addFuture(workflowInstanceFuture, workflowInstance);
     }
 
 
@@ -76,13 +76,10 @@ public class PayloadReceiverImpl implements PayloadReceiver {
     // TODO move this to a factory interface
     Workflow createWorkflowInstance(final String workflow, final long major, final long minor) {
         final String versionedWorkflow = "%s.%d.%d".formatted(workflow, major, minor);
-        switch (versionedWorkflow) {
-            case "Hello.2.0":
-                return new Hello_2_0(vanillaEngineImpl);
-            case "Pricing.1.0":
-                return new Pricing_1_0(vanillaEngineImpl);
-            default:
-                throw new IllegalArgumentException("Unknown workflow %s.".formatted(versionedWorkflow));
-        }
+        return switch (versionedWorkflow) {
+            case "Hello.2.0" -> new Hello_2_0(vanillaEngineImpl);
+            case "Pricing.1.0" -> new Pricing_1_0(vanillaEngineImpl);
+            default -> throw new IllegalArgumentException("Unknown workflow %s.".formatted(versionedWorkflow));
+        };
     }
 }
