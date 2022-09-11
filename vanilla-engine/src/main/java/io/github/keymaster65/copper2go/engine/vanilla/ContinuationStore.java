@@ -106,5 +106,4 @@ public class ContinuationStore {
     public long getActiveContinuationsCount() {
         return continuations.size();
     }
-
 }
