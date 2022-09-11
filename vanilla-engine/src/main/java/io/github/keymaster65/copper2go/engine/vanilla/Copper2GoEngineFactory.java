@@ -44,7 +44,7 @@ public class Copper2GoEngineFactory {
         );
 
         return new Copper2GoEngine(
-                new PayloadReceiverImpl(vanillaEngineImpl, workflowStore),
+                new PayloadReceiverImpl(vanillaEngineImpl, workflowStore, new WorkflowFactoryImpl(vanillaEngineImpl)),
                 new ResponseReceiverImpl(vanillaEngineImpl),
                 new EngineControlImpl(vanillaEngineImpl, workflowStore, continuationStore)
         );

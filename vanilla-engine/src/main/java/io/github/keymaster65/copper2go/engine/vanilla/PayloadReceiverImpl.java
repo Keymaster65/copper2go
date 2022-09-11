@@ -19,8 +19,6 @@ import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.github.keymaster65.copper2go.api.connector.ReplyChannel;
 import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
-import io.github.keymaster65.copper2go.engine.vanilla.workflow.Hello_2_0;
-import io.github.keymaster65.copper2go.engine.vanilla.workflow.Pricing_1_0;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,52 +32,51 @@ public class PayloadReceiverImpl implements PayloadReceiver {
 
     private final VanillaEngineImpl vanillaEngineImpl;
     private final WorkflowStore workflowStore;
+    private final WorkflowFactory workflowFactory;
 
-    public PayloadReceiverImpl(final VanillaEngineImpl vanillaEngineImpl, final WorkflowStore workflowStore) {
+    public PayloadReceiverImpl(
+            final VanillaEngineImpl vanillaEngineImpl,
+            final WorkflowStore workflowStore,
+            final WorkflowFactory workflowFactory
+    ) {
         this.vanillaEngineImpl = vanillaEngineImpl;
         this.workflowStore = workflowStore;
+        this.workflowFactory = workflowFactory;
     }
-
     @Override
-    public void receive(final String payload, final Map<String, String> attributes, final ReplyChannel replyChannel, final String workflow, final long major, final long minor) throws EngineException {
+    public void receive(
+            final String payload,
+            final Map<String, String> attributes,
+            final ReplyChannel replyChannel,
+            final String workflow,
+            final long major,
+            final long minor
+    ) throws EngineException {
         Workflow workflowInstance;
         try {
-            workflowInstance = createWorkflowInstance(workflow, major, minor);
+            workflowInstance = workflowFactory.of(workflow, major, minor);
         } catch (RuntimeException e) {
             throw new EngineException("Can't create workflow instance.", e);
         }
 
-        WorkflowData workflowData = storeReplyChannel(payload, attributes, replyChannel);
+        WorkflowData workflowData = createAndStoreNotNullReplyChannel(payload, attributes, replyChannel);
         final Future<?> workflowInstanceFuture = vanillaEngineImpl.executorService
                 .submit(() -> workflowInstance.main(workflowData));
-        handleWorkflowInstanceResult(workflowInstanceFuture, workflowInstance);
+        storeWorkflowInstance(workflowInstanceFuture, workflowInstance);
     }
-
-    private void handleWorkflowInstanceResult(final Future<?> workflowInstanceFuture, final Workflow workflowInstance) {
+    private void storeWorkflowInstance(final Future<?> workflowInstanceFuture, final Workflow workflowInstance) {
         workflowStore.addFuture(workflowInstanceFuture, workflowInstance);
     }
 
-
-    // TODO split this method
-    private WorkflowData storeReplyChannel(final String payload, final Map<String, String> attributes, final ReplyChannel replyChannel) {
+    WorkflowData createAndStoreNotNullReplyChannel(final String payload, final Map<String, String> attributes, final ReplyChannel replyChannel) {
         String uuid = null;
         if (replyChannel != null) {
             uuid = UUID.randomUUID().toString();
             log.debug("Store replyChannel with uuid {}: {}", uuid, replyChannel);
             vanillaEngineImpl.replyChannelStore.store(uuid, replyChannel);
         } else {
-            log.debug("Ignore empty replyChannel.");
+            log.debug("Ignore empty replyChannel. Seems to be a aoneway call.");
         }
         return new WorkflowData(uuid, payload, attributes);
-    }
-
-    // TODO move this to a factory interface
-    Workflow createWorkflowInstance(final String workflow, final long major, final long minor) {
-        final String versionedWorkflow = "%s.%d.%d".formatted(workflow, major, minor);
-        return switch (versionedWorkflow) {
-            case "Hello.2.0" -> new Hello_2_0(vanillaEngineImpl);
-            case "Pricing.1.0" -> new Pricing_1_0(vanillaEngineImpl);
-            default -> throw new IllegalArgumentException("Unknown workflow %s.".formatted(versionedWorkflow));
-        };
     }
 }

@@ -19,11 +19,14 @@ import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
 import io.github.keymaster65.copper2go.engine.vanilla.VanillaEngine;
 import io.github.keymaster65.copper2go.engine.vanilla.Workflow;
 
-public class Pricing_1_0 implements Workflow {
+import java.util.function.Consumer;
+
+public class Hello2 implements Workflow {
 
     private final VanillaEngine vanillaEngine;
+    private WorkflowData workflowData;
 
-    public Pricing_1_0(
+    public Hello2(
             final VanillaEngine vanillaEngine
     ) {
         this.vanillaEngine = vanillaEngine;
@@ -31,10 +34,17 @@ public class Pricing_1_0 implements Workflow {
 
     @Override
     public void main(final WorkflowData workflowData) {
-        final String uuid = workflowData.getUUID();
-        if (uuid != null) {
-            vanillaEngine.reply(uuid, "5 cent.");
-        }
+        vanillaEngine.event("System.stdout", "workflow " + Hello2.class.getSimpleName());
+        Consumer<String> continuation = this::continuation;
+        this.workflowData = workflowData;
+        final String responseCorrelationId = vanillaEngine.request("Pricing.centPerMinute", "request");
+        vanillaEngine.continueAsync(responseCorrelationId, continuation);
     }
 
+    public void continuation(final String response) {
+        final String uuid = workflowData.getUUID();
+        if (uuid != null) {
+            vanillaEngine.reply(uuid, "Hello " + workflowData.getPayload() + "! Please transfer " + response);
+        }
+    }
 }
