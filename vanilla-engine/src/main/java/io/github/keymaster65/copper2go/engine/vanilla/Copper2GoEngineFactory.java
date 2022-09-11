@@ -15,8 +15,8 @@
  */
 package io.github.keymaster65.copper2go.engine.vanilla;
 
-import io.github.keymaster65.copper2go.api.connector.DefaultEventChannelStore;
-import io.github.keymaster65.copper2go.api.connector.DefaultRequestChannelStore;
+import io.github.keymaster65.copper2go.api.workflow.EventChannelStore;
+import io.github.keymaster65.copper2go.api.workflow.RequestChannelStore;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
 
@@ -25,20 +25,17 @@ import java.util.concurrent.Executors;
 
 public class Copper2GoEngineFactory {
 
-    private Copper2GoEngineFactory() {
-    }
-
     public static Copper2GoEngine create(
-            final ReplyChannelStoreImpl replyChannelStore,
-            final DefaultRequestChannelStore defaultRequestChannelStore,
-            final DefaultEventChannelStore defaultEventChannelStore,
+            final ReplyChannelStoreImpl replyChannelStoreImpl,
+            final RequestChannelStore requestChannelStore,
+            final EventChannelStore eventChannelStore,
             final WorkflowStore workflowStore
     ) {
         final ContinuationStore continuationStore = new ContinuationStore(new ConcurrentHashMap<>());
         final VanillaEngineImpl vanillaEngineImpl = new VanillaEngineImpl(
-                replyChannelStore,
-                defaultRequestChannelStore,
-                defaultEventChannelStore,
+                replyChannelStoreImpl,
+                requestChannelStore,
+                eventChannelStore,
                 Executors.newFixedThreadPool(10),
                 continuationStore
         );
@@ -48,5 +45,8 @@ public class Copper2GoEngineFactory {
                 new ResponseReceiverImpl(vanillaEngineImpl),
                 new EngineControlImpl(vanillaEngineImpl, workflowStore, continuationStore)
         );
+    }
+
+    private Copper2GoEngineFactory() {
     }
 }
