@@ -35,6 +35,7 @@ public class VanillaEngineImpl implements VanillaEngine {
     final ContinuationStore continuationStore;
 
     private static final Logger log = LoggerFactory.getLogger(VanillaEngineImpl.class);
+
     public VanillaEngineImpl(
             final ReplyChannelStoreImpl replyChannelStore,
             final RequestChannelStore requestChannelStore,
@@ -56,18 +57,39 @@ public class VanillaEngineImpl implements VanillaEngine {
 
     @Override
     public void continueAsync(final String responseCorrelationId, final Consumer<String> consumer) {
-        Continuation earlyResponseContinuation = continuationStore.addExpectedResponse(responseCorrelationId, new Continuation(consumer));
+        Continuation earlyResponseContinuation = continuationStore.addExpectedResponse(
+                responseCorrelationId,
+                new Continuation(consumer)
+        );
         if (earlyResponseContinuation != null) {
-            continuationStore.removeExpectedResponse(responseCorrelationId);
-            log.info("Found an early response (responseCorrelationId={}).", responseCorrelationId);
-            // TODO log [x] and more: "Found an early response"
-            final Future<?> submit = executorService.submit(() ->
-                    consumer.accept(earlyResponseContinuation.response())
-            );
-            continuationStore.addFuture(submit, earlyResponseContinuation);
+            continueEarlyResponse(responseCorrelationId, consumer, earlyResponseContinuation);
         } else {
-            log.info("Add expected response (responseCorrelationId={}) to continuation store for async continuation.", responseCorrelationId);
+            logAddExpectedResponse(responseCorrelationId);
         }
+    }
+
+    private void continueEarlyResponse(
+            final String responseCorrelationId,
+            final Consumer<String> consumer,
+            final Continuation earlyResponseContinuation
+    ) {
+        continuationStore.removeExpectedResponse(responseCorrelationId);
+        log.info("Submit early response (responseCorrelationId={}).", responseCorrelationId);
+        final Future<?> submit = executorService.submit(() -> {
+                    log.info("Continue early response (responseCorrelationId={}).", responseCorrelationId);
+                    final String response = earlyResponseContinuation.response();
+                    log.trace("response={}", response);
+                    consumer.accept(response);
+                }
+        );
+        continuationStore.addFuture(submit, earlyResponseContinuation);
+    }
+
+    private static void logAddExpectedResponse(final String responseCorrelationId) {
+        log.info(
+                "Added expected response (responseCorrelationId={}) to continuation store for async continuation.",
+                responseCorrelationId
+        );
     }
 
     @Override

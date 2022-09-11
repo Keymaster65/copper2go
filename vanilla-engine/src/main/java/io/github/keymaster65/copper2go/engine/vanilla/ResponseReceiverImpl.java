@@ -41,6 +41,11 @@ public class ResponseReceiverImpl implements ResponseReceiver {
         }
     }
 
+    @Override
+    public void receiveError(final String responseCorrelationId, final String response) {
+        receive(responseCorrelationId, response);
+    }
+
     private static void handleEarlyResonse(final String responseCorrelationId, final Continuation responseContinuation) {
         log.info(
                 "Receive early response (responseCorrelationId={}). Add Continuation {}.",
@@ -54,14 +59,12 @@ public class ResponseReceiverImpl implements ResponseReceiver {
         log.trace("response={}", response);
         final Continuation continuation = vanillaEngineImpl.continuationStore.removeExpectedResponse(responseCorrelationId);
         log.debug("Remove expected response {}.", continuation);
-        final Future<?> submit = vanillaEngineImpl.executorService.submit(() ->
-                waitingConsumer.consumer().accept(response)
+        final Future<?> submit = vanillaEngineImpl.executorService.submit(() -> {
+                    log.info("Continue response (responseCorrelationId={}).", responseCorrelationId);
+                    log.trace("response={}", response);
+                    waitingConsumer.consumer().accept(response);
+                }
         );
         vanillaEngineImpl.continuationStore.addFuture(submit, waitingConsumer);
-    }
-
-    @Override
-    public void receiveError(final String responseCorrelationId, final String response) {
-        receive(responseCorrelationId, response);
     }
 }
