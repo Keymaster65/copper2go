@@ -26,13 +26,16 @@ import io.github.keymaster65.copper2go.connector.http.vertx.request.RequestChann
 import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiver;
 import io.github.keymaster65.copper2go.connector.standardio.event.StandardOutEventChannel;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
-import io.github.keymaster65.copper2go.engine.scotty.WorkflowRepositoryConfig;
-import io.github.keymaster65.copper2go.engine.scotty.Copper2GoEngineFactory;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
-import io.github.keymaster65.copper2go.engine.vanilla.WorkflowStore;
+import io.github.keymaster65.copper2go.engine.scotty.Copper2GoEngineFactory;
+import io.github.keymaster65.copper2go.engine.scotty.WorkflowRepositoryConfig;
+import io.github.keymaster65.copper2go.engine.vanilla.ExpectedResponsesStore;
+import io.github.keymaster65.copper2go.engine.vanilla.FutureStore;
+import io.github.keymaster65.copper2go.engine.vanilla.Workflow;
 import org.copperengine.core.DependencyInjector;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ApplicationFactory {
 
@@ -95,6 +98,7 @@ public class ApplicationFactory {
             final DependencyInjector dependencyInjector,
             final DefaultEventChannelStore defaultEventChannelStore,
             final DefaultRequestChannelStore defaultRequestChannelStore
+
     ) {
         // TODO think about not hacky switch
         if (maxTickets == 0) {
@@ -102,7 +106,8 @@ public class ApplicationFactory {
                     replyChannelStoreImpl,
                     defaultRequestChannelStore,
                     defaultEventChannelStore,
-                    new WorkflowStore()
+                    new FutureStore<>(Workflow.class),
+                    new ExpectedResponsesStore(new ConcurrentHashMap<>())
             );
         }
         return Copper2GoEngineFactory.create(

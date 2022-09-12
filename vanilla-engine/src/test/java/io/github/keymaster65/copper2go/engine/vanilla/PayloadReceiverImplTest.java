@@ -36,14 +36,16 @@ class PayloadReceiverImplTest {
     void receive() throws EngineException {
         final ExecutorService executorService = ExecutorServices.start();
         final ContinuationStore continuationStore = Mockito.mock(ContinuationStore.class);
+        final ExpectedResponsesStore expectedResponsesStore = Mockito.mock(ExpectedResponsesStore.class);
         final VanillaEngineImpl engine = new VanillaEngineImpl(
                 Mockito.mock(ReplyChannelStoreImpl.class),
                 Mockito.mock(RequestChannelStore.class),
                 Mockito.mock(EventChannelStore.class),
                 executorService,
-                continuationStore
+                continuationStore,
+                expectedResponsesStore
         );
-        final WorkflowStore workflowStore = Mockito.mock(WorkflowStore.class);
+        @SuppressWarnings("unchecked") final FutureStore<Workflow> workflowStore = Mockito.mock(FutureStore.class);
         final PayloadReceiverImpl payloadReceiver = new PayloadReceiverImpl(
                 engine,
                 workflowStore,
@@ -62,16 +64,17 @@ class PayloadReceiverImplTest {
         final boolean ignored = ExecutorServices.stop(executorService);
 
         Mockito.verify(workflowStore).addFuture(Mockito.any(), Mockito.any());
-        Mockito.verify(continuationStore).addExpectedResponse(Mockito.any(), Mockito.any());
+        Mockito.verify(expectedResponsesStore).addExpectedResponse(Mockito.any(), Mockito.any());
     }
 
 
     @Example
     void receiveForUnkownWorkflow()  {
         final VanillaEngineImpl engine = Mockito.mock(VanillaEngineImpl.class);
+        @SuppressWarnings("unchecked") final FutureStore<Workflow> mock = Mockito.mock(FutureStore.class);
         final PayloadReceiverImpl payloadReceiver = new PayloadReceiverImpl(
                 engine,
-                Mockito.mock(WorkflowStore.class),
+                mock,
                 new WorkflowFactoryImpl(engine)
         );
 
@@ -96,11 +99,13 @@ class PayloadReceiverImplTest {
                 Mockito.mock(RequestChannelStore.class),
                 Mockito.mock(EventChannelStore.class),
                 Mockito.mock(ExecutorService.class),
-                Mockito.mock(ContinuationStore.class)
+                Mockito.mock(ContinuationStore.class),
+                Mockito.mock(ExpectedResponsesStore.class)
         );
+        @SuppressWarnings("unchecked") final FutureStore<Workflow> workflowStore = Mockito.mock(FutureStore.class);
         final PayloadReceiverImpl payloadReceiver = new PayloadReceiverImpl(
                 engine,
-                Mockito.mock(WorkflowStore.class),
+                workflowStore,
                 new WorkflowFactoryImpl(engine)
         );
         final ReplyChannel replyChannel = Mockito.mock(ReplyChannel.class);
@@ -123,11 +128,13 @@ class PayloadReceiverImplTest {
                 Mockito.mock(RequestChannelStore.class),
                 Mockito.mock(EventChannelStore.class),
                 Mockito.mock(ExecutorService.class),
-                Mockito.mock(ContinuationStore.class)
+                Mockito.mock(ContinuationStore.class),
+                Mockito.mock(ExpectedResponsesStore.class)
         );
+        @SuppressWarnings("unchecked") final FutureStore<Workflow> workflowStore = Mockito.mock(FutureStore.class);
         final PayloadReceiverImpl payloadReceiver = new PayloadReceiverImpl(
                 engine,
-                Mockito.mock(WorkflowStore.class),
+                workflowStore,
                 new WorkflowFactoryImpl(engine)
         );
         final Map<String, String> attributes = Map.of();

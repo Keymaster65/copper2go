@@ -33,7 +33,7 @@ public class VanillaEngineImpl implements VanillaEngine {
     final EventChannelStore eventChannelStore;
     final ExecutorService executorService;
     final ContinuationStore continuationStore;
-
+    final ExpectedResponsesStore expectedResponsesStore;
     private static final Logger log = LoggerFactory.getLogger(VanillaEngineImpl.class);
 
     public VanillaEngineImpl(
@@ -41,13 +41,15 @@ public class VanillaEngineImpl implements VanillaEngine {
             final RequestChannelStore requestChannelStore,
             final EventChannelStore eventChannelStore,
             final ExecutorService executorService,
-            final ContinuationStore continuationStore
+            final ContinuationStore continuationStore,
+            final ExpectedResponsesStore expectedResponsesStore
     ) {
         this.replyChannelStore = replyChannelStore;
         this.requestChannelStore = requestChannelStore;
         this.eventChannelStore = eventChannelStore;
         this.executorService = executorService;
         this.continuationStore = continuationStore;
+        this.expectedResponsesStore = expectedResponsesStore;
     }
 
     @Override
@@ -57,7 +59,7 @@ public class VanillaEngineImpl implements VanillaEngine {
 
     @Override
     public void continueAsync(final String responseCorrelationId, final Consumer<String> consumer) {
-        Continuation earlyResponseContinuation = continuationStore.addExpectedResponse(
+        Continuation earlyResponseContinuation = expectedResponsesStore.addExpectedResponse(
                 responseCorrelationId,
                 new Continuation(consumer)
         );
@@ -73,7 +75,7 @@ public class VanillaEngineImpl implements VanillaEngine {
             final Consumer<String> consumer,
             final Continuation earlyResponseContinuation
     ) {
-        continuationStore.removeExpectedResponse(responseCorrelationId);
+        expectedResponsesStore.removeExpectedResponse(responseCorrelationId);
         log.info("Submit early response (responseCorrelationId={}).", responseCorrelationId);
         final Future<?> submit = executorService.submit(() -> {
                     log.info("Continue early response (responseCorrelationId={}).", responseCorrelationId);

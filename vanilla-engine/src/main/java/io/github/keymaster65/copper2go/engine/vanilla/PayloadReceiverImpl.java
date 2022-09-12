@@ -31,12 +31,12 @@ public class PayloadReceiverImpl implements PayloadReceiver {
     private static final Logger log = LoggerFactory.getLogger(PayloadReceiverImpl.class);
 
     private final VanillaEngineImpl vanillaEngineImpl;
-    private final WorkflowStore workflowStore;
+    private final FutureStore<Workflow> workflowStore;
     private final WorkflowFactory workflowFactory;
 
     public PayloadReceiverImpl(
             final VanillaEngineImpl vanillaEngineImpl,
-            final WorkflowStore workflowStore,
+            final FutureStore<Workflow> workflowStore,
             final WorkflowFactory workflowFactory
     ) {
         this.vanillaEngineImpl = vanillaEngineImpl;

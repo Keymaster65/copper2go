@@ -29,9 +29,10 @@ class WorkflowStoreTest {
     @Test
     void start() {
         final ScheduledExecutorService futureHandlerService = Mockito.mock(ScheduledExecutorService.class);
-        @SuppressWarnings("unchecked") final WorkflowStore workflowStore = new WorkflowStore(
+        @SuppressWarnings("unchecked") final FutureStore<Object> workflowStore = new FutureStore<Object>(
                 futureHandlerService,
-                Mockito.mock(ConcurrentHashMap.class)
+                Mockito.mock(ConcurrentHashMap.class),
+                Object.class
         );
         @SuppressWarnings("rawtypes") final ScheduledFuture future = Mockito.mock(ScheduledFuture.class);
         //noinspection unchecked
@@ -39,9 +40,9 @@ class WorkflowStoreTest {
                 .when(
                         futureHandlerService.scheduleAtFixedRate(
                                 Mockito.any(),
-                                Mockito.eq(WorkflowStore.INITIAL_DELAY),
-                                Mockito.eq(WorkflowStore.PERIOD),
-                                Mockito.eq(WorkflowStore.TIME_UNIT)
+                                Mockito.eq(FutureStore.INITIAL_DELAY),
+                                Mockito.eq(FutureStore.PERIOD),
+                                Mockito.eq(FutureStore.TIME_UNIT)
                         )
                 )
                 .thenReturn(future);
@@ -50,18 +51,21 @@ class WorkflowStoreTest {
 
         Mockito.verify(futureHandlerService).scheduleAtFixedRate(
                 Mockito.any(),
-                Mockito.eq(WorkflowStore.INITIAL_DELAY),
-                Mockito.eq(WorkflowStore.PERIOD),
-                Mockito.eq(WorkflowStore.TIME_UNIT)
+                Mockito.eq(FutureStore.INITIAL_DELAY),
+                Mockito.eq(FutureStore.PERIOD),
+                Mockito.eq(FutureStore.TIME_UNIT)
         );
     }
 
     @Test
     void stop() {
         final ScheduledExecutorService futureHandlerService = Mockito.mock(ScheduledExecutorService.class);
-        @SuppressWarnings("unchecked") final WorkflowStore workflowStore = new WorkflowStore(
+
+        @SuppressWarnings("unchecked")
+        final FutureStore<Object> workflowStore = new FutureStore<Object>(
                 futureHandlerService,
-                Mockito.mock(ConcurrentHashMap.class)
+                Mockito.mock(ConcurrentHashMap.class),
+                Object.class
         );
 
         workflowStore.stop();
@@ -71,17 +75,24 @@ class WorkflowStoreTest {
 
     @Test
     void addFuture() {
-        final WorkflowStore workflowStore = new WorkflowStore();
+        final FutureStore<Object> workflowStore = new FutureStore<>(Object.class);
 
         workflowStore.addFuture(Mockito.mock(Future.class), Mockito.mock(Workflow.class));
 
-        Assertions.assertThat(workflowStore.getWorkflowInstanceCount()).isOne();
+        Assertions.assertThat(workflowStore.size()).isOne();
     }
 
     @Test
-    void getWorkflowInstanceCount() {
-        final WorkflowStore workflowStore = new WorkflowStore();
+    void size() {
+        final FutureStore<Object> workflowStore = new FutureStore<>(Object.class);
 
-        Assertions.assertThat(workflowStore.getWorkflowInstanceCount()).isZero();
+        Assertions.assertThat(workflowStore.size()).isZero();
+    }
+
+    @Test
+    void getThreadName() {
+        final FutureStore<Object> workflowStore = new FutureStore<>(Object.class);
+
+        Assertions.assertThat(workflowStore.getThreadName()).isEqualTo("ObjectObserver");
     }
 }

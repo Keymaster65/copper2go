@@ -33,22 +33,24 @@ class ResponseReceiverImplTest {
     void receiveEarlyResponse() {
         final ExecutorService executorService = Mockito.mock(ExecutorService.class);
         final ContinuationStore continuationStore = Mockito.mock(ContinuationStore.class);
+        final ExpectedResponsesStore expectedResponsesStore = Mockito.mock(ExpectedResponsesStore.class);
         final VanillaEngineImpl engine = new VanillaEngineImpl(
                 Mockito.mock(ReplyChannelStoreImpl.class),
                 Mockito.mock(RequestChannelStore.class),
                 Mockito.mock(EventChannelStore.class),
                 executorService,
-                continuationStore
+                continuationStore,
+                expectedResponsesStore
         );
         final ResponseReceiverImpl responseReceiver = new ResponseReceiverImpl(engine);
 
         responseReceiver.receiveError(CORRELATION_ID, RESPONSE);
 
         // sorry for that hack ;-)
-        Mockito.verify(continuationStore).addExpectedResponse(CORRELATION_ID, new Continuation(RESPONSE));
+        Mockito.verify(expectedResponsesStore).addExpectedResponse(CORRELATION_ID, new Continuation(RESPONSE));
         responseReceiver.receive(CORRELATION_ID, RESPONSE);
 
-        Mockito.verify(continuationStore, Mockito.times(2)).addExpectedResponse(CORRELATION_ID, new Continuation(RESPONSE));
+        Mockito.verify(expectedResponsesStore, Mockito.times(2)).addExpectedResponse(CORRELATION_ID, new Continuation(RESPONSE));
         Mockito.verifyNoMoreInteractions(continuationStore);
         Mockito.verifyNoInteractions(executorService);
     }
@@ -58,17 +60,19 @@ class ResponseReceiverImplTest {
         final ExecutorService executorService = ExecutorServices.start();
 
         final ContinuationStore continuationStore = Mockito.mock(ContinuationStore.class);
+        final ExpectedResponsesStore expectedResponsesStore = Mockito.mock(ExpectedResponsesStore.class);
         @SuppressWarnings("unchecked") final Consumer<String> consumer = Mockito.mock(Consumer.class);
         final Continuation waiting = new Continuation(consumer);
         Mockito
-                .when(continuationStore.addExpectedResponse(Mockito.eq(CORRELATION_ID), Mockito.any()))
+                .when(expectedResponsesStore.addExpectedResponse(Mockito.eq(CORRELATION_ID), Mockito.any()))
                 .thenReturn(waiting);
         final VanillaEngineImpl engine = new VanillaEngineImpl(
                 Mockito.mock(ReplyChannelStoreImpl.class),
                 Mockito.mock(RequestChannelStore.class),
                 Mockito.mock(EventChannelStore.class),
                 executorService,
-                continuationStore
+                continuationStore,
+                expectedResponsesStore
         );
         final ResponseReceiverImpl responseReceiver = new ResponseReceiverImpl(engine);
 
@@ -77,8 +81,8 @@ class ResponseReceiverImplTest {
         ExecutorServices.stop(executorService);
 
         Mockito.verify(consumer).accept(RESPONSE);
-        Mockito.verify(continuationStore).addExpectedResponse(CORRELATION_ID, new Continuation(RESPONSE));
-        Mockito.verify(continuationStore).removeExpectedResponse(CORRELATION_ID);
+        Mockito.verify(expectedResponsesStore).addExpectedResponse(CORRELATION_ID, new Continuation(RESPONSE));
+        Mockito.verify(expectedResponsesStore).removeExpectedResponse(CORRELATION_ID);
         Mockito.verify(continuationStore).addFuture(Mockito.any(), Mockito.eq(waiting));
         Mockito.verifyNoMoreInteractions(continuationStore);
     }

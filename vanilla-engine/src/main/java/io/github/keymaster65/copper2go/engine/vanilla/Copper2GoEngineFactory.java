@@ -29,7 +29,8 @@ public class Copper2GoEngineFactory {
             final ReplyChannelStoreImpl replyChannelStoreImpl,
             final RequestChannelStore requestChannelStore,
             final EventChannelStore eventChannelStore,
-            final WorkflowStore workflowStore
+            final FutureStore<Workflow> workflowStore,
+            final ExpectedResponsesStore expectedResponsesStore
     ) {
         final ContinuationStore continuationStore = new ContinuationStore(new ConcurrentHashMap<>());
         final VanillaEngineImpl vanillaEngineImpl = new VanillaEngineImpl(
@@ -37,7 +38,8 @@ public class Copper2GoEngineFactory {
                 requestChannelStore,
                 eventChannelStore,
                 Executors.newFixedThreadPool(10),
-                continuationStore
+                continuationStore,
+                expectedResponsesStore
         );
 
         return new Copper2GoEngine(

@@ -33,7 +33,6 @@ public class ContinuationStore {
     public static final TimeUnit TIME_UNIT = TimeUnit.MILLISECONDS;
 
     private final Map<Future<?>, Continuation> continuations;
-    private final Map<String, Continuation> expectedResponses;
     private final ScheduledExecutorService newSingleThreadScheduledExecutor;
     private final DoneFutureExceptionHandler<Continuation> doneFutureExceptionHandler;
 
@@ -66,7 +65,6 @@ public class ContinuationStore {
             final Map<Future<?>, Continuation> continuations,
             final DoneFutureExceptionHandler<Continuation> doneFutureExceptionHandler
     ) {
-        this.expectedResponses = expectedResponses;
         this.newSingleThreadScheduledExecutor = newSingleThreadScheduledExecutor;
         this.continuations = continuations;
         this.doneFutureExceptionHandler = doneFutureExceptionHandler;
@@ -93,14 +91,6 @@ public class ContinuationStore {
     public void addFuture(final Future<?> continuationFuture, final Continuation continuation) {
         log.debug("Add continuation instance {}.", continuation);
         continuations.put(continuationFuture, continuation);
-    }
-
-    Continuation addExpectedResponse(final String responseCorrelationId, final Continuation continuation) {
-        return expectedResponses.put(responseCorrelationId, continuation);
-    }
-
-    Continuation removeExpectedResponse(final String responseCorrelationId) {
-        return expectedResponses.remove(responseCorrelationId);
     }
 
     public long getActiveContinuationsCount() {

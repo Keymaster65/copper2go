@@ -33,7 +33,7 @@ public class ResponseReceiverImpl implements ResponseReceiver {
     @Override
     public void receive(final String responseCorrelationId, final String response) {
         final Continuation responseContinuation = new Continuation(response);
-        Continuation waitingConsumer = vanillaEngineImpl.continuationStore.addExpectedResponse(responseCorrelationId, responseContinuation);
+        Continuation waitingConsumer = vanillaEngineImpl.expectedResponsesStore.addExpectedResponse(responseCorrelationId, responseContinuation);
         if (waitingConsumer != null) {
             consumeResponse(responseCorrelationId, response, waitingConsumer);
         } else {
@@ -57,7 +57,7 @@ public class ResponseReceiverImpl implements ResponseReceiver {
     private void consumeResponse(final String responseCorrelationId, final String response, final Continuation waitingConsumer) {
         log.info("Receive response (responseCorrelationId={}) for waitingConsumer Continuation {}.", responseCorrelationId, waitingConsumer);
         log.trace("response={}", response);
-        final Continuation continuation = vanillaEngineImpl.continuationStore.removeExpectedResponse(responseCorrelationId);
+        final Continuation continuation = vanillaEngineImpl.expectedResponsesStore.removeExpectedResponse(responseCorrelationId);
         log.debug("Remove expected response {}.", continuation);
         final Future<?> submit = vanillaEngineImpl.executorService.submit(() -> {
                     log.info("Continue response (responseCorrelationId={}).", responseCorrelationId);

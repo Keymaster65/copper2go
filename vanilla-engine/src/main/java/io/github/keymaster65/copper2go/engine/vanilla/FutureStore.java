@@ -26,40 +26,44 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class WorkflowStore {
+public class FutureStore<T> {
 
     public static final long INITIAL_DELAY = 0;
     public static final long PERIOD = 500;
     public static final TimeUnit TIME_UNIT = TimeUnit.MILLISECONDS;
 
-    private static final Logger log = LoggerFactory.getLogger(WorkflowStore.class);
-
-    private final Map<Future<?>, Workflow> workflowInstances;
+    private final Map<Future<?>, T> instances;
     private final ScheduledExecutorService futureHandlerService;
-    private final DoneFutureExceptionHandler<Workflow> doneFutureExceptionHandler;
+    private final DoneFutureExceptionHandler<T> doneFutureExceptionHandler;
+    private static final Logger log = LoggerFactory.getLogger(FutureStore.class);
+    private final Class<T> type;
 
-    public WorkflowStore() {
+    public FutureStore(final Class<T> type) {
         this(
                 Executors.newSingleThreadScheduledExecutor(),
-                new ConcurrentHashMap<>()
+                new ConcurrentHashMap<>(),
+                type
         );
     }
 
-    WorkflowStore(
+    FutureStore(
             final ScheduledExecutorService futureHandlerService,
-            final ConcurrentHashMap<Future<?>, Workflow> workflowInstances
+            final ConcurrentHashMap<Future<?>, T> instances,
+            final Class<T> type
     ) {
-        this(futureHandlerService, workflowInstances, new DoneFutureExceptionHandler<>(workflowInstances));
+        this(futureHandlerService, instances, new DoneFutureExceptionHandler<>(instances), type);
     }
 
-    WorkflowStore(
+    FutureStore(
             final ScheduledExecutorService futureHandlerService,
-            final Map<Future<?>, Workflow> workflowInstances,
-            final DoneFutureExceptionHandler<Workflow> doneFutureExceptionHandler
+            final Map<Future<?>, T> instances,
+            final DoneFutureExceptionHandler<T> doneFutureExceptionHandler,
+            final Class<T> type
     ) {
         this.futureHandlerService = futureHandlerService;
-        this.workflowInstances = workflowInstances;
+        this.instances = instances;
         this.doneFutureExceptionHandler = doneFutureExceptionHandler;
+        this.type = type;
     }
 
     public synchronized void start() {
@@ -69,19 +73,23 @@ public class WorkflowStore {
                 PERIOD,
                 TIME_UNIT
         );
-        FutureObserver.create(scheduledFuture, "WorkflowObserver").start();
+        FutureObserver.create(scheduledFuture, getThreadName()).start();
     }
 
     public synchronized void stop() {
         futureHandlerService.shutdown();
     }
 
-    public void addFuture(final Future<?> workflowInstanceFuture, final Workflow workflowInstance) {
-        log.debug("Add workflow instance {}.", workflowInstance);
-        workflowInstances.put(workflowInstanceFuture, workflowInstance);
+    public void addFuture(final Future<?> future, final T instance) {
+        log.debug("Add {}} instance {}.", type.getSimpleName(), instance);
+        instances.put(future, instance);
     }
 
-    public long getWorkflowInstanceCount() {
-        return workflowInstances.size();
+    public long size() {
+        return instances.size();
+    }
+
+    String getThreadName() {
+        return type.getSimpleName() + "Observer";
     }
 }

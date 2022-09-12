@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 Wolf Sluyterman van Langeweyde
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.keymaster65.copper2go.engine.vanilla;
 
 
@@ -28,7 +43,8 @@ class VanillaEngineImplTest {
                 Mockito.mock(RequestChannelStore.class),
                 eventChannelStore,
                 Mockito.mock(ExecutorService.class),
-                Mockito.mock(ContinuationStore.class)
+                Mockito.mock(ContinuationStore.class),
+                Mockito.mock(ExpectedResponsesStore.class)
         );
 
         engine.event(UUID, REPLY);
@@ -44,7 +60,8 @@ class VanillaEngineImplTest {
                 requestChannelStore,
                 Mockito.mock(EventChannelStore.class),
                 Mockito.mock(ExecutorService.class),
-                Mockito.mock(ContinuationStore.class)
+                Mockito.mock(ContinuationStore.class),
+                Mockito.mock(ExpectedResponsesStore.class)
         );
 
         engine.request(CHANNEL_NAME, REQUEST);
@@ -60,7 +77,8 @@ class VanillaEngineImplTest {
                 Mockito.mock(RequestChannelStore.class),
                 Mockito.mock(EventChannelStore.class),
                 Mockito.mock(ExecutorService.class),
-                Mockito.mock(ContinuationStore.class)
+                Mockito.mock(ContinuationStore.class),
+                Mockito.mock(ExpectedResponsesStore.class)
         );
 
         engine.reply(UUID, REPLY);
@@ -70,44 +88,47 @@ class VanillaEngineImplTest {
 
     @Example
     void continueAsync() {
-        final ContinuationStore continuationStore = Mockito.mock(ContinuationStore.class);
+        final ExpectedResponsesStore expectedResponsesStore = Mockito.mock(ExpectedResponsesStore.class);
         final VanillaEngineImpl engine = new VanillaEngineImpl(
                 Mockito.mock(ReplyChannelStoreImpl.class),
                 Mockito.mock(RequestChannelStore.class),
                 Mockito.mock(EventChannelStore.class),
                 Mockito.mock(ExecutorService.class),
-                continuationStore
+                Mockito.mock(ContinuationStore.class),
+                expectedResponsesStore
         );
         @SuppressWarnings("unchecked") final Consumer<String> consumer = Mockito.mock(Consumer.class);
 
         engine.continueAsync(CORRELATIONID, consumer);
 
-        Mockito.verify(continuationStore).addExpectedResponse(CORRELATIONID, new Continuation(consumer));
+        Mockito.verify(expectedResponsesStore).addExpectedResponse(CORRELATIONID, new Continuation(consumer));
     }
 
     @Example
     void continueAsyncEarlyResponse() {
         final ContinuationStore continuationStore = Mockito.mock(ContinuationStore.class);
+        final ExpectedResponsesStore expectedResponsesStore = Mockito.mock(ExpectedResponsesStore.class);
         final ExecutorService executorService = ExecutorServices.start();
         final VanillaEngineImpl engine = new VanillaEngineImpl(
                 Mockito.mock(ReplyChannelStoreImpl.class),
                 Mockito.mock(RequestChannelStore.class),
                 Mockito.mock(EventChannelStore.class),
                 executorService,
-                continuationStore
+                continuationStore,
+                expectedResponsesStore
         );
         @SuppressWarnings("unchecked") final Consumer<String> consumer = Mockito.mock(Consumer.class);
         final Continuation continuation = new Continuation(consumer);
         final Continuation earlyResponseContinuation = new Continuation(RESPONSE);
         Mockito
-                .when(continuationStore.addExpectedResponse(CORRELATIONID, continuation))
+                .when(expectedResponsesStore.addExpectedResponse(CORRELATIONID, continuation))
                 .thenReturn(earlyResponseContinuation);
 
         engine.continueAsync(CORRELATIONID, consumer);
         ExecutorServices.stop(executorService);
 
-        Mockito.verify(continuationStore).addExpectedResponse(CORRELATIONID, continuation);
-        Mockito.verify(continuationStore).removeExpectedResponse(CORRELATIONID);
+        Mockito.verify(expectedResponsesStore).addExpectedResponse(CORRELATIONID, continuation);
+        Mockito.verify(expectedResponsesStore).removeExpectedResponse(CORRELATIONID);
         Mockito.verify(continuationStore).addFuture(Mockito.any(), Mockito.eq(earlyResponseContinuation));
         Mockito.verify(consumer).accept(RESPONSE);
     }

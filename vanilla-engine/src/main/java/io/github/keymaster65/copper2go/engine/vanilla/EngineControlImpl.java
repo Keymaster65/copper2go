@@ -26,14 +26,14 @@ import java.util.concurrent.locks.LockSupport;
 public class EngineControlImpl implements EngineControl {
 
     private final VanillaEngineImpl vanillaEngineImpl;
-    private final WorkflowStore workflowStore;
+    private final FutureStore<Workflow> workflowStore;
     private final ContinuationStore continuationStore;
 
     private static final Logger log = LoggerFactory.getLogger(EngineControlImpl.class);
 
     public EngineControlImpl(
             final VanillaEngineImpl vanillaEngineImpl,
-            final WorkflowStore workflowStore,
+            final FutureStore<Workflow> workflowStore,
             final ContinuationStore continuationStore
     ) {
         this.vanillaEngineImpl = vanillaEngineImpl;
@@ -57,11 +57,11 @@ public class EngineControlImpl implements EngineControl {
         }
         vanillaEngineImpl.executorService.shutdown();
         while (
-                workflowStore.getWorkflowInstanceCount()
+                workflowStore.size()
                         + continuationStore.getActiveContinuationsCount()
                         > 0
         ) {
-            log.debug("Wait for instances to shut down {}", workflowStore.getWorkflowInstanceCount());
+            log.debug("Wait for instances to shut down {}", workflowStore.size());
             LockSupport.parkNanos(Duration.ofMillis(100).toNanos());
         }
         continuationStore.stop();
