@@ -34,7 +34,8 @@ class WorkflowStoreTest {
                 Mockito.mock(ConcurrentHashMap.class),
                 Object.class
         );
-        @SuppressWarnings("rawtypes") final ScheduledFuture future = Mockito.mock(ScheduledFuture.class);
+        @SuppressWarnings("rawtypes")
+        final ScheduledFuture future = Mockito.mock(ScheduledFuture.class);
         //noinspection unchecked
         Mockito
                 .when(
@@ -61,8 +62,7 @@ class WorkflowStoreTest {
     void stop() {
         final ScheduledExecutorService futureHandlerService = Mockito.mock(ScheduledExecutorService.class);
 
-        @SuppressWarnings("unchecked")
-        final FutureStore<Object> workflowStore = new FutureStore<Object>(
+        @SuppressWarnings("unchecked") final FutureStore<Object> workflowStore = new FutureStore<Object>(
                 futureHandlerService,
                 Mockito.mock(ConcurrentHashMap.class),
                 Object.class

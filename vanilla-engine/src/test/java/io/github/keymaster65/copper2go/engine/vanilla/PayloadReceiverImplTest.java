@@ -35,7 +35,7 @@ class PayloadReceiverImplTest {
     @Example
     void receive() throws EngineException {
         final ExecutorService executorService = ExecutorServices.start();
-        final ContinuationStore continuationStore = Mockito.mock(ContinuationStore.class);
+        @SuppressWarnings("unchecked") final FutureStore<Continuation> continuationStore = Mockito.mock(FutureStore.class);
         final ExpectedResponsesStore expectedResponsesStore = Mockito.mock(ExpectedResponsesStore.class);
         final VanillaEngineImpl engine = new VanillaEngineImpl(
                 Mockito.mock(ReplyChannelStoreImpl.class),
@@ -69,7 +69,7 @@ class PayloadReceiverImplTest {
 
 
     @Example
-    void receiveForUnkownWorkflow()  {
+    void receiveForUnknownWorkflow() {
         final VanillaEngineImpl engine = Mockito.mock(VanillaEngineImpl.class);
         @SuppressWarnings("unchecked") final FutureStore<Workflow> mock = Mockito.mock(FutureStore.class);
         final PayloadReceiverImpl payloadReceiver = new PayloadReceiverImpl(
@@ -94,12 +94,14 @@ class PayloadReceiverImplTest {
     @Example
     void createAndStoreNotNullReplyChannel() {
         final ReplyChannelStoreImpl replyChannelStore = Mockito.mock(ReplyChannelStoreImpl.class);
+        @SuppressWarnings("unchecked") final FutureStore<Continuation> continuationStore = Mockito.mock(FutureStore.class);
+
         final VanillaEngineImpl engine = new VanillaEngineImpl(
                 replyChannelStore,
                 Mockito.mock(RequestChannelStore.class),
                 Mockito.mock(EventChannelStore.class),
                 Mockito.mock(ExecutorService.class),
-                Mockito.mock(ContinuationStore.class),
+                continuationStore,
                 Mockito.mock(ExpectedResponsesStore.class)
         );
         @SuppressWarnings("unchecked") final FutureStore<Workflow> workflowStore = Mockito.mock(FutureStore.class);
@@ -123,12 +125,13 @@ class PayloadReceiverImplTest {
     @Example
     void createAndStoreNotNullReplyChannelNull() {
         final ReplyChannelStoreImpl replyChannelStore = Mockito.mock(ReplyChannelStoreImpl.class);
+        @SuppressWarnings("unchecked") final FutureStore<Continuation> continuationStore = Mockito.mock(FutureStore.class);
         final VanillaEngineImpl engine = new VanillaEngineImpl(
                 replyChannelStore,
                 Mockito.mock(RequestChannelStore.class),
                 Mockito.mock(EventChannelStore.class),
                 Mockito.mock(ExecutorService.class),
-                Mockito.mock(ContinuationStore.class),
+                continuationStore,
                 Mockito.mock(ExpectedResponsesStore.class)
         );
         @SuppressWarnings("unchecked") final FutureStore<Workflow> workflowStore = Mockito.mock(FutureStore.class);

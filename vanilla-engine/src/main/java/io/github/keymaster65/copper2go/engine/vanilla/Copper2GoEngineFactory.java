@@ -20,7 +20,6 @@ import io.github.keymaster65.copper2go.api.workflow.RequestChannelStore;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
 
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 
 public class Copper2GoEngineFactory {
@@ -32,7 +31,7 @@ public class Copper2GoEngineFactory {
             final FutureStore<Workflow> workflowStore,
             final ExpectedResponsesStore expectedResponsesStore
     ) {
-        final ContinuationStore continuationStore = new ContinuationStore(new ConcurrentHashMap<>());
+        final FutureStore<Continuation> continuationStore = new FutureStore<>(Continuation.class);
         final VanillaEngineImpl vanillaEngineImpl = new VanillaEngineImpl(
                 replyChannelStoreImpl,
                 requestChannelStore,

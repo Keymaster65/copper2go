@@ -32,7 +32,7 @@ public class VanillaEngineImpl implements VanillaEngine {
     final RequestChannelStore requestChannelStore;
     final EventChannelStore eventChannelStore;
     final ExecutorService executorService;
-    final ContinuationStore continuationStore;
+    final FutureStore<Continuation> continuationStore;
     final ExpectedResponsesStore expectedResponsesStore;
     private static final Logger log = LoggerFactory.getLogger(VanillaEngineImpl.class);
 
@@ -41,7 +41,7 @@ public class VanillaEngineImpl implements VanillaEngine {
             final RequestChannelStore requestChannelStore,
             final EventChannelStore eventChannelStore,
             final ExecutorService executorService,
-            final ContinuationStore continuationStore,
+            final FutureStore<Continuation>  continuationStore,
             final ExpectedResponsesStore expectedResponsesStore
     ) {
         this.replyChannelStore = replyChannelStore;

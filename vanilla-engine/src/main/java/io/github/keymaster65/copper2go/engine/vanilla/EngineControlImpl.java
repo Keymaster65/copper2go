@@ -27,14 +27,14 @@ public class EngineControlImpl implements EngineControl {
 
     private final VanillaEngineImpl vanillaEngineImpl;
     private final FutureStore<Workflow> workflowStore;
-    private final ContinuationStore continuationStore;
+    private final FutureStore<Continuation> continuationStore;
 
     private static final Logger log = LoggerFactory.getLogger(EngineControlImpl.class);
 
     public EngineControlImpl(
             final VanillaEngineImpl vanillaEngineImpl,
             final FutureStore<Workflow> workflowStore,
-            final ContinuationStore continuationStore
+            final FutureStore<Continuation> continuationStore
     ) {
         this.vanillaEngineImpl = vanillaEngineImpl;
         this.workflowStore = workflowStore;
@@ -56,11 +56,7 @@ public class EngineControlImpl implements EngineControl {
             throw new EngineException("VanillaEngine has no executorService.");
         }
         vanillaEngineImpl.executorService.shutdown();
-        while (
-                workflowStore.size()
-                        + continuationStore.getActiveContinuationsCount()
-                        > 0
-        ) {
+        while (workflowStore.size() + continuationStore.size() > 0) {
             log.debug("Wait for instances to shut down {}", workflowStore.size());
             LockSupport.parkNanos(Duration.ofMillis(100).toNanos());
         }

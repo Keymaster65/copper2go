@@ -32,7 +32,7 @@ class ResponseReceiverImplTest {
     @Example
     void receiveEarlyResponse() {
         final ExecutorService executorService = Mockito.mock(ExecutorService.class);
-        final ContinuationStore continuationStore = Mockito.mock(ContinuationStore.class);
+        @SuppressWarnings("unchecked") final FutureStore<Continuation> continuationStore = Mockito.mock(FutureStore.class);
         final ExpectedResponsesStore expectedResponsesStore = Mockito.mock(ExpectedResponsesStore.class);
         final VanillaEngineImpl engine = new VanillaEngineImpl(
                 Mockito.mock(ReplyChannelStoreImpl.class),
@@ -59,7 +59,7 @@ class ResponseReceiverImplTest {
     void receive() {
         final ExecutorService executorService = ExecutorServices.start();
 
-        final ContinuationStore continuationStore = Mockito.mock(ContinuationStore.class);
+        @SuppressWarnings("unchecked") final FutureStore<Continuation> continuationStore = Mockito.mock(FutureStore.class);
         final ExpectedResponsesStore expectedResponsesStore = Mockito.mock(ExpectedResponsesStore.class);
         @SuppressWarnings("unchecked") final Consumer<String> consumer = Mockito.mock(Consumer.class);
         final Continuation waiting = new Continuation(consumer);

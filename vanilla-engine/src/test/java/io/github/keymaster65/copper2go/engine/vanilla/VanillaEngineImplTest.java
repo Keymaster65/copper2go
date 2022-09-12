@@ -38,12 +38,14 @@ class VanillaEngineImplTest {
     @Example
     void event() {
         final EventChannelStore eventChannelStore = Mockito.mock(EventChannelStore.class);
+        @SuppressWarnings("unchecked") final FutureStore<Continuation> continuationStore = Mockito.mock(FutureStore.class);
+
         final VanillaEngineImpl engine = new VanillaEngineImpl(
                 Mockito.mock(ReplyChannelStoreImpl.class),
                 Mockito.mock(RequestChannelStore.class),
                 eventChannelStore,
                 Mockito.mock(ExecutorService.class),
-                Mockito.mock(ContinuationStore.class),
+                continuationStore,
                 Mockito.mock(ExpectedResponsesStore.class)
         );
 
@@ -55,12 +57,14 @@ class VanillaEngineImplTest {
     @Example
     void request() {
         final RequestChannelStore requestChannelStore = Mockito.mock(RequestChannelStore.class);
+        @SuppressWarnings("unchecked") final FutureStore<Continuation> continuationStore = Mockito.mock(FutureStore.class);
+
         final VanillaEngineImpl engine = new VanillaEngineImpl(
                 Mockito.mock(ReplyChannelStoreImpl.class),
                 requestChannelStore,
                 Mockito.mock(EventChannelStore.class),
                 Mockito.mock(ExecutorService.class),
-                Mockito.mock(ContinuationStore.class),
+                continuationStore,
                 Mockito.mock(ExpectedResponsesStore.class)
         );
 
@@ -72,12 +76,13 @@ class VanillaEngineImplTest {
     @Example
     void reply() {
         final ReplyChannelStoreImpl replyChannelStore = Mockito.mock(ReplyChannelStoreImpl.class);
+        @SuppressWarnings("unchecked") final FutureStore<Continuation> continuationStore = Mockito.mock(FutureStore.class);
         final VanillaEngineImpl engine = new VanillaEngineImpl(
                 replyChannelStore,
                 Mockito.mock(RequestChannelStore.class),
                 Mockito.mock(EventChannelStore.class),
                 Mockito.mock(ExecutorService.class),
-                Mockito.mock(ContinuationStore.class),
+                continuationStore,
                 Mockito.mock(ExpectedResponsesStore.class)
         );
 
@@ -89,12 +94,13 @@ class VanillaEngineImplTest {
     @Example
     void continueAsync() {
         final ExpectedResponsesStore expectedResponsesStore = Mockito.mock(ExpectedResponsesStore.class);
+        @SuppressWarnings("unchecked") final FutureStore<Continuation> continuationStore = Mockito.mock(FutureStore.class);
         final VanillaEngineImpl engine = new VanillaEngineImpl(
                 Mockito.mock(ReplyChannelStoreImpl.class),
                 Mockito.mock(RequestChannelStore.class),
                 Mockito.mock(EventChannelStore.class),
                 Mockito.mock(ExecutorService.class),
-                Mockito.mock(ContinuationStore.class),
+                continuationStore,
                 expectedResponsesStore
         );
         @SuppressWarnings("unchecked") final Consumer<String> consumer = Mockito.mock(Consumer.class);
@@ -106,7 +112,7 @@ class VanillaEngineImplTest {
 
     @Example
     void continueAsyncEarlyResponse() {
-        final ContinuationStore continuationStore = Mockito.mock(ContinuationStore.class);
+        @SuppressWarnings("unchecked") final FutureStore<Continuation> continuationStore = Mockito.mock(FutureStore.class);
         final ExpectedResponsesStore expectedResponsesStore = Mockito.mock(ExpectedResponsesStore.class);
         final ExecutorService executorService = ExecutorServices.start();
         final VanillaEngineImpl engine = new VanillaEngineImpl(
