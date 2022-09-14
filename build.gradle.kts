@@ -112,7 +112,7 @@ allprojects {
 
     dependencies {
         implementation("org.slf4j:slf4j-api:2.0.0")
-        implementation("ch.qos.logback:logback-classic:1.4.0")
+        implementation("ch.qos.logback:logback-classic:1.4.1")
 
         implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4")
 
