@@ -34,7 +34,7 @@ class PayloadReceiverImplTest {
 
     @Example
     void receive() throws EngineException {
-        final ExecutorService executorService = ExecutorServices.start();
+        final ExecutorService executorService = Mockito.mock(ExecutorService.class);
         @SuppressWarnings("unchecked") final FutureStore<Continuation> continuationStore = Mockito.mock(FutureStore.class);
         final ExpectedResponsesStore expectedResponsesStore = Mockito.mock(ExpectedResponsesStore.class);
         final VanillaEngineImpl engine = new VanillaEngineImpl(
@@ -61,10 +61,8 @@ class PayloadReceiverImplTest {
                 0
         );
 
-        final boolean ignored = ExecutorServices.stop(executorService);
-
         Mockito.verify(workflowStore).addFuture(Mockito.any(), Mockito.any());
-        Mockito.verify(expectedResponsesStore).addExpectedResponse(Mockito.any(), Mockito.any());
+        Mockito.verify(executorService).submit((Runnable) Mockito.any());
     }
 
 

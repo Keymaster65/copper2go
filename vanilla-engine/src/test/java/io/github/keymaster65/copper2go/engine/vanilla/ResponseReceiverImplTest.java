@@ -57,7 +57,7 @@ class ResponseReceiverImplTest {
 
     @Example
     void receive() {
-        final ExecutorService executorService = ExecutorServices.start();
+        final ExecutorService executorService = Mockito.mock(ExecutorService.class);
 
         @SuppressWarnings("unchecked") final FutureStore<Continuation> continuationStore = Mockito.mock(FutureStore.class);
         final ExpectedResponsesStore expectedResponsesStore = Mockito.mock(ExpectedResponsesStore.class);
@@ -78,9 +78,7 @@ class ResponseReceiverImplTest {
 
 
         responseReceiver.receive(CORRELATION_ID, RESPONSE);
-        ExecutorServices.stop(executorService);
 
-        Mockito.verify(consumer).accept(RESPONSE);
         Mockito.verify(expectedResponsesStore).addExpectedResponse(CORRELATION_ID, new Continuation(RESPONSE));
         Mockito.verify(expectedResponsesStore).removeExpectedResponse(CORRELATION_ID);
         Mockito.verify(continuationStore).addFuture(Mockito.any(), Mockito.eq(waiting));

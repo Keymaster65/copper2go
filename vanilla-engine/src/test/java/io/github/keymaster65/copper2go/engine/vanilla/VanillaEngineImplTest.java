@@ -114,7 +114,7 @@ class VanillaEngineImplTest {
     void continueAsyncEarlyResponse() {
         @SuppressWarnings("unchecked") final FutureStore<Continuation> continuationStore = Mockito.mock(FutureStore.class);
         final ExpectedResponsesStore expectedResponsesStore = Mockito.mock(ExpectedResponsesStore.class);
-        final ExecutorService executorService = ExecutorServices.start();
+        final ExecutorService executorService = Mockito.mock(ExecutorService.class);
         final VanillaEngineImpl engine = new VanillaEngineImpl(
                 Mockito.mock(ReplyChannelStoreImpl.class),
                 Mockito.mock(RequestChannelStore.class),
@@ -131,11 +131,9 @@ class VanillaEngineImplTest {
                 .thenReturn(earlyResponseContinuation);
 
         engine.continueAsync(CORRELATIONID, consumer);
-        ExecutorServices.stop(executorService);
 
         Mockito.verify(expectedResponsesStore).addExpectedResponse(CORRELATIONID, continuation);
         Mockito.verify(expectedResponsesStore).removeExpectedResponse(CORRELATIONID);
-        Mockito.verify(continuationStore).addFuture(Mockito.any(), Mockito.eq(earlyResponseContinuation));
-        Mockito.verify(consumer).accept(RESPONSE);
+        Mockito.verify(executorService).submit((Runnable) Mockito.any());
     }
 }
