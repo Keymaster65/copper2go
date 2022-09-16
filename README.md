@@ -290,7 +290,7 @@ Issues are very welcome, too.
 
 1) checkout version branch
 1) merge master to version branch
-1) update version for jib
+1) update version for jib (in build.gradle.kts)
 1) update version in SystemCompleteTest.java
 1) execute "Release Tasks"
 1) push version branch
