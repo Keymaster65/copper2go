@@ -26,10 +26,13 @@ public class Hello2 implements Workflow {
     private final VanillaEngine vanillaEngine;
     private WorkflowData workflowData;
 
-    public Hello2(
-            final VanillaEngine vanillaEngine
-    ) {
+    public Hello2(final VanillaEngine vanillaEngine) {
         this.vanillaEngine = vanillaEngine;
+    }
+
+    public Hello2(final VanillaEngine vanillaEngine, final WorkflowData workflowData) {
+        this.vanillaEngine = vanillaEngine;
+        this.workflowData = workflowData;
     }
 
     @Override
