@@ -28,7 +28,6 @@ import io.github.keymaster65.copper2go.connector.standardio.event.StandardOutEve
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
 import io.github.keymaster65.copper2go.engine.scotty.Copper2GoEngineFactory;
-import io.github.keymaster65.copper2go.engine.scotty.WorkflowRepositoryConfig;
 import io.github.keymaster65.copper2go.engine.vanilla.ExpectedResponsesStore;
 import io.github.keymaster65.copper2go.engine.vanilla.FutureStore;
 import io.github.keymaster65.copper2go.engine.vanilla.Workflow;
@@ -39,10 +38,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ApplicationFactory {
 
+    public static final String INCUBATION_VANILLA = "io.github.keymaster65.copper2go.incubationVanilla";
+
     private ApplicationFactory() {
     }
 
     public static Application of(final Config config) {
+        return ApplicationFactory.of(config, Boolean.parseBoolean(System.getProperty(INCUBATION_VANILLA)));
+    }
+    public static Application of(final Config config, final boolean incubationVanilla) {
 
         var replyChannelStoreImpl = new ReplyChannelStoreImpl();
         final DefaultEventChannelStore defaultEventChannelStore = new DefaultEventChannelStore();
@@ -54,14 +58,21 @@ public class ApplicationFactory {
                 defaultEventChannelStore,
                 defaultRequestChannelStore
         );
-        var copper2GoEngine = createCopper2GoEngine(
-                config.maxTickets,
-                config.workflowRepositoryConfig,
-                replyChannelStoreImpl,
-                dependencyInjector,
-                defaultEventChannelStore,
-                defaultRequestChannelStore
-        );
+        Copper2GoEngine copper2GoEngine;
+        if (incubationVanilla) {
+            copper2GoEngine  = createCopper2GoVanillyEngine(
+                    replyChannelStoreImpl,
+                    defaultEventChannelStore,
+                    defaultRequestChannelStore
+            );
+        } else {
+            copper2GoEngine  = Copper2GoEngineFactory.create(
+                    config.maxTickets,
+                    config.workflowRepositoryConfig,
+                    replyChannelStoreImpl,
+                    dependencyInjector
+            );
+        }
 
 
         RequestChannelConfigurator.putHttpRequestChannels(
@@ -91,30 +102,18 @@ public class ApplicationFactory {
         );
     }
 
-    public static Copper2GoEngine createCopper2GoEngine(
-            final int maxTickets,
-            final WorkflowRepositoryConfig workflowRepositoryConfig,
+    public static Copper2GoEngine createCopper2GoVanillyEngine(
             final ReplyChannelStoreImpl replyChannelStoreImpl,
-            final DependencyInjector dependencyInjector,
             final DefaultEventChannelStore defaultEventChannelStore,
             final DefaultRequestChannelStore defaultRequestChannelStore
 
     ) {
-        // TODO think about not hacky switch
-        if (maxTickets == 0) {
-            return io.github.keymaster65.copper2go.engine.vanilla.Copper2GoEngineFactory.create(
-                    replyChannelStoreImpl,
-                    defaultRequestChannelStore,
-                    defaultEventChannelStore,
-                    new FutureStore<>(Workflow.class),
-                    new ExpectedResponsesStore(new ConcurrentHashMap<>())
-            );
-        }
-        return Copper2GoEngineFactory.create(
-                maxTickets,
-                workflowRepositoryConfig,
+        return io.github.keymaster65.copper2go.engine.vanilla.Copper2GoEngineFactory.create(
                 replyChannelStoreImpl,
-                dependencyInjector
+                defaultRequestChannelStore,
+                defaultEventChannelStore,
+                new FutureStore<>(Workflow.class),
+                new ExpectedResponsesStore(new ConcurrentHashMap<>())
         );
     }
 }
