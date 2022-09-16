@@ -44,7 +44,7 @@ publishing {
 
 dependencies {
     api("org.copper-engine:copper-coreengine:5.4.1")
-    api("org.slf4j:slf4j-api:2.0.0")
+    api("org.slf4j:slf4j-api:2.0.1")
     api("com.fasterxml.jackson.core:jackson-databind:2.13.4")
 
     testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
