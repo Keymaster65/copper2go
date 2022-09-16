@@ -131,7 +131,7 @@ allprojects {
             implementation("io.netty:netty-buffer:4.1.81.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec:4.1.81.Final") {
+            implementation("io.netty:netty-codec:4.1.82.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-codec-http:4.1.81.Final") {
