@@ -59,6 +59,17 @@ class Hello2Test {
     }
 
     @Example
+    void continuationNullUuid() {
+        final VanillaEngine engine = Mockito.mock(VanillaEngine.class);
+        final Hello2 hello2 = new Hello2(engine, new WorkflowData(null, PAYLOAD));
+
+        final String response = "response";
+        hello2.continuation(response);
+
+        Mockito.verifyNoInteractions(engine);
+    }
+
+    @Example
     void continuationBadState() {
         final VanillaEngine engine = Mockito.mock(VanillaEngine.class);
         final Hello2 hello2 = new Hello2(engine);
