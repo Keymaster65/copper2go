@@ -28,28 +28,26 @@ public class FutureObserver {
 
     private static final Logger log = LoggerFactory.getLogger(FutureObserver.class);
 
-    static Thread create(ScheduledFuture<?> scheduledFuture, final String threadName) {
-        return new Thread(createRunnable(scheduledFuture), threadName);
+    static Thread create(final ScheduledFuture<?> scheduledFuture, final String threadName) {
+        return new Thread(createRunnable(scheduledFuture, log), threadName);
     }
-
-    private static Runnable createRunnable(ScheduledFuture<?> scheduledFuture) {
-        // TODO improve messages
+    static Runnable createRunnable(ScheduledFuture<?> scheduledFuture, final Logger logger) {
         return () -> {
-            log.info("Start scheduledFuture.");
+            logger.info("Start scheduledFuture.");
             boolean canceled = false;
             while (!canceled) {
                 try {
-                    log.trace("Getting scheduledFuture now.");
+                    logger.trace("Getting scheduledFuture now.");
                     scheduledFuture.get(3, TimeUnit.SECONDS);
                 } catch (ExecutionException e) {
-                    log.error("Ignore exception while getting scheduledFuture.", e);
+                    logger.error("Ignore ExecutionException while getting scheduledFuture.", e);
                 } catch (TimeoutException e) {
-                    log.trace("Ignore timeout while getting scheduledFuture.");
+                    logger.trace("Ignore TimeoutException while getting scheduledFuture.");
                 } catch (CancellationException e) {
-                    log.info("Cancel scheduledFuture now due to cancellation.");
+                    logger.info("Cancel scheduledFuture now due to cancellation.");
                     canceled = true;
                 } catch (InterruptedException e) {
-                    log.info("Cancel scheduledFuture now due to interruption.");
+                    logger.info("Cancel scheduledFuture now due to interruption.");
                     canceled = true;
                     Thread.currentThread().interrupt();
                 }
