@@ -52,7 +52,7 @@ application {
 }
 
 group = "io.github.keymaster65"
-var copper2goVersion = "vanilla"
+var copper2goVersion = "latest"
     
 tasks.sonarqube {
     dependsOn(tasks.test)
