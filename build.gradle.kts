@@ -39,7 +39,7 @@ dependencies {
         // due to license issue and I guess I currently do not need it
         exclude("io.netty", "netty-tcnative-classes")
     }
-    implementation("io.vertx:vertx-core:4.3.2")
+    implementation("io.vertx:vertx-core:4.3.3")
     implementation("io.vertx:vertx-kafka-client:4.3.2")
 
     testImplementation("org.testcontainers:testcontainers:1.+")
