@@ -77,12 +77,8 @@ public class VanillaEngineImpl implements VanillaEngine {
     ) {
         expectedResponsesStore.removeExpectedResponse(responseCorrelationId);
         log.info("Submit early response (responseCorrelationId={}).", responseCorrelationId);
-        final Future<?> submit = executorService.submit(() -> {
-                    log.info("Continue early response (responseCorrelationId={}).", responseCorrelationId);
-                    final String response = earlyResponseContinuation.response();
-                    log.trace("response={}", response);
-                    consumer.accept(response);
-                }
+        final Future<?> submit = executorService.submit(
+                EarlyResponseRunnalFactory.createEarlyResponseRunnable(responseCorrelationId, consumer, earlyResponseContinuation)
         );
         continuationStore.addFuture(submit, earlyResponseContinuation);
     }

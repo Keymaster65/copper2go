@@ -31,7 +31,7 @@ class VanillaEngineImplTest {
     public static final String REPLY = "reply";
     public static final String CHANNEL_NAME = "channelName";
     public static final String REQUEST = "request";
-    public static final String CORRELATIONID = "correlationid";
+    public static final String CORRELATION_ID = "correlationid";
     public static final String RESPONSE = "response";
 
 
@@ -105,9 +105,9 @@ class VanillaEngineImplTest {
         );
         @SuppressWarnings("unchecked") final Consumer<String> consumer = Mockito.mock(Consumer.class);
 
-        engine.continueAsync(CORRELATIONID, consumer);
+        engine.continueAsync(CORRELATION_ID, consumer);
 
-        Mockito.verify(expectedResponsesStore).addExpectedResponse(CORRELATIONID, new Continuation(consumer));
+        Mockito.verify(expectedResponsesStore).addExpectedResponse(CORRELATION_ID, new Continuation(consumer));
     }
 
     @Example
@@ -127,13 +127,15 @@ class VanillaEngineImplTest {
         final Continuation continuation = new Continuation(consumer);
         final Continuation earlyResponseContinuation = new Continuation(RESPONSE);
         Mockito
-                .when(expectedResponsesStore.addExpectedResponse(CORRELATIONID, continuation))
+                .when(expectedResponsesStore.addExpectedResponse(CORRELATION_ID, continuation))
                 .thenReturn(earlyResponseContinuation);
 
-        engine.continueAsync(CORRELATIONID, consumer);
+        engine.continueAsync(CORRELATION_ID, consumer);
 
-        Mockito.verify(expectedResponsesStore).addExpectedResponse(CORRELATIONID, continuation);
-        Mockito.verify(expectedResponsesStore).removeExpectedResponse(CORRELATIONID);
+        Mockito.verify(expectedResponsesStore).addExpectedResponse(CORRELATION_ID, continuation);
+        Mockito.verify(expectedResponsesStore).removeExpectedResponse(CORRELATION_ID);
         Mockito.verify(executorService).submit((Runnable) Mockito.any());
     }
+
+
 }

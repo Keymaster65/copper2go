@@ -37,7 +37,7 @@ public class ResponseReceiverImpl implements ResponseReceiver {
         if (waitingConsumer != null) {
             consumeResponse(responseCorrelationId, response, waitingConsumer);
         } else {
-            handleEarlyResonse(responseCorrelationId, responseContinuation);
+            logEarlyRepsonse(responseCorrelationId, responseContinuation);
         }
     }
 
@@ -46,7 +46,7 @@ public class ResponseReceiverImpl implements ResponseReceiver {
         receive(responseCorrelationId, response);
     }
 
-    private static void handleEarlyResonse(final String responseCorrelationId, final Continuation responseContinuation) {
+    private static void logEarlyRepsonse(final String responseCorrelationId, final Continuation responseContinuation) {
         log.info(
                 "Receive early response (responseCorrelationId={}). Add Continuation {}.",
                 responseCorrelationId,
@@ -59,12 +59,12 @@ public class ResponseReceiverImpl implements ResponseReceiver {
         log.trace("response={}", response);
         final Continuation continuation = vanillaEngineImpl.expectedResponsesStore.removeExpectedResponse(responseCorrelationId);
         log.debug("Remove expected response {}.", continuation);
-        final Future<?> submit = vanillaEngineImpl.executorService.submit(() -> {
-                    log.info("Continue response (responseCorrelationId={}).", responseCorrelationId);
-                    log.trace("response={}", response);
-                    waitingConsumer.consumer().accept(response);
-                }
-        );
+        final Future<?> submit = vanillaEngineImpl.executorService.submit(
+                EarlyResponseRunnalFactory.createEarlyResponseRunnable(
+                        responseCorrelationId,
+                        response,
+                        waitingConsumer
+                ));
         vanillaEngineImpl.continuationStore.addFuture(submit, waitingConsumer);
     }
 }
