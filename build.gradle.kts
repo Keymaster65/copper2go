@@ -48,7 +48,10 @@ dependencies {
 
 application {
     mainClass.set("io.github.keymaster65.copper2go.Main")
-    applicationDefaultJvmArgs = listOf("-Dlogback.configurationFile=src/main/resources/logback.xml")
+    applicationDefaultJvmArgs = listOf(
+        "-Dlogback.configurationFile=src/main/resources/logback.xml",
+        "-Dio.github.keymaster65.copper2go.incubationVanilla=false"
+    )
 }
 
 group = "io.github.keymaster65"
@@ -229,7 +232,7 @@ licenseReport {
     outputDir = "$projectDir/build/resources/main/license"
     excludeOwnGroup = true
     allowedLicensesFile = File("$projectDir/allowed-licenses.json")
-    excludes = arrayOf<String>("com.fasterxml.jackson:jackson-bom") // is apache 2.0 but license tool say "null"
+    excludes = arrayOf<String>("com.fasterxml.jackson:jackson-bom") // is apache 2.0 but license tool say "null" for v2.13.1
     filters = arrayOf<LicenseBundleNormalizer>(
         LicenseBundleNormalizer(
             """$projectDir/license-normalizer-bundle.json""",
