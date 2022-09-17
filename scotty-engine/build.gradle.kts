@@ -10,6 +10,6 @@ dependencies {
     }
 
         // needed for needed for GitAPIException
-    implementation("org.eclipse.jgit:org.eclipse.jgit:6.0.0.202111291000-r")
+    implementation("org.eclipse.jgit:org.eclipse.jgit:6.3.0.202209071007-r")
 
 }
