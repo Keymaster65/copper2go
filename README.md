@@ -315,6 +315,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### "Vanilla" Release Application API 4.2
 
 * [ ] Add "vanilla" engine implementation
+* [x] Add "vanilla" engine implementation as incubating feature
 * [x] Fix CVE-2022-38752 by excluding snakeyaml
 
 #### "slf4j-api alpha6" Workflow API 3.2.0
@@ -343,8 +344,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ### Backlog
 
-* Remove version 2 of HTTP Receiver API
 * Implement loom-engine
+* Remove version 2 of HTTP Receiver API
 * Finish support kafka events
 * Add new Repository Performancetest
 * Replace vertx HTTP components with simpler implementation
