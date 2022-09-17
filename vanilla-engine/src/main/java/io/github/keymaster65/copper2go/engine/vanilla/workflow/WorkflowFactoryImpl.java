@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.vanilla;
+package io.github.keymaster65.copper2go.engine.vanilla.workflow;
 
-import io.github.keymaster65.copper2go.engine.vanilla.workflow.Hello2;
-import io.github.keymaster65.copper2go.engine.vanilla.workflow.Pricing1;
+import io.github.keymaster65.copper2go.engine.vanilla.engineapi.VanillaEngine;
+import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.Workflow;
+import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.WorkflowFactory;
 
 public class WorkflowFactoryImpl implements WorkflowFactory {
 

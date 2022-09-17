@@ -16,7 +16,7 @@
 package io.github.keymaster65.copper2go.engine.vanilla.workflow;
 
 import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
-import io.github.keymaster65.copper2go.engine.vanilla.VanillaEngine;
+import io.github.keymaster65.copper2go.engine.vanilla.engineapi.VanillaEngine;
 import net.jqwik.api.Example;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.NullableType;

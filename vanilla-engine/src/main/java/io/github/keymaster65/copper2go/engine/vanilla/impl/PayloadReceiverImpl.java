@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.vanilla;
+package io.github.keymaster65.copper2go.engine.vanilla.impl;
 
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.github.keymaster65.copper2go.api.connector.ReplyChannel;
 import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
+import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.Workflow;
+import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.WorkflowFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +28,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
-public class PayloadReceiverImpl implements PayloadReceiver {
+class PayloadReceiverImpl implements PayloadReceiver {
 
     private static final Logger log = LoggerFactory.getLogger(PayloadReceiverImpl.class);
 

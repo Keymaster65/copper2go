@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.vanilla;
+package io.github.keymaster65.copper2go.engine.vanilla.impl;
 
 import io.github.keymaster65.copper2go.api.workflow.EventChannelStore;
 import io.github.keymaster65.copper2go.api.workflow.RequestChannelStore;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
+import io.github.keymaster65.copper2go.engine.vanilla.engineapi.VanillaEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
-public class VanillaEngineImpl implements VanillaEngine {
+class VanillaEngineImpl implements VanillaEngine {
 
     final ReplyChannelStoreImpl replyChannelStore;
     final RequestChannelStore requestChannelStore;
@@ -36,7 +37,7 @@ public class VanillaEngineImpl implements VanillaEngine {
     final ExpectedResponsesStore expectedResponsesStore;
     private static final Logger log = LoggerFactory.getLogger(VanillaEngineImpl.class);
 
-    public VanillaEngineImpl(
+    VanillaEngineImpl(
             final ReplyChannelStoreImpl replyChannelStore,
             final RequestChannelStore requestChannelStore,
             final EventChannelStore eventChannelStore,
@@ -70,6 +71,18 @@ public class VanillaEngineImpl implements VanillaEngine {
         }
     }
 
+    @Override
+    public String request(final String channelName, final String request) {
+        final String responseCorrelationId = UUID.randomUUID().toString();
+        requestChannelStore.request(channelName, request, responseCorrelationId);
+        return responseCorrelationId;
+    }
+
+    @Override
+    public void event(final String channelName, final String event) {
+        eventChannelStore.event(channelName, event);
+    }
+
     private void continueEarlyResponse(
             final String responseCorrelationId,
             final Consumer<String> consumer,
@@ -88,17 +101,5 @@ public class VanillaEngineImpl implements VanillaEngine {
                 "Added expected response (responseCorrelationId={}) to continuation store for async continuation.",
                 responseCorrelationId
         );
-    }
-
-    @Override
-    public String request(final String channelName, final String request) {
-        final String responseCorrelationId = UUID.randomUUID().toString();
-        requestChannelStore.request(channelName, request, responseCorrelationId);
-        return responseCorrelationId;
-    }
-
-    @Override
-    public void event(final String channelName, final String event) {
-        eventChannelStore.event(channelName, event);
     }
 }

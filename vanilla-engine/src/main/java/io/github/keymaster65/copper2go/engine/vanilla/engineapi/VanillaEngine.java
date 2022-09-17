@@ -13,10 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.vanilla;
+package io.github.keymaster65.copper2go.engine.vanilla.engineapi;
 
-import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
+import java.util.function.Consumer;
 
-public interface Workflow {
-    void main(WorkflowData workflowData);
+public interface VanillaEngine {
+    void continueAsync(final String responseCorrelationId, final Consumer<String> consumer);
+
+    String request(final String channelName, final String request);
+
+    void event(final String channelName, final String event);
+
+    void reply(final String uuid, final String reply);
 }

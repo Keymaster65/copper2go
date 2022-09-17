@@ -13,12 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.vanilla;
+package io.github.keymaster65.copper2go.engine.vanilla.impl;
 
-public interface WorkflowFactory {
-    Workflow of(
-            final String workflow,
-            final long major,
-            final long minor
-    );
+import java.util.function.Consumer;
+
+record Continuation(
+        Consumer<String> consumer,
+        String response
+) {
+    Continuation(String response) {
+        this(null, response);
+    }
+
+    Continuation(Consumer<String> consumer) {
+        this(consumer, null);
+    }
 }

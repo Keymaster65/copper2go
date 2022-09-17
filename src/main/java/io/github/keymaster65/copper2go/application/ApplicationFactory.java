@@ -28,9 +28,9 @@ import io.github.keymaster65.copper2go.connector.standardio.event.StandardOutEve
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
 import io.github.keymaster65.copper2go.engine.scotty.Copper2GoEngineFactory;
-import io.github.keymaster65.copper2go.engine.vanilla.ExpectedResponsesStore;
-import io.github.keymaster65.copper2go.engine.vanilla.FutureStore;
-import io.github.keymaster65.copper2go.engine.vanilla.Workflow;
+import io.github.keymaster65.copper2go.engine.vanilla.impl.ExpectedResponsesStore;
+import io.github.keymaster65.copper2go.engine.vanilla.impl.FutureStore;
+import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.Workflow;
 import org.copperengine.core.DependencyInjector;
 
 import java.util.Map;
@@ -108,7 +108,7 @@ public class ApplicationFactory {
             final DefaultRequestChannelStore defaultRequestChannelStore
 
     ) {
-        return io.github.keymaster65.copper2go.engine.vanilla.Copper2GoEngineFactory.create(
+        return io.github.keymaster65.copper2go.engine.vanilla.impl.Copper2GoEngineFactory.create(
                 replyChannelStoreImpl,
                 defaultRequestChannelStore,
                 defaultEventChannelStore,

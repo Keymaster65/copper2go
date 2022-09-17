@@ -16,8 +16,8 @@
 package io.github.keymaster65.copper2go.engine.vanilla.workflow;
 
 import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
-import io.github.keymaster65.copper2go.engine.vanilla.VanillaEngine;
-import io.github.keymaster65.copper2go.engine.vanilla.Workflow;
+import io.github.keymaster65.copper2go.engine.vanilla.engineapi.VanillaEngine;
+import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.Workflow;
 
 public class Pricing1 implements Workflow {
 

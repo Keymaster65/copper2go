@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.vanilla;
+package io.github.keymaster65.copper2go.engine.vanilla.impl;
 
 import io.github.keymaster65.copper2go.engine.vanilla.workflow.Hello2;
 import io.github.keymaster65.copper2go.engine.vanilla.workflow.Pricing1;
+import io.github.keymaster65.copper2go.engine.vanilla.workflow.WorkflowFactoryImpl;
+import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.Workflow;
+import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.WorkflowFactory;
 import net.jqwik.api.Example;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;

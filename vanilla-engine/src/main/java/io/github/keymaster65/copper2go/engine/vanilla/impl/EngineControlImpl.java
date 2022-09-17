@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.vanilla;
+package io.github.keymaster65.copper2go.engine.vanilla.impl;
 
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.engine.EngineControl;
+import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.Workflow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.concurrent.locks.LockSupport;
 
-public class EngineControlImpl implements EngineControl {
+class EngineControlImpl implements EngineControl {
 
     private final VanillaEngineImpl vanillaEngineImpl;
     private final FutureStore<Workflow> workflowStore;
@@ -31,7 +32,7 @@ public class EngineControlImpl implements EngineControl {
 
     private static final Logger log = LoggerFactory.getLogger(EngineControlImpl.class);
 
-    public EngineControlImpl(
+    EngineControlImpl(
             final VanillaEngineImpl vanillaEngineImpl,
             final FutureStore<Workflow> workflowStore,
             final FutureStore<Continuation> continuationStore
