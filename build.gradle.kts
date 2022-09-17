@@ -2,7 +2,6 @@ import com.github.jk1.license.filter.LicenseBundleNormalizer
 
 plugins {
     java
-    application
     distribution
     `maven-publish`
     jacoco
@@ -23,40 +22,8 @@ publishing {
     }
 }
 
-dependencies {
-    implementation(project(":copper2go-api"))
-    implementation(project(":connector-api"))
-    implementation(project(":engine-api"))
-    implementation(project(":scotty-engine"))
-    implementation(project(":vanilla-engine"))
-    implementation(project(":connector-http-vertx"))
-    implementation(project(":connector-kafka-vertx"))
-    implementation(project(":connector-standardio"))
-
-    implementation("org.copper-engine:copper-coreengine:5.4.1")
-
-    configurations.implementation {
-        // due to license issue and I guess I currently do not need it
-        exclude("io.netty", "netty-tcnative-classes")
-    }
-    implementation("io.vertx:vertx-core:4.3.3")
-    implementation("io.vertx:vertx-kafka-client:4.3.3")
-
-    testImplementation("org.testcontainers:testcontainers:1.+")
-    testImplementation("org.testcontainers:kafka:1.+")
-}
-
-application {
-    mainClass.set("io.github.keymaster65.copper2go.Main")
-    applicationDefaultJvmArgs = listOf(
-        "-Dlogback.configurationFile=src/main/resources/logback.xml",
-        "-Dio.github.keymaster65.copper2go.incubationVanilla=false"
-    )
-}
-
 group = "io.github.keymaster65"
-var copper2goVersion = "latest"
-    
+
 tasks.sonarqube {
     dependsOn(tasks.test)
 }
@@ -73,6 +40,21 @@ tasks.compileTestJava {
 }
 
 var ct = tasks.checkLicense
+
+// visit https://github.com/jk1/Gradle-License-Report for help
+licenseReport {
+    outputDir = "$projectDir/copper2go-app/build/resources/main/license"
+    excludeOwnGroup = true
+    allowedLicensesFile = File("$projectDir/allowed-licenses.json")
+    excludes = arrayOf<String>("com.fasterxml.jackson:jackson-bom") // is apache 2.0 but license tool say "null" for v2.13.1
+    filters = arrayOf<LicenseBundleNormalizer>(
+        LicenseBundleNormalizer(
+            """$projectDir/license-normalizer-bundle.json""",
+            true
+        )
+    )
+}
+
 
 allprojects {
     apply(plugin = "java")
@@ -222,23 +204,7 @@ allprojects {
             includeEngines.add("jqwik")
         }
         systemProperty("logback.configurationFile", "src/main/resources/logback.xml")
-        systemProperty("copper2go.version", copper2goVersion)
     }
-}
-
-
-// visit https://github.com/jk1/Gradle-License-Report for help
-licenseReport {
-    outputDir = "$projectDir/build/resources/main/license"
-    excludeOwnGroup = true
-    allowedLicensesFile = File("$projectDir/allowed-licenses.json")
-    excludes = arrayOf<String>("com.fasterxml.jackson:jackson-bom") // is apache 2.0 but license tool say "null" for v2.13.1
-    filters = arrayOf<LicenseBundleNormalizer>(
-        LicenseBundleNormalizer(
-            """$projectDir/license-normalizer-bundle.json""",
-            true
-        )
-    )
 }
 
 tasks.assemble {
@@ -255,32 +221,6 @@ distributions {
             into("config") {
                 from("src/main/resources/logback.xml")
             }
-        }
-    }
-}
-
-jib {
-    container {
-        mainClass = "io.github.keymaster65.copper2go.Main"
-        jvmFlags = listOf(
-            "-XX:+UseContainerSupport",
-            "-Dfile.encoding=UTF-8",
-            "-Duser.country=DE",
-            "-Duser.language=de",
-            "-Duser.timezone=Europe/Berlin"
-        )
-        workingDirectory = "/"
-    }
-    from {
-        // Has no bash, needed for testcontainers
-        // image = "azul/zulu-openjdk-alpine:17.0.0"
-        image = "openjdk:17-jdk"
-    }
-    to {
-        image = "registry.hub.docker.com/keymaster65/copper2go:" + copper2goVersion
-        auth {
-            username = "keymaster65"
-            password = System.getenv("DOCKER_HUB_PASSWORD")
         }
     }
 }

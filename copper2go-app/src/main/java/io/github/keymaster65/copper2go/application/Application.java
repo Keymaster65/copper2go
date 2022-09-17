@@ -53,6 +53,7 @@ public class Application {
 
     public synchronized void start() throws EngineException {
         log.info("start application");
+        //noinspection resource
         copper2GoEngine.engineControl().start();
         httpServer.start();
         for (Map.Entry<String, KafkaReceiver> entry : kafkaReceiverMap.entrySet()) {
@@ -78,6 +79,7 @@ public class Application {
             entry.getValue().close();
         }
         defaultRequestChannelStore.close();
+        //noinspection resource
         copper2GoEngine.engineControl().stop();
     }
 

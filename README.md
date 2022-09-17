@@ -276,11 +276,11 @@ Issues are very welcome, too.
 
 #### Release Tasks
 1) Optional: `gradle dependencyUpdates`
-1) Optional: `gradle dependencies :scotty-engine:dependencies  :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks`
-1) Optional: `gradle dependencies :scotty-engine:dependencies  :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks --refresh-dependencies`
+1) Optional: `gradle dependencies :copper2go-app:dependencies :scotty-engine:dependencies  :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks`
+1) Optional: `gradle dependencies :copper2go-app:dependencies :scotty-engine:dependencies  :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks --refresh-dependencies`
 1) `gradle clean build -x systemTest`
 1) `gradle dependencyCheckAggregate`
-1) `gradle jib`
+1) `gradle :copper2go-app:jib`
 1) `gradle systemTest`
 
 #### master
@@ -292,7 +292,7 @@ Issues are very welcome, too.
 
 1) checkout version branch
 1) merge master to version branch
-1) update version for jib (in build.gradle.kts)
+1) update version for jib (in copper2go-app/build.gradle.kts)
 1) update version in SystemCompleteTest.java
 1) execute "Release Tasks"
 1) push version branch
