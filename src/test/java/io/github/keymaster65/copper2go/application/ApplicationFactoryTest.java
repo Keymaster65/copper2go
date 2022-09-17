@@ -23,7 +23,7 @@ class ApplicationFactoryTest {
 
     @Test
     void of() {
-        Assertions.assertThatCode(() -> ApplicationFactory.of(Config.of()))
+        Assertions.assertThatCode(() -> ApplicationFactory.create(Config.createDefault()))
                 .doesNotThrowAnyException();
     }
 }

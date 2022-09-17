@@ -43,10 +43,10 @@ public class ApplicationFactory {
     private ApplicationFactory() {
     }
 
-    public static Application of(final Config config) {
-        return ApplicationFactory.of(config, Boolean.parseBoolean(System.getProperty(INCUBATION_VANILLA)));
+    public static Application create(final Config config) {
+        return ApplicationFactory.create(config, Boolean.parseBoolean(System.getProperty(INCUBATION_VANILLA)));
     }
-    public static Application of(final Config config, final boolean incubationVanilla) {
+    public static Application create(final Config config, final boolean incubationVanilla) {
 
         var replyChannelStoreImpl = new ReplyChannelStoreImpl();
         final DefaultEventChannelStore defaultEventChannelStore = new DefaultEventChannelStore();

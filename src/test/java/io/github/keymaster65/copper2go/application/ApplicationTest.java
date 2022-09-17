@@ -24,7 +24,6 @@ import io.github.keymaster65.copper2go.connector.standardio.StandardInOutExcepti
 import io.github.keymaster65.copper2go.engine.EngineControl;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import org.assertj.core.api.Assertions;
-import org.copperengine.core.DependencyInjector;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -139,7 +138,7 @@ class ApplicationTest {
 
     @Test
     void stopWithoutStart() throws IOException {
-        final Application application = ApplicationFactory.of(Config.of());
+        final Application application = ApplicationFactory.create(Config.createDefault());
 
         Assertions.assertThatCode(application::stop)
                 .doesNotThrowAnyException();
@@ -149,7 +148,7 @@ class ApplicationTest {
 
     @Test
     void isStopRequestedWithOutStop() throws IOException {
-        final Application application = ApplicationFactory.of(Config.of());
+        final Application application = ApplicationFactory.create(Config.createDefault());
 
         Assertions.assertThat(application.isStopRequested()).isFalse();
 

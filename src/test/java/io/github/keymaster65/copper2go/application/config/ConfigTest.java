@@ -29,7 +29,7 @@ class ConfigTest {
 
     @Test
     void of() throws IOException {
-        Config config = Config.of();//ofResource("/io/github/keymaster65/copper2go/application/config/config.json");
+        Config config = Config.createDefault();//ofResource("/io/github/keymaster65/copper2go/application/config/config.json");
         assertThat(config.httpPort).isEqualTo(59665);
         assertThat(config.maxTickets).isEqualTo(10000);
 
@@ -45,7 +45,7 @@ class ConfigTest {
 
     @Test
     void ofResource() throws IOException {
-        Config config = Config.ofResource("/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json");
+        Config config = Config.createFromResource("/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json");
         assertThat(config.httpPort).isEqualTo(59665);
         assertThat(config.kafkaHost).isEqualTo("kafka");
         assertThat(config.kafkaPort).isEqualTo(9092);

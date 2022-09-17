@@ -40,8 +40,8 @@ class ApplicationHttpTest {
     @Example()
     void helloTest() throws IOException, EngineException, InterruptedException {
         String name = Data.getName();
-        Config config = Config.of();
-        Application application = ApplicationFactory.of(config);
+        Config config = Config.createDefault();
+        Application application = ApplicationFactory.create(config);
         HttpResponse<String> response;
         try {
             application.start();
@@ -56,9 +56,9 @@ class ApplicationHttpTest {
     @Property
     void hello2MappingTest(@ForAll final boolean vanillaIncubation) throws IOException, EngineException, InterruptedException {
         String name = Data.getName();
-        Config config = Config.of();
+        Config config = Config.createDefault();
 
-        Application application = ApplicationFactory.of(config, vanillaIncubation);
+        Application application = ApplicationFactory.create(config, vanillaIncubation);
         HttpResponse<String> response;
         try {
             application.start();
@@ -74,8 +74,8 @@ class ApplicationHttpTest {
     @Example()
     void masterHello2EmptyNameTest() throws IOException, EngineException, InterruptedException {
         String name = "";
-        Config config = Config.of();
-        Application application = ApplicationFactory.of(config);
+        Config config = Config.createDefault();
+        Application application = ApplicationFactory.create(config);
         HttpResponse<String> response;
         try {
             application.start();
@@ -94,8 +94,8 @@ class ApplicationHttpTest {
     @Test()
     void masterHello2EmptyNameEventTest() throws IOException, EngineException, InterruptedException {
         String name = "";
-        Config config = Config.of();
-        Application application = ApplicationFactory.of(config);
+        Config config = Config.createDefault();
+        Application application = ApplicationFactory.create(config);
         HttpResponse<String> response;
         try {
             application.start();

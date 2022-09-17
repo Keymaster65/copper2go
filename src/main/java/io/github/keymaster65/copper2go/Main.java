@@ -35,7 +35,7 @@ public class Main {
     private final AtomicBoolean started = new AtomicBoolean(false);
 
     public Main() throws IOException {
-        this(ApplicationFactory.of(createConfig()));
+        this(ApplicationFactory.create(createConfig()));
     }
 
     public Main(final Application theApplication) {
@@ -54,10 +54,10 @@ public class Main {
     static Config createConfig(final String config) throws IOException {
         if (config != null) {
             log.info("Using config defined in environment variable {}.", config);
-            return Config.of(config);
+            return Config.createFromString(config);
         }
         log.info("Use default config.");
-        return Config.of();
+        return Config.createDefault();
     }
 
     void start() throws EngineException {

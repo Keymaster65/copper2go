@@ -63,19 +63,19 @@ public class Config {
         this.kafkaRequestChannelConfigs = kafkaRequestChannelConfigs;
     }
 
-    public static Config of() throws IOException {
+    public static Config createDefault() throws IOException {
 
-        return ofResource("/io/github/keymaster65/copper2go/application/config/config.json");
+        return createFromResource("/io/github/keymaster65/copper2go/application/config/config.json");
     }
 
-    public static Config ofResource(final String resourcePath) throws IOException {
+    public static Config createFromResource(final String resourcePath) throws IOException {
 
         return objectMapper.readValue(
                 new InputStreamReader(Objects.requireNonNull(Config.class.getResourceAsStream(resourcePath)), StandardCharsets.UTF_8),
                 Config.class);
     }
 
-    public static Config of(final String config) throws IOException {
+    public static Config createFromString(final String config) throws IOException {
         return objectMapper.readValue(config, Config.class);
     }
 }
