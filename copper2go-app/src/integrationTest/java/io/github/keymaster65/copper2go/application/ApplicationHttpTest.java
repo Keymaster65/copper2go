@@ -41,7 +41,7 @@ class ApplicationHttpTest {
     void helloTest() throws IOException, EngineException, InterruptedException {
         String name = Data.getName();
         Config config = Config.createDefault();
-        Application application = ApplicationFactory.create(config);
+        Application application = Copper2GoApplicationFactory.create(config);
         HttpResponse<String> response;
         try {
             application.start();
@@ -58,7 +58,7 @@ class ApplicationHttpTest {
         String name = Data.getName();
         Config config = Config.createDefault();
 
-        Application application = ApplicationFactory.create(config, vanillaIncubation);
+        Application application = Copper2GoApplicationFactory.create(config, vanillaIncubation);
         HttpResponse<String> response;
         try {
             application.start();
@@ -75,7 +75,7 @@ class ApplicationHttpTest {
     void masterHello2EmptyNameTest() throws IOException, EngineException, InterruptedException {
         String name = "";
         Config config = Config.createDefault();
-        Application application = ApplicationFactory.create(config);
+        Application application = Copper2GoApplicationFactory.create(config);
         HttpResponse<String> response;
         try {
             application.start();
@@ -95,7 +95,7 @@ class ApplicationHttpTest {
     void masterHello2EmptyNameEventTest() throws IOException, EngineException, InterruptedException {
         String name = "";
         Config config = Config.createDefault();
-        Application application = ApplicationFactory.create(config);
+        Application application = Copper2GoApplicationFactory.create(config);
         HttpResponse<String> response;
         try {
             application.start();

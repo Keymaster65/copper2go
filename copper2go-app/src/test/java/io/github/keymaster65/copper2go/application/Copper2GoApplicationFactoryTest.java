@@ -19,11 +19,11 @@ import io.github.keymaster65.copper2go.application.config.Config;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class ApplicationFactoryTest {
+class Copper2GoApplicationFactoryTest {
 
     @Test
     void of() {
-        Assertions.assertThatCode(() -> ApplicationFactory.create(Config.createDefault()))
+        Assertions.assertThatCode(() -> Copper2GoApplicationFactory.create(Config.createDefault()))
                 .doesNotThrowAnyException();
     }
 }

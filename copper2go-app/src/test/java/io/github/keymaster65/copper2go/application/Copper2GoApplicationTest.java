@@ -30,7 +30,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Map;
 
-class ApplicationTest {
+class Copper2GoApplicationTest {
 
     @Test
     void start() throws EngineException {
@@ -42,7 +42,7 @@ class ApplicationTest {
         final KafkaReceiver kafkaReceiver = Mockito.mock(KafkaReceiver.class);
         final Map<String, KafkaReceiver> kafkaReceiverMap = Map.of("name", kafkaReceiver);
 
-        final Application application = new Application(
+        final Application application = new Copper2GoApplication(
                 copper2GoEngine,
                 httpServer,
                 defaultRequestChannelStore,
@@ -66,7 +66,7 @@ class ApplicationTest {
         final Copper2GoHttpServer httpServer = Mockito.mock(Copper2GoHttpServer.class);
         final Map<String, KafkaReceiver> kafkaReceiverMap = Map.of();
 
-        final Application application = new Application(
+        final Copper2GoApplication application = new Copper2GoApplication(
                 copper2GoEngine,
                 httpServer,
                 Mockito.mock(DefaultRequestChannelStore.class),
@@ -74,7 +74,7 @@ class ApplicationTest {
         );
 
         Assertions.assertThatCode(application::startWithStdInOut)
-                .isInstanceOf (StandardInOutException.class)
+                .isInstanceOf(StandardInOutException.class)
                 .hasMessage("Exception while getting input.")
                 .hasRootCauseInstanceOf(NullPointerException.class)
                 .hasRootCauseMessage("Read a 'null' line. So there seems to be no stdin. Might happen when starting with gradle.");
@@ -91,7 +91,7 @@ class ApplicationTest {
         final KafkaReceiver kafkaReceiver = Mockito.mock(KafkaReceiver.class);
         final Map<String, KafkaReceiver> kafkaReceiverMap = Map.of("name", kafkaReceiver);
 
-        final Application application = new Application(
+        final Application application = new Copper2GoApplication(
                 copper2GoEngine,
                 httpServer,
                 defaultRequestChannelStore,
@@ -119,7 +119,7 @@ class ApplicationTest {
         final Map<String, KafkaReceiver> kafkaReceiverMap = Map.of("name", kafkaReceiver);
         Mockito.doThrow(new NullPointerException("Test")).when(httpServer).stop();
 
-        final Application application = new Application(
+        final Application application = new Copper2GoApplication(
                 copper2GoEngine,
                 httpServer,
                 defaultRequestChannelStore,
@@ -138,7 +138,7 @@ class ApplicationTest {
 
     @Test
     void stopWithoutStart() throws IOException {
-        final Application application = ApplicationFactory.create(Config.createDefault());
+        final Application application = Copper2GoApplicationFactory.create(Config.createDefault());
 
         Assertions.assertThatCode(application::stop)
                 .doesNotThrowAnyException();
@@ -148,7 +148,7 @@ class ApplicationTest {
 
     @Test
     void isStopRequestedWithOutStop() throws IOException {
-        final Application application = ApplicationFactory.create(Config.createDefault());
+        final Application application = Copper2GoApplicationFactory.create(Config.createDefault());
 
         Assertions.assertThat(application.isStopRequested()).isFalse();
 

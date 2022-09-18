@@ -15,36 +15,20 @@
  */
 package io.github.keymaster65.copper2go;
 
-import io.github.keymaster65.copper2go.application.Application;
-import io.github.keymaster65.copper2go.application.ApplicationFactory;
+import io.github.keymaster65.copper2go.application.Copper2GoApplicationFactory;
 import io.github.keymaster65.copper2go.application.config.Config;
-import io.github.keymaster65.copper2go.api.connector.EngineException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.LockSupport;
 
 public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
     public static final String ENV_C2G_CONFIG = "C2G_CONFIG";
 
-    private final AtomicReference<Application> applicationReference = new AtomicReference<>();
-    private final AtomicBoolean started = new AtomicBoolean(false);
-
-    public Main() throws IOException {
-        this(ApplicationFactory.create(createConfig()));
-    }
-
-    public Main(final Application theApplication) {
-        applicationReference.set(theApplication);
-    }
-
     // tested in system or integrationtest
     public static void main(String[] args) throws Exception {
-        new Main().start();
+        new ApplicationLauncher(new Copper2GoApplicationFactory(createConfig()).create()).start();
     }
 
     static Config createConfig() throws IOException {
@@ -60,41 +44,6 @@ public class Main {
         return Config.createDefault();
     }
 
-    void start() throws EngineException {
-        try {
-            log.info("Start of Main.");
-            applicationReference.get().start();
-            started.set(true);
-        } catch (Exception e) {
-            log.warn("Exception in application main. Try to stop application.");
-            if (applicationReference.get() != null) {
-                applicationReference.get().stop();
-            }
-            throw e;
-        } finally {
-            if (applicationReference.get() != null) {
-                while (!applicationReference.get().isStopRequested()) {
-                    log.debug("Wait for stop request.");
-                    LockSupport.parkNanos(100L * 1000L * 1000L);
-                }
-            }
-            log.info("End of Main.");
-        }
-    }
-
-    /**
-     * @return true, if started application was stopped
-     * @throws EngineException in case of exception while stopping the application
-     */
-    boolean stop() throws EngineException {
-        log.info("Stopping Main.");
-        if (started.get()) {
-            applicationReference.get().stop();
-            started.set(false);
-            log.info("Main stopped.");
-            return true;
-        }
-        log.info("Main not started yet.");
-        return false;
+    private Main() {
     }
 }
