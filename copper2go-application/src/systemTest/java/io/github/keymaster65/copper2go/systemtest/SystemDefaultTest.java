@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
 
+import static io.github.keymaster65.copper2go.systemtest.SystemCompleteTest.SYSTEM_PROPERTY_COPPER2GO_VERSION;
+
 class SystemDefaultTest {
 
     private static final Logger log = LoggerFactory.getLogger(SystemDefaultTest.class);
@@ -78,7 +80,7 @@ class SystemDefaultTest {
     @BeforeAll
     static void startContainer() {
         //noinspection resource is in stopContainer
-        copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:latest"))
+        copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:%s".formatted(System.getProperty(SYSTEM_PROPERTY_COPPER2GO_VERSION))))
                 .withExposedPorts(59665)
                 .withImagePullPolicy(imageName -> true);
         copper2GoContainer.start();
