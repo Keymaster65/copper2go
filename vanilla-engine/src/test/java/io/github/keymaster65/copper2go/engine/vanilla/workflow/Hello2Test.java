@@ -40,7 +40,6 @@ class Hello2Test {
 
         hello2.main(new WorkflowData(uuid, PAYLOAD));
 
-        Mockito.verify(engine).event(Mockito.eq("System.stdout"), Mockito.anyString());
         Mockito.verify(engine).request(channelName, request);
         Mockito.verify(engine).continueAsync(Mockito.eq(responseCorrelationId), Mockito.any());
         Mockito.verifyNoMoreInteractions(engine);

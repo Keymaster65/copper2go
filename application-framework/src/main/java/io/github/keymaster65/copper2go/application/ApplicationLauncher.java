@@ -43,7 +43,6 @@ public class ApplicationLauncher {
             throw e;
         } finally {
             while (!application.isStopRequested()) {
-                log.debug("Wait for stop request.");
                 LockSupport.parkNanos(Duration.ofMillis(100).toNanos());
             }
             log.info("End of start.");

@@ -1,6 +1,7 @@
 rootProject.name = "copper2go"
 
 include(":copper2go-application")
+include(":vanilla-application")
 
 include(":application-framework")
 

@@ -37,7 +37,6 @@ public class Hello2 implements Workflow {
 
     @Override
     public void main(final WorkflowData workflowData) {
-        vanillaEngine.event("System.stdout", "workflow " + Hello2.class.getSimpleName());
         Consumer<String> continuation = this::continuation;
         this.workflowData = workflowData;
         final String responseCorrelationId = vanillaEngine.request("Pricing.centPerMinute", "request");

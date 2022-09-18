@@ -20,8 +20,6 @@ import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.http.TestHttpClient;
 import io.github.keymaster65.copper2go.connector.http.vertx.receiver.ApiPath;
 import net.jqwik.api.Example;
-import net.jqwik.api.ForAll;
-import net.jqwik.api.Property;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
@@ -53,12 +51,12 @@ class ApplicationHttpTest {
         Assertions.assertThat(response.body()).contains(Data.getExpectedHello(name));
     }
 
-    @Property
-    void hello2MappingTest(@ForAll final boolean vanillaIncubation) throws IOException, EngineException, InterruptedException {
+    @Example
+    void hello2MappingTest() throws IOException, EngineException, InterruptedException {
         String name = Data.getName();
         Config config = Config.createDefault();
 
-        Application application = Copper2GoApplicationFactory.create(config, vanillaIncubation);
+        Application application = Copper2GoApplicationFactory.create(config);
         HttpResponse<String> response;
         try {
             application.start();

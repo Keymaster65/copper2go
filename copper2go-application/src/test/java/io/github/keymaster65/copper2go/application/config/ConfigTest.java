@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ConfigTest {
 
     @Test
-    void of() throws IOException {
+    void createDefault() throws IOException {
         Config config = Config.createDefault();//ofResource("/io/github/keymaster65/copper2go/application/config/config.json");
         assertThat(config.httpPort).isEqualTo(59665);
         assertThat(config.maxTickets).isEqualTo(10000);
@@ -44,7 +44,7 @@ class ConfigTest {
     }
 
     @Test
-    void ofResource() throws IOException {
+    void createFromResource() throws IOException {
         Config config = Config.createFromResource("/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json");
         assertThat(config.httpPort).isEqualTo(59665);
         assertThat(config.kafkaHost).isEqualTo("kafka");
