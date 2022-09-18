@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go;
+package io.github.keymaster65.copper2go.application;
 
 import io.github.keymaster65.copper2go.api.connector.EngineException;
-import io.github.keymaster65.copper2go.application.Application;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

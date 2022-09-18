@@ -15,6 +15,7 @@
  */
 package io.github.keymaster65.copper2go;
 
+import io.github.keymaster65.copper2go.application.ApplicationLauncher;
 import io.github.keymaster65.copper2go.application.Copper2GoApplicationFactory;
 import io.github.keymaster65.copper2go.application.config.Config;
 import org.slf4j.Logger;
