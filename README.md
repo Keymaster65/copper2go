@@ -314,7 +314,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ### "Vanilla" Release Application API 4.2
 
-* [ ] Add "vanilla" engine implementation
+* [ ] Add license info "vanilla" engine implementation
+* [x] Add "vanilla" engine implementation
 * [x] Add "vanilla" engine implementation as incubating feature
 * [x] Fix CVE-2022-38752 by excluding snakeyaml
 
