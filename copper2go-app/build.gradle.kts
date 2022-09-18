@@ -7,6 +7,8 @@ plugins {
 var copper2goVersion = "latest"
 
 dependencies {
+    implementation(project(":app-framework"))
+
     implementation(project(":copper2go-api"))
     implementation(project(":connector-api"))
     implementation(project(":engine-api"))
