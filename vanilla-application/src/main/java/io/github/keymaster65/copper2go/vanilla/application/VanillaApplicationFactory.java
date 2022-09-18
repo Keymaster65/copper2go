@@ -13,83 +13,83 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.application;
+package io.github.keymaster65.copper2go.vanilla.application;
 
 import io.github.keymaster65.copper2go.api.connector.DefaultEventChannelStore;
 import io.github.keymaster65.copper2go.api.connector.DefaultRequestChannelStore;
-import io.github.keymaster65.copper2go.api.util.Copper2goDependencyInjector;
-import io.github.keymaster65.copper2go.application.config.Config;
+import io.github.keymaster65.copper2go.application.Application;
+import io.github.keymaster65.copper2go.application.ApplicationFactory;
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
 import io.github.keymaster65.copper2go.connector.http.vertx.receiver.RequestHandler;
 import io.github.keymaster65.copper2go.connector.http.vertx.receiver.VertxHttpServer;
+import io.github.keymaster65.copper2go.connector.http.vertx.request.HttpRequestChannelConfig;
 import io.github.keymaster65.copper2go.connector.http.vertx.request.RequestChannelConfigurator;
-import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiver;
-import io.github.keymaster65.copper2go.connector.standardio.event.StandardOutEventChannel;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
-import io.github.keymaster65.copper2go.engine.scotty.Copper2GoEngineFactory;
-import org.copperengine.core.DependencyInjector;
+import io.github.keymaster65.copper2go.engine.vanilla.impl.Copper2GoEngineFactory;
+import io.github.keymaster65.copper2go.engine.vanilla.impl.ExpectedResponsesStore;
+import io.github.keymaster65.copper2go.engine.vanilla.impl.FutureStore;
+import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.Workflow;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class Copper2GoApplicationFactory implements ApplicationFactory {
-
-    private final Config config;
-
-    public Copper2GoApplicationFactory(final Config config) {
-        this.config = config;
-    }
-
+public class VanillaApplicationFactory implements ApplicationFactory {
+    @Override
     public Application create() {
-        return Copper2GoApplicationFactory.create(this.config);
-    }
-    static Application create(final Config config) {
 
         var replyChannelStoreImpl = new ReplyChannelStoreImpl();
         final DefaultEventChannelStore defaultEventChannelStore = new DefaultEventChannelStore();
-        defaultEventChannelStore.put(Copper2GoApplication.SYSTEM_STDOUT_EVENT_CHANNEL_NAME, new StandardOutEventChannel(System.out, System.err)); // NOSONAR
         final DefaultRequestChannelStore defaultRequestChannelStore = new DefaultRequestChannelStore();
 
-        DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
+
+        final Copper2GoEngine copper2GoEngine = createCopper2GoVanillyEngine(
                 replyChannelStoreImpl,
                 defaultEventChannelStore,
                 defaultRequestChannelStore
         );
 
-        final Copper2GoEngine copper2GoEngine = Copper2GoEngineFactory.create(
-                config.maxTickets,
-                config.workflowRepositoryConfig,
-                replyChannelStoreImpl,
-                dependencyInjector
-        );
-
 
         RequestChannelConfigurator.putHttpRequestChannels(
-                config.httpRequestChannelConfigs,
-                copper2GoEngine.responseReceiver(),
-                defaultRequestChannelStore
-        );
-
-        io.github.keymaster65.copper2go.connector.kafka.vertx.request.RequestChannelConfigurator.putKafkaRequestChannels(
-                config.kafkaHost,
-                config.kafkaPort,
-                config.kafkaRequestChannelConfigs,
+                createHttpRequestChannelConfigs(),
                 copper2GoEngine.responseReceiver(),
                 defaultRequestChannelStore
         );
 
         Copper2GoHttpServer httpServer = new VertxHttpServer(
-                config.httpPort,
+                59665,
                 new RequestHandler(copper2GoEngine.payloadReceiver()));
 
-        Map<String, KafkaReceiver> kafkaReceiverMap = KafkaReceiverMapFactory.create(config.kafkaHost, config.kafkaPort, config.kafkaReceiverConfigs, copper2GoEngine.payloadReceiver());
-        return new Copper2GoApplication(
+        return new VanillaApplication(
                 copper2GoEngine,
                 httpServer,
-                defaultRequestChannelStore,
-                kafkaReceiverMap
+                defaultRequestChannelStore
         );
     }
 
+    private Map<String, HttpRequestChannelConfig> createHttpRequestChannelConfigs() {
+        final HttpRequestChannelConfig pricingChannel = new HttpRequestChannelConfig(
+                "localhost",
+                59665,
+                "/copper2go/3/api/twoway/1.0/Pricing",
+                "GET"
+        );
 
+        return Map.of("Pricing.centPerMinute", pricingChannel);
+    }
+
+    private static Copper2GoEngine createCopper2GoVanillyEngine(
+            final ReplyChannelStoreImpl replyChannelStoreImpl,
+            final DefaultEventChannelStore defaultEventChannelStore,
+            final DefaultRequestChannelStore defaultRequestChannelStore
+
+    ) {
+        return Copper2GoEngineFactory.create(
+                replyChannelStoreImpl,
+                defaultRequestChannelStore,
+                defaultEventChannelStore,
+                new FutureStore<>(Workflow.class),
+                new ExpectedResponsesStore(new ConcurrentHashMap<>())
+        );
+    }
 }

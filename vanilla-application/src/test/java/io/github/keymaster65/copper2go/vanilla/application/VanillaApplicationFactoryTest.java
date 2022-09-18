@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.application;
+package io.github.keymaster65.copper2go.vanilla.application;
 
-import io.github.keymaster65.copper2go.application.config.Config;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class Copper2GoApplicationFactoryTest {
+class VanillaApplicationFactoryTest {
 
     @Test
     void create() {
-        Assertions.assertThatCode(() -> Copper2GoApplicationFactory.create(Config.createDefault()))
+        Assertions.assertThatCode(() -> new VanillaApplicationFactory().create())
                 .doesNotThrowAnyException();
     }
 }
