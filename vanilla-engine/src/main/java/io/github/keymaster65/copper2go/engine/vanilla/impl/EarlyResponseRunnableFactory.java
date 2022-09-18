@@ -20,9 +20,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.function.Consumer;
 
-class EarlyResponseRunnalFactory {
+class EarlyResponseRunnableFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(EarlyResponseRunnalFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(EarlyResponseRunnableFactory.class);
 
     static Runnable createEarlyResponseRunnable(
             final String responseCorrelationId,
@@ -49,6 +49,6 @@ class EarlyResponseRunnalFactory {
         };
     }
 
-    private EarlyResponseRunnalFactory() {
+    private EarlyResponseRunnableFactory() {
     }
 }

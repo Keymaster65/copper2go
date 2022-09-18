@@ -60,7 +60,7 @@ class ResponseReceiverImpl implements ResponseReceiver {
         final Continuation continuation = vanillaEngineImpl.expectedResponsesStore.removeExpectedResponse(responseCorrelationId);
         log.debug("Remove expected response {}.", continuation);
         final Future<?> submit = vanillaEngineImpl.executorService.submit(
-                EarlyResponseRunnalFactory.createEarlyResponseRunnable(
+                EarlyResponseRunnableFactory.createEarlyResponseRunnable(
                         responseCorrelationId,
                         response,
                         waitingConsumer

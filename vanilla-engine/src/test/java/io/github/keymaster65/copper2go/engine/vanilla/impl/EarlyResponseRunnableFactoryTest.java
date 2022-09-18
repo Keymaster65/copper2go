@@ -20,14 +20,14 @@ import org.mockito.Mockito;
 
 import java.util.function.Consumer;
 
-class EarlyResponseRunnalFactoryTest {
+class EarlyResponseRunnableFactoryTest {
     public static final String RESPONSE = "response";
     public static final String CORRELATION_ID = "correlationId";
 
     @Example
     void createEarlyResponseRunnableForResponse() {
         @SuppressWarnings("unchecked") final Consumer<String> consumer = Mockito.mock(Consumer.class);
-        EarlyResponseRunnalFactory.createEarlyResponseRunnable(
+        EarlyResponseRunnableFactory.createEarlyResponseRunnable(
                 CORRELATION_ID,
                 consumer,
                 new Continuation(RESPONSE)
@@ -39,7 +39,7 @@ class EarlyResponseRunnalFactoryTest {
     @Example
     void createEarlyResponseRunnableForContinuation() {
         @SuppressWarnings("unchecked") final Consumer<String> waitingConsumer = Mockito.mock(Consumer.class);
-        EarlyResponseRunnalFactory.createEarlyResponseRunnable(
+        EarlyResponseRunnableFactory.createEarlyResponseRunnable(
                 CORRELATION_ID,
                 RESPONSE,
                 new Continuation(waitingConsumer)
