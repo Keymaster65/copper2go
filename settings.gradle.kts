@@ -1,8 +1,8 @@
 rootProject.name = "copper2go"
 
-include(":copper2go-app")
+include(":copper2go-application")
 
-include(":app-framework")
+include(":application-framework")
 
 include(":copper2go-api")
 include(":connector-api")
