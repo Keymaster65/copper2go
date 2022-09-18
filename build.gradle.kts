@@ -90,7 +90,7 @@ allprojects {
     apply(plugin = "com.github.hierynomus.license")
     license {
         setIgnoreFailures(false)
-        setHeader(File("$rootDir/licenceHeader.txt"))
+        setHeader(File("$rootDir/licenseHeader.txt"))
         setSkipExistingHeaders(false)
         exclude("**/*.json")
         exclude("**/test.html")
