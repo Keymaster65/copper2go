@@ -39,7 +39,7 @@ class SystemDefaultTest {
     @Test
     void license() throws URISyntaxException, IOException, InterruptedException {
         HttpResponse<String> response = TestHttpClient.post(Commons.getUri("/", copper2GoContainer), "");
-        Assertions.assertThat(response.body()).contains("Dependency License Report for copper2go");
+        Assertions.assertThat(response.body()).contains("Dependency License Report for");
     }
 
     @Test
