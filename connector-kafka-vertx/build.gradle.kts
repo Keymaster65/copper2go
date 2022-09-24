@@ -1,3 +1,5 @@
+group = "io.github.keymaster65.copper2go.connector.kafka.vertx"
+
 dependencies {
     implementation(project(":connector-api"))
     implementation(project(":copper2go-api"))

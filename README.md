@@ -314,6 +314,8 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
+* [x] Add pitest support (https://pitest.org/)
+
 #### "slf4j-api alpha6" Workflow API 3.2.0
 
 * [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.0

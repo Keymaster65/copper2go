@@ -1,3 +1,4 @@
+group = "io.github.keymaster65.copper2go"
 
 plugins {
     application

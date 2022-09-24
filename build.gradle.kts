@@ -13,6 +13,7 @@ plugins {
     id("org.unbroken-dome.test-sets") version "4.0.0"
     id("org.owasp.dependencycheck") version "7.2.1"
     id("com.github.ben-manes.versions") version "0.42.0"
+    id("info.solidsoft.pitest") version "1.9.0"
 }
 
 publishing {
@@ -23,25 +24,9 @@ publishing {
     }
 }
 
-group = "io.github.keymaster65"
-
 tasks.sonarqube {
     dependsOn(tasks.test)
 }
-
-tasks.checkLicense {
-    dependsOn(tasks.findByName("processResources"))
-}
-
-tasks.jar {
-    dependsOn(tasks.findByName("checkLicense"))
-}
-tasks.compileTestJava {
-    dependsOn(tasks.findByName("checkLicense"))
-}
-
-var ct = tasks.checkLicense
-
 
 allprojects {
     apply(plugin = "java")
@@ -50,6 +35,7 @@ allprojects {
     apply(plugin = "jacoco")
     apply(plugin = "org.owasp.dependencycheck")
     apply(plugin = "com.github.jk1.dependency-license-report")
+    apply(plugin = "info.solidsoft.pitest")
 
     // https://docs.gradle.org/current/userguide/jacoco_plugin.html
     tasks.jacocoTestReport {
@@ -59,6 +45,10 @@ allprojects {
             xml.getRequired().set(true)
             csv.getRequired().set(false)
         }
+    }
+
+    pitest {
+        junit5PluginVersion.set("1.0.0")
     }
 
     licenseReport {
@@ -188,9 +178,6 @@ allprojects {
     tasks.check {
         dependsOn(tasks.findByName("integrationTest"))
     }
-
-//    tasks.findByName("compileSystemTestJava")?.dependsOn(ct)
-//    tasks.findByName("compileIntegrationTestJava")?.dependsOn(ct)
 
     dependencyLocking {
         lockAllConfigurations()

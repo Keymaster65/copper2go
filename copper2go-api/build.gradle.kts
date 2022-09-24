@@ -1,4 +1,4 @@
-group = "io.github.keymaster65"
+group = "io.github.keymaster65.copper2go.api"
 version = "3.1.0"
 
 plugins {

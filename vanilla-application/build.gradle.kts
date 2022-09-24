@@ -1,3 +1,5 @@
+group = "io.github.keymaster65.copper2go.vanilla.application"
+
 plugins {
     application
     id("com.google.cloud.tools.jib") version "3.3.0"

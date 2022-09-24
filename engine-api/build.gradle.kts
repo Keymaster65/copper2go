@@ -1,3 +1,5 @@
+group = "io.github.keymaster65.copper2go.engine"
+
 dependencies {
     implementation(project(":copper2go-api"))
     implementation(project(":connector-api"))
