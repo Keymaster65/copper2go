@@ -268,12 +268,38 @@ Forks or Pull Requests are always very welcome.
 
 Issues are very welcome, too.
 
-### Release Tasks
+### Releasing and Maintenance
 
+* The master branch is maintained and released as "latest" image.
+* The newest version branch is maintained and released as a tagged image for example "4.1.1"
+* The newest Workflow API is maintained
+
+#### Release Tasks
+1) Optional: `gradle dependencyUpdates`
+1) Optional: `gradle dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies  :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks`
+1) Optional: `gradle dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies  :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks --refresh-dependencies`
 1) `gradle clean build -x systemTest`
-1) `gradle jib`
-1) `gradle systemTest`
 1) `gradle dependencyCheckAggregate`
+1) `gradle :copper2go-app:jib`
+1) `gradle systemTest`
+
+#### master
+
+1) Release Tasks
+1) push master
+
+#### newest version branch
+
+1) release master
+1) checkout version branch
+1) merge master to version branch
+1) update version for jib (in copper2go-appliction/build.gradle.kts)
+1) update version in SystemCompleteTest.java
+1) execute "Release Tasks"
+1) push version branch
+1) "Draft a new release on github" on version branch
+1) Update README version in master and push
+1) Merge master to version branch
 
 ### Links
 
@@ -289,17 +315,10 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "3rd Party" Release Workflow API 3.2.0
-
-* [ ] Security Updates
-
-### "Vanilla" Release Application API 4.2
-
-* [ ] Add "vanilla" engine implementation
-
 #### "slf4j-api alpha6" Workflow API 3.2.0
 
-* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.0-alpha6
+* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.0
+* [x] Update jackson-databind from 13.2.2 to 2.13.
 
 ## Planning
 
@@ -322,9 +341,10 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ### Backlog
 
-* Remove version 2 of HTTP Receiver API
 * Implement loom-engine
+* Remove version 2 of HTTP Receiver API
 * Finish support kafka events
+* Add new Repository Performancetest
 * Replace vertx HTTP components with simpler implementation
 * Replace vertx Kafka components with simpler implementation
 * STDIN/OUT support in config and container (or remove it)
@@ -362,6 +382,15 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Withdrawn: Vertx Bus Connector
 
 ## Released
+
+### "Vanilla" Release Application API 4.2
+
+* [x] Add license info "vanilla" engine implementation
+* [x] Add "vanilla" engine implementation
+* [x] Add "vanilla" engine implementation as incubating feature
+* [x] Fix CVE-2022-38752 by excluding snakeyaml
+* [x] Security updates
+* [x] Version updates
 
 ### "Service" Release Application API 4.1.1
 

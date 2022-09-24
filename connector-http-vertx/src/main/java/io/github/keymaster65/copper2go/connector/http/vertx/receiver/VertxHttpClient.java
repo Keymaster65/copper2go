@@ -78,10 +78,12 @@ public class VertxHttpClient implements Copper2GoHttpClient {
     public void request(final HttpMethod httpMethod, final String request, final String responseCorrelationId, Map<String, String> attributes) {
         final HttpRequest<Buffer> httpRequest = createHttpRequest(httpMethod, attributes);
 
+        log.trace("Before request with responseCorrelationId={}.", responseCorrelationId);
         httpRequest
                 .sendBuffer(Buffer.buffer(request))
                 .onFailure(errorHandler(responseCorrelationId, responseReceiver))
                 .onSuccess(successHandler(responseCorrelationId, responseReceiver));
+        log.trace("After request with responseCorrelationId={}.", responseCorrelationId);
     }
 
     @Override

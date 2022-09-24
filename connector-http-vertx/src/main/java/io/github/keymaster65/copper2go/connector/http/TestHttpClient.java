@@ -34,7 +34,7 @@ public class TestHttpClient {
                 .build();
         var httpRequest =
                 HttpRequest.newBuilder()
-                        .timeout(Duration.ofMillis(5000))
+                        .timeout(Duration.ofSeconds(5))
                         .uri(uri)
                         .POST(HttpRequest.BodyPublishers.ofString(payload))
                         .build();

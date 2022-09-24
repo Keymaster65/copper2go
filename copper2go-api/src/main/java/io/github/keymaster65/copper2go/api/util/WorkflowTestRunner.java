@@ -25,6 +25,7 @@ import org.copperengine.core.tranzient.TransientEngineFactory;
 import org.copperengine.core.tranzient.TransientScottyEngine;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.concurrent.locks.LockSupport;
 
 /**
@@ -103,7 +104,7 @@ public final class WorkflowTestRunner {
 
             engine.run(workflowInstanceDescr);
             while (engine.getNumberOfWorkflowInstances() > 0) {
-                LockSupport.parkNanos(100000000L);
+                LockSupport.parkNanos(Duration.ofMillis(100).toNanos());
             }
         } finally {
             engine.shutdown();
