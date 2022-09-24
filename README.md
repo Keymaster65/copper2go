@@ -290,13 +290,16 @@ Issues are very welcome, too.
 
 #### newest version branch
 
+1) release master
 1) checkout version branch
 1) merge master to version branch
-1) update version for jib (in copper2go-app/build.gradle.kts)
+1) update version for jib (in copper2go-appliction/build.gradle.kts)
 1) update version in SystemCompleteTest.java
 1) execute "Release Tasks"
 1) push version branch
-1) "Draft a new release on github"
+1) "Draft a new release on github" on version branch
+1) Update README version in master and push
+1) Merge master to version branch
 
 ### Links
 
@@ -311,13 +314,6 @@ Issues are very welcome, too.
 ## Ongoing
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
-
-### "Vanilla" Release Application API 4.2
-
-* [ ] Add license info "vanilla" engine implementation
-* [x] Add "vanilla" engine implementation
-* [x] Add "vanilla" engine implementation as incubating feature
-* [x] Fix CVE-2022-38752 by excluding snakeyaml
 
 #### "slf4j-api alpha6" Workflow API 3.2.0
 
@@ -386,6 +382,15 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Withdrawn: Vertx Bus Connector
 
 ## Released
+
+### "Vanilla" Release Application API 4.2
+
+* [x] Add license info "vanilla" engine implementation
+* [x] Add "vanilla" engine implementation
+* [x] Add "vanilla" engine implementation as incubating feature
+* [x] Fix CVE-2022-38752 by excluding snakeyaml
+* [x] Security updates
+* [x] Version updates
 
 ### "Service" Release Application API 4.1.1
 

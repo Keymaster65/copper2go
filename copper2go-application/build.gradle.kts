@@ -6,6 +6,10 @@ plugins {
 
 var copper2goVersion = "latest"
 
+tasks.jar {
+    dependsOn(tasks.findByName("checkLicense"))
+}
+
 dependencies {
     implementation(project(":application-framework"))
 

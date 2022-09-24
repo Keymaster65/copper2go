@@ -1,3 +1,4 @@
+import com.github.jk1.license.filter.DependencyFilter
 import com.github.jk1.license.filter.LicenseBundleNormalizer
 
 plugins {
@@ -41,20 +42,6 @@ tasks.compileTestJava {
 
 var ct = tasks.checkLicense
 
-// visit https://github.com/jk1/Gradle-License-Report for help
-licenseReport {
-    outputDir = "$projectDir/copper2go-application/build/resources/main/license"
-    excludeOwnGroup = true
-    allowedLicensesFile = File("$projectDir/allowed-licenses.json")
-    excludes = arrayOf<String>("com.fasterxml.jackson:jackson-bom") // is apache 2.0 but license tool say "null" for v2.13.1
-    filters = arrayOf<LicenseBundleNormalizer>(
-        LicenseBundleNormalizer(
-            """$projectDir/license-normalizer-bundle.json""",
-            true
-        )
-    )
-}
-
 
 allprojects {
     apply(plugin = "java")
@@ -62,6 +49,7 @@ allprojects {
     apply(plugin = "org.sonarqube")
     apply(plugin = "jacoco")
     apply(plugin = "org.owasp.dependencycheck")
+    apply(plugin = "com.github.jk1.dependency-license-report")
 
     // https://docs.gradle.org/current/userguide/jacoco_plugin.html
     tasks.jacocoTestReport {
@@ -71,6 +59,20 @@ allprojects {
             xml.getRequired().set(true)
             csv.getRequired().set(false)
         }
+    }
+
+    licenseReport {
+        outputDir = "$projectDir/build/resources/main/license"
+        filters = arrayOf<DependencyFilter>(
+            LicenseBundleNormalizer(
+                "$rootDir/license-normalizer-bundle.json",
+                true
+            )
+        )
+        // excludes not working
+        excludeGroups  = arrayOf<String>("com.fasterxml.jackson") // is apache 2.0 but license tool say "null" for jackson-bom v2.13.1
+        excludeOwnGroup = true
+        allowedLicensesFile = File("$rootDir/allowed-licenses.json")
     }
 
     sonarqube {
@@ -187,8 +189,8 @@ allprojects {
         dependsOn(tasks.findByName("integrationTest"))
     }
 
-    tasks.findByName("compileSystemTestJava")?.dependsOn(ct)
-    tasks.findByName("compileIntegrationTestJava")?.dependsOn(ct)
+//    tasks.findByName("compileSystemTestJava")?.dependsOn(ct)
+//    tasks.findByName("compileIntegrationTestJava")?.dependsOn(ct)
 
     dependencyLocking {
         lockAllConfigurations()
@@ -205,14 +207,6 @@ allprojects {
         }
         systemProperty("logback.configurationFile", "src/main/resources/logback.xml")
     }
-}
-
-tasks.assemble {
-    dependsOn(tasks.findByName("checkLicense"))
-}
-
-tasks.jib {
-    dependsOn(tasks.findByName("checkLicense"))
 }
 
 distributions {

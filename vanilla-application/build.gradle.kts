@@ -3,7 +3,11 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.3.0"
 }
 
-var copper2goVersion = "vanilla-tmp"
+var copper2goVersion = "vanilla-0.0.1"
+
+tasks.jar {
+    dependsOn(tasks.findByName("checkLicense"))
+}
 
 dependencies {
     implementation(project(":application-framework"))
