@@ -10,7 +10,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.3.0"
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
-    id("org.owasp.dependencycheck") version "7.2.0"
+    id("org.owasp.dependencycheck") version "7.2.1"
     id("com.github.ben-manes.versions") version "0.42.0"
 }
 
