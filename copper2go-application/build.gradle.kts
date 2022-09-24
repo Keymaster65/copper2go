@@ -4,7 +4,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.3.0"
 }
 
-var copper2goVersion = "latest"
+var copper2goVersion = "4.2.0"
 
 tasks.jar {
     dependsOn(tasks.findByName("checkLicense"))
