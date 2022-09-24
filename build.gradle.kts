@@ -43,7 +43,7 @@ var ct = tasks.checkLicense
 
 // visit https://github.com/jk1/Gradle-License-Report for help
 licenseReport {
-    outputDir = "$projectDir/copper2go-app/build/resources/main/license"
+    outputDir = "$projectDir/copper2go-application/build/resources/main/license"
     excludeOwnGroup = true
     allowedLicensesFile = File("$projectDir/allowed-licenses.json")
     excludes = arrayOf<String>("com.fasterxml.jackson:jackson-bom") // is apache 2.0 but license tool say "null" for v2.13.1
