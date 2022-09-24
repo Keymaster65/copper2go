@@ -3,10 +3,10 @@
 ## Supported Versions
 
 | Version | Supported          |
-| ------- | ------------------ |
-| 4.1.x   | :white_check_mark: |
+|---------| ------------------ |
+| 4.2.0   | :white_check_mark: |
 | latest  | :white_check_mark: |
-| < 4.1   | :x:                |
+| < 4.2.0 | :x:                |
 
 ## Reporting a Vulnerability
 
