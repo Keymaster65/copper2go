@@ -87,13 +87,15 @@ class ApplicationLauncherTest {
     }
 
     @Test
-    void mainStartStop() throws EngineException {
+    void mainStartStop() {
         final Application application = Mockito.mock(Application.class);
         Mockito.when(application.isStopRequested()).thenReturn(true);
         final ApplicationLauncher applicationLauncher = new ApplicationLauncher(application);
         new Thread(() -> ApplicationLauncherTest.stopDelayed(applicationLauncher)).start();
 
-        applicationLauncher.start();
+        Assertions
+                .assertThatCode(applicationLauncher::start)
+                .doesNotThrowAnyException();
     }
 
     private static void stopDelayed(
