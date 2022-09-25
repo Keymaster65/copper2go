@@ -16,6 +16,8 @@ plugins {
     id("info.solidsoft.pitest") version "1.9.0"
 }
 
+group = "io.github.keymaster65"
+
 publishing {
     publications {
         create<MavenPublication>("library") {
@@ -37,6 +39,10 @@ allprojects {
     apply(plugin = "com.github.jk1.dependency-license-report")
     apply(plugin = "info.solidsoft.pitest")
 
+    repositories {
+        mavenCentral()
+    }
+
     // https://docs.gradle.org/current/userguide/jacoco_plugin.html
     tasks.jacocoTestReport {
         dependsOn(tasks.test) // tests are required to run before generating the report
@@ -47,10 +53,13 @@ allprojects {
         }
     }
 
+    // https://github.com/szpak/gradle-pitest-plugin
     pitest {
         junit5PluginVersion.set("1.0.0")
+        timestampedReports.set(false)
     }
 
+    // https://github.com/jk1/Gradle-License-Report
     licenseReport {
         outputDir = "$projectDir/build/resources/main/license"
         filters = arrayOf<DependencyFilter>(
@@ -59,9 +68,8 @@ allprojects {
                 true
             )
         )
-        // excludes not working
-        excludeGroups  = arrayOf<String>("com.fasterxml.jackson") // is apache 2.0 but license tool say "null" for jackson-bom v2.13.1
-        excludeOwnGroup = true
+        // excludes and excludeOwnGroup not working
+        excludeGroups  = arrayOf<String>("com.fasterxml.jackson", "io.github.keymaster65") // is apache 2.0 but license tool say "null" for jackson-bom v2.13.1
         allowedLicensesFile = File("$rootDir/allowed-licenses.json")
     }
 
@@ -88,9 +96,14 @@ allprojects {
         exclude("**/test.html")
     }
 
+    // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/index.html
     dependencyCheck {
         analyzers.assemblyEnabled = false
         failBuildOnCVSS = 0F
+    }
+
+    dependencyLocking {
+        lockAllConfigurations()
     }
 
     dependencies {
@@ -166,6 +179,7 @@ allprojects {
         }
     }
 
+    // https://github.com/unbroken-dome/gradle-testsets-plugin
     testSets {
         create("integrationTest")
         create("systemTest")
@@ -177,14 +191,6 @@ allprojects {
 
     tasks.check {
         dependsOn(tasks.findByName("integrationTest"))
-    }
-
-    dependencyLocking {
-        lockAllConfigurations()
-    }
-
-    repositories {
-        mavenCentral()
     }
 
     tasks.withType<Test> {

@@ -1,4 +1,6 @@
-group = "io.github.keymaster65.copper2go.engine"
+pitest {
+    targetClasses.set(setOf<String>("io.github.keymaster65.copper2go.engine.*"))
+}
 
 dependencies {
     implementation(project(":copper2go-api"))

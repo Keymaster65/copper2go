@@ -1,4 +1,7 @@
-group = "io.github.keymaster65.copper2go.api"
+pitest {
+    targetClasses.set(setOf<String>("io.github.keymaster65.copper2go.api.*"))
+}
+
 version = "3.1.0"
 
 plugins {
