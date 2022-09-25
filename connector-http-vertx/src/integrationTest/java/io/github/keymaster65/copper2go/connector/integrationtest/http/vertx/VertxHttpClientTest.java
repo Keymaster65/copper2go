@@ -22,6 +22,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
@@ -34,6 +35,7 @@ class VertxHttpClientTest {
     public static final String LOCALHOST = "localhost";
 
     @Test
+    @Timeout(10)
     void postGoodCase() throws InterruptedException {
         ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
         Vertx vertx = Vertx.vertx();
