@@ -185,14 +185,6 @@ allprojects {
         create("systemTest")
     }
 
-    tasks.check {
-        dependsOn(tasks.findByName("systemTest"))
-    }
-
-    tasks.check {
-        dependsOn(tasks.findByName("integrationTest"))
-    }
-
     tasks.withType<Test> {
         useJUnitPlatform {
             includeEngines.add("junit-jupiter")
