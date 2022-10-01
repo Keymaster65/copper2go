@@ -16,8 +16,11 @@
 package io.github.keymaster65.copper2go.engine.sync.impl;
 
 import io.github.keymaster65.copper2go.engine.sync.engineapi.EngineException;
+import net.jqwik.api.Arbitraries;
+import net.jqwik.api.Arbitrary;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
+import net.jqwik.api.Provide;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 
@@ -52,6 +55,34 @@ class SyncEngineImplTest {
 
 
         Assertions.assertThat(responseString).isEqualTo(responseBody);
+    }
+
+    @Provide
+    Arbitrary<Exception> exceptions()  {
+        return Arbitraries.of(
+                new IOException("Test"),
+                new InterruptedException("Test")
+        );
+    }
+    @Property
+    void requestException(
+            @ForAll("exceptions") final Exception exception
+    ) throws IOException, InterruptedException {
+        final SyncEngineImpl syncEngineImpl = new SyncEngineImpl();
+        final HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class);
+        Mockito.when(builder.POST(Mockito.any())).thenReturn(builder);
+        final HttpClient httpClient = Mockito.mock(HttpClient.class);
+        Mockito.when(httpClient.send(Mockito.any(), Mockito.any())).thenThrow(exception);
+        syncEngineImpl.addRequestChannel(
+                "",
+                httpClient,
+                builder
+        );
+
+        Assertions
+                .assertThatCode(() -> syncEngineImpl.request("", "requestPayload"))
+                .isInstanceOf(EngineException.class)
+                .hasCauseReference(exception);
     }
 
 }
