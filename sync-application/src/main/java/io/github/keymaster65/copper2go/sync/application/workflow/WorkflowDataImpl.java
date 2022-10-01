@@ -13,8 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.application;
+package io.github.keymaster65.copper2go.sync.application.workflow;
 
-public interface ApplicationFactory {
-    Application create() throws ApplicationException;
+import io.github.keymaster65.copper2go.engine.sync.workflowapi.WorkflowData;
+
+public class WorkflowDataImpl implements WorkflowData {
+    private final String payload;
+
+    public WorkflowDataImpl(final String payload) {
+        this.payload = payload;
+    }
+
+    @Override
+    public String getPayload() {
+        return payload;
+    }
 }

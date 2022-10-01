@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.application;
+package io.github.keymaster65.copper2go.engine.sync.engineapi;
 
-public interface ApplicationFactory {
-    Application create() throws ApplicationException;
+public class EngineException extends Exception {
+    public EngineException(final String message, final Exception cause) {
+        super(message, cause);
+    }
 }

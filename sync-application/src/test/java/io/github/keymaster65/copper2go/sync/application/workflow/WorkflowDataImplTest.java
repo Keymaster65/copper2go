@@ -13,8 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.application;
+package io.github.keymaster65.copper2go.sync.application.workflow;
 
-public interface ApplicationFactory {
-    Application create() throws ApplicationException;
+import net.jqwik.api.ForAll;
+import net.jqwik.api.Property;
+import org.assertj.core.api.Assertions;
+
+class WorkflowDataImplTest {
+
+    @Property
+    void example(@ForAll final String payload) {
+        final WorkflowDataImpl workflowData = new WorkflowDataImpl(payload);
+
+        Assertions.assertThat(workflowData.getPayload()).isEqualTo(payload);
+    }
 }

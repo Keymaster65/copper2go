@@ -13,8 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.application;
+package io.github.keymaster65.copper2go.sync.application.workflow;
 
-public interface ApplicationFactory {
-    Application create() throws ApplicationException;
+
+import io.github.keymaster65.copper2go.engine.sync.engineapi.SyncEngine;
+import io.github.keymaster65.copper2go.engine.sync.workflowapi.Workflow;
+import io.github.keymaster65.copper2go.engine.sync.workflowapi.WorkflowData;
+
+class Pricing1 implements Workflow {
+
+    public Pricing1(final SyncEngine ignored) {
+    }
+
+    public String main(final WorkflowData workflowData) {
+        return "%d cent.".formatted(workflowData.getPayload().length());
+    }
 }

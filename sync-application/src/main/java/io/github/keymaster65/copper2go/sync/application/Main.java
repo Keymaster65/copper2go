@@ -13,8 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.application;
+package io.github.keymaster65.copper2go.sync.application;
 
-public interface ApplicationFactory {
-    Application create() throws ApplicationException;
+import io.github.keymaster65.copper2go.application.ApplicationLauncher;
+
+public class Main {
+
+    // tested in system
+    public static void main(String[] args) throws Exception {
+        new ApplicationLauncher(new SyncApplicationFactory().create()).start();
+    }
+
+    private Main() {
+    }
 }

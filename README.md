@@ -276,8 +276,8 @@ Issues are very welcome, too.
 
 #### Release Tasks
 1) Optional: `gradle dependencyUpdates`
-1) Optional: `gradle dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies  :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks`
-1) Optional: `gradle dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies  :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks --refresh-dependencies`
+1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks`
+1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks --refresh-dependencies`
 1) `gradle clean build`
 1) `gradle clean integrationTest`
 1) `gradle dependencyCheckAggregate`
@@ -315,7 +315,10 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
+### "Blocking" Release Application API 4.3
+
 * [x] Add pitest support (https://pitest.org/)
+* [x] Add a sync-engine and application with blocking code
 
 #### "slf4j-api alpha6" Workflow API 3.2.0
 
@@ -323,10 +326,6 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Update jackson-databind from 13.2.2 to 2.13.
 
 ## Planning
-
-### "Blocking" Release Application API 4.3
-
-* [ ] Add a blocking-engine with blocking workflow code
 
 ### "Java 18" Release Application API 4.4
 

@@ -13,8 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.application;
+package io.github.keymaster65.copper2go.sync.application;
 
-public interface ApplicationFactory {
-    Application create() throws ApplicationException;
+import net.jqwik.api.Example;
+import org.assertj.core.api.Assertions;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+class SyncApplicationFactoryTest {
+
+    @Example
+    void create() throws IOException, URISyntaxException {
+        final SyncApplicationFactory syncApplicationFactory = new SyncApplicationFactory();
+
+        Assertions.assertThatCode(syncApplicationFactory::create).doesNotThrowAnyException();
+    }
+
 }

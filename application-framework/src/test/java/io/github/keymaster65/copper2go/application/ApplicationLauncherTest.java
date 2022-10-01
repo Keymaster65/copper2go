@@ -15,7 +15,6 @@
  */
 package io.github.keymaster65.copper2go.application;
 
-import io.github.keymaster65.copper2go.api.connector.EngineException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -37,7 +36,7 @@ class ApplicationLauncherTest {
     }
 
     @Test
-    void start() throws EngineException {
+    void start() throws ApplicationException {
         final Application application = Mockito.mock(Application.class);
         Mockito
                 .when(application.isStopRequested())
@@ -51,10 +50,10 @@ class ApplicationLauncherTest {
     }
 
     @Test
-    void startEngineException() throws EngineException {
+    void startEngineException() throws ApplicationException {
         final Application application = Mockito.mock(Application.class);
         Mockito.when(application.isStopRequested()).thenReturn(true);
-        final EngineException engineException = new EngineException("Test");
+        final ApplicationException engineException = new ApplicationException("Test", new RuntimeException("Test"));
         Mockito.doThrow(engineException).when(application).start();
         final ApplicationLauncher applicationLauncher = new ApplicationLauncher(application);
 
@@ -64,7 +63,7 @@ class ApplicationLauncherTest {
     }
 
     @Test
-    void stopAfterStart() throws EngineException {
+    void stopAfterStart() throws ApplicationException {
         final Application application = Mockito.mock(Application.class);
         Mockito.when(application.isStopRequested()).thenReturn(true);
         final ApplicationLauncher applicationLauncher = new ApplicationLauncher(application);
@@ -76,7 +75,7 @@ class ApplicationLauncherTest {
     }
 
     @Test
-    void stopWithoutStart() throws EngineException {
+    void stopWithoutStart() throws ApplicationException {
         final Application application = Mockito.mock(Application.class);
         Mockito.when(application.isStopRequested()).thenReturn(true);
         final ApplicationLauncher applicationLauncher = new ApplicationLauncher(application);
@@ -106,7 +105,7 @@ class ApplicationLauncherTest {
                 log.debug("Wait for stoped appalication");
                 LockSupport.parkNanos(Duration.ofMillis(500).toNanos());
             }
-        } catch (RuntimeException | EngineException e) {
+        } catch (RuntimeException | ApplicationException e) {
             log.error("Ignore exception.", e);
         }
     }

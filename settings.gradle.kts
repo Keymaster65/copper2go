@@ -14,3 +14,6 @@ include(":vanilla-engine")
 include(":connector-http-vertx")
 include(":connector-standardio")
 include(":connector-kafka-vertx")
+
+include(":sync-engine")
+include(":sync-application")
