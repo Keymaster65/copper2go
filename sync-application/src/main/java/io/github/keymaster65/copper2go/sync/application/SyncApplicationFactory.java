@@ -28,7 +28,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.Executors;
 
 public class SyncApplicationFactory implements ApplicationFactory {
 
@@ -42,7 +42,7 @@ public class SyncApplicationFactory implements ApplicationFactory {
         this(
                 HttpServer.create(new InetSocketAddress(59665), 0),
                 new SyncEngineImpl(),
-                new ScheduledThreadPoolExecutor(10),
+                Executors.newVirtualThreadPerTaskExecutor(),
                 new URI("http://localhost:59665/Pricing") // NOSONAR
         );
     }
