@@ -315,7 +315,7 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "Blocking" Release Application API 4.3
+### "Loom" Release Application API 4.3
 
 * [x] Add pitest support (https://pitest.org/)
 * [x] Add a sync-engine and application with blocking code
@@ -331,36 +331,26 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ## Planning
 
-### "Java 18" Release Application API 4.4
-
-* [ ] Use Java 18 for Application
-
-### "Loom" Release Application API 4.5
-
-* [ ] Add a loom-engine with blocking code
-
-### "Operator" Release Application API 4.6
+### "Operator" Release Application API 4.4
 
 * [ ] configure thread pool size, client pool size and more
 * [ ] Support of COPPER core GUI
 * [ ] JMX usage in Container
 
-### "Binding" Release Application API 4.7
+### "Binding" Release Application API 4.5
 
 * [ ] Workflow with Json binding
 * [ ] Workflow with XML binding (may be not ;-)
 * [ ] Split copper2go-workflows
 * [ ] Add new Workflow Repository for Performancetest
 
-### "State Pattern" Release Application API 4.8
+### "State Pattern" Release Application API 4.6
 
 * [ ] Spike: Workflow using State Pattern or other defined strategy in copper2go-engine
 
 ### Backlog
 
-* Add vanilla async server
-* Add vanilla async client
-* Support native executable for vanilla-application (may be graal?)
+* Support native executable for sync-application (may be graal?)
 * Remove version 2 of HTTP Receiver API
 * Finish support kafka events
 * Add new Repository Performancetest
