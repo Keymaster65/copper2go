@@ -319,11 +319,14 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 * [x] Add pitest support (https://pitest.org/)
 * [x] Add a sync-engine and application with blocking code
+* [ ] Run sync-engine on JDK 19
+* [x] Security updates
+* [x] Additional updates
 
 #### "slf4j-api alpha6" Workflow API 3.2.0
 
-* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.0
-* [x] Update jackson-databind from 13.2.2 to 2.13.
+* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.3
+* [x] Update jackson-databind from 13.2.2 to 2.13.4
 
 ## Planning
 

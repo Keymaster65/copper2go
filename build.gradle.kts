@@ -1,5 +1,6 @@
 import com.github.jk1.license.filter.DependencyFilter
 import com.github.jk1.license.filter.LicenseBundleNormalizer
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     java
@@ -104,6 +105,18 @@ allprojects {
 
     dependencyLocking {
         lockAllConfigurations()
+    }
+
+    // https://github.com/ben-manes/gradle-versions-plugin
+    fun isNonStable(version: String): Boolean {
+        val nonStable = listOf("RC").any { version.toUpperCase().contains(it) }
+        return nonStable
+    }
+    tasks.withType<DependencyUpdatesTask> {
+        rejectVersionIf {
+            isNonStable(candidate.version)
+        }
+        outputFormatter = "plain,html"
     }
 
     dependencies {
