@@ -15,13 +15,27 @@
  */
 package io.github.keymaster65.copper2go.sync.application;
 
+import com.sun.net.httpserver.HttpServer; // NOSONAR
 import io.github.keymaster65.copper2go.application.ApplicationLauncher;
+import io.github.keymaster65.copper2go.engine.sync.impl.SyncEngineImpl;
+
+import java.net.InetSocketAddress;
+import java.net.URI;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
 
     // tested in system
     public static void main(String[] args) throws Exception {
-        new ApplicationLauncher(new SyncApplicationFactory().create()).start();
+        try (final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()) {
+            new ApplicationLauncher(new SyncApplicationFactory(
+                    HttpServer.create(new InetSocketAddress(59665), 0),
+                    new SyncEngineImpl(),
+                    executorService,
+                    new URI("http://localhost:59665/Pricing") // NOSONAR
+            ).create()).start();
+        }
     }
 
     private Main() {

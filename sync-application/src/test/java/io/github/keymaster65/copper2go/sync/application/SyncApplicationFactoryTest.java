@@ -15,17 +15,27 @@
  */
 package io.github.keymaster65.copper2go.sync.application;
 
+import com.sun.net.httpserver.HttpServer;
+import io.github.keymaster65.copper2go.engine.sync.impl.SyncEngineImpl;
 import net.jqwik.api.Example;
 import org.assertj.core.api.Assertions;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.Executors;
 
 class SyncApplicationFactoryTest {
 
     @Example
     void create() throws IOException, URISyntaxException {
-        final SyncApplicationFactory syncApplicationFactory = new SyncApplicationFactory();
+        final SyncApplicationFactory syncApplicationFactory = new SyncApplicationFactory(
+                HttpServer.create(new InetSocketAddress(59665), 0),
+                new SyncEngineImpl(),
+                Executors.newVirtualThreadPerTaskExecutor(),
+                new URI("http://localhost:59665/Pricing")
+        );
 
         Assertions.assertThatCode(syncApplicationFactory::create).doesNotThrowAnyException();
     }

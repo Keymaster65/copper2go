@@ -21,14 +21,10 @@ import io.github.keymaster65.copper2go.application.ApplicationFactory;
 import io.github.keymaster65.copper2go.engine.sync.impl.SyncEngineImpl;
 import io.github.keymaster65.copper2go.sync.application.workflow.WorkflowFactoryImpl;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class SyncApplicationFactory implements ApplicationFactory {
 
@@ -37,15 +33,6 @@ public class SyncApplicationFactory implements ApplicationFactory {
     private final ExecutorService executorService;
     private final SyncHandler syncHandler;
     private final URI uri;
-
-    public SyncApplicationFactory() throws IOException, URISyntaxException {
-        this(
-                HttpServer.create(new InetSocketAddress(59665), 0),
-                new SyncEngineImpl(),
-                Executors.newVirtualThreadPerTaskExecutor(),
-                new URI("http://localhost:59665/Pricing") // NOSONAR
-        );
-    }
 
     public SyncApplicationFactory(
             final HttpServer httpServer,
