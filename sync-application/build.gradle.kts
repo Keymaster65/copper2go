@@ -9,6 +9,11 @@ plugins {
 
 var copper2goVersion = "sync-0.0.1"
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_19
+    targetCompatibility = JavaVersion.VERSION_19
+}
+
 tasks.jar {
     dependsOn(tasks.findByName("checkLicense"))
 }
@@ -18,10 +23,24 @@ dependencies {
     implementation(project(":sync-engine"))
 }
 
+tasks.withType<JavaCompile> {
+    options.compilerArgs.add("--enable-preview")
+}
+
+tasks.withType<Test> {
+    jvmArgs = listOf("--enable-preview")
+}
+
+tasks.withType<JavaExec> {
+    jvmArgs = listOf("--enable-preview")
+
+}
+
 application {
     mainClass.set("io.github.keymaster65.copper2go.sync.application.Main")
     applicationDefaultJvmArgs = listOf(
-        "-Dlogback.configurationFile=src/main/resources/logback.xml"
+        "-Dlogback.configurationFile=src/main/resources/logback.xml",
+        "--enable-preview"
     )
 }
 
@@ -57,6 +76,14 @@ jib {
         auth {
             username = "keymaster65"
             password = System.getenv("DOCKER_HUB_PASSWORD")
+        }
+    }
+    extraDirectories {
+        paths {
+            path {
+                setFrom(project.projectDir.toPath().resolve("build").resolve("reports").resolve("dependency-license"))
+                into = "/app/resources/license"
+            }
         }
     }
 }

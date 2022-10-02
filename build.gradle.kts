@@ -62,7 +62,6 @@ allprojects {
 
     // https://github.com/jk1/Gradle-License-Report
     licenseReport {
-        outputDir = "$projectDir/build/resources/main/license"
         filters = arrayOf<DependencyFilter>(
             LicenseBundleNormalizer(
                 "$rootDir/license-normalizer-bundle.json",
@@ -118,6 +117,21 @@ allprojects {
         }
         outputFormatter = "plain,html"
     }
+
+//    tasks.checkLicense {
+//        dependsOn(tasks.processResources)
+//    }
+//    tasks.compileTestJava {
+//        dependsOn(tasks.checkLicense)
+//    }
+//    tasks.compileTestJava {
+//        dependsOn(tasks.generateLicenseReport)
+//    }
+
+//
+//    tasks.withType<Test> {
+//        dependsOn(tasks.checkLicense)
+//    }
 
     dependencies {
         implementation("org.slf4j:slf4j-api:2.0.3")

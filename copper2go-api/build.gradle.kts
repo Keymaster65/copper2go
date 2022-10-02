@@ -14,6 +14,10 @@ java {
     withJavadocJar()
 }
 
+tasks.withType<Test> {
+    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,17,-source,17")
+}
+
 publishing {
     publications {
         create<MavenPublication>("library") {

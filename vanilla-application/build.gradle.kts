@@ -67,6 +67,14 @@ jib {
             password = System.getenv("DOCKER_HUB_PASSWORD")
         }
     }
+    extraDirectories {
+        paths {
+            path {
+                setFrom(project.projectDir.toPath().resolve("build").resolve("reports").resolve("dependency-license"))
+                into = "/app/resources/license"
+            }
+        }
+    }
 }
 
 tasks.withType<Test> {
