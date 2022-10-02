@@ -15,7 +15,6 @@
  */
 package io.github.keymaster65.copper2go.application;
 
-import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
 import org.assertj.core.api.Assertions;
@@ -30,13 +29,13 @@ import java.nio.charset.StandardCharsets;
 class ApplicationApplicationTestInOutTest {
 
     @Test()
-    void masterHelloTest() throws EngineException, IOException {
+    void masterHelloTest() throws IOException, ApplicationException {
         String name = Data.getName();
         final String result = stdinHelloTest(name);
         Assertions.assertThat(result).contains(Data.getExpectedHello(name));
     }
 
-    private String stdinHelloTest(final String name) throws IOException, EngineException {
+    private String stdinHelloTest(final String name) throws IOException, ApplicationException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(byteArrayOutputStream));
         String input = name + "\r\nexit\r\n";

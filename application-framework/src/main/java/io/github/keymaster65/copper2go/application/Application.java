@@ -15,12 +15,10 @@
  */
 package io.github.keymaster65.copper2go.application;
 
-import io.github.keymaster65.copper2go.api.connector.EngineException;
-
 public interface Application {
-    void start() throws EngineException;
+    void start() throws ApplicationException;
 
-    void stop() throws EngineException;
+    void stop() throws ApplicationException;
 
     boolean isStopRequested();
 }

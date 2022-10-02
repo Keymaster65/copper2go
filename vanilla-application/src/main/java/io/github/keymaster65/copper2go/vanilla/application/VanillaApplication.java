@@ -18,6 +18,7 @@ package io.github.keymaster65.copper2go.vanilla.application;
 import io.github.keymaster65.copper2go.api.connector.DefaultRequestChannelStore;
 import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.application.Application;
+import io.github.keymaster65.copper2go.application.ApplicationException;
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import org.slf4j.Logger;
@@ -44,15 +45,19 @@ public class VanillaApplication implements Application {
     }
 
     @Override
-    public synchronized void start() throws EngineException {
+    public synchronized void start() throws ApplicationException {
         log.info("start application");
-        //noinspection resource
-        copper2GoEngine.engineControl().start();
+        try {
+            //noinspection resource
+            copper2GoEngine.engineControl().start();
+        } catch (EngineException e) {
+            throw new ApplicationException("Exception while starting application", e);
+        }
         httpServer.start();
     }
 
     @Override
-    public synchronized void stop() throws EngineException {
+    public synchronized void stop() throws ApplicationException {
         log.info("stop application");
         stopRequested.set(true);
         try {
@@ -61,8 +66,12 @@ public class VanillaApplication implements Application {
             log.warn("Exception while stopping HTTP server.", e);
         }
         defaultRequestChannelStore.close();
-        //noinspection resource
-        copper2GoEngine.engineControl().stop();
+        try {
+            //noinspection resource
+            copper2GoEngine.engineControl().stop();
+        } catch (EngineException e) {
+            throw new ApplicationException("Exception while starting application", e);
+        }
     }
 
     @Override
