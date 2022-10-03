@@ -202,7 +202,7 @@ allprojects {
             implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.kafka:kafka-clients:3.3.0")
+            implementation("org.apache.kafka:kafka-clients:3.3.1")
         }
     }
 
