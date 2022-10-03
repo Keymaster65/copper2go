@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.util.concurrent.locks.LockSupport;
 
 class ApplicationHttpTest {
 
@@ -42,6 +44,7 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
+            LockSupport.parkNanos(Duration.ofSeconds(10).toNanos());
             response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + HELLO_1), name);
         } finally {
             application.stop();
