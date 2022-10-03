@@ -62,6 +62,7 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
+            LockSupport.parkNanos(Duration.ofSeconds(5).toNanos());
             response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + HELLO_2), name);
         } finally {
 
