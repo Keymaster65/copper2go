@@ -19,6 +19,7 @@ import io.github.keymaster65.copper2go.api.workflow.EventChannelStore;
 import io.github.keymaster65.copper2go.api.workflow.RequestChannelStore;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
 import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.Workflow;
+import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.WorkflowFactoryFactory;
 import net.jqwik.api.Example;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
@@ -33,7 +34,8 @@ class Copper2GoEngineFactoryTest {
                         Mockito.mock(RequestChannelStore.class),
                         Mockito.mock(EventChannelStore.class),
                         new FutureStore<>(Workflow.class),
-                        Mockito.mock(ExpectedResponsesStore.class)
+                        Mockito.mock(ExpectedResponsesStore.class),
+                        Mockito.mock(WorkflowFactoryFactory.class)
                 )
         ).doesNotThrowAnyException();
     }

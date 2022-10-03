@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.vanilla.impl;
+package io.github.keymaster65.copper2go.vanilla.workflow;
 
-import io.github.keymaster65.copper2go.engine.vanilla.workflow.Hello2;
-import io.github.keymaster65.copper2go.engine.vanilla.workflow.Pricing1;
-import io.github.keymaster65.copper2go.engine.vanilla.workflow.WorkflowFactoryImpl;
+import io.github.keymaster65.copper2go.engine.vanilla.engineapi.VanillaEngine;
 import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.Workflow;
 import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.WorkflowFactory;
 import net.jqwik.api.Example;
@@ -25,7 +23,7 @@ import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 
 class WorkflowFactoryImplTest {
-    final WorkflowFactory workflowFactory = new WorkflowFactoryImpl(Mockito.mock(VanillaEngineImpl.class));
+    final WorkflowFactory workflowFactory = new WorkflowFactoryImpl(Mockito.mock(VanillaEngine.class));
 
     @Example
     void createWorkflowInstanceHello2() {

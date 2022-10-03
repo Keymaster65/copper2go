@@ -13,28 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.vanilla.workflow;
+package io.github.keymaster65.copper2go.vanilla.workflow;
 
 import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
 import io.github.keymaster65.copper2go.engine.vanilla.engineapi.VanillaEngine;
 import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.Workflow;
 
-public class Pricing1 implements Workflow {
+import java.util.function.Consumer;
+
+public class Hello2 implements Workflow {
 
     private final VanillaEngine vanillaEngine;
+    private WorkflowData workflowData;
 
-    public Pricing1(
-            final VanillaEngine vanillaEngine
-    ) {
+    public Hello2(final VanillaEngine vanillaEngine) {
         this.vanillaEngine = vanillaEngine;
+    }
+
+    public Hello2(final VanillaEngine vanillaEngine, final WorkflowData workflowData) {
+        this.vanillaEngine = vanillaEngine;
+        this.workflowData = workflowData;
     }
 
     @Override
     public void main(final WorkflowData workflowData) {
-        final String uuid = workflowData.getUUID();
-        if (uuid != null) {
-            vanillaEngine.reply(uuid, "5 cent.");
-        }
+        Consumer<String> continuation = this::continuation;
+        this.workflowData = workflowData;
+        final String responseCorrelationId = vanillaEngine.request("Pricing.centPerMinute", "request");
+        vanillaEngine.continueAsync(responseCorrelationId, continuation);
     }
 
+    public void continuation(final String response) {
+        final String uuid = workflowData.getUUID();
+        if (uuid != null) {
+            vanillaEngine.reply(uuid, "Hello " + workflowData.getPayload() + "! Please transfer " + response);
+        }
+    }
 }

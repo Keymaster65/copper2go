@@ -30,6 +30,7 @@ import io.github.keymaster65.copper2go.engine.vanilla.impl.Copper2GoEngineFactor
 import io.github.keymaster65.copper2go.engine.vanilla.impl.ExpectedResponsesStore;
 import io.github.keymaster65.copper2go.engine.vanilla.impl.FutureStore;
 import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.Workflow;
+import io.github.keymaster65.copper2go.vanilla.workflow.WorkflowFactoryFactoryImpl;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -89,7 +90,8 @@ public class VanillaApplicationFactory implements ApplicationFactory {
                 defaultRequestChannelStore,
                 defaultEventChannelStore,
                 new FutureStore<>(Workflow.class),
-                new ExpectedResponsesStore(new ConcurrentHashMap<>())
+                new ExpectedResponsesStore(new ConcurrentHashMap<>()),
+                new WorkflowFactoryFactoryImpl()
         );
     }
 }
