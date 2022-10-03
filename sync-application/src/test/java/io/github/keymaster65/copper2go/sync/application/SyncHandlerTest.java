@@ -37,6 +37,7 @@ import java.nio.charset.StandardCharsets;
 
 class SyncHandlerTest {
 
+    @SuppressWarnings("unused")
     @Provide
     Arbitrary<String> workflows() {
         return Arbitraries.of(
@@ -75,14 +76,81 @@ class SyncHandlerTest {
         Mockito.verify(httpExchange).sendResponseHeaders(Mockito.eq(200), Mockito.anyLong());
     }
 
+    @SuppressWarnings("unused")
+    @Provide
+    Arbitrary<String> notFoundPaths() {
+        return Arbitraries.of(
+                "",
+                "."
+        );
+    }
+
+    @Property
+    void handleLicenseNotFound(@ForAll("notFoundPaths") final String path) throws URISyntaxException, IOException {
+        final SyncHandler syncHandler = new SyncHandler(Mockito.mock(WorkflowFactory.class));
+        final HttpExchange httpExchange = Mockito.mock(HttpExchange.class);
+        Mockito.when(httpExchange.getRequestURI()).thenReturn(new URI("http://localhost:80/%s".formatted(path)));
+        final ByteArrayOutputStream responseStream = new ByteArrayOutputStream();
+        Mockito.when(httpExchange.getResponseBody()).thenReturn(responseStream);
+
+        syncHandler.handle(httpExchange);
+
+        Assertions.assertThat(responseStream.toString(StandardCharsets.UTF_8)).isEqualTo("Not found.");
+        Mockito.verify(httpExchange).sendResponseHeaders(Mockito.eq(404), Mockito.anyLong());
+
+    }
+
     @Example
-    void getWorkflowFromUriIllegalArgumentException() throws URISyntaxException {
+    void handleLicenseFound() throws URISyntaxException, IOException {
+        final String path = "test.html";
+        final SyncHandler syncHandler = new SyncHandler(Mockito.mock(WorkflowFactory.class));
+        final HttpExchange httpExchange = Mockito.mock(HttpExchange.class);
+        Mockito.when(httpExchange.getRequestURI()).thenReturn(new URI("http://localhost:80/%s".formatted(path)));
+        final ByteArrayOutputStream responseStream = new ByteArrayOutputStream();
+        Mockito.when(httpExchange.getResponseBody()).thenReturn(responseStream);
+
+        syncHandler.handle(httpExchange);
+
+        Mockito.verify(httpExchange).sendResponseHeaders(Mockito.eq(200), Mockito.anyLong());
+        Assertions.assertThat(responseStream.toString(StandardCharsets.UTF_8)).isEqualTo("Found");
+    }
+
+    @SuppressWarnings("unused")
+    @Provide
+    Arbitrary<String> dirPaths() {
+        return Arbitraries.of(
+                "%2E%2E/io",
+                "../io",
+                "%2e%2e/io",
+                "%2E%2e/io",
+                "%2e%2E/io",
+                ".%2E/io",
+                "%2E./io",
+                ".%2e/io",
+                "%2e./io"
+                );
+    }
+    @Property
+    void handleLicenseDirOnly(@ForAll("dirPaths") final String path) throws URISyntaxException, IOException {
+        final SyncHandler syncHandler = new SyncHandler(Mockito.mock(WorkflowFactory.class));
+        final HttpExchange httpExchange = Mockito.mock(HttpExchange.class);
+        Mockito.when(httpExchange.getRequestURI()).thenReturn(new URI("http://localhost:80/%s".formatted(path)));
+        final ByteArrayOutputStream responseStream = new ByteArrayOutputStream();
+        Mockito.when(httpExchange.getResponseBody()).thenReturn(responseStream);
+
+        syncHandler.handle(httpExchange);
+
+        Mockito.verify(httpExchange).sendResponseHeaders(Mockito.eq(404), Mockito.anyLong());
+        Assertions.assertThat(responseStream.toString(StandardCharsets.UTF_8)).isEqualTo("Bad path.");
+    }
+    @Example
+    void getWorkflowFromUriUnkownWorkflowException() throws URISyntaxException {
         final WorkflowFactory workflowFactory = Mockito.mock(WorkflowFactory.class);
         final SyncHandler syncHandler = new SyncHandler(workflowFactory);
 
         final URI uri = new URI("http://localhost:80");
         Assertions
                 .assertThatCode(() -> syncHandler.getWorkflowFromUri(uri))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(UnknownWorkflowException.class);
     }
 }

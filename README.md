@@ -281,8 +281,10 @@ Issues are very welcome, too.
 1) `gradle clean build`
 1) `gradle dependencyCheckAggregate`
 1) `gradle clean integrationTest`
-1) `gradle :copper2go-app:build :copper2go-app:jib`
+1) `gradle :copper2go-application:build :copper2go-application:jib`
 1) `gradle systemTest`
+1) Optional: `gradle :vanilla-application:build :vanilla-application:jib`
+1) Optional: `gradle :sync-application:build :sync-application:jib`
 
 #### master
 
@@ -322,7 +324,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Run sync-application on JDK 19
 * [x] Security updates
 * [x] Additional updates
-* [ ] Add licenses to sync-application
+* [x] Add licenses to sync-application
 
 #### "slf4j-api alpha6" Workflow API 3.2.0
 

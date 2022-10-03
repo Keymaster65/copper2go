@@ -62,14 +62,13 @@ jib {
             "-Dfile.encoding=UTF-8",
             "-Duser.country=DE",
             "-Duser.language=de",
-            "-Duser.timezone=Europe/Berlin"
+            "-Duser.timezone=Europe/Berlin",
+            "--enable-preview"
         )
         workingDirectory = "/"
     }
     from {
-        // Has no bash, needed for testcontainers
-        // image = "azul/zulu-openjdk-alpine:17.0.0"
-        image = "openjdk:17-jdk"
+        image = "openjdk:19-jdk"
     }
     to {
         image = "registry.hub.docker.com/keymaster65/copper2go:" + copper2goVersion

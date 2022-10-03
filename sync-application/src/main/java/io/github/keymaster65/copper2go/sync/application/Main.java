@@ -29,12 +29,13 @@ public class Main {
     // tested in system
     public static void main(String[] args) throws Exception {
         try (final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()) {
-            new ApplicationLauncher(new SyncApplicationFactory(
-                    HttpServer.create(new InetSocketAddress(59665), 0),
-                    new SyncEngineImpl(),
-                    executorService,
-                    new URI("http://localhost:59665/Pricing") // NOSONAR
-            ).create()).start();
+            new ApplicationLauncher(
+                    new SyncApplicationFactory(
+                            HttpServer.create(new InetSocketAddress(59665), 0),
+                            new SyncEngineImpl(),
+                            executorService,
+                            new URI("http://localhost:59665/Pricing") // NOSONAR
+                    ).create()).start();
         }
     }
 
