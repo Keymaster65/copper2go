@@ -2,6 +2,10 @@ pitest {
     targetClasses.set(setOf<String>("io.github.keymaster65.copper2go.engine.scotty.*"))
 }
 
+tasks.withType<Test> {
+    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,17,-source,17")
+}
+
 dependencies {
     implementation(project(":copper2go-api"))
     implementation(project(":connector-api"))
