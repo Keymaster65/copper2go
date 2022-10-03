@@ -279,9 +279,9 @@ Issues are very welcome, too.
 1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks`
 1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks --refresh-dependencies`
 1) `gradle clean build`
-1) `gradle clean integrationTest`
 1) `gradle dependencyCheckAggregate`
-1) `gradle :copper2go-app:jib`
+1) `gradle clean integrationTest`
+1) `gradle :copper2go-app:build :copper2go-app:jib`
 1) `gradle systemTest`
 
 #### master
