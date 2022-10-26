@@ -148,9 +148,6 @@ allprojects {
             implementation("commons-io:commons-io:2.11.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
-            implementation("com.google.guava:guava:31.1-jre") {
-                because("Security scan found 23.4-jre")
-            }
             implementation("io.netty:netty-buffer:4.1.84.Final") {
                 because("Security scan found 4.1.53.Final")
             }
@@ -203,6 +200,11 @@ allprojects {
                 because("Security scan found 2.2")
             }
             implementation("org.apache.kafka:kafka-clients:3.3.1")
+
+            testImplementation("com.google.guava:guava:31.1-jre") {
+                because("Security scan found 23.4-jre. Needed for assertj.")
+            }
+
         }
     }
 
