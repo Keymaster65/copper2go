@@ -15,7 +15,6 @@
  */
 package io.github.keymaster65.copper2go.systemtest;
 
-import com.google.common.io.CharStreams;
 import io.github.keymaster65.copper2go.Main;
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.http.TestHttpClient;
@@ -31,13 +30,16 @@ import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.utility.DockerImageName;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.locks.LockSupport;
+import java.util.stream.Collectors;
 
 class SystemCompleteTest {
 
@@ -87,18 +89,17 @@ class SystemCompleteTest {
     }
 
     private static void startCopper2GoContainer() throws IOException {
-        String config = CharStreams.toString(
-                new InputStreamReader(
-                        Objects.requireNonNull(Config.class.getResourceAsStream("/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json")),
-                        StandardCharsets.UTF_8
-                )
-        );
-        copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:%s".formatted(System.getProperty(SYSTEM_PROPERTY_COPPER2GO_VERSION)))) // NOSONAR
-                .withExposedPorts(59665)
-                .withImagePullPolicy(imageName -> true)
-                .withNetworkAliases("copper2go")
-                .withNetwork(network)
-                .withEnv(Main.ENV_C2G_CONFIG, config);
-        copper2GoContainer.start();
+        try (final InputStream inputStream = Objects.requireNonNull(Config.class.getResourceAsStream("/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json"))) {
+            final String config = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                    .lines()
+                    .collect(Collectors.joining("\n"));
+            copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:%s".formatted(System.getProperty(SYSTEM_PROPERTY_COPPER2GO_VERSION)))) // NOSONAR
+                    .withExposedPorts(59665)
+                    .withImagePullPolicy(imageName -> true)
+                    .withNetworkAliases("copper2go")
+                    .withNetwork(network)
+                    .withEnv(Main.ENV_C2G_CONFIG, config);
+            copper2GoContainer.start();
+        }
     }
 }
