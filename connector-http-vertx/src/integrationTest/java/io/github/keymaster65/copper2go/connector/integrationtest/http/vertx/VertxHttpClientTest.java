@@ -35,7 +35,7 @@ class VertxHttpClientTest {
     public static final String LOCALHOST = "localhost";
 
     @Test
-    @Timeout(10)
+    @Timeout(20)
     void postGoodCase() throws InterruptedException {
         ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
         Vertx vertx = Vertx.vertx();
