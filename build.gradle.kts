@@ -201,8 +201,8 @@ allprojects {
             }
             implementation("org.apache.kafka:kafka-clients:3.3.1")
 
-            testImplementation("com.google.guava:guava:31.1-jre") {
-                because("Security scan found 23.4-jre. Needed for assertj.")
+            implementation("com.google.guava:guava:31.1-jre") {
+                because("Security scan found 23.4-jre. Needed for assertj and copper.")
             }
 
         }
