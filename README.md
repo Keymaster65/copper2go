@@ -6,7 +6,20 @@
 
 [![Build](https://github.com/Keymaster65/copper2go/actions/workflows/build.yml/badge.svg)](https://github.com/Keymaster65/copper2go/actions/workflows/build.yml)
 [![CodeQL](https://github.com/Keymaster65/copper2go/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Keymaster65/copper2go/actions/workflows/codeql-analysis.yml)
+
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=alert_status)](https://sonarcloud.io/dashboard?id=Keymaster65_copper2go)
+
+![Sonar Lift Status](https://lift.sonatype.com/api/badge/github.com/Keymaster65/copper2go)
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api)
 [![GitHub release](https://img.shields.io/github/release/Keymaster65/copper2go)](https://GitHub.com/Keymaster65/copper2go/releases/)
