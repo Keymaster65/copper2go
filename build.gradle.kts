@@ -7,7 +7,7 @@ plugins {
     distribution
     `maven-publish`
     jacoco
-    id("org.sonarqube") version "3.4.0.2513"
+    id("org.sonarqube") version "3.5.0.2730"
     id("com.github.jk1.dependency-license-report") version "2.1"
     id("com.google.cloud.tools.jib") version "3.3.0"
     id("com.github.hierynomus.license-base") version "0.16.1"
