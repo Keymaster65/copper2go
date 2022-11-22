@@ -137,7 +137,7 @@ allprojects {
         implementation("org.slf4j:slf4j-api:2.0.3")
         implementation("ch.qos.logback:logback-classic:1.4.4")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.+")
         testImplementation("net.jqwik:jqwik:1.+")
