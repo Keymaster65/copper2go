@@ -12,8 +12,8 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.3.1"
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
-    id("org.owasp.dependencycheck") version "7.3.0"
-    id("com.github.ben-manes.versions") version "0.43.0"
+    id("org.owasp.dependencycheck") version "7.3.2"
+    id("com.github.ben-manes.versions") version "0.44.0"
     id("info.solidsoft.pitest") version "1.9.0"
 }
 
@@ -134,8 +134,8 @@ allprojects {
 //    }
 
     dependencies {
-        implementation("org.slf4j:slf4j-api:2.0.3")
-        implementation("ch.qos.logback:logback-classic:1.4.4")
+        implementation("org.slf4j:slf4j-api:2.0.5")
+        implementation("ch.qos.logback:logback-classic:1.4.5")
 
         implementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
 
