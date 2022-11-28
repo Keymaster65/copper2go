@@ -14,7 +14,7 @@ plugins {
     id("org.unbroken-dome.test-sets") version "4.0.0"
     id("org.owasp.dependencycheck") version "7.3.2"
     id("com.github.ben-manes.versions") version "0.44.0"
-    id("info.solidsoft.pitest") version "1.9.0"
+    id("info.solidsoft.pitest") version "1.9.11"
 }
 
 group = "io.github.keymaster65"
