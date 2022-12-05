@@ -187,7 +187,7 @@ allprojects {
             implementation("net.minidev:accessors-smart:2.4.8") {
                 because("Security scan found 1.2")
             }
-            implementation("org.apache.httpcomponents:httpclient:4.5.13") {
+            implementation("org.apache.httpcomponents:httpclient:4.5.14") {
                 because("Security scan found 4.5.2")
             }
             implementation("net.minidev:json-smart:2.4.8") {
