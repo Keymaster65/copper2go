@@ -18,25 +18,30 @@ package io.github.keymaster65.copper2go.connector.http.vertx.receiver;
 import io.github.keymaster65.copper2go.api.connector.ResponseReceiver;
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpClient;
 import io.github.keymaster65.copper2go.connector.http.HttpMethod;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
+import org.crac.Context;
+import org.crac.Core;
+import org.crac.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class VertxHttpClient implements Copper2GoHttpClient {
+public class VertxHttpClient implements Copper2GoHttpClient, Resource {
 
     private final String host;
     private final int port;
     private final String uri;
     private final ResponseReceiver responseReceiver;
-    private final Vertx vertx;
-    private final WebClient client;
+    private final AtomicReference<Vertx> vertxRef = new AtomicReference<>();
+    private final AtomicReference<WebClient> clientRef = new AtomicReference<>();
     private static final Logger log = LoggerFactory.getLogger(VertxHttpClient.class);
 
     public VertxHttpClient(
@@ -55,7 +60,7 @@ public class VertxHttpClient implements Copper2GoHttpClient {
             final ResponseReceiver responseReceiver,
             final Vertx vertx
     ) {
-        this(host, port, uri, responseReceiver, Vertx.vertx(), WebClient.create(vertx));
+        this(host, port, uri, responseReceiver, vertx, WebClient.create(vertx));
     }
 
     public VertxHttpClient(
@@ -70,8 +75,9 @@ public class VertxHttpClient implements Copper2GoHttpClient {
         this.port = port;
         this.uri = uri;
         this.responseReceiver = responseReceiver;
-        this.vertx = vertx;
-        this.client = client;
+        vertxRef.set(vertx);
+        clientRef.set(client);
+        Core.getGlobalContext().register(this);
     }
 
     @Override
@@ -88,12 +94,29 @@ public class VertxHttpClient implements Copper2GoHttpClient {
 
     @Override
     public void close() {
-        client.close();
-        vertx.close(asyncResult -> log.info("VertX close. succeeded={}", asyncResult.succeeded()));
+        clientRef.get().close();
+
+        final Future<Void> closeVertxFuture = vertxRef.get().close();
+        log.info("Stopped vertx with result {}", closeVertxFuture.result());
+    }
+
+    @Override
+    public void beforeCheckpoint(Context<? extends Resource> context) {
+        log.info("Stop httpClient in beforeCheckpoint for uri {}.", uri);
+        close();
+    }
+
+    @Override
+    public void afterRestore(Context<? extends Resource> context) {
+        log.info("Start httpClient in afterRestore for uri {}.", uri);
+
+        vertxRef.set(Vertx.vertx());
+        clientRef.set(WebClient.create(vertxRef.get()));
     }
 
     HttpRequest<Buffer> createHttpRequest(final HttpMethod httpMethod, final Map<String, String> attributes) {
-        final HttpRequest<Buffer> bufferHttpRequest = client.request(
+        log.debug("createHttpRequest for uri {}.", uri);
+        final HttpRequest<Buffer> bufferHttpRequest = clientRef.get().request(
                 io.vertx.core.http.HttpMethod.valueOf(httpMethod.toString()),
                 port,
                 host,
