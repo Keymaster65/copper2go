@@ -49,6 +49,7 @@
   "workflowRepositoryConfig": {
     "branch": "release/3",
     "workflowGitURI": "https://github.com/Keymaster65/copper2go-workflows.git",
-    "workflowBase": "/src/workflow/java"
+    "workflowBase": "/src/workflow/java",
+    "checkIntervalSec": "5000"
   }
 }

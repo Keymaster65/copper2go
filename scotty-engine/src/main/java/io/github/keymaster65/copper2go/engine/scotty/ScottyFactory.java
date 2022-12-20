@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.Collections;
 
 public class ScottyFactory {
@@ -65,6 +66,7 @@ public class ScottyFactory {
                     repo.setTargetDir(workDir + "/target");
                     repo.setBranch(workflowRepositoryConfig.branch);
                     repo.setOriginURI(workflowRepositoryConfig.workflowGitURI);
+                    repo.setCheckIntervalMSec(workflowRepositoryConfig.checkIntervalSec);
                     return repo;
                 } catch (Exception createException) {
                     throw new EngineRuntimeException("Exception while creating workflow rfepository.", createException);

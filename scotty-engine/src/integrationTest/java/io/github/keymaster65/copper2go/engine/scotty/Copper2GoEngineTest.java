@@ -57,7 +57,8 @@ class Copper2GoEngineTest {
         WorkflowRepositoryConfig workflowRepositoryConfig = new WorkflowRepositoryConfig(
                 branch,
                 "https://github.com/Keymaster65/copper2go-workflows.git",
-                "/src/workflow/java"
+                "/src/workflow/java",
+                5000
         );
         final DependencyInjector dependencyInjector = new Copper2goDependencyInjector(
                 replyChannelStoreImpl,
