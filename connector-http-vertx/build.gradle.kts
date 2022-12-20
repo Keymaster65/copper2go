@@ -14,4 +14,6 @@ dependencies {
     implementation("io.vertx:vertx-core:4.3.+")
     implementation("io.vertx:vertx-web:4.3.+")
     implementation("io.vertx:vertx-web-client:4.3.+")
+
+    implementation("io.github.crac:org-crac:0.1.3")
 }
