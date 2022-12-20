@@ -16,21 +16,25 @@
 package io.github.keymaster65.copper2go.connector.http.vertx.receiver;
 
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerRequest;
+import org.crac.Context;
+import org.crac.Core;
+import org.crac.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class VertxHttpServer implements Copper2GoHttpServer {
+
+public class VertxHttpServer implements Copper2GoHttpServer, Resource {
 
     private static final Logger log = LoggerFactory.getLogger(VertxHttpServer.class);
 
     private final HttpServer httpServer;
     private final Vertx vertx;
     private final int port;
-
 
     public VertxHttpServer(final int port, final Handler<HttpServerRequest> handler) {
         this(port, Vertx.vertx(), handler);
@@ -45,6 +49,7 @@ public class VertxHttpServer implements Copper2GoHttpServer {
         this.vertx = vertx;
         this.httpServer = httpServer;
         this.httpServer.requestHandler(handler);
+        Core.getGlobalContext().register(this);
     }
 
     @Override
@@ -57,7 +62,24 @@ public class VertxHttpServer implements Copper2GoHttpServer {
     @Override
     public void stop() {
         log.info("Stopping server.");
-        httpServer.close(asyncResult -> log.info("Server close. succeeded={}", asyncResult.succeeded()));
-        vertx.close(asyncResult -> log.info("VertX close. succeeded={}", asyncResult.succeeded()));
+        final Future<Void> closeHttpServerFuture = httpServer.close();
+        log.info("Stopped httpServer with result {}", closeHttpServerFuture.result());
+
+        final Future<Void> closeVertxFuture = vertx.close();
+        log.info("Stopped vertx with result {}", closeVertxFuture.result());
+    }
+
+    @Override
+    public void beforeCheckpoint(Context<? extends Resource> context) {
+        log.info("Stop httpServer in beforeCheckpoint.");
+
+        final Future<Void> closeFuture = httpServer.close();
+        log.info("Stopped httpServer with result {}", closeFuture.result());
+    }
+
+    @Override
+    public void afterRestore(Context<? extends Resource> context) {
+        log.info("Start httpServer in afterRestore.");
+        start();
     }
 }
