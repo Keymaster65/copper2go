@@ -182,7 +182,7 @@ allprojects {
             implementation("io.netty:netty-codec-http2:4.1.85.Final") {
                 because("Security scan found 4.1.74.Final")
             }
-            implementation("io.netty:netty-resolver-dns:4.1.85.Final") {
+            implementation("io.netty:netty-resolver-dns:4.1.86.Final") {
                 because("Security scan found 4.1.74.Final")
             }
             implementation("net.minidev:accessors-smart:2.4.8") {
