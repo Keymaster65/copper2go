@@ -176,7 +176,7 @@ allprojects {
             implementation("io.netty:netty-transport:4.1.85.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec-dns:4.1.85.Final") {
+            implementation("io.netty:netty-codec-dns:4.1.86.Final") {
                 because("Security scan found 4.1.74.Final")
             }
             implementation("io.netty:netty-codec-http2:4.1.85.Final") {
