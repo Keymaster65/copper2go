@@ -149,7 +149,7 @@ allprojects {
             implementation("commons-io:commons-io:2.11.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
-            implementation("io.netty:netty-buffer:4.1.85.Final") {
+            implementation("io.netty:netty-buffer:4.1.86.Final") {
                 because("Security scan found 4.1.53.Final")
             }
             implementation("io.netty:netty-codec:4.1.85.Final") {
