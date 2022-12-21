@@ -15,6 +15,7 @@
  */
 package io.github.keymaster65.copper2go.connector.http.vertx.receiver;
 
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
@@ -22,10 +23,10 @@ import io.vertx.core.http.HttpServerRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class VertxHttpServerTest {
 
@@ -43,10 +44,15 @@ class VertxHttpServerTest {
     @Test
     void startStop() {
         final HttpServer httpServer = mock(HttpServer.class);
+        @SuppressWarnings("unchecked") final Future<Void> httpServerCloseFuture = mock(Future.class);
+        when(httpServer.close()).thenReturn(httpServerCloseFuture);
         @SuppressWarnings("unchecked") final Handler<HttpServerRequest> handler = mock(Handler.class);
+        @SuppressWarnings("unchecked") final Future<Void> vertxCloseFuture = mock(Future.class);
+        final Vertx vertx = mock(Vertx.class);
+        when(vertx.close()).thenReturn(vertxCloseFuture);
         final VertxHttpServer vertxHttpServer = new VertxHttpServer(
                 0,
-                mock(Vertx.class),
+                vertx,
                 httpServer,
                 handler
         );
@@ -55,6 +61,6 @@ class VertxHttpServerTest {
         verify(httpServer).listen(anyInt());
 
         vertxHttpServer.stop();
-        verify(httpServer).close(any());
+        verify(httpServer).close();
     }
 }
