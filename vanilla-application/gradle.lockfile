@@ -83,5 +83,5 @@ org.pitest:pitest-command-line:1.9.11=pitest
 org.pitest:pitest-entry:1.9.11=pitest
 org.pitest:pitest-junit5-plugin:1.0.0=pitest
 org.pitest:pitest:1.9.11=pitest
-org.slf4j:slf4j-api:2.0.5=compileClasspath,integrationTestCompileClasspath,integrationTestRuntimeClasspath,runtimeClasspath,systemTestCompileClasspath,systemTestRuntimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.slf4j:slf4j-api:2.0.6=compileClasspath,integrationTestCompileClasspath,integrationTestRuntimeClasspath,runtimeClasspath,systemTestCompileClasspath,systemTestRuntimeClasspath,testCompileClasspath,testRuntimeClasspath
 empty=annotationProcessor,integrationTestAnnotationProcessor,systemTestAnnotationProcessor,testAnnotationProcessor

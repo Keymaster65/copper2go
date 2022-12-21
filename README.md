@@ -342,7 +342,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 #### "slf4j-api and jackson-databind" Workflow API 3.2.0
 
-* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.5
+* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.6
 * [x] Update jackson-databind from 13.2.2 to 2.14.1
 
 ## Planning
