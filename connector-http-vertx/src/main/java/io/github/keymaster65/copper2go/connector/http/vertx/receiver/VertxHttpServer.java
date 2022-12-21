@@ -49,7 +49,7 @@ public class VertxHttpServer implements Copper2GoHttpServer, Resource {
         this.vertx = vertx;
         this.httpServer = httpServer;
         this.httpServer.requestHandler(handler);
-        Core.getGlobalContext().register(this);
+        Core.getGlobalContext().register(this); // TODO: This lets test VertxHttpServerTest.post fail
     }
 
     @Override
@@ -70,7 +70,7 @@ public class VertxHttpServer implements Copper2GoHttpServer, Resource {
     }
 
     @Override
-    public void beforeCheckpoint(Context<? extends Resource> context) throws Exception {
+    public void beforeCheckpoint(Context<? extends Resource> context) {
         log.info("Stop httpServer in beforeCheckpoint.");
 
         final Future<Void> closeFuture = httpServer.close();
@@ -78,7 +78,7 @@ public class VertxHttpServer implements Copper2GoHttpServer, Resource {
     }
 
     @Override
-    public void afterRestore(Context<? extends Resource> context) throws Exception {
+    public void afterRestore(Context<? extends Resource> context) {
         log.info("Start httpServer in afterRestore.");
         start();
     }
