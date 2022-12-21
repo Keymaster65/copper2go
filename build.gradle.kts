@@ -100,6 +100,7 @@ allprojects {
     dependencyCheck {
         analyzers.assemblyEnabled = false
         failBuildOnCVSS = 0F
+        suppressionFile = "./cveSuppressionFile.xml"
     }
 
     dependencyLocking {
