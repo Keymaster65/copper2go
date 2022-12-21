@@ -12,9 +12,9 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.3.1"
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
-    id("org.owasp.dependencycheck") version "7.3.2"
+    id("org.owasp.dependencycheck") version "7.4.1"
     id("com.github.ben-manes.versions") version "0.44.0"
-    id("info.solidsoft.pitest") version "1.9.0"
+    id("info.solidsoft.pitest") version "1.9.11"
 }
 
 group = "io.github.keymaster65"
@@ -100,6 +100,7 @@ allprojects {
     dependencyCheck {
         analyzers.assemblyEnabled = false
         failBuildOnCVSS = 0F
+        suppressionFile = "./cveSuppressionFile.xml"
     }
 
     dependencyLocking {
@@ -134,7 +135,7 @@ allprojects {
 //    }
 
     dependencies {
-        implementation("org.slf4j:slf4j-api:2.0.5")
+        implementation("org.slf4j:slf4j-api:2.0.6")
         implementation("ch.qos.logback:logback-classic:1.4.5")
 
         implementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
@@ -187,7 +188,7 @@ allprojects {
             implementation("net.minidev:accessors-smart:2.4.8") {
                 because("Security scan found 1.2")
             }
-            implementation("org.apache.httpcomponents:httpclient:4.5.13") {
+            implementation("org.apache.httpcomponents:httpclient:4.5.14") {
                 because("Security scan found 4.5.2")
             }
             implementation("net.minidev:json-smart:2.4.8") {
