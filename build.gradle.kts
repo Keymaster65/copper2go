@@ -9,7 +9,7 @@ plugins {
     jacoco
     id("org.sonarqube") version "3.5.0.2730"
     id("com.github.jk1.dependency-license-report") version "2.1"
-    id("com.google.cloud.tools.jib") version "3.3.1"
+    id("com.google.cloud.tools.jib") version "3.3.1" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
     id("org.owasp.dependencycheck") version "7.4.1"
@@ -69,7 +69,10 @@ allprojects {
             )
         )
         // excludes and excludeOwnGroup not working
-        excludeGroups  = arrayOf<String>("com.fasterxml.jackson", "io.github.keymaster65") // is apache 2.0 but license tool say "null" for jackson-bom v2.13.1
+        excludeGroups = arrayOf<String>(
+            "com.fasterxml.jackson",
+            "io.github.keymaster65"
+        ) // is apache 2.0 but license tool say "null" for jackson-bom v2.13.1
         allowedLicensesFile = File("$rootDir/allowed-licenses.json")
     }
 
