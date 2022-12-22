@@ -333,7 +333,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 #### "slf4j-api and jackson-databind" Workflow API 3.2.0
 
 * [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.6
-* [x] Update jackson-databind from 13.2.2 to 2.14.1
+* [x] Update jackson-databind from 2.13.2.2 to 2.14.1
 
 ## Planning
 
@@ -399,7 +399,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ## Released
 
-### "Loom" Release Application API 4.3.0copper2goVersion 4.2.0
+### "Loom" Release Application API 4.3.0
 
 * [x] Add pitest support (https://pitest.org/)
 * [x] Add a sync-engine and application with blocking code
