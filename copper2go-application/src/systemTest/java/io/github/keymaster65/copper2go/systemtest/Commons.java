@@ -27,7 +27,7 @@ class Commons {
     }
 
     static URI getUri(final String path, GenericContainer<?> copper2GoContainer) throws URISyntaxException {
-        // NOSONAR Nor yet: HTTP links are not secure
+        // NOSONAR Not yet: HTTP links are not secure
         return new URI(String.format("http://%s:%d%s", // NOSONAR
                 copper2GoContainer.getHost(),
                 copper2GoContainer.getFirstMappedPort(),

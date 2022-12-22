@@ -1,19 +1,23 @@
 import com.github.jk1.license.filter.DependencyFilter
 import com.github.jk1.license.filter.LicenseBundleNormalizer
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     java
     distribution
     `maven-publish`
     jacoco
-    id("org.sonarqube") version "3.4.0.2513"
+    id("org.sonarqube") version "3.5.0.2730"
     id("com.github.jk1.dependency-license-report") version "2.1"
-    id("com.google.cloud.tools.jib") version "3.3.0"
+    id("com.google.cloud.tools.jib") version "3.3.1" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
-    id("org.owasp.dependencycheck") version "7.2.1"
-    id("com.github.ben-manes.versions") version "0.42.0"
+    id("org.owasp.dependencycheck") version "7.4.1"
+    id("com.github.ben-manes.versions") version "0.44.0"
+    id("info.solidsoft.pitest") version "1.9.11"
 }
+
+group = "io.github.keymaster65"
 
 publishing {
     publications {
@@ -23,25 +27,9 @@ publishing {
     }
 }
 
-group = "io.github.keymaster65"
-
 tasks.sonarqube {
     dependsOn(tasks.test)
 }
-
-tasks.checkLicense {
-    dependsOn(tasks.findByName("processResources"))
-}
-
-tasks.jar {
-    dependsOn(tasks.findByName("checkLicense"))
-}
-tasks.compileTestJava {
-    dependsOn(tasks.findByName("checkLicense"))
-}
-
-var ct = tasks.checkLicense
-
 
 allprojects {
     apply(plugin = "java")
@@ -50,6 +38,11 @@ allprojects {
     apply(plugin = "jacoco")
     apply(plugin = "org.owasp.dependencycheck")
     apply(plugin = "com.github.jk1.dependency-license-report")
+    apply(plugin = "info.solidsoft.pitest")
+
+    repositories {
+        mavenCentral()
+    }
 
     // https://docs.gradle.org/current/userguide/jacoco_plugin.html
     tasks.jacocoTestReport {
@@ -61,17 +54,25 @@ allprojects {
         }
     }
 
+    // https://github.com/szpak/gradle-pitest-plugin
+    pitest {
+        junit5PluginVersion.set("1.0.0")
+        timestampedReports.set(false)
+    }
+
+    // https://github.com/jk1/Gradle-License-Report
     licenseReport {
-        outputDir = "$projectDir/build/resources/main/license"
         filters = arrayOf<DependencyFilter>(
             LicenseBundleNormalizer(
                 "$rootDir/license-normalizer-bundle.json",
                 true
             )
         )
-        // excludes not working
-        excludeGroups  = arrayOf<String>("com.fasterxml.jackson") // is apache 2.0 but license tool say "null" for jackson-bom v2.13.1
-        excludeOwnGroup = true
+        // excludes and excludeOwnGroup not working
+        excludeGroups = arrayOf<String>(
+            "com.fasterxml.jackson",
+            "io.github.keymaster65"
+        ) // is apache 2.0 but license tool say "null" for jackson-bom v2.13.1
         allowedLicensesFile = File("$rootDir/allowed-licenses.json")
     }
 
@@ -98,16 +99,49 @@ allprojects {
         exclude("**/test.html")
     }
 
+    // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/index.html
     dependencyCheck {
         analyzers.assemblyEnabled = false
         failBuildOnCVSS = 0F
+        suppressionFile = "./cveSuppressionFile.xml"
     }
 
-    dependencies {
-        implementation("org.slf4j:slf4j-api:2.0.2")
-        implementation("ch.qos.logback:logback-classic:1.4.1")
+    dependencyLocking {
+        lockAllConfigurations()
+    }
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4")
+    // https://github.com/ben-manes/gradle-versions-plugin
+    fun isNonStable(version: String): Boolean {
+        val nonStable = listOf("RC").any { version.toUpperCase().contains(it) }
+        return nonStable
+    }
+    tasks.withType<DependencyUpdatesTask> {
+        rejectVersionIf {
+            isNonStable(candidate.version)
+        }
+        outputFormatter = "plain,html"
+    }
+
+//    tasks.checkLicense {
+//        dependsOn(tasks.processResources)
+//    }
+//    tasks.compileTestJava {
+//        dependsOn(tasks.checkLicense)
+//    }
+//    tasks.compileTestJava {
+//        dependsOn(tasks.generateLicenseReport)
+//    }
+
+//
+//    tasks.withType<Test> {
+//        dependsOn(tasks.checkLicense)
+//    }
+
+    dependencies {
+        implementation("org.slf4j:slf4j-api:2.0.6")
+        implementation("ch.qos.logback:logback-classic:1.4.5")
+
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.+")
         testImplementation("net.jqwik:jqwik:1.+")
@@ -118,49 +152,46 @@ allprojects {
             implementation("commons-io:commons-io:2.11.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
-            implementation("com.google.guava:guava:31.1-jre") {
-                because("Security scan found 23.4-jre")
-            }
-            implementation("io.netty:netty-buffer:4.1.82.Final") {
+            implementation("io.netty:netty-buffer:4.1.85.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec:4.1.82.Final") {
+            implementation("io.netty:netty-codec:4.1.85.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec-http:4.1.82.Final") {
+            implementation("io.netty:netty-codec-http:4.1.85.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec-socks:4.1.82.Final") {
+            implementation("io.netty:netty-codec-socks:4.1.85.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-common:4.1.82.Final") {
+            implementation("io.netty:netty-common:4.1.85.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-handler:4.1.82.Final") {
+            implementation("io.netty:netty-handler:4.1.85.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-handler-proxy:4.1.82.Final") {
+            implementation("io.netty:netty-handler-proxy:4.1.85.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-resolver:4.1.82.Final") {
+            implementation("io.netty:netty-resolver:4.1.85.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-transport:4.1.82.Final") {
+            implementation("io.netty:netty-transport:4.1.85.Final") {
                 because("Security scan found 4.1.53.Final")
             }
-            implementation("io.netty:netty-codec-dns:4.1.82.Final") {
+            implementation("io.netty:netty-codec-dns:4.1.85.Final") {
                 because("Security scan found 4.1.74.Final")
             }
-            implementation("io.netty:netty-codec-http2:4.1.82.Final") {
+            implementation("io.netty:netty-codec-http2:4.1.85.Final") {
                 because("Security scan found 4.1.74.Final")
             }
-            implementation("io.netty:netty-resolver-dns:4.1.82.Final") {
+            implementation("io.netty:netty-resolver-dns:4.1.85.Final") {
                 because("Security scan found 4.1.74.Final")
             }
             implementation("net.minidev:accessors-smart:2.4.8") {
                 because("Security scan found 1.2")
             }
-            implementation("org.apache.httpcomponents:httpclient:4.5.13") {
+            implementation("org.apache.httpcomponents:httpclient:4.5.14") {
                 because("Security scan found 4.5.2")
             }
             implementation("net.minidev:json-smart:2.4.8") {
@@ -172,32 +203,19 @@ allprojects {
             implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.kafka:kafka-clients:3.2.3")
+            implementation("org.apache.kafka:kafka-clients:3.3.1")
+
+            implementation("com.google.guava:guava:31.1-jre") {
+                because("Security scan found 23.4-jre. Needed for assertj and copper.")
+            }
+
         }
     }
 
+    // https://github.com/unbroken-dome/gradle-testsets-plugin
     testSets {
         create("integrationTest")
         create("systemTest")
-    }
-
-    tasks.check {
-        dependsOn(tasks.findByName("systemTest"))
-    }
-
-    tasks.check {
-        dependsOn(tasks.findByName("integrationTest"))
-    }
-
-//    tasks.findByName("compileSystemTestJava")?.dependsOn(ct)
-//    tasks.findByName("compileIntegrationTestJava")?.dependsOn(ct)
-
-    dependencyLocking {
-        lockAllConfigurations()
-    }
-
-    repositories {
-        mavenCentral()
     }
 
     tasks.withType<Test> {

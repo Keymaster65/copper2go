@@ -1,10 +1,17 @@
+pitest {
+    targetClasses.set(setOf<String>("io.github.keymaster65.copper2go.*"))
+}
 
 plugins {
     application
-    id("com.google.cloud.tools.jib") version "3.3.0"
+    id("com.google.cloud.tools.jib") version "3.3.1"
 }
 
 var copper2goVersion = "4.2.0"
+
+tasks.withType<Test> {
+    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,17,-source,17")
+}
 
 tasks.jar {
     dependsOn(tasks.findByName("checkLicense"))
@@ -29,8 +36,8 @@ dependencies {
         // due to license issue and I guess I currently do not need it
         exclude("io.netty", "netty-tcnative-classes")
     }
-    implementation("io.vertx:vertx-core:4.3.3")
-    implementation("io.vertx:vertx-kafka-client:4.3.3")
+    implementation("io.vertx:vertx-core:4.3.7")
+    implementation("io.vertx:vertx-kafka-client:4.3.7")
 
     testImplementation("org.testcontainers:testcontainers:1.+")
     testImplementation("org.testcontainers:kafka:1.+")
@@ -76,6 +83,32 @@ jib {
             username = "keymaster65"
             password = System.getenv("DOCKER_HUB_PASSWORD")
         }
+    }
+    container {
+        workingDirectory = "/app"
+        user = "games"
+    }
+    extraDirectories {
+        paths {
+            path {
+                setFrom(project.projectDir.toPath().resolve("build").resolve("reports").resolve("dependency-license"))
+                into = "/app/resources/license"
+            }
+            path {
+                setFrom(project.projectDir.toPath().resolve("src").resolve("main").resolve("jib").resolve("app"))
+                excludes.set( listOf("**/.gitkeep"))
+                into = "/app"
+            }
+            path {
+                setFrom(project.projectDir.toPath().resolve("src").resolve("main").resolve("jib").resolve("home"))
+                excludes.set( listOf("**/.gitkeep"))
+                into = "/usr/games"
+            }
+        }
+        permissions.set(mapOf(
+            "/usr/games/.config" to "777",
+            "/app/.copper" to "777"
+        ))
     }
 }
 

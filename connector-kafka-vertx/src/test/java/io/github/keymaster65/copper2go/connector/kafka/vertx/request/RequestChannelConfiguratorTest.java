@@ -98,6 +98,6 @@ class RequestChannelConfiguratorTest {
                         RequestChannelConfigurator.createKafkaProducer(emptyMap)
                 )
                 .isInstanceOf(ConfigException.class)
-                .hasMessage("Missing required configuration \"key.serializer\" which has no default value.");
+                .hasMessage("Invalid value null for configuration key.serializer: must be non-null.");
     }
 }

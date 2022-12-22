@@ -21,8 +21,8 @@ import io.github.keymaster65.copper2go.api.workflow.EventChannelStore;
 import io.github.keymaster65.copper2go.api.workflow.RequestChannelStore;
 import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
 import io.github.keymaster65.copper2go.engine.ReplyChannelStoreImpl;
-import io.github.keymaster65.copper2go.engine.vanilla.workflow.WorkflowFactoryImpl;
 import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.Workflow;
+import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.WorkflowFactory;
 import net.jqwik.api.Example;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
@@ -51,15 +51,15 @@ class PayloadReceiverImplTest {
         final PayloadReceiverImpl payloadReceiver = new PayloadReceiverImpl(
                 engine,
                 workflowStore,
-                new WorkflowFactoryImpl(engine)
+                Mockito.mock(WorkflowFactory.class)
         );
 
         payloadReceiver.receive(
                 PAYLOAD,
                 Map.of(),
                 Mockito.mock(ReplyChannel.class),
-                "Hello",
-                2,
+                "Any",
+                0,
                 0
         );
 
@@ -72,10 +72,14 @@ class PayloadReceiverImplTest {
     void receiveForUnknownWorkflow() {
         final VanillaEngineImpl engine = Mockito.mock(VanillaEngineImpl.class);
         @SuppressWarnings("unchecked") final FutureStore<Workflow> mock = Mockito.mock(FutureStore.class);
+        final WorkflowFactory workflowFactory = Mockito.mock(WorkflowFactory.class);
+        Mockito
+                .when(workflowFactory.of("Unknown", 0L, 0L))
+                .thenThrow(new IllegalArgumentException("Test"));
         final PayloadReceiverImpl payloadReceiver = new PayloadReceiverImpl(
                 engine,
                 mock,
-                new WorkflowFactoryImpl(engine)
+                workflowFactory
         );
 
         Assertions.assertThatCode(() ->
@@ -84,7 +88,7 @@ class PayloadReceiverImplTest {
                                 Map.of(),
                                 Mockito.mock(ReplyChannel.class),
                                 "Unknown",
-                                2,
+                                0,
                                 0
                         )
                 )
@@ -108,7 +112,7 @@ class PayloadReceiverImplTest {
         final PayloadReceiverImpl payloadReceiver = new PayloadReceiverImpl(
                 engine,
                 workflowStore,
-                new WorkflowFactoryImpl(engine)
+                Mockito.mock(WorkflowFactory.class)
         );
         final ReplyChannel replyChannel = Mockito.mock(ReplyChannel.class);
         final Map<String, String> attributes = Map.of();
@@ -138,7 +142,7 @@ class PayloadReceiverImplTest {
         final PayloadReceiverImpl payloadReceiver = new PayloadReceiverImpl(
                 engine,
                 workflowStore,
-                new WorkflowFactoryImpl(engine)
+                Mockito.mock(WorkflowFactory.class)
         );
         final Map<String, String> attributes = Map.of();
 

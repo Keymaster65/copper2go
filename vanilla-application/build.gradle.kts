@@ -1,6 +1,10 @@
+pitest {
+    targetClasses.set(setOf<String>("io.github.keymaster65.copper2go.vanilla.application.*"))
+}
+
 plugins {
     application
-    id("com.google.cloud.tools.jib") version "3.3.0"
+    id("com.google.cloud.tools.jib") version "3.3.1"
 }
 
 var copper2goVersion = "vanilla-0.0.1"
@@ -61,6 +65,14 @@ jib {
         auth {
             username = "keymaster65"
             password = System.getenv("DOCKER_HUB_PASSWORD")
+        }
+    }
+    extraDirectories {
+        paths {
+            path {
+                setFrom(project.projectDir.toPath().resolve("build").resolve("reports").resolve("dependency-license"))
+                into = "/app/resources/license"
+            }
         }
     }
 }

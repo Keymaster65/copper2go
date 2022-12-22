@@ -80,6 +80,8 @@ public final class WorkflowData implements Serializable {
     }
 
     /**
+     * Gets the initial workflow data payload.
+     *
      * @return the initial workflow data payload
      */
     public String getPayload() {

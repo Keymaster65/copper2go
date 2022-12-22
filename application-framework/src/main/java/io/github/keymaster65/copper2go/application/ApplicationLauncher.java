@@ -15,7 +15,6 @@
  */
 package io.github.keymaster65.copper2go.application;
 
-import io.github.keymaster65.copper2go.api.connector.EngineException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +31,7 @@ public class ApplicationLauncher {
         this.application = application;
     }
 
-    public void start() throws EngineException {
+    public void start() throws ApplicationException {
         try {
             log.info("Start of application.");
             application.start();
@@ -51,9 +50,9 @@ public class ApplicationLauncher {
 
     /**
      * @return true, if started application was stopped
-     * @throws EngineException in case of exception while stopping the application
+     * @throws ApplicationException in case of exception while stopping the application
      */
-    public boolean stop() throws EngineException {
+    public boolean stop() throws ApplicationException {
         log.info("Stopping Main.");
         if (started.get()) {
             application.stop();

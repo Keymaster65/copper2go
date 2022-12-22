@@ -16,5 +16,5 @@
 package io.github.keymaster65.copper2go.application;
 
 public interface ApplicationFactory {
-    Application create();
+    Application create() throws ApplicationException;
 }

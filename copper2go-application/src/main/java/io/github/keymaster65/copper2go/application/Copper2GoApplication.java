@@ -53,24 +53,28 @@ public class Copper2GoApplication implements Application {
     }
 
     @Override
-    public synchronized void start() throws EngineException {
+    public synchronized void start() throws ApplicationException {
         log.info("start application");
-        //noinspection resource
-        copper2GoEngine.engineControl().start();
+        try {
+            //noinspection resource
+            copper2GoEngine.engineControl().start();
+        } catch (EngineException e) {
+            throw new ApplicationException("Exception while starting application", e);
+        }
         httpServer.start();
         for (Map.Entry<String, KafkaReceiver> entry : kafkaReceiverMap.entrySet()) {
             entry.getValue().start();
         }
     }
 
-    public synchronized void startWithStdInOut() throws EngineException, StandardInOutException {
+    public synchronized void startWithStdInOut() throws ApplicationException, StandardInOutException {
         start();
         final var standardInOutReceiver = new StandardInOutReceiver(new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8)));
         standardInOutReceiver.listenLocalStream(copper2GoEngine.payloadReceiver());
     }
 
     @Override
-    public synchronized void stop() throws EngineException {
+    public synchronized void stop() throws ApplicationException {
         log.info("stop application");
         stopRequested.set(true);
         try {
@@ -82,8 +86,12 @@ public class Copper2GoApplication implements Application {
             entry.getValue().close();
         }
         defaultRequestChannelStore.close();
-        //noinspection resource
-        copper2GoEngine.engineControl().stop();
+        try {
+            //noinspection resource
+            copper2GoEngine.engineControl().stop();
+        } catch (EngineException e) {
+            throw new ApplicationException("Exception while starting application", e);
+        }
     }
 
     @Override

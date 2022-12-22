@@ -13,27 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.engine.vanilla.workflow;
+package io.github.keymaster65.copper2go.vanilla.workflow;
 
+import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
 import io.github.keymaster65.copper2go.engine.vanilla.engineapi.VanillaEngine;
 import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.Workflow;
-import io.github.keymaster65.copper2go.engine.vanilla.workflowapi.WorkflowFactory;
 
-public class WorkflowFactoryImpl implements WorkflowFactory {
+public class Pricing1 implements Workflow {
 
     private final VanillaEngine vanillaEngine;
 
-    public WorkflowFactoryImpl (final VanillaEngine vanillaEngine) {
+    public Pricing1(
+            final VanillaEngine vanillaEngine
+    ) {
         this.vanillaEngine = vanillaEngine;
     }
 
     @Override
-    public Workflow of(final String workflow, final long major, final long minor) {
-        final String versionedWorkflow = "%s.%d.%d".formatted(workflow, major, minor);
-        return switch (versionedWorkflow) {
-            case "Hello.2.0" -> new Hello2(vanillaEngine);
-            case "Pricing.1.0" -> new Pricing1(vanillaEngine);
-            default -> throw new IllegalArgumentException("Unknown workflow %s.".formatted(versionedWorkflow));
-        };
+    public void main(final WorkflowData workflowData) {
+        final String uuid = workflowData.getUUID();
+        if (uuid != null) {
+            vanillaEngine.reply(uuid, "5 cent.");
+        }
     }
+
 }

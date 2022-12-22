@@ -15,14 +15,15 @@
  */
 package io.github.keymaster65.copper2go.connector.http.vertx.receiver;
 
-import com.google.common.io.CharStreams;
 import io.vertx.core.http.HttpServerResponse;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class LicenseHandler {
 
@@ -40,10 +41,14 @@ public class LicenseHandler {
                 path = LICENSE_PATH + uri;
             }
 
-            try (Reader reader = new InputStreamReader(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream(path)), StandardCharsets.UTF_8)) {
+            try (final InputStream inputStream = Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream(path))) {
+                final String resource
+                        = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                        .lines()
+                        .collect(Collectors.joining("\n"));
                 response
                         .setStatusCode(HttpURLConnection.HTTP_OK)
-                        .end(CharStreams.toString(reader));
+                        .end(resource);
             }
         } catch (Exception e) {
             response

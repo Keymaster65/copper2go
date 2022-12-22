@@ -23,7 +23,8 @@ class Copper2GoApplicationFactoryTest {
 
     @Test
     void create() {
-        Assertions.assertThatCode(() -> Copper2GoApplicationFactory.create(Config.createDefault()))
-                .doesNotThrowAnyException();
+        Assertions.assertThatCode(
+                () -> new Copper2GoApplicationFactory(Config.createDefault()).create()
+        ).doesNotThrowAnyException();
     }
 }

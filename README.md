@@ -6,7 +6,21 @@
 
 [![Build](https://github.com/Keymaster65/copper2go/actions/workflows/build.yml/badge.svg)](https://github.com/Keymaster65/copper2go/actions/workflows/build.yml)
 [![CodeQL](https://github.com/Keymaster65/copper2go/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Keymaster65/copper2go/actions/workflows/codeql-analysis.yml)
+
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Keymaster65_copper2go)
+
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=alert_status)](https://sonarcloud.io/dashboard?id=Keymaster65_copper2go)
+
+![Sonar Lift Status](https://lift.sonatype.com/api/badge/github.com/Keymaster65/copper2go)
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api)
 [![GitHub release](https://img.shields.io/github/release/Keymaster65/copper2go)](https://GitHub.com/Keymaster65/copper2go/releases/)
@@ -276,12 +290,15 @@ Issues are very welcome, too.
 
 #### Release Tasks
 1) Optional: `gradle dependencyUpdates`
-1) Optional: `gradle dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies  :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks`
-1) Optional: `gradle dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies  :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks --refresh-dependencies`
-1) `gradle clean build -x systemTest`
+1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks`
+1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks --refresh-dependencies`
 1) `gradle dependencyCheckAggregate`
-1) `gradle :copper2go-app:jib`
+1) `gradle clean build`
+1) `gradle clean integrationTest`
+1) `gradle :copper2go-application:build :copper2go-application:jib`
 1) `gradle systemTest`
+1) Optional: `gradle :vanilla-application:build :vanilla-application:jib`
+1) Optional: `gradle :sync-application:build :sync-application:jib`
 
 #### master
 
@@ -290,6 +307,7 @@ Issues are very welcome, too.
 
 #### newest version branch
 
+1) Update README version in master and push
 1) release master
 1) checkout version branch
 1) merge master to version branch
@@ -297,8 +315,6 @@ Issues are very welcome, too.
 1) execute "Release Tasks"
 1) push version branch
 1) "Draft a new release on github" on version branch (look at older releases for details)
-1) Update README version in master and push
-1) Merge master to version branch
 
 ### Links
 
@@ -314,36 +330,37 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-#### "slf4j-api alpha6" Workflow API 3.2.0
+#### "slf4j-api and jackson-databind" Workflow API 3.2.0
 
-* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.0
-* [x] Update jackson-databind from 13.2.2 to 2.13.
+* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.6
+* [x] Update jackson-databind from 2.13.2.2 to 2.14.1
 
 ## Planning
 
-### "Binding" Release Application API 4.3
+### "Operator" Release Application API 4.4
+
+* [ ] configure thread pool size, client pool size and more
+* [ ] JMX usage in Container
+* [ ] Add some performance analysis
+* [ ] Support of COPPER core GUI
+
+### "Binding" Release Application API 4.5
 
 * [ ] Workflow with Json binding
 * [ ] Workflow with XML binding (may be not ;-)
 * [ ] Split copper2go-workflows
 * [ ] Add new Workflow Repository for Performancetest
 
-### "State Pattern" Release Application API 4.4
+### "State Pattern" Release Application API 4.6
 
-* [ ] Spike: Workflow using State Pattern or other defined strategy
-
-### "Operator" Release Application API 4.5
-
-* [ ] configure thread pool size, client pool size and more
-* [ ] Support of COPPER core GUI
-* [ ] JMX usage in Container
+* [ ] Spike: Workflow using State Pattern or other defined strategy in copper2go-engine
 
 ### Backlog
 
-* Implement loom-engine
+* Add new Repository Performancetest
 * Remove version 2 of HTTP Receiver API
 * Finish support kafka events
-* Add new Repository Performancetest
+* Support faster startup (may be graal, may be crac)
 * Replace vertx HTTP components with simpler implementation
 * Replace vertx Kafka components with simpler implementation
 * STDIN/OUT support in config and container (or remove it)
@@ -381,6 +398,16 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Withdrawn: Vertx Bus Connector
 
 ## Released
+
+### "Loom" Release Application API 4.3.0
+
+* [x] Add pitest support (https://pitest.org/)
+* [x] Add a sync-engine and application with blocking code
+* [x] Run sync-application on JDK 19 with Loom enabled
+* [x] Security updates
+* [x] Additional updates
+* [x] Add licenses to sync-application
+* [x] Do not use root as user to run copper2go
 
 ### "Vanilla" Release Application API 4.2
 
