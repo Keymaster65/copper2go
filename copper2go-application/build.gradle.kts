@@ -7,7 +7,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.3.1"
 }
 
-var copper2goVersion = "4.2.0"
+var copper2goVersion = "4.3.0"
 
 tasks.withType<Test> {
     jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,17,-source,17")
