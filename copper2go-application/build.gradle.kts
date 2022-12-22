@@ -84,13 +84,31 @@ jib {
             password = System.getenv("DOCKER_HUB_PASSWORD")
         }
     }
+    container {
+        workingDirectory = "/app"
+        user = "games"
+    }
     extraDirectories {
         paths {
             path {
                 setFrom(project.projectDir.toPath().resolve("build").resolve("reports").resolve("dependency-license"))
                 into = "/app/resources/license"
             }
+            path {
+                setFrom(project.projectDir.toPath().resolve("src").resolve("main").resolve("jib").resolve("app"))
+                excludes.set( listOf("**/.gitkeep"))
+                into = "/app"
+            }
+            path {
+                setFrom(project.projectDir.toPath().resolve("src").resolve("main").resolve("jib").resolve("home"))
+                excludes.set( listOf("**/.gitkeep"))
+                into = "/usr/games"
+            }
         }
+        permissions.set(mapOf(
+            "/usr/games/.config" to "777",
+            "/app/.copper" to "777"
+        ))
     }
 }
 
