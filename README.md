@@ -311,7 +311,7 @@ Issues are very welcome, too.
 1) release master
 1) checkout version branch
 1) merge master to version branch
-1) update version for jib (in copper2go-appliction/build.gradle.kts)
+1) update and commit version for jib (in copper2go-appliction/build.gradle.kts)
 1) execute "Release Tasks"
 1) push version branch
 1) "Draft a new release on github" on version branch (look at older releases for details)

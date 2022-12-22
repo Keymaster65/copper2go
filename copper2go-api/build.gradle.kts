@@ -2,7 +2,7 @@ pitest {
     targetClasses.set(setOf<String>("io.github.keymaster65.copper2go.api.*"))
 }
 
-version = "3.1.0"
+version = "3.2.0"
 
 plugins {
     `maven-publish`

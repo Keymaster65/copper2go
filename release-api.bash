@@ -1,5 +1,10 @@
-# 1) publishToMavenLocal 
-# 2) Enter passphrase for CA-Key (Kleopatra)
+# 1) Create artifact
+# 1.1) Update version in copper2go-api/build.gradle.kts and this file
+# 1.2) publishToMavenLocal
+# 1.3) Commit and push to master
+# 2) Signing
+# 2.1) Start this script
+# 2.2) Enter passphrase for CA-Key (Kleopatra)
 # 3) Upload at https://oss.sonatype.org/#nexus-search;quick~copper2go
 # 3.1) Login as keymaster65 with Password sonartype
 # 3.2) Select "Staging Upload" or https://oss.sonatype.org/#staging-upload
@@ -16,7 +21,7 @@
 # 5.2) git push origin v3.2.0-api -f
  
 
-v=3.1.1
+v=3.2.0
 mkdir $v
 cd $v
 cp ~/.m2/repository/io/github/keymaster65/copper2go-api/$v/*.* .
