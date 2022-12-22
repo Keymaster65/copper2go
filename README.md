@@ -307,6 +307,7 @@ Issues are very welcome, too.
 
 #### newest version branch
 
+1) Update README version in master and push
 1) release master
 1) checkout version branch
 1) merge master to version branch
@@ -314,8 +315,6 @@ Issues are very welcome, too.
 1) execute "Release Tasks"
 1) push version branch
 1) "Draft a new release on github" on version branch (look at older releases for details)
-1) Update README version in master and push
-1) Merge master to version branch
 
 ### Links
 
@@ -331,15 +330,6 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "Loom" Release Application API 4.3
-
-* [x] Add pitest support (https://pitest.org/)
-* [x] Add a sync-engine and application with blocking code
-* [x] Run sync-application on JDK 19
-* [x] Security updates
-* [x] Additional updates
-* [x] Add licenses to sync-application
-
 #### "slf4j-api and jackson-databind" Workflow API 3.2.0
 
 * [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.6
@@ -350,8 +340,9 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### "Operator" Release Application API 4.4
 
 * [ ] configure thread pool size, client pool size and more
-* [ ] Support of COPPER core GUI
 * [ ] JMX usage in Container
+* [ ] Add some performance analysis
+* [ ] Support of COPPER core GUI
 
 ### "Binding" Release Application API 4.5
 
@@ -366,10 +357,10 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ### Backlog
 
-* Support native executable for sync-application (may be graal?)
+* Add new Repository Performancetest
 * Remove version 2 of HTTP Receiver API
 * Finish support kafka events
-* Add new Repository Performancetest
+* Support faster startup (may be graal, may be crac)
 * Replace vertx HTTP components with simpler implementation
 * Replace vertx Kafka components with simpler implementation
 * STDIN/OUT support in config and container (or remove it)
@@ -407,6 +398,16 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Withdrawn: Vertx Bus Connector
 
 ## Released
+
+### "Loom" Release Application API 4.3.0copper2goVersion 4.2.0
+
+* [x] Add pitest support (https://pitest.org/)
+* [x] Add a sync-engine and application with blocking code
+* [x] Run sync-application on JDK 19 with Loom enabled
+* [x] Security updates
+* [x] Additional updates
+* [x] Add licenses to sync-application
+* [x] Do not use root as user to run copper2go
 
 ### "Vanilla" Release Application API 4.2
 
