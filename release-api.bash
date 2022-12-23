@@ -1,4 +1,5 @@
 # 1) Create artifact
+# 1.1) Update release info and move from "ongoing" to "Released"
 # 1.1) Update version in copper2go-api/build.gradle.kts and this file
 # 1.2) publishToMavenLocal
 # 1.3) Commit and push to master
