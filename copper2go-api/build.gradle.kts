@@ -2,6 +2,7 @@ pitest {
     targetClasses.set(setOf<String>("io.github.keymaster65.copper2go.api.*"))
 }
 
+group = "io.github.keymaster65"
 version = "3.2.0"
 
 plugins {
