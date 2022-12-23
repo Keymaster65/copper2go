@@ -330,19 +330,14 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-#### "slf4j-api and jackson-databind" Workflow API 3.2.0
-
-* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.6
-* [x] Update jackson-databind from 2.13.2.2 to 2.14.1
-
-## Planning
-
 ### "Operator" Release Application API 4.4
 
 * [ ] configure thread pool size, client pool size and more
 * [ ] JMX usage in Container
 * [ ] Add some performance analysis
-* [ ] Support of COPPER core GUI
+* [ ] May be: Support of COPPER core GUI
+
+## Planning
 
 ### "Binding" Release Application API 4.5
 
@@ -398,6 +393,11 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Withdrawn: Vertx Bus Connector
 
 ## Released
+
+#### "slf4j-api and jackson-databind" Workflow API 3.2.0
+
+* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.6
+* [x] Update jackson-databind from 2.13.2.2 to 2.14.1
 
 ### "Loom" Release Application API 4.3.0
 
