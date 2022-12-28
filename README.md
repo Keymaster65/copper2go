@@ -49,7 +49,7 @@ in  https://github.com/Keymaster65/copper2go-workflows.
 [![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
 
 * Start container
-    * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.2.0`
+    * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.3.0`
 * In Browser you can see the used licenses
     * `http://localhost:59665/`
     * `http://localhost:59665/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name must be
@@ -69,7 +69,7 @@ You want to develop your own workflows? You may start with the existing ones.
         * store it in your local docker host `config.json`
         * Typically, modify workflowGitURI location
 * Start Container with your configuration:
-    * `docker run -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.2.0`
+    * `docker run -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.3.0`
 
 ## More Motivation
 
@@ -285,7 +285,7 @@ Issues are very welcome, too.
 ### Releasing and Maintenance
 
 * The master branch is maintained and released as "latest" image.
-* The newest version branch is maintained and released as a tagged image for example "4.2.0"
+* The newest version branch is maintained and released as a tagged image for example "4.3.0"
 * The newest Workflow API is maintained
 
 #### Release Tasks
