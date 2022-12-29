@@ -50,8 +50,6 @@ in  https://github.com/Keymaster65/copper2go-workflows.
 
 * Start container
     * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.3.0`
-* Start container with JMX on port 19665 (host.docker.internal works for windows)
-    * `docker run -d -e JAVA_TOOL_OPTIONS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=19665 -Dcom.sun.management.jmxremote.rmi.port=19665 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=host.docker.internal" -p 19665:19665 -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.3.0`
 * In Browser you can see the used licenses
     * `http://localhost:59665/`
     * `http://localhost:59665/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name must be
@@ -72,6 +70,19 @@ You want to develop your own workflows? You may start with the existing ones.
         * Typically, modify workflowGitURI location
 * Start Container with your configuration:
     * `docker run -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.3.0`
+
+### Starting with JMX and copper-monitoring Web Application
+
+`host.docker.internal` works for windows.
+
+* Start container with JMX on port 19665
+  * `docker run -d -e JAVA_TOOL_OPTIONS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=19665 -Dcom.sun.management.jmxremote.rmi.port=19665 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=host.docker.internal" -p 19665:19665 -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.3.0`
+  * Now you can visit the copper MBeas in tools like visualVM, JConsole etc.
+* Start the copper-monitoring Web Application on port 29665 using same JMX port
+  * `docker run -e JMX_HOST="host.docker.internal" -e JMX_PORT="19665" --name copperGui --rm -p 29665:8080 -d copperengine/copper-monitoring`
+  * Login with admin/admin at http://localhost:29665
+  * Submit this setting and the TransientEngine should be visible
+  * More Details can be found here https://github.com/copper-engine/copper-monitoring
 
 ## More Motivation
 
@@ -152,6 +163,7 @@ to become more familiar with COPPER, that you might visit
 * https://copper-engine.org/docs/content/COPPER-WorkflowCompatibilityRules-1.2.0-en.pdf
 * https://copper-engine.org/docs/unsorted/
 * https://github.com/copper-engine
+* https://github.com/copper-engine/copper-monitoring
 * https://copper-engine.org/
 
 ### copper2go Details
@@ -293,10 +305,8 @@ Issues are very welcome, too.
 #### Release Tasks
 
 1) Optional: `gradle dependencyUpdates`
-1)
-Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks`
-1)
-Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks --refresh-dependencies`
+1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks`
+1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks --refresh-dependencies`
 1) `gradle dependencyCheckAggregate`
 1) `gradle clean build`
 1) `gradle clean integrationTest`
@@ -338,9 +348,9 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### "Operator" Release Application API 4.4
 
 * [x] JMX usage in Container
+* [x] Support of COPPER core GUI
 * [ ] configure thread pool size, client pool size and more
 * [ ] Add some performance analysis
-* [ ] May be: Support of COPPER core GUI
 
 ## Planning
 
