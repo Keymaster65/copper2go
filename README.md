@@ -50,6 +50,8 @@ in  https://github.com/Keymaster65/copper2go-workflows.
 
 * Start container
     * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.3.0`
+* Start container with JMX on port 19665 (host.docker.internal works for windows)
+    * `docker run -d -e JAVA_TOOL_OPTIONS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=19665 -Dcom.sun.management.jmxremote.rmi.port=19665 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=host.docker.internal" -p 19665:19665 -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.3.0`
 * In Browser you can see the used licenses
     * `http://localhost:59665/`
     * `http://localhost:59665/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name must be
@@ -289,9 +291,12 @@ Issues are very welcome, too.
 * The newest Workflow API is maintained
 
 #### Release Tasks
+
 1) Optional: `gradle dependencyUpdates`
-1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks`
-1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks --refresh-dependencies`
+1)
+Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks`
+1)
+Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks --refresh-dependencies`
 1) `gradle dependencyCheckAggregate`
 1) `gradle clean build`
 1) `gradle clean integrationTest`
@@ -332,8 +337,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ### "Operator" Release Application API 4.4
 
+* [x] JMX usage in Container
 * [ ] configure thread pool size, client pool size and more
-* [ ] JMX usage in Container
 * [ ] Add some performance analysis
 * [ ] May be: Support of COPPER core GUI
 
@@ -368,12 +373,12 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * HTTP Security
 * Kafka Security
 * Add information "How Tos" to developer's guide
-      * Overview
-      * Request Channel Stores
-      * Event Channel Stores
-      * Configuration Reply Channel Store
-      * Tickets
-      * Workflow Development/Test
+  * Overview
+  * Request Channel Stores
+  * Event Channel Stores
+  * Configuration Reply Channel Store
+  * Tickets
+  * Workflow Development/Test
 * Load workflow subtree only from git
 * Use vanilla-engine without a github fork
 * Extend connectors without a github fork
