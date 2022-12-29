@@ -7,7 +7,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.3.1"
 }
 
-var copper2goVersion = "latest"
+var copper2goVersion = "tmp"
 
 tasks.withType<Test> {
     jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,17,-source,17")
@@ -61,17 +61,6 @@ distributions {
 }
 
 jib {
-    container {
-        mainClass = "io.github.keymaster65.copper2go.Main"
-        jvmFlags = listOf(
-            "-XX:+UseContainerSupport",
-            "-Dfile.encoding=UTF-8",
-            "-Duser.country=DE",
-            "-Duser.language=de",
-            "-Duser.timezone=Europe/Berlin"
-        )
-        workingDirectory = "/"
-    }
     from {
         // Has no bash, needed for testcontainers
         // image = "azul/zulu-openjdk-alpine:17.0.0"
@@ -85,6 +74,14 @@ jib {
         }
     }
     container {
+        mainClass = "io.github.keymaster65.copper2go.Main"
+        jvmFlags = listOf(
+            "-XX:+UseContainerSupport",
+            "-Dfile.encoding=UTF-8",
+            "-Duser.country=DE",
+            "-Duser.language=de",
+            "-Duser.timezone=Europe/Berlin",
+        )
         workingDirectory = "/app"
         user = "games"
     }
@@ -96,19 +93,21 @@ jib {
             }
             path {
                 setFrom(project.projectDir.toPath().resolve("src").resolve("main").resolve("jib").resolve("app"))
-                excludes.set( listOf("**/.gitkeep"))
+                excludes.set(listOf("**/.gitkeep"))
                 into = "/app"
             }
             path {
                 setFrom(project.projectDir.toPath().resolve("src").resolve("main").resolve("jib").resolve("home"))
-                excludes.set( listOf("**/.gitkeep"))
+                excludes.set(listOf("**/.gitkeep"))
                 into = "/usr/games"
             }
         }
-        permissions.set(mapOf(
-            "/usr/games/.config" to "777",
-            "/app/.copper" to "777"
-        ))
+        permissions.set(
+            mapOf(
+                "/usr/games/.config" to "777",
+                "/app/.copper" to "777"
+            )
+        )
     }
 }
 
