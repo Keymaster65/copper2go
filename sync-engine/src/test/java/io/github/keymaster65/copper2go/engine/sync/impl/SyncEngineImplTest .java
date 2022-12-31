@@ -57,6 +57,7 @@ class SyncEngineImplTest {
         Assertions.assertThat(responseString).isEqualTo(responseBody);
     }
 
+    @SuppressWarnings("unused")
     @Provide
     Arbitrary<Exception> exceptions()  {
         return Arbitraries.of(
@@ -73,16 +74,22 @@ class SyncEngineImplTest {
         Mockito.when(builder.POST(Mockito.any())).thenReturn(builder);
         final HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.when(httpClient.send(Mockito.any(), Mockito.any())).thenThrow(exception);
+
+
         syncEngineImpl.addRequestChannel(
                 "",
                 httpClient,
                 builder
         );
 
+
         Assertions
                 .assertThatCode(() -> syncEngineImpl.request("", "requestPayload"))
                 .isInstanceOf(EngineException.class)
                 .hasCauseReference(exception);
+        Assertions
+                .assertThat(Thread.currentThread().isInterrupted())
+                .isEqualTo(exception instanceof InterruptedException);
     }
 
 }

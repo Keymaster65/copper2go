@@ -49,8 +49,10 @@ public class SyncEngineImpl implements SyncEngine {
         HttpResponse<String> response;
         try {
             response = channel.httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            throw new EngineException("Exception while requesting.", e);
+        } catch (IOException e) {
             throw new EngineException("Exception while requesting.", e);
         }
 
