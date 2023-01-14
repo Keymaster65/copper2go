@@ -23,14 +23,14 @@
     <xs:include schemaLocation="Element.xsd"/>
     <xs:include schemaLocation="ElementRefs.xsd"/>
 
-    <xs:complexType name="deploymentElements">
+    <xs:complexType name="DeploymentElements">
         <xs:complexContent>
             <xs:extension base="Element">
                 <xs:sequence>
                     <xs:sequence>
                         <xs:element name="node" type="Node" minOccurs="0" maxOccurs="unbounded"/>
-                        <xs:element name="folder" type="deploymentElements" minOccurs="0" maxOccurs="unbounded"/>
-                        <xs:element name="uses" type="elementRefs" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="folder" type="DeploymentElements" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="uses" type="ElementRefs" minOccurs="0" maxOccurs="unbounded"/>
                     </xs:sequence>
                 </xs:sequence>
             </xs:extension>
@@ -39,7 +39,7 @@
 
     <xs:complexType name="Node">
         <xs:complexContent>
-            <xs:extension base="deploymentElements">
+            <xs:extension base="DeploymentElements">
                 <xs:attribute name="applicationRef" type="xs:IDREF"/>
             </xs:extension>
         </xs:complexContent>

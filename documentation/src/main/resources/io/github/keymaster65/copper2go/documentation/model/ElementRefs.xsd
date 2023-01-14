@@ -22,7 +22,7 @@
 >
     <xs:include schemaLocation="Element.xsd"/>
 
-    <xs:complexType name="elementRefs">
+    <xs:complexType name="ElementRefs">
         <xs:attribute name="ref" type="xs:IDREF" use="required"/>
         <xs:attribute name="as">
             <xs:simpleType>
