@@ -15,32 +15,33 @@
  * limitations under the License.
 -->
 <architecture xmlns="http://keymaster65.github.io/architecture">
-    <!-- TODO: add deployment -->
-    <nodes>
-        <node name="docker_container">
-            <!--              title="TODO show this"-->
-            <node name="copper2go_app">
-                <node name="DEFAULT_processorPool">
-                    <node name="Hello2_process1"
-                          href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Hello2.java"/>
-                    <node name="Pricing_process1"
-                          href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Pricing.java"/>
-                    <node name="Hello2_process2"
-                          href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Hello2.java"/>
-                    <node name="Pricing_process2"
-                          href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Pricing.java"/>
-                    <node name="Hello_process"
-                          href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Hello.java"/>
+    <deployment>
+        <nodes>
+            <node name="docker_container">
+                <!--              title="TODO show this"-->
+                <node name="copper2go_app">
+                    <node name="DEFAULT_processorPool">
+                        <node name="Hello2_process1"
+                              href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Hello2.java"/>
+                        <node name="Pricing_process1"
+                              href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Pricing.java"/>
+                        <node name="Hello2_process2"
+                              href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Hello2.java"/>
+                        <node name="Pricing_process2"
+                              href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Pricing.java"/>
+                        <node name="Hello_process"
+                              href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Hello.java"/>
+                    </node>
+                    <uses ref="copper2go_workflows"
+                          as="consumer"/>
                 </node>
-                <uses ref="copper2go_workflows"
-                      as="consumer"/>
             </node>
-        </node>
-        <node name="github">
-            <folder name="copper2go_workflows"
-                    href="https://github.com/Keymaster65/copper2go-workflows/tree/master/src/workflow/java/de/wolfsvl/copper2go/workflow"/>
-        </node>
-    </nodes>
+            <node name="github">
+                <folder name="copper2go_workflows"
+                        href="https://github.com/Keymaster65/copper2go-workflows/tree/master/src/workflow/java/de/wolfsvl/copper2go/workflow"/>
+            </node>
+        </nodes>
+    </deployment>
 
     <applications>
         <application name="copper2go"

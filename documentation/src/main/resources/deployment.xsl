@@ -65,6 +65,10 @@
 
     </xsl:template>
 
+    <xsl:template match="a:*">
+        <xsl:apply-templates/>
+    </xsl:template>
+
     <xsl:template match="node()"/>
 
 </xsl:transform>
