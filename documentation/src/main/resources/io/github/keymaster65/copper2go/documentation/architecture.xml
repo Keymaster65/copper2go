@@ -36,7 +36,7 @@
                           as="consumer"/>
                 </node>
             </node>
-            <node name="github">
+            <node name="github" applicationRef="gitub">
                 <folder name="copper2go_workflows"
                         href="https://github.com/Keymaster65/copper2go-workflows/tree/master/src/workflow/java/de/wolfsvl/copper2go/workflow"/>
             </node>
