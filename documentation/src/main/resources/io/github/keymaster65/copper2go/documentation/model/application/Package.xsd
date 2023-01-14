@@ -20,7 +20,7 @@
         targetNamespace="http://keymaster65.github.io/architecture"
         elementFormDefault="qualified"
 >
-    <xs:include schemaLocation="Element.xsd"/>
+    <xs:include schemaLocation="../Element.xsd"/>
 
     <xs:complexType name="Package">
         <xs:complexContent>
