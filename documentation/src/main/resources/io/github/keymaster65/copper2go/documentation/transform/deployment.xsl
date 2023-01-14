@@ -57,6 +57,18 @@
         </xsl:if>
     </xsl:template>
 
+    <xsl:template match="a:processorPool|a:process">
+        <xsl:text>&#xA;node </xsl:text>
+        <xsl:value-of select="@name"/>
+        <xsl:if test="@href">
+            <xsl:value-of select="concat(' [[', @href, ']]')"/>
+        </xsl:if>
+        <xsl:if test="a:process">
+            <xsl:text> {</xsl:text>
+            <xsl:apply-templates select="a:process"/>
+            <xsl:text>&#xA;}</xsl:text>
+        </xsl:if>
+    </xsl:template>
 
     <xsl:template match="a:architecture">
         <xsl:apply-templates/>
