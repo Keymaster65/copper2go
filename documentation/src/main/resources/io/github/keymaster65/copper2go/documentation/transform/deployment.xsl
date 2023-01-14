@@ -23,7 +23,7 @@
 
     <xsl:template match="/">
         <xsl:text>@startuml</xsl:text>
-        <xsl:apply-templates/>
+        <xsl:apply-templates select="a:architecture/a:deployment"/>
         <xsl:text>&#xa;@enduml</xsl:text>
     </xsl:template>
 
@@ -32,7 +32,7 @@
         <xsl:apply-templates mode="uses" select="//a:uses"/>
     </xsl:template>
 
-    <xsl:template match="a:node|a:folder">
+    <xsl:template match="a:node">
         <xsl:text>&#xA;</xsl:text>
         <xsl:value-of select="local-name()"/>
         <xsl:text> </xsl:text>
@@ -40,12 +40,23 @@
         <xsl:if test="@href">
             <xsl:value-of select="concat(' [[', @href, ']]')"/>
         </xsl:if>
-        <xsl:if test="a:node|a:folder">
+        <xsl:if test="a:node|@applicationRef">
             <xsl:text> {</xsl:text>
-            <xsl:apply-templates/>
+            <xsl:variable name="applicationRef" select="@applicationRef"/>
+            <xsl:apply-templates select="/a:architecture/a:applications/a:application[@name=$applicationRef]"/>
+            <xsl:apply-templates select="a:node"/>
             <xsl:text>&#xA;}</xsl:text>
         </xsl:if>
     </xsl:template>
+
+    <xsl:template match="a:package">
+        <xsl:text>&#xA;folder </xsl:text>
+        <xsl:value-of select="@name"/>
+        <xsl:if test="@href">
+            <xsl:value-of select="concat(' [[', @href, ']]')"/>
+        </xsl:if>
+    </xsl:template>
+
 
     <xsl:template match="a:architecture">
         <xsl:apply-templates/>

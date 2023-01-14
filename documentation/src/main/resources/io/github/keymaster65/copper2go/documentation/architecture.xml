@@ -36,10 +36,7 @@
                           as="consumer"/>
                 </node>
             </node>
-            <node name="github" applicationRef="gitub">
-                <folder name="copper2go_workflows"
-                        href="https://github.com/Keymaster65/copper2go-workflows/tree/master/src/workflow/java/de/wolfsvl/copper2go/workflow"/>
-            </node>
+            <node name="githubApp" applicationRef="github"/>
         </nodes>
     </deployment>
 
@@ -61,11 +58,10 @@
             </processorPools>
         </application>
 
-        <application name="gitub"
+        <application name="github"
                      href="https://github.com/Keymaster65/copper2go-workflows/tree/master/src/workflow/java/de/wolfsvl/copper2go/workflow">
             <packages>
-                <!-- TODO: 2 will be removed -->
-                <package name="copper2go_workflows2"
+                <package name="copper2go_workflows"
                          href="https://github.com/Keymaster65/copper2go-workflows/tree/master/src/workflow/java/de/wolfsvl/copper2go/workflow"/>
             </packages>
 

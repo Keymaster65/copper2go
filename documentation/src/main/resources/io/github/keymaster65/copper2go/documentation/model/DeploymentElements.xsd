@@ -29,7 +29,6 @@
                 <xs:sequence>
                     <xs:sequence>
                         <xs:element name="node" type="Node" minOccurs="0" maxOccurs="unbounded"/>
-                        <xs:element name="folder" type="DeploymentElements" minOccurs="0" maxOccurs="unbounded"/>
                         <xs:element name="uses" type="ElementRefs" minOccurs="0" maxOccurs="unbounded"/>
                     </xs:sequence>
                 </xs:sequence>
