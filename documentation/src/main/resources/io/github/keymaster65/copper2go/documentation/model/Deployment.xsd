@@ -20,13 +20,18 @@
         targetNamespace="http://keymaster65.github.io/architecture"
         elementFormDefault="qualified"
 >
-    <xs:include schemaLocation="../Element.xsd"/>
+    <xs:include schemaLocation="DeploymentElements.xsd"/>
 
-    <xs:complexType name="Process">
-        <xs:complexContent>
-            <xs:extension base="Element"/>
-        </xs:complexContent>
+    <xs:complexType name="Deployment">
+        <xs:sequence>
+            <xs:element name="nodes">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="node" type="deploymentElements" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
     </xs:complexType>
-
 
 </xs:schema>

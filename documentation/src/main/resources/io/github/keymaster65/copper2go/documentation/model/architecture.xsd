@@ -20,8 +20,8 @@
         targetNamespace="http://keymaster65.github.io/architecture"
         elementFormDefault="qualified"
 >
-    <xs:include schemaLocation="application/Application.xsd"/>
-    <xs:include schemaLocation="deployment/Deployment.xsd"/>
+    <xs:include schemaLocation="Application.xsd"/>
+    <xs:include schemaLocation="Deployment.xsd"/>
 
     <xs:element name="architecture">
         <xs:complexType>
