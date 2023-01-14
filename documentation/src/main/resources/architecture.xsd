@@ -20,40 +20,30 @@
         targetNamespace="http://keymaster65.github.io/architecture"
         elementFormDefault="qualified"
 >
+    <xs:include schemaLocation="Application.xsd"/>
+    <xs:include schemaLocation="DeploymentElements.xsd"/>
+
     <xs:element name="architecture">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="nodes">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="node" type="elements" maxOccurs="unbounded"/>
+                            <xs:element name="node" type="deploymentElements" maxOccurs="unbounded"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
+
+                <xs:element name="applications">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="application" type="Application" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
-    <xs:complexType name="elements">
-        <xs:sequence>
-            <xs:sequence>
-                <xs:element name="folder" type="elements" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="node" type="elements" minOccurs="0"  maxOccurs="unbounded"/>
-                <xs:element name="uses" type="elementRefs" minOccurs="0"  maxOccurs="unbounded"/>
-            </xs:sequence>
-        </xs:sequence>
-        <xs:attribute name="name" type="xs:ID" use="required"/>
-    </xs:complexType>
-
-    <xs:complexType name="elementRefs">
-        <xs:attribute name="ref" type="xs:IDREF" use="required"/>
-        <xs:attribute name="as">
-            <xs:simpleType>
-                <xs:restriction base="xs:string">
-                    <xs:enumeration value="consumer" />
-                    <xs:enumeration value="user" />
-                </xs:restriction>
-            </xs:simpleType>
-        </xs:attribute>
-    </xs:complexType>
 </xs:schema>

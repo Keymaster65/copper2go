@@ -37,6 +37,9 @@
         <xsl:value-of select="local-name()"/>
         <xsl:text> </xsl:text>
         <xsl:value-of select="@name"/>
+        <xsl:if test="@href">
+            <xsl:value-of select="concat(' [[', @href, ']]')"/>
+        </xsl:if>
         <xsl:if test="a:node|a:folder">
             <xsl:text> {</xsl:text>
             <xsl:apply-templates/>
@@ -51,11 +54,13 @@
     <xsl:template match="a:uses" mode="uses">
         <xsl:text>&#xA;</xsl:text>
         <xsl:value-of select="../@name"/>
+        <xsl:text> </xsl:text>
         <xsl:choose>
-            <xsl:when test="@as='consumer'"> ..(0 </xsl:when>
-            <xsl:when test="@as='user'"> ..^ </xsl:when>
-            <xsl:otherwise> .. </xsl:otherwise>
+            <xsl:when test="@as='consumer'">..(0</xsl:when>
+            <xsl:when test="@as='user'">..^</xsl:when>
+            <xsl:otherwise>..</xsl:otherwise>
         </xsl:choose>
+        <xsl:text> </xsl:text>
         <xsl:value-of select="@ref"/>
 
     </xsl:template>
