@@ -28,10 +28,11 @@
         <xs:complexContent>
             <xs:extension base="Element">
                 <xs:sequence>
+                    <xs:element name="process" type="Process" minOccurs="0" maxOccurs="unbounded"/>
                     <xs:element name="processorPools" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element name="processorPool" type="ProcessorPool"/>
+                                <xs:element name="processorPool" type="ProcessorPool" maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>

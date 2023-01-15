@@ -20,6 +20,8 @@
         version="3.0"
 >
     <xsl:output method="text"/>
+    <xsl:param name="level">1</xsl:param>
+    <xsl:param name="hiddenApplications"></xsl:param>
 
     <xsl:template match="/">
         <xsl:text>@startuml</xsl:text>
@@ -32,7 +34,7 @@
         <xsl:apply-templates mode="uses" select="//a:uses"/>
     </xsl:template>
 
-    <xsl:template match="a:node">
+    <xsl:template match="a:node[not(contains($hiddenApplications, descendant-or-self::a:node/@applicationRef))]">
         <xsl:text>&#xA;</xsl:text>
         <xsl:value-of select="local-name()"/>
         <xsl:text> </xsl:text>
@@ -41,9 +43,10 @@
             <xsl:value-of select="concat(' [[', @href, ']]')"/>
         </xsl:if>
         <xsl:if test="a:node|@applicationRef">
-            <xsl:text> {</xsl:text>
             <xsl:variable name="applicationRef" select="@applicationRef"/>
-            <xsl:apply-templates select="/a:architecture/a:applications/a:application[@name=$applicationRef]"/>
+            <xsl:variable name="application" select="/a:architecture/a:applications/a:application[@name=$applicationRef]"/>
+            <xsl:text> {</xsl:text>
+            <xsl:apply-templates select="$application"/>
             <xsl:apply-templates select="a:node"/>
             <xsl:text>&#xA;}</xsl:text>
         </xsl:if>
@@ -57,17 +60,30 @@
         </xsl:if>
     </xsl:template>
 
-    <xsl:template match="a:processorPool|a:process">
+    <xsl:template match="a:processorPool[$level>1]|a:process[$level>1]">
         <xsl:text>&#xA;node </xsl:text>
         <xsl:value-of select="@name"/>
         <xsl:if test="@href">
             <xsl:value-of select="concat(' [[', @href, ']]')"/>
         </xsl:if>
-        <xsl:if test="a:process">
-            <xsl:text> {</xsl:text>
-            <xsl:apply-templates select="a:process"/>
-            <xsl:text>&#xA;}</xsl:text>
+        <xsl:choose>
+            <xsl:when test="a:process">
+                <xsl:text> {</xsl:text>
+                <xsl:apply-templates select="a:process"/>
+                <xsl:text>&#xA;}</xsl:text>
+                <xsl:apply-templates select="*[local-name() != 'process']"/>
+            </xsl:when>
+            <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="a:application[$level>1]">
+        <xsl:text>&#xA;node </xsl:text>
+        <xsl:value-of select="@name"/>
+        <xsl:if test="@href">
+            <xsl:value-of select="concat(' [[', @href, ']]')"/>
         </xsl:if>
+        <xsl:apply-templates/>
     </xsl:template>
 
     <xsl:template match="a:architecture">
@@ -88,10 +104,14 @@
 
     </xsl:template>
 
-    <xsl:template match="a:*">
+    <xsl:template match="a:deployment">
         <xsl:apply-templates/>
     </xsl:template>
 
+    <xsl:template match="a:*">
+        <xsl:apply-templates/>
+<!--                <xsl:text>XXX </xsl:text><xsl:value-of select="name()"/>-->
+    </xsl:template>
     <xsl:template match="node()"/>
 
 </xsl:transform>
