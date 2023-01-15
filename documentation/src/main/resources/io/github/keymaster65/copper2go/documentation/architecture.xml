@@ -25,6 +25,8 @@
                 >
                     <uses ref="copper2go_workflows"
                           as="consumer"/>
+                    <uses ref="pricingServer"
+                          as="consumer"/>
                 </node>
             </node>
             <node name="githubServer"
@@ -32,6 +34,8 @@
                   href="https://www.plantuml.com/plantuml/svg/RS-n3e9030RW_PxYHXUfCT712MSVWH1pSWNKWpQz0Z76TrT3F1RNzl-I_y-ZEj6X2wOdZxQvQZjSZipsQMeA7iLMn8ooRUWyaTphG5EqHT6gSZm0p22hg8CJFZeN5MM_WuJM2O4A8im9Y5B1xmCtDphm-3c4EevXmIbIbkPbbYAEsMRPQlElcycnzzyzRm00"
             >
             </node>
+            <node name="pricingServer"
+                  applicationRef="pricing"/>
         </nodes>
     </deployment>
 
@@ -48,13 +52,20 @@
                                level="2"
                                href="https://github.com/copper-engine/copper-engine/blob/master/projects/copper-coreengine/src/main/java/org/copperengine/core/tranzient/TransientPriorityProcessorPool.java">
                     <process name="Hello2Instance"
+                             level="3"
                              href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Hello2.java"/>
-                    <process name="PricingInstance"
-                             href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Pricing.java"/>
                     <process name="HelloInstance"
+                             level="3"
                              href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Hello.java"/>
                 </processorPool>
             </processorPools>
+            <components>
+                <component name="copper.jar"
+                           level="3"
+                           href="https://github.com/copper-engine/copper-engine/blob/master/projects/copper-coreengine/src"/>
+                <component name="connectors"
+                           level="3"/>
+            </components>
         </application>
 
         <application name="github"
@@ -66,7 +77,7 @@
                     <package name="Hello2"
                              level="3"
                              href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Hello2.java"/>
-                    <package name="Pricing"
+                    <package name="PricingSimulation"
                              level="3"
                              href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Pricing.java"/>
                     <package name="Hello"
@@ -77,6 +88,7 @@
             </packages>
 
         </application>
+        <application name="pricing"/>
 
     </applications>
 </architecture>
