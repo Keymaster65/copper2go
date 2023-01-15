@@ -1,6 +1,6 @@
 = copper2go technical documentation (DRAFT)
 
-[plantuml,format=svg]
+[plantuml,format=svg,options="interactive"]
 ....
 include::../../../src/main/resources/deployment.plantuml[]
 ....
