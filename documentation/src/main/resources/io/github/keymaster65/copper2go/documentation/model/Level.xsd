@@ -20,25 +20,14 @@
         targetNamespace="http://keymaster65.github.io/architecture"
         elementFormDefault="qualified"
 >
-    <xs:include schemaLocation="Element.xsd"/>
-    <xs:include schemaLocation="ElementRefs.xsd"/>
 
-    <xs:complexType name="DeploymentElements">
-        <xs:complexContent>
-            <xs:extension base="Element">
-                <xs:sequence>
-                    <xs:element name="node" type="Node" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element name="uses" type="ElementRefs" minOccurs="0" maxOccurs="unbounded"/>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
+    <xs:simpleType name="Level">
+        <xs:restriction base="xs:int">
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
+        </xs:restriction>
+    </xs:simpleType>
 
-    <xs:complexType name="Node">
-        <xs:complexContent>
-            <xs:extension base="DeploymentElements">
-                <xs:attribute name="applicationRef" type="xs:IDREF"/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
 </xs:schema>

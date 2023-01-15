@@ -23,6 +23,7 @@
     <xs:include schemaLocation="Application.xsd"/>
     <xs:include schemaLocation="Deployment.xsd"/>
 
+
     <xs:element name="architecture">
         <xs:complexType>
             <xs:sequence>

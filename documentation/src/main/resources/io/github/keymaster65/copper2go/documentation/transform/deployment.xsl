@@ -34,7 +34,7 @@
         <xsl:apply-templates mode="uses" select="//a:uses"/>
     </xsl:template>
 
-    <xsl:template match="a:node[not(contains($hiddenApplications, descendant-or-self::a:node/@applicationRef))]">
+    <xsl:template match="a:node[not(descendant-or-self::a:node/@applicationRef) or not(contains($hiddenApplications, descendant-or-self::a:node/@applicationRef))]">
         <xsl:text>&#xA;</xsl:text>
         <xsl:value-of select="local-name()"/>
         <xsl:text> </xsl:text>
@@ -52,15 +52,20 @@
         </xsl:if>
     </xsl:template>
 
-    <xsl:template match="a:package">
-        <xsl:text>&#xA;folder </xsl:text>
+    <xsl:template match="a:package[not(@level) or @level = '' or $level>=@level]">
+        <xsl:text>&#xA;package </xsl:text>
         <xsl:value-of select="@name"/>
         <xsl:if test="@href">
             <xsl:value-of select="concat(' [[', @href, ']]')"/>
         </xsl:if>
+        <xsl:if test="a:*">
+            <xsl:text> {</xsl:text>
+            <xsl:apply-templates/>
+            <xsl:text>&#xA;}</xsl:text>
+        </xsl:if>
     </xsl:template>
 
-    <xsl:template match="a:processorPool[$level>1]|a:process[$level>1]">
+    <xsl:template match="a:processorPool[not(@level) or @level = '' or $level>=@level]|a:process[not(@level) or @level = '' or $level>=@level]">
         <xsl:text>&#xA;node </xsl:text>
         <xsl:value-of select="@name"/>
         <xsl:if test="@href">
@@ -77,13 +82,15 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="a:application[$level>1]">
+    <xsl:template match="a:application[not(@level) or @level = '' or $level>=@level]">
         <xsl:text>&#xA;node </xsl:text>
         <xsl:value-of select="@name"/>
         <xsl:if test="@href">
             <xsl:value-of select="concat(' [[', @href, ']]')"/>
         </xsl:if>
+        <xsl:text> {</xsl:text>
         <xsl:apply-templates/>
+        <xsl:text>&#xA;}</xsl:text>
     </xsl:template>
 
     <xsl:template match="a:architecture">
@@ -100,8 +107,8 @@
             <xsl:otherwise>..</xsl:otherwise>
         </xsl:choose>
         <xsl:text> </xsl:text>
-        <xsl:value-of select="@ref"/>
-
+        <xsl:variable name="ref" select="@ref"/>
+        <xsl:value-of select="//*[@name=$ref]/ancestor-or-self::*[@name and (not(@level) or @level = '' or $level>=@level)][1]/@name"/>
     </xsl:template>
 
     <xsl:template match="a:deployment">
@@ -110,7 +117,6 @@
 
     <xsl:template match="a:*">
         <xsl:apply-templates/>
-<!--                <xsl:text>XXX </xsl:text><xsl:value-of select="name()"/>-->
     </xsl:template>
     <xsl:template match="node()"/>
 

@@ -24,7 +24,7 @@
 
     <xs:complexType name="ProcessorPool">
         <xs:complexContent>
-            <xs:extension base="Element">
+            <xs:extension base="ApplicationElement">
                 <xs:sequence>
                     <xs:element name="process" type="Process" maxOccurs="unbounded"/>
                 </xs:sequence>

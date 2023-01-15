@@ -21,24 +21,14 @@
         elementFormDefault="qualified"
 >
     <xs:include schemaLocation="Element.xsd"/>
-    <xs:include schemaLocation="ElementRefs.xsd"/>
+    <xs:include schemaLocation="Level.xsd"/>
 
-    <xs:complexType name="DeploymentElements">
+    <xs:complexType name="ApplicationElement">
         <xs:complexContent>
             <xs:extension base="Element">
-                <xs:sequence>
-                    <xs:element name="node" type="Node" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element name="uses" type="ElementRefs" minOccurs="0" maxOccurs="unbounded"/>
-                </xs:sequence>
+                <xs:attribute name="level" type="Level"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:complexType name="Node">
-        <xs:complexContent>
-            <xs:extension base="DeploymentElements">
-                <xs:attribute name="applicationRef" type="xs:IDREF"/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
 </xs:schema>

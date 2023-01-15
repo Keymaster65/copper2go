@@ -17,9 +17,9 @@
 <architecture xmlns="http://keymaster65.github.io/architecture">
     <deployment>
         <nodes>
-            <node name="docker_container">
+            <node name="docker">
                 <!--              title="TODO show this"-->
-                <node name="copper2go_app"
+                <node name="copper2goPod"
                       applicationRef="copper2go"
                       href="https://www.plantuml.com/plantuml/svg/nPDFZzCm4CNl-obwvD8uIHCtGK8iue-Gu52XvRIgggapIRrrFT7O-wSWlZlEEgrIs3Ee5tlyEk_tCffhvu7z_S5SMMfmrf3Q8syKMG_Q8iz-nhgYlaVEEzf0t_zLdDtUxhpltMiXTlVR93P951s4WIEo4tiy7i1vP5cAyx_2eqVdXJv0Xqwu7UIbd1SBLIxAT04DgBBDwrfbZP9vBMMMje1PqUGIbrLLoMLMBsK9HP5L1TIoBTCAY_Jjm8vF_Wq-zOOOr-i8sm5lWyzxCWQL9uvLnfwS3jVZDpG43Oxr3ny_lVl-zMRJCobqZdX5P2OnE-s7f27Yc6UEjjCM_xXj3Mr5J2v2gxlWx4uIHOoZpB4AAct57Jo08Ev6pRade_0CzeT6wyLDEBdXj69DhFrnDOLCXXxhzMb6dz4Oobyc__BILEQFnFlMqAExe1yGJoyHiy5GCArxC9EHdYNHTuI9A05NQTlzUvRH-0BccUy_VPOJoA_dt-Lg9SchTB9jPzUhQxHDMDFV"
                 >
@@ -27,11 +27,11 @@
                           as="consumer"/>
                 </node>
             </node>
-            <node name="githubApp"
+            <node name="githubServer"
                   applicationRef="github"
                   href="https://www.plantuml.com/plantuml/svg/RS-n3e9030RW_PxYHXUfCT712MSVWH1pSWNKWpQz0Z76TrT3F1RNzl-I_y-ZEj6X2wOdZxQvQZjSZipsQMeA7iLMn8ooRUWyaTphG5EqHT6gSZm0p22hg8CJFZeN5MM_WuJM2O4A8im9Y5B1xmCtDphm-3c4EevXmIbIbkPbbYAEsMRPQlElcycnzzyzRm00"
-            />
-
+            >
+            </node>
         </nodes>
     </deployment>
 
@@ -39,16 +39,19 @@
         <application name="copper2go"
                      registry="docker pull keymaster65/copper2go"
                      href="https://hub.docker.com/layers/keymaster65/copper2go/latest/images/sha256-43c53503adac5f299c1dc6296610fae14d26e78886719765a44184a96f508e40?context=explore">
-            <process name="garbageCollector"/>
-            <process name="repositoryReloader"/>
+            <process name="garbageCollector"
+                     level="2"/>
+            <process name="repositoryReloader"
+                     level="2"/>
             <processorPools>
                 <processorPool name="DEFAULT_processorPool"
+                               level="2"
                                href="https://github.com/copper-engine/copper-engine/blob/master/projects/copper-coreengine/src/main/java/org/copperengine/core/tranzient/TransientPriorityProcessorPool.java">
-                    <process name="Hello2"
+                    <process name="Hello2Instance"
                              href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Hello2.java"/>
-                    <process name="Pricing"
+                    <process name="PricingInstance"
                              href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Pricing.java"/>
-                    <process name="Hello"
+                    <process name="HelloInstance"
                              href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Hello.java"/>
                 </processorPool>
             </processorPools>
@@ -58,7 +61,19 @@
                      href="https://github.com">
             <packages>
                 <package name="copper2go_workflows"
-                         href="https://github.com/Keymaster65/copper2go-workflows/tree/master/src/workflow/java/de/wolfsvl/copper2go/workflow"/>
+                         level="2"
+                         href="https://github.com/Keymaster65/copper2go-workflows/tree/master/src/workflow/java/de/wolfsvl/copper2go/workflow">
+                    <package name="Hello2"
+                             level="3"
+                             href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Hello2.java"/>
+                    <package name="Pricing"
+                             level="3"
+                             href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Pricing.java"/>
+                    <package name="Hello"
+                             level="3"
+                             href="https://github.com/Keymaster65/copper2go-workflows/blob/master/src/workflow/java/de/wolfsvl/copper2go/workflow/Hello.java"/>
+
+                </package>
             </packages>
 
         </application>
