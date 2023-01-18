@@ -167,7 +167,7 @@ allprojects {
             implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.kafka:kafka-clients:3.3.1")
+            implementation("org.apache.kafka:kafka-clients:3.3.2")
 
             implementation("com.google.guava:guava:31.1-jre") {
                 because("Security scan found 23.4-jre. Needed for assertj and copper.")
