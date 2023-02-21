@@ -13,7 +13,7 @@ plugins {
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
     id("org.owasp.dependencycheck") version "7.4.4"
-    id("com.github.ben-manes.versions") version "0.44.0"
+    id("com.github.ben-manes.versions") version "0.46.0"
     id("info.solidsoft.pitest") version "1.9.11"
 }
 
