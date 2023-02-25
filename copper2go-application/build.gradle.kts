@@ -36,8 +36,8 @@ dependencies {
         // due to license issue and I guess I currently do not need it
         exclude("io.netty", "netty-tcnative-classes")
     }
-    implementation("io.vertx:vertx-core:4.3.7")
-    implementation("io.vertx:vertx-kafka-client:4.3.7")
+    implementation("io.vertx:vertx-core:4.3.8")
+    implementation("io.vertx:vertx-kafka-client:4.3.8")
 
     testImplementation("org.testcontainers:testcontainers:1.+")
     testImplementation("org.testcontainers:kafka:1.+")
@@ -62,9 +62,11 @@ distributions {
 
 jib {
     from {
-        // Has no bash, needed for testcontainers
-        // image = "azul/zulu-openjdk-alpine:17.0.0"
-        image = "openjdk:17-jdk"
+        image = "azul/zulu-openjdk-alpine:17.0.4.1-17.36.17-x86"
+        auth {
+            username = "keymaster65"
+            password = System.getenv("DOCKER_HUB_PASSWORD")
+        }
     }
     to {
         image = "registry.hub.docker.com/keymaster65/copper2go:" + copper2goVersion
