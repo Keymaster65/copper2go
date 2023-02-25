@@ -7,7 +7,7 @@ plugins {
     distribution
     `maven-publish`
     jacoco
-    id("org.sonarqube") version "3.5.0.2730"
+    id("org.sonarqube") version "4.0.0.2929"
     id("com.github.jk1.dependency-license-report") version "2.1"
     id("com.google.cloud.tools.jib") version "3.3.1" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
@@ -167,7 +167,7 @@ allprojects {
             implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.kafka:kafka-clients:3.3.1")
+            implementation("org.apache.kafka:kafka-clients:3.4.0")
 
             implementation("com.google.guava:guava:31.1-jre") {
                 because("Security scan found 23.4-jre. Needed for assertj and copper.")
