@@ -58,7 +58,7 @@ class RequestChannelConfiguratorTest {
 
         Mockito.verify(responseReceiver).receiveError(
                 Mockito.eq(RESPONSE_CORRELATION_ID),
-                Mockito.startsWith("Failed to resolve 'httpHost' after")
+                Mockito.startsWith("Failed to resolve 'httpHost'")
         );
     }
 
