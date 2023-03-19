@@ -28,14 +28,18 @@ public class Main {
 
     // tested in system
     public static void main(String[] args) throws Exception {
-        try (final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()) {
+        final ExecutorService theExecutorService = Executors.newVirtualThreadPerTaskExecutor();
+        // TODO: Add MBean https://examples.javacodegeeks.com/java-development/enterprise-java/jmx/create-and-register-mbean-in-mbeanserver/
+//        final ExecutorService theExecutorService = Executors.newFixedThreadPool(200);
+        try (final ExecutorService executorService = theExecutorService) {
             new ApplicationLauncher(
                     new SyncApplicationFactory(
                             HttpServer.create(new InetSocketAddress(59665), 0),
                             new SyncEngineImpl(),
                             executorService,
-                            new URI("http://localhost:59665/copper2go/3/api/twoway/1.0/Pricing") // NOSONAR
-                    ).create()).start();
+                            new URI("http://host.docker.internal:39665/copper2go/3/api/twoway/1.0/Pricing") // NOSONAR
+                    ).create()
+            ).start();
         }
     }
 

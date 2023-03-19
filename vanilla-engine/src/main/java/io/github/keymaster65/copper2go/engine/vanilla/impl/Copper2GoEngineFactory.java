@@ -39,7 +39,7 @@ public class Copper2GoEngineFactory {
                 replyChannelStoreImpl,
                 requestChannelStore,
                 eventChannelStore,
-                Executors.newFixedThreadPool(10),
+                Executors.newFixedThreadPool(16),
                 continuationStore,
                 expectedResponsesStore
         );

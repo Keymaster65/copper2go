@@ -7,7 +7,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.3.1"
 }
 
-var copper2goVersion = "sync-0.0.1"
+var copper2goVersion = "sync-tmp"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_19
@@ -21,6 +21,8 @@ tasks.jar {
 dependencies {
     implementation(project(":application-framework"))
     implementation(project(":sync-engine"))
+    implementation("io.dropwizard.metrics:metrics-core:4.2.15")
+    implementation("io.dropwizard.metrics:metrics-jmx:4.2.15")
 }
 
 tasks.withType<JavaCompile> {

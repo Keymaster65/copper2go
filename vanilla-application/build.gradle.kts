@@ -7,7 +7,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.3.1"
 }
 
-var copper2goVersion = "vanilla-0.0.1"
+var copper2goVersion = "vanilla-tmp"
 
 tasks.jar {
     dependsOn(tasks.findByName("checkLicense"))
@@ -29,7 +29,10 @@ dependencies {
 application {
     mainClass.set("io.github.keymaster65.copper2go.vanilla.application.Main")
     applicationDefaultJvmArgs = listOf(
-        "-Dlogback.configurationFile=src/main/resources/logback.xml"
+        "-Dlogback.configurationFile=src/main/resources/logback.xml",
+        "-Dcom.sun.management.jmxremote.port=10084",
+        "-Dcom.sun.management.jmxremote.authenticate=false",
+        "-Dcom.sun.management.jmxremote.ssl=false"
     )
 }
 

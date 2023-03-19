@@ -18,7 +18,9 @@ package io.github.keymaster65.copper2go.connector.http.vertx.receiver;
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import io.vertx.core.http.Http2Settings;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.http.HttpServerRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +39,14 @@ public class VertxHttpServer implements Copper2GoHttpServer {
     }
 
     public VertxHttpServer(final int port, final Vertx vertx, final Handler<HttpServerRequest> handler) {
-        this(port, vertx, vertx.createHttpServer(), handler);
+        this(port,
+                vertx,
+                vertx.createHttpServer(
+                        new HttpServerOptions()
+                                .setInitialSettings(new Http2Settings().setMaxConcurrentStreams(10000))
+                ),
+                handler
+        );
     }
 
     VertxHttpServer(final int port, final Vertx vertx, final HttpServer httpServer, final Handler<HttpServerRequest> handler) {

@@ -46,7 +46,11 @@ dependencies {
 application {
     mainClass.set("io.github.keymaster65.copper2go.Main")
     applicationDefaultJvmArgs = listOf(
-        "-Dlogback.configurationFile=src/main/resources/logback.xml"
+        "-Dlogback.configurationFile=src/main/resources/logback.xml",
+        "-Dorg.copperengine.workflow.compiler.options=-target,17,-source,17",
+        "-Dcom.sun.management.jmxremote.port=10083",
+        "-Dcom.sun.management.jmxremote.authenticate=false",
+        "-Dcom.sun.management.jmxremote.ssl=false"
     )
 }
 

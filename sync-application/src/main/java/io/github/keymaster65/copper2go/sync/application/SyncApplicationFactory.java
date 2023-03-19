@@ -68,7 +68,13 @@ public class SyncApplicationFactory implements ApplicationFactory {
     @Override
     public Application create()  {
         httpServer.setExecutor(executorService);
-        syncEngine.addRequestChannel("", HttpClient.newBuilder().build(), HttpRequest.newBuilder().uri(uri));
+        syncEngine.addRequestChannel(
+                "",
+                HttpClient.newBuilder()
+                        .version(HttpClient.Version.HTTP_2)
+                        .build(),
+                HttpRequest.newBuilder().uri(uri)
+        );
         httpServer.createContext("/", syncHandler);
         return new SyncApplication(httpServer);
     }

@@ -21,9 +21,11 @@ import io.github.keymaster65.copper2go.connector.http.HttpMethod;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpVersion;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
+import io.vertx.ext.web.client.WebClientOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +57,17 @@ public class VertxHttpClient implements Copper2GoHttpClient {
             final ResponseReceiver responseReceiver,
             final Vertx vertx
     ) {
-        this(host, port, uri, responseReceiver, Vertx.vertx(), WebClient.create(vertx));
+        this(
+                host,
+                port,
+                uri,
+                responseReceiver,
+                Vertx.vertx(),
+                WebClient.create(
+                        vertx,
+                        new WebClientOptions().setProtocolVersion(HttpVersion.HTTP_2).setHttp2MaxPoolSize(10000)
+                )
+        );
     }
 
     public VertxHttpClient(
