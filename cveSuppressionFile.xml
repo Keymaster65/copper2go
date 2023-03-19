@@ -3,6 +3,11 @@
     <suppress until="2023-05-01">
         <notes>jackson-core-2.14.2.jar</notes>
         <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-core@.*$</packageUrl>
-        <cve>CVE-2022-45688</cve><!-- no fixed version or may be false positiv -->
+        <vulnerabilityName>CVE-2022-45688</vulnerabilityName><!-- no fixed version or may be false positiv -->
+    </suppress>
+    <suppress>
+        <notes>guava-31.1-jre.jar seems to be a false positiv</notes>
+        <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@31\..*$</packageUrl>
+        <vulnerabilityName>CVE-2020-8908</vulnerabilityName><!-- no fixed version or may be false positiv -->
     </suppress>
 </suppressions>
