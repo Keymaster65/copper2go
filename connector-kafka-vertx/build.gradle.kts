@@ -13,7 +13,7 @@ dependencies {
 
     implementation("io.vertx:vertx-core:4.3.+")
     implementation("io.vertx:vertx-web:4.3.+")
-    implementation("io.vertx:vertx-kafka-client:4.3.+")
+    implementation("io.vertx:vertx-kafka-client:4.4.+")
 
     testImplementation("org.testcontainers:kafka:1.+")
 }
