@@ -309,10 +309,12 @@ Issues are very welcome, too.
 1) `gradle dependencyCheckAggregate`
 1) `gradle clean build`
 1) `gradle clean integrationTest`
+1) Change copper2goVersion to "latest"
 1) `gradle :copper2go-application:build :copper2go-application:jib`
 1) `gradle systemTest`
 1) Optional: `gradle :vanilla-application:build :vanilla-application:jib`
 1) Optional: `gradle :sync-application:build :sync-application:jib`
+1) docker scan keymaster65/copper2go:latest
 
 #### master
 
