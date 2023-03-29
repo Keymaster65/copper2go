@@ -12,6 +12,6 @@ dependencies {
     }
 
     implementation("io.vertx:vertx-core:4.4.0")
-    implementation("io.vertx:vertx-web:4.4.0")
-    implementation("io.vertx:vertx-web-client:4.4.0")
+    implementation("io.vertx:vertx-web:4.4.1")
+    implementation("io.vertx:vertx-web-client:4.4.1")
 }
