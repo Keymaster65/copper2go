@@ -38,6 +38,7 @@ public class PricingServer implements AutoCloseable {
     public static final Duration DEFAULT_DELAY = Duration.ofSeconds(10);
     public static final String HELP_OPTION = "-h";
     private static final Logger log = LoggerFactory.getLogger(PricingServer.class);
+    public static final Duration DEFAULT_TIME_TO_LIVE = Duration.ofMillis(0);
     private final MetricRegistry metricRegistry = new MetricRegistry();
     private final Timer timer = metricRegistry.timer("responses");
     private JmxReporter reporter;
@@ -48,10 +49,14 @@ public class PricingServer implements AutoCloseable {
         if (args.length > 0 && args[0].equals(HELP_OPTION)) {
             throw new HelpException("Usage: Main [-h|[DELAY_MILLIS[HTTP_PORT]]");
         }
-        return start(
+        final PricingServer pricingServer = start(
                 getDelay(args),
                 getPort(args)
         );
+        final Duration timeToLive = getTimeToLive(args);
+        log.info("Serving for {}.", timeToLive);
+        LockSupport.parkNanos(timeToLive.toNanos());
+        return pricingServer;
     }
 
     public synchronized PricingServer start(
@@ -67,7 +72,7 @@ public class PricingServer implements AutoCloseable {
                 executorService,
                 delay
         );
-        httpServer.start();
+        Thread.ofVirtual().start(httpServer::start);
         return this;
     }
 
@@ -78,16 +83,23 @@ public class PricingServer implements AutoCloseable {
         httpServer.stop(0);
     }
 
-    Duration getDelay(final String[] args) {
+    Duration getTimeToLive(final String[] args) {
         if (args.length > 0) {
-            return Duration.ofMillis(Long.parseLong(args[0]));
+            return Duration.ofDays(Long.parseLong(args[0]));
+        }
+        return DEFAULT_TIME_TO_LIVE;
+    }
+
+    Duration getDelay(final String[] args) {
+        if (args.length > 1) {
+            return Duration.ofMillis(Long.parseLong(args[1]));
         }
         return DEFAULT_DELAY;
     }
 
     int getPort(final String[] args) {
-        if (args.length > 1) {
-            return Integer.parseInt(args[1]);
+        if (args.length > 2) {
+            return Integer.parseInt(args[2]);
         }
         return DEFAULT_HTTP_PORT;
     }

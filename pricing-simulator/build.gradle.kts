@@ -40,19 +40,6 @@ tasks.withType<Test> {
     jvmArgs = listOf("--enable-preview")
 }
 
-tasks.withType<JavaExec> {
-    jvmArgs = listOf("--enable-preview")
-
-}
-
-application {
-    mainClass.set("io.github.keymaster65.copper2go.pricingsimulator.Main")
-    applicationDefaultJvmArgs = listOf(
-        "-Dlogback.configurationFile=src/main/resources/logback.xml",
-        "--enable-preview"
-    )
-}
-
 distributions {
     main {
         contents {

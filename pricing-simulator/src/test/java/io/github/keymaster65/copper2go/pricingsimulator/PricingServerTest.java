@@ -39,7 +39,7 @@ public class PricingServerTest {
             Exception {
         try (final PricingServer ignored =
                      new PricingServer()
-                             .start(new String[]{"0", String.valueOf(PricingServer.DEFAULT_HTTP_PORT)})) {
+                             .start(new String[]{"0", "0", String.valueOf(PricingServer.DEFAULT_HTTP_PORT)})) {
             MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
             final ObjectName objectName = new ObjectName("metrics:type=timers,name=responses");
             final Long countBefore = (Long) mBeanServer.getAttribute(objectName, "Count");
