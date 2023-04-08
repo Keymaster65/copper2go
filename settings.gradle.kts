@@ -17,3 +17,5 @@ include(":connector-kafka-vertx")
 
 include(":sync-engine")
 include(":sync-application")
+
+include(":pricing-simulator")

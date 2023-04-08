@@ -12,7 +12,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.3.1" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.0.0"
-    id("org.owasp.dependencycheck") version "8.1.2"
+    id("org.owasp.dependencycheck") version "8.2.1"
     id("com.github.ben-manes.versions") version "0.46.0"
     id("info.solidsoft.pitest") version "1.9.11"
 }
@@ -144,7 +144,7 @@ allprojects {
         implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
-        testImplementation("net.jqwik:jqwik:1.7.2")
+        testImplementation("net.jqwik:jqwik:1.7.3")
         testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
         testImplementation("org.mockito:mockito-core:5.2.0")
 

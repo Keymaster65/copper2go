@@ -304,8 +304,8 @@ Issues are very welcome, too.
 #### Release Tasks
 
 1) Optional: `gradle dependencyUpdates`
-1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks`
-1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks --refresh-dependencies`
+1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks`
+1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks --refresh-dependencies`
 1) `gradle dependencyCheckAggregate`
 1) `gradle clean build`
 1) `gradle clean integrationTest`
@@ -350,8 +350,14 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 * [x] JMX usage in Container
 * [x] Support of COPPER core GUI
+* [x] Updates
 * [ ] configure thread pool size, client pool size and more
 * [ ] Add some performance analysis
+
+#### "slf4j-api and jackson-databind" Workflow API 3.2.1
+
+* [x] Update slf4j-api from 2.0.6 to 2.0.7
+* [x] Update jackson-databind from 2.14.2 to 2.14.2
 
 ## Planning
 
