@@ -30,14 +30,14 @@ dependencies {
     implementation(project(":connector-kafka-vertx"))
     implementation(project(":connector-standardio"))
 
-    implementation("org.copper-engine:copper-coreengine:5.4.1")
+    implementation("org.copper-engine:copper-coreengine:5.4.2")
 
     configurations.implementation {
         // due to license issue and I guess I currently do not need it
         exclude("io.netty", "netty-tcnative-classes")
     }
-    implementation("io.vertx:vertx-core:4.3.7")
-    implementation("io.vertx:vertx-kafka-client:4.3.7")
+    implementation("io.vertx:vertx-core:4.4.1")
+    implementation("io.vertx:vertx-kafka-client:4.4.1")
 
     testImplementation("org.testcontainers:testcontainers:1.+")
     testImplementation("org.testcontainers:kafka:1.+")

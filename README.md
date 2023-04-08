@@ -349,8 +349,14 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 * [x] JMX usage in Container
 * [x] Support of COPPER core GUI
+* [x] Updates
 * [ ] configure thread pool size, client pool size and more
 * [ ] Add some performance analysis
+
+#### "slf4j-api and jackson-databind" Workflow API 3.2.1
+
+* [x] Update slf4j-api from 2.0.6 to 2.0.7
+* [x] Update jackson-databind from 2.14.2 to 2.14.2
 
 ## Planning
 
