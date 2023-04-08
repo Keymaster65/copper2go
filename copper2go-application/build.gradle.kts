@@ -39,8 +39,8 @@ dependencies {
     implementation("io.vertx:vertx-core:4.4.1")
     implementation("io.vertx:vertx-kafka-client:4.4.1")
 
-    testImplementation("org.testcontainers:testcontainers:1.+")
-    testImplementation("org.testcontainers:kafka:1.+")
+    testImplementation("org.testcontainers:testcontainers:1.17.6")
+    testImplementation("org.testcontainers:kafka:1.17.6")
 }
 
 application {
@@ -62,9 +62,11 @@ distributions {
 
 jib {
     from {
-        // Has no bash, needed for testcontainers
-        // image = "azul/zulu-openjdk-alpine:17.0.0"
-        image = "openjdk:17-jdk"
+        image = "azul/zulu-openjdk-alpine:17.0.4.1-17.36.17-x86"
+        auth {
+            username = "keymaster65"
+            password = System.getenv("DOCKER_HUB_PASSWORD")
+        }
     }
     to {
         image = "registry.hub.docker.com/keymaster65/copper2go:" + copper2goVersion

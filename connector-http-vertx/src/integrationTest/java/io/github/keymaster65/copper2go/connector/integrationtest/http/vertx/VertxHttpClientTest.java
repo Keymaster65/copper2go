@@ -25,6 +25,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -34,8 +36,10 @@ class VertxHttpClientTest {
     public static final int SERVER_PORT = 8023;
     public static final String LOCALHOST = "localhost";
 
+    private static final Logger log = LoggerFactory.getLogger(VertxHttpClientTest.class);
+
     @Test
-    @Timeout(20)
+    @Timeout(5)
     void postGoodCase() throws InterruptedException {
         ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
         Vertx vertx = Vertx.vertx();
@@ -46,15 +50,17 @@ class VertxHttpClientTest {
                 request -> request.handler(buffer -> {
                             final HttpServerResponse response = request.response();
                             response.end(successResponse);
+                            log.info("end response {}.", successResponse);
                             latch.countDown();
                         }
                 ));
         VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, SERVER_PORT, "/", responseReceiver);
         try {
             httpServer.listen(SERVER_PORT);
+            Thread.sleep(3000); // give server time to start
             vertxHttpClient.request(HttpMethod.valueOf("POST"), "Fault test.", CORRELATION_ID);
             latch.await();
-            Thread.sleep(5000); // give client time for async processing
+            Thread.sleep(1000); // give client time for async processing
         } finally {
             httpServer.close();
             vertxHttpClient.close();
