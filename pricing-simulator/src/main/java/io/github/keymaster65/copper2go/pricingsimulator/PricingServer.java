@@ -15,6 +15,7 @@
  */
 package io.github.keymaster65.copper2go.pricingsimulator;
 
+import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import com.codahale.metrics.jmx.JmxReporter;
@@ -29,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.LockSupport;
 
 
@@ -45,9 +47,17 @@ public class PricingServer implements AutoCloseable {
     private ExecutorService executorService;
     private HttpServer httpServer;
 
+    private final AtomicInteger activeRequestCount = new AtomicInteger(0);
+
+    PricingServer() {
+        metricRegistry.register(
+                MetricRegistry.name(PricingServer.class, "activeRequestCount"),
+                (Gauge<Integer> ) activeRequestCount::get
+        );
+    }
     public synchronized PricingServer start(final String[] args) throws IOException {
         if (args.length > 0 && args[0].equals(HELP_OPTION)) {
-            throw new HelpException("Usage: Main [-h|[DELAY_MILLIS[HTTP_PORT]]");
+            throw new HelpException("Usage: Main [-h|[SERVICE_DAYS[DELAY_MILLIS[HTTP_PORT]]]");
         }
         final PricingServer pricingServer = start(
                 getDelay(args),
@@ -115,11 +125,14 @@ public class PricingServer implements AutoCloseable {
                 exchange -> {
                     try (final Timer.Context ignored = timer.time()) {
                         log.info("Received request.");
+                        activeRequestCount.incrementAndGet();
                         LockSupport.parkNanos(delay.toNanos());
                         try (OutputStream responseBody = exchange.getResponseBody()) {
                             final byte[] reponseBytes = "42".getBytes(StandardCharsets.UTF_8);
                             exchange.sendResponseHeaders(200, reponseBytes.length);
                             responseBody.write(reponseBytes);
+                        } finally {
+                            activeRequestCount.decrementAndGet();
                         }
                         log.debug("Sent response.");
                     }

@@ -37,28 +37,43 @@ public class PricingServerTest {
     @Example
     void givenStartedService_whenServiceCalled_thenResponseOk_andMBeanCounts() throws
             Exception {
+        final int testPort = PricingServer.DEFAULT_HTTP_PORT + 1;
         try (final PricingServer ignored =
                      new PricingServer()
-                             .start(new String[]{"0", "0", String.valueOf(PricingServer.DEFAULT_HTTP_PORT)})) {
+                             .start(new String[]{"0", "0", String.valueOf(testPort)})) {
             MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-            final ObjectName objectName = new ObjectName("metrics:type=timers,name=responses");
-            final Long countBefore = (Long) mBeanServer.getAttribute(objectName, "Count");
+            final ObjectName timerName = new ObjectName("metrics:type=timers,name=responses");
+            final Long timerCountBefore = (Long) mBeanServer.getAttribute(timerName, "Count");
 
 
-            Assertions.assertThat(countBefore).isZero();
+            Assertions.assertThat(timerCountBefore).isZero();
+
+
+            final ObjectName gaugeName = new ObjectName("metrics:type=gauges,name=io.github.keymaster65.copper2go.pricingsimulator.PricingServer.activeRequestCount");
+            final Integer gaugeCountBefore = (Integer) mBeanServer.getAttribute(gaugeName, "Number");
+
+
+            Assertions.assertThat(gaugeCountBefore).isZero();
+
 
             final HttpRequest httpRequest =
                     HttpRequest.newBuilder()
                             .timeout(Duration.ofSeconds(50))
                             .version(HttpClient.Version.HTTP_2)
-                            .uri(new URI("http://localhost:" + PricingServer.DEFAULT_HTTP_PORT + "/"))
+                            .uri(new URI("http://localhost:" + testPort + "/"))
                             .POST(HttpRequest.BodyPublishers.ofString("Test"))
                             .build();
             final HttpResponse<String> httpResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
 
-            final Long count = (Long) mBeanServer.getAttribute(objectName, "Count");
-            Assertions.assertThat(count).isOne();
+            final Long timerCountAfter = (Long) mBeanServer.getAttribute(timerName, "Count");
+            Assertions.assertThat(timerCountAfter).isOne();
+
+
+            final Integer gaugeCountAfter = (Integer) mBeanServer.getAttribute(gaugeName, "Number");
+            Assertions.assertThat(gaugeCountAfter).isZero();
+
+
             Assertions.assertThat(httpResponse.statusCode()).isEqualTo(200);
         }
     }
