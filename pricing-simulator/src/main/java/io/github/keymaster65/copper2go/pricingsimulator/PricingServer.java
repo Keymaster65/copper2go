@@ -15,22 +15,15 @@
  */
 package io.github.keymaster65.copper2go.pricingsimulator;
 
-import com.codahale.metrics.Gauge;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
-import com.codahale.metrics.jmx.JmxReporter;
 import com.sun.net.httpserver.HttpServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.LockSupport;
 
 
@@ -41,26 +34,20 @@ public class PricingServer implements AutoCloseable {
     public static final String HELP_OPTION = "-h";
     private static final Logger log = LoggerFactory.getLogger(PricingServer.class);
     public static final Duration DEFAULT_TIME_TO_LIVE = Duration.ofMillis(0);
-    private final MetricRegistry metricRegistry = new MetricRegistry();
-    private final Timer timer = metricRegistry.timer("responses");
-    private JmxReporter reporter;
     private ExecutorService executorService;
     private HttpServer httpServer;
+    private DelayingHandler delayingHandler;
 
-    private final AtomicInteger activeRequestCount = new AtomicInteger(0);
 
-    PricingServer() {
-        metricRegistry.register(
-                MetricRegistry.name(PricingServer.class, "activeRequestCount"),
-                (Gauge<Integer> ) activeRequestCount::get
-        );
-    }
     public synchronized PricingServer start(final String[] args) throws IOException {
         if (args.length > 0 && args[0].equals(HELP_OPTION)) {
-            throw new HelpException("Usage: Main [-h|[SERVICE_DAYS[DELAY_MILLIS[HTTP_PORT]]]");
+            throw new HelpException(
+                    "Usage: Main -h|[SERVICE_DAYS [PARK|SLEEP|WAIT [DELAY_MILLIS [HTTP_PORT]]]]"
+            );
         }
         final PricingServer pricingServer = start(
                 getDelay(args),
+                getDelayMode(args),
                 getPort(args)
         );
         final Duration timeToLive = getTimeToLive(args);
@@ -71,28 +58,38 @@ public class PricingServer implements AutoCloseable {
 
     public synchronized PricingServer start(
             final Duration delay,
+            final DelayerFactory.Mode delayMode,
             final int port
     ) throws IOException {
-        reporter = JmxReporter.forRegistry(metricRegistry).build();
-        reporter.start();
-
         executorService = Executors.newVirtualThreadPerTaskExecutor();
+        delayingHandler = new DelayingHandler(delayMode, delay);
         httpServer = createHttpServer(
                 port,
                 executorService,
-                delay
+                delayingHandler
         );
         Thread.ofVirtual().start(httpServer::start);
+        delayingHandler.start();
         return this;
+    }
+
+    private static HttpServer createHttpServer(
+            final int port,
+            final ExecutorService executorService,
+            final DelayingHandler delayingHandler
+    ) throws IOException {
+        final HttpServer localHttpServer = HttpServer.create(new InetSocketAddress(port), 0);
+        localHttpServer.setExecutor(executorService);
+        localHttpServer.createContext("/", delayingHandler);
+        return localHttpServer;
     }
 
     @Override
     public synchronized void close() {
         executorService.close();
-        reporter.stop();
+        delayingHandler.stop();
         httpServer.stop(0);
     }
-
     Duration getTimeToLive(final String[] args) {
         if (args.length > 0) {
             return Duration.ofDays(Long.parseLong(args[0]));
@@ -100,43 +97,24 @@ public class PricingServer implements AutoCloseable {
         return DEFAULT_TIME_TO_LIVE;
     }
 
-    Duration getDelay(final String[] args) {
+    DelayerFactory.Mode getDelayMode(final String[] args) {
         if (args.length > 1) {
-            return Duration.ofMillis(Long.parseLong(args[1]));
+            return DelayerFactory.Mode.valueOf(args[1]);
+        }
+        return DelayerFactory.Mode.PARK;
+    }
+
+    Duration getDelay(final String[] args) {
+        if (args.length > 2) {
+            return Duration.ofMillis(Long.parseLong(args[2]));
         }
         return DEFAULT_DELAY;
     }
 
     int getPort(final String[] args) {
-        if (args.length > 2) {
-            return Integer.parseInt(args[2]);
+        if (args.length > 3) {
+            return Integer.parseInt(args[3]);
         }
         return DEFAULT_HTTP_PORT;
-    }
-
-    private HttpServer createHttpServer(
-            final int port,
-            final ExecutorService executorService,
-            final Duration delay
-    ) throws IOException {
-        final HttpServer localHttpServer = HttpServer.create(new InetSocketAddress(port), 0);
-        localHttpServer.setExecutor(executorService);
-        localHttpServer.createContext("/",
-                exchange -> {
-                    try (final Timer.Context ignored = timer.time()) {
-                        log.info("Received request.");
-                        activeRequestCount.incrementAndGet();
-                        LockSupport.parkNanos(delay.toNanos());
-                        try (OutputStream responseBody = exchange.getResponseBody()) {
-                            final byte[] reponseBytes = "42".getBytes(StandardCharsets.UTF_8);
-                            exchange.sendResponseHeaders(200, reponseBytes.length);
-                            responseBody.write(reponseBytes);
-                        } finally {
-                            activeRequestCount.decrementAndGet();
-                        }
-                        log.debug("Sent response.");
-                    }
-                });
-        return localHttpServer;
     }
 }
