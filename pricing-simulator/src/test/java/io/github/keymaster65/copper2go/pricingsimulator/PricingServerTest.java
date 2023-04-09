@@ -40,7 +40,7 @@ public class PricingServerTest {
         final int testPort = PricingServer.DEFAULT_HTTP_PORT + 1;
         try (final PricingServer ignored =
                      new PricingServer()
-                             .start(new String[]{"0", "0", String.valueOf(testPort)})) {
+                             .start(new String[]{"0", "SLEEP", "0", String.valueOf(testPort)})) {
             MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
             final ObjectName timerName = new ObjectName("metrics:type=timers,name=responses");
             final Long timerCountBefore = (Long) mBeanServer.getAttribute(timerName, "Count");
@@ -49,7 +49,7 @@ public class PricingServerTest {
             Assertions.assertThat(timerCountBefore).isZero();
 
 
-            final ObjectName gaugeName = new ObjectName("metrics:type=gauges,name=io.github.keymaster65.copper2go.pricingsimulator.PricingServer.activeRequestCount");
+            final ObjectName gaugeName = new ObjectName("metrics:type=gauges,name=io.github.keymaster65.copper2go.pricingsimulator.DelayingHandler.activeRequestCount");
             final Integer gaugeCountBefore = (Integer) mBeanServer.getAttribute(gaugeName, "Number");
 
 
