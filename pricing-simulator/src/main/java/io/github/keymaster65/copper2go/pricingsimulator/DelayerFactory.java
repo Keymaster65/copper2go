@@ -19,22 +19,39 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.LockSupport;
+import java.util.concurrent.locks.ReentrantLock;
 
 class DelayerFactory {
     enum Mode {
         PARK,
         SLEEP,
-        WAIT
+        WAIT,
+        LOCK
     }
 
+    static final Lock lock = new ReentrantLock();
     private static final Logger log = LoggerFactory.getLogger(DelayerFactory.class);
 
+    static  {
+        final Thread thread = new Thread(lock::lock);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Thread join was interrupted.", e);
+        }
+    }
+
     static Delayer create(final Mode delayMode) {
-        return switch (delayMode)  {
+        return switch (delayMode) {
             case PARK -> DelayerFactory::park;
             case SLEEP -> DelayerFactory::sleep;
             case WAIT -> DelayerFactory::wait;
+            case LOCK -> DelayerFactory::lock;
         };
     }
 
@@ -66,6 +83,17 @@ class DelayerFactory {
                 log.debug("Interrupted waiting for {}", delay, e);
                 Thread.currentThread().interrupt();
             }
+        }
+    }
+
+    private static void lock(final Duration delay) {
+        try {
+            log.debug("Start lock for {}", delay);
+            //noinspection ResultOfMethodCallIgnored
+            lock.tryLock(delay.toMillis(), TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            log.debug("Interrupted lock for {}", delay, e);
+            Thread.currentThread().interrupt();
         }
     }
 }
