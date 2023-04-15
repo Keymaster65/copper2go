@@ -50,17 +50,22 @@ public class DelayingHandler implements HttpHandler {
         delayer = DelayerFactory.create(delayMode);
 
     }
+
     @Override
     public void handle(final HttpExchange exchange) throws IOException {
         try (final Timer.Context ignored = timer.time()) {
             log.info("Received request.");
             activeRequestCount.incrementAndGet();
-            delayer.delay(delay);
+
             try (OutputStream responseBody = exchange.getResponseBody()) {
+                delayer.delay(delay);
                 final byte[] reponseBytes = "42".getBytes(StandardCharsets.UTF_8);
                 exchange.sendResponseHeaders(200, reponseBytes.length);
                 responseBody.write(reponseBytes);
                 log.info("Sent response.");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new IOException("I/O interrupted.", e);
             } finally {
                 activeRequestCount.decrementAndGet();
             }
@@ -71,6 +76,7 @@ public class DelayingHandler implements HttpHandler {
     public synchronized void start() {
         reporter.start();
     }
+
     public synchronized void stop() {
         reporter.stop();
     }
