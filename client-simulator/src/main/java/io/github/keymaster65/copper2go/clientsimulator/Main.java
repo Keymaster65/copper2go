@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package io.github.keymaster65.copper2go.clientsimulator;
+
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
@@ -30,7 +31,6 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 
 public class Main {
@@ -42,12 +42,11 @@ public class Main {
 
     private final Timer timer = metricRegistry.timer("responses");
 
-//        final String uri = "http://localhost:59665/copper2go/3/api/twoway/2.0/Hello";
-    final String uri = "http://localhost:39665/copper2go/3/api/twoway/1.0/Pricing"; // direct PricingSimulator
-    final String payload = "wolf";
+    private static final String DEFAULT_URL = "http://localhost:39665/copper2go/3/api/twoway/1.0/Pricing"; // direct PricingSimulator
+    private static final String PAYLOAD = "wolf";
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
-    private HttpClient client = HttpClient.newBuilder()
+    private final HttpClient client = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
             .followRedirects(HttpClient.Redirect.NORMAL)
             .connectTimeout(Duration.ofSeconds(10))
@@ -55,51 +54,42 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
+        try (final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()) {
+            final Main clientSimulator = new Main();
+            @SuppressWarnings("resource") // need it for test
+            JmxReporter reporter = JmxReporter.forRegistry(clientSimulator.metricRegistry).build();
+            reporter.start();
 
+            final long testDurationSecond = 3;
+            final long callsPerSecond = 1;
+            final long intervalMillis = 1000 / callsPerSecond;
+            log.info("callsPerSecond={}", callsPerSecond);
 
-        final Main clientSimulator = new Main();
-        JmxReporter reporter = JmxReporter.forRegistry(clientSimulator.metricRegistry).build();
-        reporter.start();
-
-        final long testDurationSecond = 300;
-        final long callsPerSecond = 1000;
-        final long intervalMillis = 1000 / callsPerSecond;
-        log.info("callsPerSecond={}", callsPerSecond);
-
-        final long start = System.nanoTime();
-        final long calls = testDurationSecond * callsPerSecond;
-        for (long i = 0; i < calls; i++) {
-            final long wait = intervalMillis;
-            if (
-                    1000_000_000D * (i -callsPerSecond) > (System.nanoTime() - start)  * callsPerSecond
-            ) {
-                log.trace("mean={} > callsPerSecond={}.", clientSimulator.actionMeter.getMeanRate(), callsPerSecond);
-                log.trace("Wait {} for interval {} millis at {}.", intervalMillis, i, System.currentTimeMillis());
-                LockSupport.parkNanos(Duration.ofMillis(wait).toNanos());
-                log.trace("Unparked at {}.", System.currentTimeMillis());
+            final long start = System.nanoTime();
+            final long calls = testDurationSecond * callsPerSecond;
+            for (long i = 0; i < calls; i++) {
+                if (
+                        1000_000_000D * (i - callsPerSecond) > (System.nanoTime() - start) * callsPerSecond
+                ) {
+                    log.trace("mean={} > callsPerSecond={}.", clientSimulator.actionMeter.getMeanRate(), callsPerSecond);
+                    log.trace("Wait {} for interval {} millis at {}.", intervalMillis, i, System.currentTimeMillis());
+                    LockSupport.parkNanos(Duration.ofMillis(intervalMillis).toNanos());
+                    log.trace("Unparked at {}.", System.currentTimeMillis());
+                }
+                log.trace("[{} vs. {}] per {};  mean={} > callsPerSecond={}.", i, clientSimulator.actionMeter.getCount(), (System.nanoTime() - start), clientSimulator.actionMeter.getMeanRate(), callsPerSecond);
+                log.trace("mean={}; count={}", clientSimulator.actionMeter.getMeanRate(), clientSimulator.actionMeter.getCount());
+                executorService.submit(clientSimulator::action);
             }
-            log.trace("[{} vs. {}] per {};  mean={} > callsPerSecond={}.", i, clientSimulator.actionMeter.getCount(), (System.nanoTime() - start), clientSimulator.actionMeter.getMeanRate(), callsPerSecond);
-            log.trace("mean={}; count={}", clientSimulator.actionMeter.getMeanRate(), clientSimulator.actionMeter.getCount());
-            executorService.submit(clientSimulator::action);
-        }
 
-        while (clientSimulator.actionMeter.getCount() < calls) {
-            Thread.sleep(Duration.ofSeconds(1));
-            log.info("Wait for requests to be sent.");
-        }
+            while (clientSimulator.actionMeter.getCount() < calls) {
+                Thread.sleep(Duration.ofSeconds(1));
+                log.info("Wait for requests to be sent.");
+            }
 
-        while (clientSimulator.okMeter.getCount() + clientSimulator.nokMeter.getCount() < calls) {
-            Thread.sleep(Duration.ofSeconds(1));
-            log.info("Wait for responses to be received.");
-        }
-        reporter.stop();
-        executorService.shutdown();
-        executorService.awaitTermination(120, TimeUnit.SECONDS);
-        if (executorService.isTerminated()) {
-            log.info("ExecutorService is terminated.");
-        } else {
-            log.warn("ExecutorService is NOT terminated.");
+            while (clientSimulator.okMeter.getCount() + clientSimulator.nokMeter.getCount() < calls) {
+                Thread.sleep(Duration.ofSeconds(1));
+                log.info("Wait for responses to be received.");
+            }
         }
     }
 
@@ -115,10 +105,13 @@ public class Main {
                     log.warn("Received status code {}.", statusCode);
                     nokMeter.mark();
                 }
-            } catch (URISyntaxException | IOException | InterruptedException e) {
+            } catch (URISyntaxException | IOException e) {
                 nokMeter.mark();
-                e.printStackTrace();
-                throw new RuntimeException(e);
+                log.warn("Exception in action.", e);
+            } catch (InterruptedException e) {
+                nokMeter.mark();
+                log.warn("InterruptedException in action.", e);
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -127,8 +120,8 @@ public class Main {
         final HttpRequest httpRequest =
                 HttpRequest.newBuilder()
                         .timeout(Duration.ofSeconds(50))
-                        .uri(new URI(uri))
-                        .POST(HttpRequest.BodyPublishers.ofString(payload))
+                        .uri(new URI(DEFAULT_URL))
+                        .POST(HttpRequest.BodyPublishers.ofString(PAYLOAD))
                         .build();
         return client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
     }
