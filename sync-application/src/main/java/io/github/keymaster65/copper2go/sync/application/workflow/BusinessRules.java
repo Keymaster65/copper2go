@@ -15,19 +15,28 @@
  */
 package io.github.keymaster65.copper2go.sync.application.workflow;
 
-
-import io.github.keymaster65.copper2go.engine.sync.engineapi.SyncEngine;
-import io.github.keymaster65.copper2go.engine.sync.workflowapi.Workflow;
-import io.github.keymaster65.copper2go.engine.sync.workflowapi.WorkflowData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
-class Pricing1 implements Workflow {
+public class BusinessRules {
 
-    public Pricing1(final SyncEngine ignored) {
+    private static final Logger logger = LoggerFactory.getLogger(BusinessRules.class);
+
+    private BusinessRules() {
     }
 
-    public String main(final WorkflowData workflowData) {
-        return String.valueOf(Duration.ofMinutes(1).toNanos());
+    static double calculatePrice(
+            final long startNanos,
+            final long now,
+            final long pricePerMinute
+    ) {
+        long durarionNanos = now - startNanos;
+        logger.info("Calculate price for {} nanos.", durarionNanos);
+        return Math.round(
+                (double) pricePerMinute
+                        / Duration.ofMinutes(1).toNanos()
+                        * durarionNanos);
     }
 }

@@ -19,9 +19,17 @@ import io.github.keymaster65.copper2go.engine.sync.engineapi.EngineException;
 import io.github.keymaster65.copper2go.engine.sync.engineapi.SyncEngine;
 import io.github.keymaster65.copper2go.engine.sync.workflowapi.Workflow;
 import io.github.keymaster65.copper2go.engine.sync.workflowapi.WorkflowData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Hello2 implements Workflow {
     private final SyncEngine engine;
+
+    private static final Logger logger = LoggerFactory.getLogger(Hello2.class);
+
+    private final AtomicReference<String> nameRef = new AtomicReference<>();
 
     public Hello2(final SyncEngine engine) {
         this.engine = engine;
@@ -29,13 +37,36 @@ public class Hello2 implements Workflow {
 
     @Override
     public String main(final WorkflowData workflowData) {
-        final String payload = workflowData.getPayload();
-        final String priceInfo;
         try {
-            priceInfo = engine.request("", payload);
-        } catch (EngineException | RuntimeException e) {
-            return e.getMessage();
+        logger.info("Begin workflow 2.0.");
+        final long startNanos = System.nanoTime();
+
+        logger.info("Map workflow request to workflow instance.");
+        nameRef.set(Mapper.mapRequest(workflowData.getPayload()));
+
+        logger.info("Call pricing service");
+        final String priceInfo;
+            priceInfo = engine.request("", nameRef.get());
+
+        logger.info("Mapping pricing service response to workflow reply.");
+            final String workflowResponse = Mapper.mapResponse(
+                    nameRef.get(),
+                    BusinessRules.calculatePrice(
+                            startNanos,
+                            System.nanoTime(),
+                            Long.parseLong(priceInfo)
+                    ));
+
+        logger.info("Sending reply of workflow.");
+        return workflowResponse;
+
+        } catch (RuntimeException | EngineException e) {
+
+            logger.info("Exceptional finish of workflow.", e);
+            return e.getClass().getSimpleName() + ": " + e.getMessage();
+
+        } finally {
+            logger.info("Finish workflow.");
         }
-        return "Hello %s! Please transfer %s".formatted(payload, priceInfo);
     }
 }

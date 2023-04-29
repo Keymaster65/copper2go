@@ -15,19 +15,23 @@
  */
 package io.github.keymaster65.copper2go.sync.application.workflow;
 
-
-import io.github.keymaster65.copper2go.engine.sync.engineapi.SyncEngine;
-import io.github.keymaster65.copper2go.engine.sync.workflowapi.Workflow;
-import io.github.keymaster65.copper2go.engine.sync.workflowapi.WorkflowData;
-
-import java.time.Duration;
-
-class Pricing1 implements Workflow {
-
-    public Pricing1(final SyncEngine ignored) {
+public class Mapper {
+    private Mapper() {
     }
 
-    public String main(final WorkflowData workflowData) {
-        return String.valueOf(Duration.ofMinutes(1).toNanos());
+    public static String mapRequest(final String request) {
+        if ("".equals(request)) {
+            throw new IllegalArgumentException("A name must be specified.");
+        }
+
+        final int blankPosition = request.indexOf(' ');
+        if (blankPosition > 1) {
+            return request.substring(0, blankPosition);
+        }
+        return request;
+    }
+
+    public static String mapResponse(final String name, final double price) {
+        return "Hello " + name + "! Please transfer " + (long) (price) + " cent";
     }
 }
