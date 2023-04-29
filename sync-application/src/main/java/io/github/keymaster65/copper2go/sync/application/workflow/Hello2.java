@@ -45,8 +45,7 @@ public class Hello2 implements Workflow {
         nameRef.set(Mapper.mapRequest(workflowData.getPayload()));
 
         logger.info("Call pricing service");
-        final String priceInfo;
-            priceInfo = engine.request("", nameRef.get());
+        final String pricePerMinute = engine.request("", nameRef.get());
 
         logger.info("Mapping pricing service response to workflow reply.");
             final String workflowResponse = Mapper.mapResponse(
@@ -54,7 +53,7 @@ public class Hello2 implements Workflow {
                     BusinessRules.calculatePrice(
                             startNanos,
                             System.nanoTime(),
-                            Long.parseLong(priceInfo)
+                            Long.parseLong(pricePerMinute)
                     ));
 
         logger.info("Sending reply of workflow.");
