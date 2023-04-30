@@ -59,7 +59,10 @@ public class DelayingHandler implements HttpHandler {
 
             try (OutputStream responseBody = exchange.getResponseBody()) {
                 delayer.delay(delay);
-                final byte[] reponseBytes = "42".getBytes(StandardCharsets.UTF_8);
+                final byte[] reponseBytes =
+                        String
+                                .valueOf(Duration.ofMinutes(1).toNanos())
+                                .getBytes(StandardCharsets.UTF_8);
                 exchange.sendResponseHeaders(200, reponseBytes.length);
                 responseBody.write(reponseBytes);
                 log.info("Sent response.");
