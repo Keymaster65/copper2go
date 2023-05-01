@@ -15,19 +15,19 @@
  */
 package io.github.keymaster65.copper2go.sync.application.workflow;
 
+import net.jqwik.api.Example;
 
-import io.github.keymaster65.copper2go.engine.sync.engineapi.SyncEngine;
-import io.github.keymaster65.copper2go.engine.sync.workflowapi.Workflow;
-import io.github.keymaster65.copper2go.engine.sync.workflowapi.WorkflowData;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.Duration;
+class MapperTest {
 
-class Pricing1 implements Workflow {
-
-    public Pricing1(final SyncEngine ignored) {
+    @Example
+    void mapRequestTest() {
+        assertThat(Mapper.mapRequest("Wolf S.")).isEqualTo("Wolf");
     }
 
-    public String main(final WorkflowData workflowData) {
-        return String.valueOf(Duration.ofMinutes(1).toNanos());
+    @Example
+    void mapResponseTest() {
+        assertThat(Mapper.mapResponse("W", 0)).isEqualTo("Hello W! Please transfer 0 cent");
     }
 }

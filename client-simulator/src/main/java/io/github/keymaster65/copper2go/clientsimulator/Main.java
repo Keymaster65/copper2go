@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.keymaster65.copper2go.sync.application.workflow;
+package io.github.keymaster65.copper2go.clientsimulator;
 
+public class Main {
 
-import io.github.keymaster65.copper2go.engine.sync.engineapi.SyncEngine;
-import io.github.keymaster65.copper2go.engine.sync.workflowapi.Workflow;
-import io.github.keymaster65.copper2go.engine.sync.workflowapi.WorkflowData;
-
-import java.time.Duration;
-
-class Pricing1 implements Workflow {
-
-    public Pricing1(final SyncEngine ignored) {
+    public static void main(String[] args) throws InterruptedException {
+        new Client().start(args);
     }
 
-    public String main(final WorkflowData workflowData) {
-        return String.valueOf(Duration.ofMinutes(1).toNanos());
+
+    Main() {
     }
 }

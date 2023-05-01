@@ -18,5 +18,5 @@ package io.github.keymaster65.copper2go.pricingsimulator;
 import java.time.Duration;
 
  interface Delayer {
-    void delay(Duration delay);
+    void delay(Duration delay) throws InterruptedException;
 }

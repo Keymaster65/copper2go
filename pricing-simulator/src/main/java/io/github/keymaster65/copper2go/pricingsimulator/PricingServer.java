@@ -42,7 +42,7 @@ public class PricingServer implements AutoCloseable {
     public synchronized PricingServer start(final String[] args) throws IOException {
         if (args.length > 0 && args[0].equals(HELP_OPTION)) {
             throw new HelpException(
-                    "Usage: Main -h|[SERVICE_DAYS [PARK|SLEEP|WAIT [DELAY_MILLIS [HTTP_PORT]]]]"
+                    "Usage: Main -h|[SERVICE_DAYS [PARK|SLEEP|WAIT|TRY_LOCK|POLL [DELAY_MILLIS [HTTP_PORT]]]]"
             );
         }
         final PricingServer pricingServer = start(

@@ -19,3 +19,4 @@ include(":sync-engine")
 include(":sync-application")
 
 include(":pricing-simulator")
+include(":client-simulator")

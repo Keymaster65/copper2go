@@ -89,6 +89,7 @@ class SystemDefaultTest {
 
     @AfterAll
     static void stopContainer() {
+        log.info(copper2GoContainer.getLogs());
         copper2GoContainer.stop();
     }
 

@@ -48,15 +48,28 @@ in  https://github.com/Keymaster65/copper2go-workflows.
 
 [![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
 
-* Start container
+### Demo
+
+* Start container with `hello` and `pricing` workflow 
     * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.3.0`
-* In Browser you can see the used licenses
+* In Browser `client` you can see the used licenses
     * `http://localhost:59665/`
     * `http://localhost:59665/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name must be
       specified."
-* Use any other HTTP-Client and POST your name to the URL
+* Use any other HTTP `client` and POST your name to the URL
     * Example: `curl --data Wolf http://localhost:59665/copper2go/3/api/twoway/2.0/Hello`
         * Will produce someting like `Hello Wolf! Please transfer 4 cent`
+
+### Demo Diagram
+
+The following diagram shows the workflows used in the Demo.
+
+* The green `client` sends a HTTP request to the blue copper2go `hello` workflow and waits for the response
+* The blue copper2go `hello` workflow send a request the red `pricing` backend and waits for the response
+* The red `pricing` backend calculates a price send it in it's response. To keep the demo simple, this backend also is a 
+copper2go workflow.
+
+![Demo Diagram](engineHelloWorkflow.png)
 
 ### Change Workflows
 

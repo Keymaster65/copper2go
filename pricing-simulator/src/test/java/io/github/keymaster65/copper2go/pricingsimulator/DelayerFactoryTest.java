@@ -25,7 +25,7 @@ import java.time.Duration;
 class DelayerFactoryTest {
 
     @Property
-    void testDelay(@ForAll DelayerFactory.Mode delayMode) {
+    void testDelay(@ForAll DelayerFactory.Mode delayMode) throws InterruptedException {
         final Delayer delayer = DelayerFactory.create(delayMode);
         final long start = System.nanoTime();
         final Duration delay = Duration.ofSeconds(1);

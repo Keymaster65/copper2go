@@ -1,4 +1,4 @@
-/*
+<!--
  * Copyright 2021 Wolf Sluyterman van Langeweyde
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +12,18 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-package io.github.keymaster65.copper2go.sync.application.workflow;
-
-
-import io.github.keymaster65.copper2go.engine.sync.engineapi.SyncEngine;
-import io.github.keymaster65.copper2go.engine.sync.workflowapi.Workflow;
-import io.github.keymaster65.copper2go.engine.sync.workflowapi.WorkflowData;
-
-import java.time.Duration;
-
-class Pricing1 implements Workflow {
-
-    public Pricing1(final SyncEngine ignored) {
-    }
-
-    public String main(final WorkflowData workflowData) {
-        return String.valueOf(Duration.ofMinutes(1).toNanos());
-    }
-}
+ -->
+<configuration>
+    <appender name="STDOUT"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <root level="warn">
+        <appender-ref ref="STDOUT"/>
+    </root>
+    <logger name="io.github.keymaster65.copper2go" level="info" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+</configuration>
