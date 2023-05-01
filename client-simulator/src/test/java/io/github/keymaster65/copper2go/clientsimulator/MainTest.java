@@ -51,4 +51,11 @@ class MainTest {
 
         localHttpServer.stop(0);
     }
+
+    @Example
+    void constructorNoException() {
+        Assertions
+                .assertThatCode(Main::new)
+                .doesNotThrowAnyException();
+    }
 }
