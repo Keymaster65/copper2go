@@ -106,12 +106,16 @@ class VertxHttpClientTest {
     void close() {
         final WebClient webClient = Mockito.mock(WebClient.class);
         final Vertx vertx = Mockito.mock(Vertx.class);
+        @SuppressWarnings("unchecked")
+        final Future<Void> closeFuture = Mockito.mock(Future.class);
+
+        Mockito.when(vertx.close()).thenReturn(closeFuture);
         final VertxHttpClient vertxHttpClient = createVertxHttpClient(webClient, vertx);
 
         vertxHttpClient.close();
 
         Mockito.verify(webClient).close();
-        Mockito.verify(vertx).close(Mockito.any());
+        Mockito.verify(vertx).close();
     }
 
 
