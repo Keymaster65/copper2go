@@ -63,7 +63,7 @@ public class Copper2GoGitWorkflowRepository extends GitWorkflowRepository implem
             LockSupport.parkNanos(Duration.ofMillis(10).toNanos());
         }
         log.info("Waiting to close connections.");
-        LockSupport.parkNanos(Duration.ofSeconds(1).toNanos());
+        LockSupport.parkNanos(Duration.ofSeconds(3).toNanos());
     }
 
     @Override
