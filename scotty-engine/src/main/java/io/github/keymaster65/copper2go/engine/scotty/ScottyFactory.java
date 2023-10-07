@@ -57,7 +57,7 @@ public class ScottyFactory {
                     if (!new File("workDir").mkdirs()) {
                         log.info("Could not create dir {}", "workDir");
                     }
-                    var repo = new GitRepository();
+                    var repo = new Copper2GoGitWorkflowRepository();
 
                     repo.setGitRepositoryDir(getWorkflowSourceDirectory());
                     repo.addSourceDir(getWorkflowSourceDirectory().getAbsolutePath() + workflowRepositoryConfig.workflowBase);

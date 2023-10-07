@@ -28,14 +28,14 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.LockSupport;
 
-public class GitRepository extends GitWorkflowRepository implements Resource {
+public class Copper2GoGitWorkflowRepository extends GitWorkflowRepository implements Resource {
 
     private final AtomicBoolean suspended = new AtomicBoolean(false);
     private final AtomicBoolean updating = new AtomicBoolean(false);
 
-    private static final Logger log = LoggerFactory.getLogger(GitRepository.class);
+    private static final Logger log = LoggerFactory.getLogger(Copper2GoGitWorkflowRepository.class);
 
-    GitRepository() {
+    Copper2GoGitWorkflowRepository() {
         Core.getGlobalContext().register(this);
     }
 
