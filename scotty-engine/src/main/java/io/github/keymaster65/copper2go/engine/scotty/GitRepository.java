@@ -19,7 +19,6 @@ import org.copperengine.ext.wfrepo.git.GitWorkflowRepository;
 import org.crac.Context;
 import org.crac.Core;
 import org.crac.Resource;
-import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +62,8 @@ public class GitRepository extends GitWorkflowRepository implements Resource {
             log.info("Waiting for update is done.");
             LockSupport.parkNanos(Duration.ofMillis(10).toNanos());
         }
-        Git.shutdown();
+        log.info("Waiting to close connections.");
+        LockSupport.parkNanos(Duration.ofSeconds(1).toNanos());
     }
 
     @Override
