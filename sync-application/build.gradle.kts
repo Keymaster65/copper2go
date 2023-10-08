@@ -10,8 +10,8 @@ plugins {
 var copper2goVersion = "sync-0.0.1"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_19
-    targetCompatibility = JavaVersion.VERSION_19
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 tasks.jar {
@@ -23,24 +23,10 @@ dependencies {
     implementation(project(":sync-engine"))
 }
 
-tasks.withType<JavaCompile> {
-    options.compilerArgs.add("--enable-preview")
-}
-
-tasks.withType<Test> {
-    jvmArgs = listOf("--enable-preview")
-}
-
-tasks.withType<JavaExec> {
-    jvmArgs = listOf("--enable-preview")
-
-}
-
 application {
     mainClass.set("io.github.keymaster65.copper2go.sync.application.Main")
     applicationDefaultJvmArgs = listOf(
-        "-Dlogback.configurationFile=src/main/resources/logback.xml",
-        "--enable-preview"
+        "-Dlogback.configurationFile=src/main/resources/logback.xml"
     )
 }
 
@@ -62,13 +48,12 @@ jib {
             "-Dfile.encoding=UTF-8",
             "-Duser.country=DE",
             "-Duser.language=de",
-            "-Duser.timezone=Europe/Berlin",
-            "--enable-preview"
+            "-Duser.timezone=Europe/Berlin"
         )
         workingDirectory = "/"
     }
     from {
-        image = "openjdk:19-jdk"
+        image = "openjdk:21-jdk"
     }
     to {
         image = "registry.hub.docker.com/keymaster65/copper2go:" + copper2goVersion
