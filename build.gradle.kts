@@ -1,6 +1,7 @@
 import com.github.jk1.license.filter.DependencyFilter
 import com.github.jk1.license.filter.LicenseBundleNormalizer
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import kotlin.math.log
 
 plugins {
     java
@@ -173,10 +174,11 @@ allprojects {
             }
             implementation("org.apache.kafka:kafka-clients:3.4.0")
 
-            implementation("com.google.guava:guava:31.1-jre") {
-                because("Security scan found 23.4-jre. Needed for assertj and copper.")
+            implementation("com.google.guava:guava:32.1.2-jre") {
+                because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
-
+            implementation("org.xerial.snappy:snappy-java:1.1.10.5")
+            implementation("io.netty:netty-handler:4.1.99.Final")
         }
     }
 

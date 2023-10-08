@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-    <suppress until="2023-05-01">
-        <notes>jackson-core-2.14.2.jar</notes>
-        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-core@.*$</packageUrl>
-        <vulnerabilityName>CVE-2022-45688</vulnerabilityName><!-- no fixed version or may be false positiv -->
+    <suppress>
+        <notes>netty-handler-4.1.99.Final no fixed version</notes>
+        <packageUrl regex="true">^pkg:maven/io\.netty/netty\-handler@.*$</packageUrl>
+        <vulnerabilityName>CVE-2023-4586</vulnerabilityName>
     </suppress>
     <suppress>
-        <notes>guava-31.1-jre.jar seems to be a false positiv</notes>
-        <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@31\..*$</packageUrl>
-        <vulnerabilityName>CVE-2020-8908</vulnerabilityName><!-- no fixed version or may be false positiv -->
+        <notes>jackson-databind-2.15.2.jar no fixed version</notes>
+        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-databind@.*$</packageUrl>
+        <vulnerabilityName>CVE-2023-35116</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes>jgit-6.7.0.202309050840 no fixed version and seems to be a false positiv</notes>
+        <packageUrl regex="true">^pkg:maven/org\.eclipse\.jgit/org\.eclipse\.jgit.*$</packageUrl>
+        <vulnerabilityName>CVE-2023-4759</vulnerabilityName>
     </suppress>
 </suppressions>
