@@ -7,14 +7,14 @@ plugins {
     distribution
     `maven-publish`
     jacoco
-    id("org.sonarqube") version "4.0.0.2929"
-    id("com.github.jk1.dependency-license-report") version "2.1"
-    id("com.google.cloud.tools.jib") version "3.3.1" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
+    id("org.sonarqube") version "4.4.1.3373"
+    id("com.github.jk1.dependency-license-report") version "2.5"
+    id("com.google.cloud.tools.jib") version "3.4.0" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
-    id("org.unbroken-dome.test-sets") version "4.0.0"
-    id("org.owasp.dependencycheck") version "8.2.1"
-    id("com.github.ben-manes.versions") version "0.46.0"
-    id("info.solidsoft.pitest") version "1.9.11"
+    id("org.unbroken-dome.test-sets") version "4.1.0"
+    id("org.owasp.dependencycheck") version "8.4.0"
+    id("com.github.ben-manes.versions") version "0.49.0"
+    id("info.solidsoft.pitest") version "1.15.0"
 }
 
 group = "io.github.keymaster65"
@@ -138,15 +138,15 @@ allprojects {
 //    }
 
     dependencies {
-        implementation("org.slf4j:slf4j-api:2.0.7")
-        implementation("ch.qos.logback:logback-classic:1.4.6")
+        implementation("org.slf4j:slf4j-api:2.0.9")
+        implementation("ch.qos.logback:logback-classic:1.4.11")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
-        testImplementation("net.jqwik:jqwik:1.7.3")
-        testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
-        testImplementation("org.mockito:mockito-core:5.3.0")
+        testImplementation("net.jqwik:jqwik:1.8.0")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+        testImplementation("org.mockito:mockito-core:5.6.0")
 
         constraints {
             implementation("commons-io:commons-io:2.11.0") {

@@ -16,8 +16,8 @@ tasks.jar {
 }
 
 dependencies {
-    implementation("io.dropwizard.metrics:metrics-core:4.2.18")
-    implementation("io.dropwizard.metrics:metrics-jmx:4.2.18")
+    implementation("io.dropwizard.metrics:metrics-core:4.2.20")
+    implementation("io.dropwizard.metrics:metrics-jmx:4.2.20")
 }
 
 application {

@@ -4,7 +4,7 @@ pitest {
 
 plugins {
     application
-    id("com.google.cloud.tools.jib") version "3.3.1"
+    id("com.google.cloud.tools.jib") version "3.4.0"
 }
 
 var copper2goVersion = "tmp"
@@ -36,11 +36,11 @@ dependencies {
         // due to license issue and I guess I currently do not need it
         exclude("io.netty", "netty-tcnative-classes")
     }
-    implementation("io.vertx:vertx-core:4.4.1")
-    implementation("io.vertx:vertx-kafka-client:4.4.1")
+    implementation("io.vertx:vertx-core:4.4.5")
+    implementation("io.vertx:vertx-kafka-client:4.4.5")
 
-    testImplementation("org.testcontainers:testcontainers:1.18.0")
-    testImplementation("org.testcontainers:kafka:1.18.0")
+    testImplementation("org.testcontainers:testcontainers:1.19.1")
+    testImplementation("org.testcontainers:kafka:1.19.1")
 }
 
 application {
