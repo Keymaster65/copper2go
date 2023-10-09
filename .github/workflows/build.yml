@@ -42,14 +42,12 @@ jobs:
       - name: OWASP dependencyCheckAnalyze
         run: ./gradlew dependencyCheckAnalyze --info
       - name: Integration Test
-        run: ./gradlew clean integrationTest
-        continue-on-error: true
+        run: ./gradlew integrationTest
       - name: Archive reports
         uses: actions/upload-artifact@v3
+        if: failure()
         with:
           name: reports
           path: |
                 **/build/reports/**
           retention-days: 1
-      - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v3
