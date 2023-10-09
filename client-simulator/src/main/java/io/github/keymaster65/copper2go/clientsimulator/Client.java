@@ -84,8 +84,8 @@ public class Client {
         this.httpClient = httpClient;
     }
 
-    public void start(final String[] args) {
-        @SuppressWarnings("resource") // need it for test TODO check this
+    public void start() {
+        @SuppressWarnings("resource")
         JmxReporter reporter = JmxReporter.forRegistry(metricRegistry).build();
         reporter.start();
         start(
