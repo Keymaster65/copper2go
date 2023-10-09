@@ -77,15 +77,16 @@ class VertxHttpClientTest {
                     }
             );
             serverLatch.await();
+
+        Assertions
+                .assertThatCode(clientLatch::await)
+                .doesNotThrowAnyException();
+
         } finally {
             httpServer.close();
             vertxHttpClient.close();
             vertx.close();
         }
-
-        Assertions
-                .assertThatCode(clientLatch::await)
-                .doesNotThrowAnyException();
     }
 
     @Test
