@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1lly07o" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.10.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:collaboration id="Collaboration_17lxdm4">
+    <bpmn:participant id="Participant_1basoq0" name="pricing" processRef="Process_02jjxsy" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_02jjxsy" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_08sraz1">
+      <bpmn:lane id="Lane_16ufqm6">
+        <bpmn:flowNodeRef>Activity_08zzk5a</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0cr1dlp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_05e8yc9</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:businessRuleTask id="Activity_08zzk5a" name="calculate price">
+      <bpmn:incoming>Flow_1vxpevd</bpmn:incoming>
+      <bpmn:outgoing>Flow_1x8likv</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:startEvent id="Event_0cr1dlp">
+      <bpmn:outgoing>Flow_1vxpevd</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0whq6jb" />
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_05e8yc9">
+      <bpmn:incoming>Flow_1x8likv</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0wmm8di" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1vxpevd" sourceRef="Event_0cr1dlp" targetRef="Activity_08zzk5a" />
+    <bpmn:sequenceFlow id="Flow_1x8likv" sourceRef="Activity_08zzk5a" targetRef="Event_05e8yc9" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_17lxdm4">
+      <bpmndi:BPMNShape id="BPMNShape_1pnzjb8" bpmnElement="Participant_1basoq0" isHorizontal="true" bioc:stroke="#831311" bioc:fill="#ffcdd2" color:background-color="#ffcdd2" color:border-color="#831311">
+        <dc:Bounds x="152" y="80" width="385" height="180" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0r9p5f0" bpmnElement="Lane_16ufqm6" isHorizontal="true" bioc:stroke="#831311" bioc:fill="#ffcdd2" color:background-color="#ffcdd2" color:border-color="#831311">
+        <dc:Bounds x="182" y="80" width="355" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_08zzk5a_di" bpmnElement="Activity_08zzk5a">
+        <dc:Bounds x="317" y="130" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0cr1dlp_di" bpmnElement="Event_0cr1dlp">
+        <dc:Bounds x="219" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_05e8yc9_di" bpmnElement="Event_05e8yc9">
+        <dc:Bounds x="479" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1vxpevd_di" bpmnElement="Flow_1vxpevd">
+        <di:waypoint x="255" y="170" />
+        <di:waypoint x="317" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1x8likv_di" bpmnElement="Flow_1x8likv">
+        <di:waypoint x="417" y="170" />
+        <di:waypoint x="479" y="170" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
