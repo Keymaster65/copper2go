@@ -10,7 +10,7 @@ plugins {
 var copper2goVersion = "tmp"
 
 tasks.withType<Test> {
-    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,17,-source,17")
+    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,21,-source,21")
 }
 
 tasks.jar {
@@ -58,7 +58,7 @@ distributions {
 
 jib {
     from {
-        image = "azul/zulu-openjdk-alpine:17.0.6"
+        image = "azul/zulu-openjdk-alpine:21.0.0"
         auth {
             username = "keymaster65"
             password = System.getenv("DOCKER_HUB_PASSWORD")
