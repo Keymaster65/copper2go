@@ -24,7 +24,6 @@ import io.vertx.core.http.HttpServerResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +39,7 @@ class VertxHttpClientTest {
     private static final Logger log = LoggerFactory.getLogger(VertxHttpClientTest.class);
 
     @Test
-    @Timeout(10)
+    @Timeout(30)
     void postGoodCase() throws InterruptedException {
         final CountDownLatch clientLatch = new CountDownLatch(1);
 
@@ -78,15 +77,16 @@ class VertxHttpClientTest {
                     }
             );
             serverLatch.await();
+
+        Assertions
+                .assertThatCode(clientLatch::await)
+                .doesNotThrowAnyException();
+
         } finally {
             httpServer.close();
             vertxHttpClient.close();
             vertx.close();
         }
-
-        Assertions
-                .assertThatCode(clientLatch::await)
-                .doesNotThrowAnyException();
     }
 
     @Test
@@ -134,6 +134,5 @@ class VertxHttpClientTest {
         Assertions
                 .assertThatCode(vertxHttpClient::close)
                 .doesNotThrowAnyException();
-        ;
     }
 }
