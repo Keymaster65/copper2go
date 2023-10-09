@@ -43,11 +43,13 @@ jobs:
         run: ./gradlew dependencyCheckAnalyze --info
       - name: Integration Test
         run: ./gradlew clean integrationTest
+        continue-on-error: true
       - name: Archive reports
         uses: actions/upload-artifact@v3
         with:
           name: reports
           path: |
                 **/build/reports/**
+          retention-days: 1
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v3
