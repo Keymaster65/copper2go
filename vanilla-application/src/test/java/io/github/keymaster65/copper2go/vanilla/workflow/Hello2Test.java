@@ -19,8 +19,8 @@ import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
 import io.github.keymaster65.copper2go.engine.vanilla.engineapi.VanillaEngine;
 import net.jqwik.api.Example;
 import net.jqwik.api.ForAll;
-import net.jqwik.api.NullableType;
 import net.jqwik.api.Property;
+import net.jqwik.api.constraints.WithNull;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 
@@ -30,7 +30,7 @@ class Hello2Test {
     public static final String UUID = "uuid";
 
     @Property(tries = 100)
-    void mainOnewayOrTwoway(@ForAll @NullableType final String uuid) {
+    void mainOnewayOrTwoway(@ForAll @WithNull final String uuid) {
         final VanillaEngine engine = Mockito.mock(VanillaEngine.class);
         final Hello2 hello2 = new Hello2(engine);
         final String responseCorrelationId = "responseCorrelationId";

@@ -233,7 +233,7 @@ Visit the sources, tests, examples and JavaDocs:
 | core      | [copper2go-api](https://www.javadoc.io/doc/io.github.keymaster65/copper2go-api/latest/index.html)     |
 | extension | [copper-coreengine](https://www.javadoc.io/doc/org.copper-engine/copper-coreengine/latest/index.html) |
 | extension | [slf4j-api](https://www.javadoc.io/doc/org.slf4j/slf4j-api/latest/org.slf4j/module-summary.html)      |
-| JDK       | [Java 17 API](https://docs.oracle.com/en/java/javase/17/docs/api/index.html)                          |
+| JDK       | [Java 21 API](https://docs.oracle.com/en/java/javase/17/docs/api/index.html)                          |
 
 ##### Application API
 
@@ -319,7 +319,7 @@ Issues are very welcome, too.
 1) Optional: `gradle dependencyUpdates`
 1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks`
 1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks --refresh-dependencies`
-1) `gradle dependencyCheckAggregate`
+1) `gradle dependencyCheckAnalyze --info`
 1) `gradle clean build`
 1) `gradle clean integrationTest`
 1) Change copper2goVersion to "latest"
@@ -327,7 +327,7 @@ Issues are very welcome, too.
 1) `gradle systemTest`
 1) Optional: `gradle :vanilla-application:build :vanilla-application:jib`
 1) Optional: `gradle :sync-application:build :sync-application:jib`
-1) `docker scan keymaster65/copper2go:latest`
+1) `docker scout cves keymaster65/copper2go:latest`
 
 #### master
 
@@ -363,14 +363,13 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 * [x] JMX usage in Container
 * [x] Support of COPPER core GUI
-* [x] Updates
-* [ ] configure thread pool size, client pool size and more
-* [ ] Add some performance analysis
+* [x] (Security) Updates
+* [x] Update to JDK 21
 
 #### "slf4j-api and jackson-databind" Workflow API 3.2.1
 
-* [x] Update slf4j-api from 2.0.6 to 2.0.7
-* [x] Update jackson-databind from 2.14.2 to 2.14.2
+* [x] Update slf4j-api from 2.0.6 to 2.0.9
+* [x] Update jackson-databind from 2.14.2 to 2.15.2
 
 ## Planning
 
@@ -388,6 +387,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### Backlog
 
 * Add new Repository Performancetest
+* configure thread pool size, client pool size and more
+* Add some performance analysis
 * Remove version 2 of HTTP Receiver API
 * Finish support kafka events
 * Support faster startup (may be graal, may be crac)

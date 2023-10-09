@@ -4,13 +4,13 @@ pitest {
 
 plugins {
     application
-    id("com.google.cloud.tools.jib") version "3.3.1"
+    id("com.google.cloud.tools.jib") version "3.4.0"
 }
 
 var copper2goVersion = "tmp"
 
 tasks.withType<Test> {
-    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,17,-source,17")
+    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,21,-source,21")
 }
 
 tasks.jar {
@@ -32,15 +32,11 @@ dependencies {
 
     implementation("org.copper-engine:copper-coreengine:5.4.2")
 
-    configurations.implementation {
-        // due to license issue and I guess I currently do not need it
-        exclude("io.netty", "netty-tcnative-classes")
-    }
-    implementation("io.vertx:vertx-core:4.4.1")
-    implementation("io.vertx:vertx-kafka-client:4.4.1")
+    implementation("io.vertx:vertx-core:4.4.5")
+    implementation("io.vertx:vertx-kafka-client:4.4.5")
 
-    testImplementation("org.testcontainers:testcontainers:1.18.0")
-    testImplementation("org.testcontainers:kafka:1.18.0")
+    testImplementation("org.testcontainers:testcontainers:1.19.1")
+    testImplementation("org.testcontainers:kafka:1.19.1")
 }
 
 application {
@@ -62,7 +58,7 @@ distributions {
 
 jib {
     from {
-        image = "azul/zulu-openjdk-alpine:17.0.6"
+        image = "azul/zulu-openjdk-alpine:21.0.0"
         auth {
             username = "keymaster65"
             password = System.getenv("DOCKER_HUB_PASSWORD")

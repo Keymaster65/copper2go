@@ -7,8 +7,8 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_19
-    targetCompatibility = JavaVersion.VERSION_19
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 tasks.jar {
@@ -16,8 +16,8 @@ tasks.jar {
 }
 
 dependencies {
-    implementation("io.dropwizard.metrics:metrics-core:4.2.18")
-    implementation("io.dropwizard.metrics:metrics-jmx:4.2.18")
+    implementation("io.dropwizard.metrics:metrics-core:4.2.20")
+    implementation("io.dropwizard.metrics:metrics-jmx:4.2.20")
 }
 
 application {
@@ -26,16 +26,8 @@ application {
         "-Dlogback.configurationFile=src/main/resources/logback.xml",
         "-Dcom.sun.management.jmxremote.port=10081",
         "-Dcom.sun.management.jmxremote.authenticate=false",
-        "-Dcom.sun.management.jmxremote.ssl=false",
-        "--enable-preview"
+        "-Dcom.sun.management.jmxremote.ssl=false"
     )
-}
-tasks.withType<JavaCompile> {
-    options.compilerArgs.add("--enable-preview")
-}
-
-tasks.withType<Test> {
-    jvmArgs = listOf("--enable-preview")
 }
 
 distributions {

@@ -4,7 +4,7 @@ pitest {
 
 plugins {
     application
-    id("com.google.cloud.tools.jib") version "3.3.1"
+    id("com.google.cloud.tools.jib") version "3.4.0"
 }
 
 var copper2goVersion = "vanilla-0.0.1"
@@ -23,7 +23,7 @@ dependencies {
     implementation(project(":vanilla-engine"))
 
     implementation(project(":connector-http-vertx"))
-    implementation("io.vertx:vertx-core:4.4.1")
+    implementation("io.vertx:vertx-core:4.4.5")
 }
 
 application {

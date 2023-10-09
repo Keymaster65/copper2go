@@ -10,6 +10,11 @@
     {"moduleLicense": "MIT License"},
     {"moduleLicense": "Bouncy Castle Licence"},
     {"moduleLicense": "GNU GENERAL PUBLIC LICENSE, Version 2 + Classpath Exception"},
-    {"moduleLicense": "Eclipse Distribution License (New BSD License)"}
+    {"moduleLicense": "Eclipse Distribution License (New BSD License)"},
+    {
+      "moduleLicense": null,
+      "moduleVersion": "32.1.2-jre",
+      "moduleName": "com.google.guava:guava-parent"
+    }
   ]
 }
