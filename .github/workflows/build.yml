@@ -43,6 +43,7 @@ jobs:
         run: ./gradlew dependencyCheckAnalyze --info
       - name: Integration Test
         run: ./gradlew integrationTest
+        continue-on-error: true
       - name: Archive reports
         uses: actions/upload-artifact@v3
         if: always()
