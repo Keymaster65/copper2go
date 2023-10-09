@@ -327,7 +327,7 @@ Issues are very welcome, too.
 1) `gradle systemTest`
 1) Optional: `gradle :vanilla-application:build :vanilla-application:jib`
 1) Optional: `gradle :sync-application:build :sync-application:jib`
-1) `docker scan keymaster65/copper2go:latest`
+1) `docker scout cves keymaster65/copper2go:latest`
 
 #### master
 
