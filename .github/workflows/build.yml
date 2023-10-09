@@ -4,7 +4,7 @@ on:
     branches:
       - master
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
 jobs:
   build:
     name: Build
@@ -43,3 +43,9 @@ jobs:
         run: ./gradlew dependencyCheckAnalyze --info
       - name: Integration Test
         run: ./gradlew clean integrationTest
+      - name: Archive reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: reports
+          path: |
+                **/build/reports/**
