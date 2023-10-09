@@ -60,14 +60,14 @@ jib {
     from {
         image = "azul/zulu-openjdk-alpine:21.0.0"
         auth {
-            username = "keymaster65"
+            username = "GITHUB"
             password = System.getenv("DOCKER_HUB_PASSWORD")
         }
     }
     to {
         image = "registry.hub.docker.com/keymaster65/copper2go:" + copper2goVersion
         auth {
-            username = "keymaster65"
+            username = "GITHUB"
             password = System.getenv("DOCKER_HUB_PASSWORD")
         }
     }
