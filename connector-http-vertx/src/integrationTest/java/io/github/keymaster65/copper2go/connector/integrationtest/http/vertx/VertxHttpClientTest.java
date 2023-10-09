@@ -21,10 +21,13 @@ import io.github.keymaster65.copper2go.connector.http.vertx.receiver.VertxHttpCl
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -34,52 +37,103 @@ class VertxHttpClientTest {
     public static final int SERVER_PORT = 8023;
     public static final String LOCALHOST = "localhost";
 
+    private static final Logger log = LoggerFactory.getLogger(VertxHttpClientTest.class);
+
     @Test
-    @Timeout(20)
+    @Timeout(10)
     void postGoodCase() throws InterruptedException {
-        ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
-        Vertx vertx = Vertx.vertx();
-        HttpServer httpServer = vertx.createHttpServer();
+        final CountDownLatch clientLatch = new CountDownLatch(1);
+
+        final ResponseReceiver responseReceiver = new ResponseReceiver() {
+            @Override
+            public void receive(final String responseCorrelationId, final String response) {
+                clientLatch.countDown();
+            }
+
+            @Override
+            public void receiveError(final String responseCorrelationId, final String response) {
+                throw new UnsupportedOperationException("receiveError not expected");
+            }
+        };
+
+        final Vertx vertx = Vertx.vertx();
+        final HttpServer httpServer = vertx.createHttpServer();
         final String successResponse = "Success";
-        CountDownLatch latch = new CountDownLatch(1);
+        final CountDownLatch serverLatch = new CountDownLatch(1);
         httpServer.requestHandler(
                 request -> request.handler(buffer -> {
                             final HttpServerResponse response = request.response();
                             response.end(successResponse);
-                            latch.countDown();
+                            log.info("end response {}.", successResponse);
+                            serverLatch.countDown();
                         }
                 ));
-        VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, SERVER_PORT, "/", responseReceiver);
+        final VertxHttpClient vertxHttpClient =
+                new VertxHttpClient(LOCALHOST, SERVER_PORT, "/", responseReceiver);
         try {
-            httpServer.listen(SERVER_PORT);
-            vertxHttpClient.request(HttpMethod.valueOf("POST"), "Fault test.", CORRELATION_ID);
-            latch.await();
-            Thread.sleep(5000); // give client time for async processing
+            httpServer.listen(SERVER_PORT).onComplete(
+                    result -> {
+                        log.info("end result {}.", result);
+                        vertxHttpClient.request(HttpMethod.valueOf("POST"), "Fault test.", CORRELATION_ID);
+                    }
+            );
+            serverLatch.await();
         } finally {
             httpServer.close();
             vertxHttpClient.close();
             vertx.close();
         }
 
-        Mockito.verify(responseReceiver).receive(CORRELATION_ID, successResponse);
+        Assertions
+                .assertThatCode(clientLatch::await)
+                .doesNotThrowAnyException();
     }
 
-    // hanging on Jenkins
     @Test
-    void postConnectionRefused() throws InterruptedException {
-        ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
+    @Timeout(10)
+    void postConnectionRefused() {
+        final CountDownLatch clientLatch = new CountDownLatch(1);
+        final ResponseReceiver responseReceiver = new ResponseReceiver() {
+            @Override
+            public void receive(final String responseCorrelationId, final String response) {
+                throw new UnsupportedOperationException("Receive not expected");
+
+            }
+
+            @Override
+            public void receiveError(final String responseCorrelationId, final String response) {
+                Assertions
+                        .assertThat(response)
+                        .contains("Connection refused");
+                clientLatch.countDown();
+            }
+        };
+
+
         final VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, 50666, "/", responseReceiver);
-        vertxHttpClient.request(HttpMethod.GET, "Fault test.", CORRELATION_ID);
-        Thread.sleep(5L * 1000); // connection refused max time
-        vertxHttpClient.close();
-        Mockito.verify(responseReceiver).receiveError(ArgumentMatchers.eq(CORRELATION_ID), ArgumentMatchers.anyString());
-        Mockito.verify(responseReceiver, Mockito.times(0)).receive(ArgumentMatchers.any(), ArgumentMatchers.any());
+        try {
+            vertxHttpClient.request(HttpMethod.GET, "Fault test.", CORRELATION_ID);
+        } finally {
+            vertxHttpClient.close();
+        }
+
+
+        Assertions
+                .assertThatCode(clientLatch::await)
+                .doesNotThrowAnyException();
     }
 
     @Test
     void close() {
         ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
+
+
         final VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, SERVER_PORT, "/", responseReceiver);
-        vertxHttpClient.close();
+
+
+        Assertions
+                .assertThatCode(vertxHttpClient::close)
+                .doesNotThrowAnyException();
+        ;
     }
 }

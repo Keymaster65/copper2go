@@ -1,20 +1,21 @@
 import com.github.jk1.license.filter.DependencyFilter
 import com.github.jk1.license.filter.LicenseBundleNormalizer
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import kotlin.math.log
 
 plugins {
     java
     distribution
     `maven-publish`
     jacoco
-    id("org.sonarqube") version "3.5.0.2730"
-    id("com.github.jk1.dependency-license-report") version "2.1"
-    id("com.google.cloud.tools.jib") version "3.3.1" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
+    id("org.sonarqube") version "4.4.1.3373"
+    id("com.github.jk1.dependency-license-report") version "2.5"
+    id("com.google.cloud.tools.jib") version "3.4.0" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
-    id("org.unbroken-dome.test-sets") version "4.0.0"
-    id("org.owasp.dependencycheck") version "7.4.1"
-    id("com.github.ben-manes.versions") version "0.44.0"
-    id("info.solidsoft.pitest") version "1.9.11"
+    id("org.unbroken-dome.test-sets") version "4.1.0"
+    id("org.owasp.dependencycheck") version "8.4.0"
+    id("com.github.ben-manes.versions") version "0.49.0"
+    id("info.solidsoft.pitest") version "1.15.0"
 }
 
 group = "io.github.keymaster65"
@@ -85,8 +86,12 @@ allprojects {
     }
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     // see https://github.com/hierynomus/license-gradle-plugin
@@ -138,63 +143,27 @@ allprojects {
 //    }
 
     dependencies {
-        implementation("org.slf4j:slf4j-api:2.0.6")
-        implementation("ch.qos.logback:logback-classic:1.4.5")
+        implementation("org.slf4j:slf4j-api:2.0.9")
+        implementation("ch.qos.logback:logback-classic:1.4.11")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
 
-        testImplementation("org.assertj:assertj-assertions-generator:2.+")
-        testImplementation("net.jqwik:jqwik:1.+")
-        testImplementation("org.junit.jupiter:junit-jupiter:5.+")
-        testImplementation("org.mockito:mockito-core:4.+")
+        testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
+        testImplementation("net.jqwik:jqwik:1.8.0")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+        testImplementation("org.mockito:mockito-core:5.6.0")
 
         constraints {
             implementation("commons-io:commons-io:2.11.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
-            implementation("io.netty:netty-buffer:4.1.85.Final") {
-                because("Security scan found 4.1.53.Final")
-            }
-            implementation("io.netty:netty-codec:4.1.85.Final") {
-                because("Security scan found 4.1.53.Final")
-            }
-            implementation("io.netty:netty-codec-http:4.1.85.Final") {
-                because("Security scan found 4.1.53.Final")
-            }
-            implementation("io.netty:netty-codec-socks:4.1.85.Final") {
-                because("Security scan found 4.1.53.Final")
-            }
-            implementation("io.netty:netty-common:4.1.85.Final") {
-                because("Security scan found 4.1.53.Final")
-            }
-            implementation("io.netty:netty-handler:4.1.85.Final") {
-                because("Security scan found 4.1.53.Final")
-            }
-            implementation("io.netty:netty-handler-proxy:4.1.85.Final") {
-                because("Security scan found 4.1.53.Final")
-            }
-            implementation("io.netty:netty-resolver:4.1.85.Final") {
-                because("Security scan found 4.1.53.Final")
-            }
-            implementation("io.netty:netty-transport:4.1.85.Final") {
-                because("Security scan found 4.1.53.Final")
-            }
-            implementation("io.netty:netty-codec-dns:4.1.85.Final") {
-                because("Security scan found 4.1.74.Final")
-            }
-            implementation("io.netty:netty-codec-http2:4.1.85.Final") {
-                because("Security scan found 4.1.74.Final")
-            }
-            implementation("io.netty:netty-resolver-dns:4.1.85.Final") {
-                because("Security scan found 4.1.74.Final")
-            }
-            implementation("net.minidev:accessors-smart:2.4.8") {
+            implementation("net.minidev:accessors-smart:2.4.9") {
                 because("Security scan found 1.2")
             }
             implementation("org.apache.httpcomponents:httpclient:4.5.14") {
                 because("Security scan found 4.5.2")
             }
-            implementation("net.minidev:json-smart:2.4.8") {
+            implementation("net.minidev:json-smart:2.4.10") {
                 because("Security scan found 2.3")
             }
             implementation("org.apache.velocity:velocity-engine-core:2.3") {
@@ -203,12 +172,13 @@ allprojects {
             implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.kafka:kafka-clients:3.3.1")
+            implementation("org.apache.kafka:kafka-clients:3.4.0")
 
-            implementation("com.google.guava:guava:31.1-jre") {
-                because("Security scan found 23.4-jre. Needed for assertj and copper.")
+            implementation("com.google.guava:guava:32.1.2-jre") {
+                because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
-
+            implementation("org.xerial.snappy:snappy-java:1.1.10.5")
+            implementation("io.netty:netty-handler:4.1.99.Final")
         }
     }
 

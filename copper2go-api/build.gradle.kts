@@ -2,7 +2,8 @@ pitest {
     targetClasses.set(setOf<String>("io.github.keymaster65.copper2go.api.*"))
 }
 
-version = "3.1.0"
+group = "io.github.keymaster65"
+version = "3.2.0"
 
 plugins {
     `maven-publish`
@@ -50,9 +51,9 @@ publishing {
 }
 
 dependencies {
-    api("org.copper-engine:copper-coreengine:5.4.1")
-    api("org.slf4j:slf4j-api:2.0.6")
-    api("com.fasterxml.jackson.core:jackson-databind:2.14.1")
+    api("org.copper-engine:copper-coreengine:5.4.2")
+    api("org.slf4j:slf4j-api:2.0.9")
+    api("com.fasterxml.jackson.core:jackson-databind:2.15.2")
 
     testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
 }

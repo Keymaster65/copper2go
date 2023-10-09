@@ -34,7 +34,7 @@ public class Main {
                             HttpServer.create(new InetSocketAddress(59665), 0),
                             new SyncEngineImpl(),
                             executorService,
-                            new URI("http://localhost:59665/Pricing") // NOSONAR
+                            new URI("http://localhost:59665/copper2go/3/api/twoway/1.0/Pricing") // NOSONAR
                     ).create()).start();
         }
     }

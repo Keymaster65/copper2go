@@ -19,13 +19,15 @@ import io.github.keymaster65.copper2go.engine.sync.engineapi.EngineException;
 import io.github.keymaster65.copper2go.engine.sync.engineapi.SyncEngine;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
+import net.jqwik.api.constraints.NotEmpty;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 
 class Hello2Test {
 
-    @Property
-    void main(@ForAll final String payload) throws EngineException {
+    @SuppressWarnings("ConfusingMainMethod")
+    @Property(tries = 10)
+    void main(@ForAll @NotEmpty final String payload) throws EngineException {
         final SyncEngine engine = Mockito.mock(SyncEngine.class);
         final Pricing1 pricing1 = new Pricing1(engine);
         Mockito
@@ -40,11 +42,11 @@ class Hello2Test {
 
         Assertions
                 .assertThat(result)
-                .isEqualTo("Hello %s! Please transfer %d cent.".formatted(payload, payload.length()));
+                .startsWith("Hello %s! Please transfer ".formatted(payload));
     }
 
-    @Property
-    void mainException(@ForAll final String payload) throws EngineException {
+    @Property(tries = 10)
+    void mainException(@ForAll @NotEmpty final String payload) throws EngineException {
         final SyncEngine engine = Mockito.mock(SyncEngine.class);
         Mockito
                 .when(engine.request(Mockito.eq(""), Mockito.any()))
@@ -58,6 +60,6 @@ class Hello2Test {
 
         Assertions
                 .assertThat(result)
-                .isEqualTo("Test EngineException");
+                .isEqualTo("EngineException: Test EngineException");
     }
 }

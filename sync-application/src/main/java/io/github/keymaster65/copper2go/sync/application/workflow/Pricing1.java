@@ -20,12 +20,14 @@ import io.github.keymaster65.copper2go.engine.sync.engineapi.SyncEngine;
 import io.github.keymaster65.copper2go.engine.sync.workflowapi.Workflow;
 import io.github.keymaster65.copper2go.engine.sync.workflowapi.WorkflowData;
 
+import java.time.Duration;
+
 class Pricing1 implements Workflow {
 
     public Pricing1(final SyncEngine ignored) {
     }
 
     public String main(final WorkflowData workflowData) {
-        return "%d cent.".formatted(workflowData.getPayload().length());
+        return String.valueOf(Duration.ofMinutes(1).toNanos());
     }
 }

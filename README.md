@@ -48,15 +48,28 @@ in  https://github.com/Keymaster65/copper2go-workflows.
 
 [![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
 
-* Start container
-    * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.2.0`
-* In Browser you can see the used licenses
+### Demo
+
+* Start container with `hello` and `pricing` workflow 
+    * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.3.0`
+* In Browser `client` you can see the used licenses
     * `http://localhost:59665/`
     * `http://localhost:59665/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name must be
       specified."
-* Use any other HTTP-Client and POST your name to the URL
+* Use any other HTTP `client` and POST your name to the URL
     * Example: `curl --data Wolf http://localhost:59665/copper2go/3/api/twoway/2.0/Hello`
         * Will produce someting like `Hello Wolf! Please transfer 4 cent`
+
+### Demo Diagram
+
+The following diagram shows the workflows used in the Demo.
+
+* The green `client` sends a HTTP request to the blue copper2go `hello` workflow and waits for the response
+* The blue copper2go `hello` workflow send a request the red `pricing` backend and waits for the response
+* The red `pricing` backend calculates a price send it in it's response. To keep the demo simple, this backend also is a 
+copper2go workflow.
+
+![Demo Diagram](engineHelloWorkflow.png)
 
 ### Change Workflows
 
@@ -64,12 +77,24 @@ You want to develop your own workflows? You may start with the existing ones.
 
 * Clone or fork the copper2go-workflows **gradle** project: https://github.com/Keymaster65/copper2go-workflows
 * Modify configuration and store it into environment variable C2G_CONFIG.
-    * Start with
-      file: https://github.com/Keymaster65/copper2go/blob/release/4/src/main/resources/io/github/keymaster65/copper2go/application/config/config.json
-        * store it in your local docker host `config.json`
-        * Typically, modify workflowGitURI location
+    * Start with file: https://github.com/Keymaster65/copper2go/blob/release/4/copper2go-application/src/main/resources/io/github/keymaster65/copper2go/application/config/config.json
+    * store it in your local docker host `config.json`
+    * Typically, modify workflowGitURI location
 * Start Container with your configuration:
-    * `docker run -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.2.0`
+    * `docker run -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.3.0`
+
+### Starting with JMX and copper-monitoring Web Application
+
+`host.docker.internal` works for windows.
+
+* Start container with JMX on port 19665
+  * `docker run -d -e JAVA_TOOL_OPTIONS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=19665 -Dcom.sun.management.jmxremote.rmi.port=19665 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=host.docker.internal" -p 19665:19665 -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.3.0`
+  * Now you can visit the copper MBeas in tools like visualVM, JConsole etc.
+* Start the copper-monitoring Web Application on port 29665 using same JMX port
+  * `docker run -e JMX_HOST="host.docker.internal" -e JMX_PORT="19665" --name copperGui --rm -p 29665:8080 -d copperengine/copper-monitoring`
+  * Login with admin/admin at http://localhost:29665
+  * Submit this setting and the TransientEngine should be visible
+  * More Details can be found here https://github.com/copper-engine/copper-monitoring
 
 ## More Motivation
 
@@ -150,6 +175,7 @@ to become more familiar with COPPER, that you might visit
 * https://copper-engine.org/docs/content/COPPER-WorkflowCompatibilityRules-1.2.0-en.pdf
 * https://copper-engine.org/docs/unsorted/
 * https://github.com/copper-engine
+* https://github.com/copper-engine/copper-monitoring
 * https://copper-engine.org/
 
 ### copper2go Details
@@ -207,7 +233,7 @@ Visit the sources, tests, examples and JavaDocs:
 | core      | [copper2go-api](https://www.javadoc.io/doc/io.github.keymaster65/copper2go-api/latest/index.html)     |
 | extension | [copper-coreengine](https://www.javadoc.io/doc/org.copper-engine/copper-coreengine/latest/index.html) |
 | extension | [slf4j-api](https://www.javadoc.io/doc/org.slf4j/slf4j-api/latest/org.slf4j/module-summary.html)      |
-| JDK       | [Java 17 API](https://docs.oracle.com/en/java/javase/17/docs/api/index.html)                          |
+| JDK       | [Java 21 API](https://docs.oracle.com/en/java/javase/17/docs/api/index.html)                          |
 
 ##### Application API
 
@@ -285,20 +311,23 @@ Issues are very welcome, too.
 ### Releasing and Maintenance
 
 * The master branch is maintained and released as "latest" image.
-* The newest version branch is maintained and released as a tagged image for example "4.2.0"
+* The newest version branch is maintained and released as a tagged image for example "4.3.0"
 * The newest Workflow API is maintained
 
 #### Release Tasks
+
 1) Optional: `gradle dependencyUpdates`
-1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks`
-1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies --write-locks --refresh-dependencies`
-1) `gradle dependencyCheckAggregate`
+1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks`
+1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks --refresh-dependencies`
+1) `gradle dependencyCheckAnalyze --info`
 1) `gradle clean build`
 1) `gradle clean integrationTest`
+1) Change copper2goVersion to "latest"
 1) `gradle :copper2go-application:build :copper2go-application:jib`
 1) `gradle systemTest`
 1) Optional: `gradle :vanilla-application:build :vanilla-application:jib`
 1) Optional: `gradle :sync-application:build :sync-application:jib`
+1) `docker scout cves keymaster65/copper2go:latest`
 
 #### master
 
@@ -311,7 +340,7 @@ Issues are very welcome, too.
 1) release master
 1) checkout version branch
 1) merge master to version branch
-1) update version for jib (in copper2go-appliction/build.gradle.kts)
+1) update and commit version for jib (in copper2go-appliction/build.gradle.kts)
 1) execute "Release Tasks"
 1) push version branch
 1) "Draft a new release on github" on version branch (look at older releases for details)
@@ -330,19 +359,19 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-#### "slf4j-api and jackson-databind" Workflow API 3.2.0
-
-* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.6
-* [x] Update jackson-databind from 2.13.2.2 to 2.14.1
-
-## Planning
-
 ### "Operator" Release Application API 4.4
 
-* [ ] configure thread pool size, client pool size and more
-* [ ] JMX usage in Container
-* [ ] Add some performance analysis
-* [ ] Support of COPPER core GUI
+* [x] JMX usage in Container
+* [x] Support of COPPER core GUI
+* [x] (Security) Updates
+* [x] Update to JDK 21
+
+#### "slf4j-api and jackson-databind" Workflow API 3.2.1
+
+* [x] Update slf4j-api from 2.0.6 to 2.0.9
+* [x] Update jackson-databind from 2.14.2 to 2.15.2
+
+## Planning
 
 ### "Binding" Release Application API 4.5
 
@@ -358,6 +387,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### Backlog
 
 * Add new Repository Performancetest
+* configure thread pool size, client pool size and more
+* Add some performance analysis
 * Remove version 2 of HTTP Receiver API
 * Finish support kafka events
 * Support faster startup (may be graal, may be crac)
@@ -373,12 +404,12 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * HTTP Security
 * Kafka Security
 * Add information "How Tos" to developer's guide
-      * Overview
-      * Request Channel Stores
-      * Event Channel Stores
-      * Configuration Reply Channel Store
-      * Tickets
-      * Workflow Development/Test
+  * Overview
+  * Request Channel Stores
+  * Event Channel Stores
+  * Configuration Reply Channel Store
+  * Tickets
+  * Workflow Development/Test
 * Load workflow subtree only from git
 * Use vanilla-engine without a github fork
 * Extend connectors without a github fork
@@ -398,6 +429,11 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Withdrawn: Vertx Bus Connector
 
 ## Released
+
+#### "slf4j-api and jackson-databind" Workflow API 3.2.0
+
+* [x] Update slf4j-api from 2.0.0-alpha5 to 2.0.6
+* [x] Update jackson-databind from 2.13.2.2 to 2.14.1
 
 ### "Loom" Release Application API 4.3.0
 

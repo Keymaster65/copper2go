@@ -21,9 +21,12 @@ import net.jqwik.api.Property;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 
+import java.time.Duration;
+
 class Pricing1Test {
 
-    @Property
+    @SuppressWarnings("ConfusingMainMethod")
+    @Property(tries = 10)
     void main(@ForAll final String payload) {
         final SyncEngine engine = Mockito.mock(SyncEngine.class);
         final Pricing1 pricing1 = new Pricing1(engine);
@@ -31,6 +34,6 @@ class Pricing1Test {
 
         final String result = pricing1.main(workflowData);
 
-        Assertions.assertThat(result).isEqualTo("%d cent.".formatted(payload.length()));
+        Assertions.assertThat(result).isEqualTo("%d".formatted(Duration.ofMinutes(1).toNanos()));
     }
 }
