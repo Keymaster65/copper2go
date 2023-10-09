@@ -41,3 +41,5 @@ jobs:
         run: ./gradlew test jacocoTestReport sonarqube --info
       - name: OWASP dependencyCheckAnalyze
         run: ./gradlew dependencyCheckAnalyze --info
+      - name: Integration Test
+        run: ./gradlew clean integrationTest
