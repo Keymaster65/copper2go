@@ -360,6 +360,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### "Binding" Release Application API 4.5
 
 * [x] Update netty-handler to 4.1.100.Final (Continue suppressing CVE-2023-4586)
+* [x] Fix race condition in WorkflowHandler for oneway requests
 * [ ] Workflow with Json binding
 
 #### "slf4j-api and jackson-databind" Workflow API 3.2.1

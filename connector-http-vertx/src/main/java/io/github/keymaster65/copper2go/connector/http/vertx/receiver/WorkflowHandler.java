@@ -41,8 +41,14 @@ public class WorkflowHandler {
     ) {
         try {
             if (ApiPath.isPayloadUri(uri)) {
-                var workflowVersion = WorkflowVersion.of(uri);
+                if (ApiPath.isOnewayUri(uri)) {
+                    log.debug("Empty OK response for incoming event.");
+                    response
+                            .setStatusCode(HttpURLConnection.HTTP_ACCEPTED)
+                            .end();
+                }
                 log.debug("Call Workflow on engine {}.", payloadReceiver);
+                var workflowVersion = WorkflowVersion.of(uri);
                 payloadReceiver.receive(
                         requestBody,
                         attributes,
@@ -55,12 +61,6 @@ public class WorkflowHandler {
                 throw new IllegalArgumentException(String.format("PATH %s not as expected.", uri));
             }
 
-            if (ApiPath.isOnewayUri(uri)) {
-                log.debug("Empty OK response for incoming event.");
-                response
-                        .setStatusCode(HttpURLConnection.HTTP_ACCEPTED)
-                        .end();
-            }
         } catch (EngineException | RuntimeException e) {
             log.warn("Exception while calling workflow.", e);
             response

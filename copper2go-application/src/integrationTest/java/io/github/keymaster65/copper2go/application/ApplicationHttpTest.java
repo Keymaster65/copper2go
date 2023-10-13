@@ -27,15 +27,12 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpResponse;
-import java.time.Duration;
-import java.util.concurrent.locks.LockSupport;
 
 class ApplicationHttpTest {
 
     public static final String HTTP_LOCALHOST = "http://localhost:";
     public static final String HELLO_2 = "2.0/Hello";
     public static final String HELLO_1 = "1.0/Hello?a=1";
-    public static final int APPLICATION_START_DELAY_SECONDS = 10;
 
     @Example()
     void helloTest() throws IOException, ApplicationException, InterruptedException {
@@ -45,7 +42,6 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
-            LockSupport.parkNanos(Duration.ofSeconds(APPLICATION_START_DELAY_SECONDS).toNanos());
 
 
             response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + HELLO_1), name);
@@ -69,7 +65,6 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
-            LockSupport.parkNanos(Duration.ofSeconds(APPLICATION_START_DELAY_SECONDS).toNanos());
 
 
             response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + HELLO_2), name);
@@ -93,7 +88,6 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
-            LockSupport.parkNanos(Duration.ofSeconds(APPLICATION_START_DELAY_SECONDS).toNanos());
 
 
             response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + HELLO_2), name);
@@ -120,7 +114,6 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
-            LockSupport.parkNanos(Duration.ofSeconds(APPLICATION_START_DELAY_SECONDS).toNanos());
 
 
             response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.ONEWAY_PATH + HELLO_2), name);
