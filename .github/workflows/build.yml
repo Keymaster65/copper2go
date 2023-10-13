@@ -47,7 +47,6 @@ jobs:
         run: |
           docker login -u keymaster65 -p ${{ secrets.DOCKER_HUB_SECRET }}
           ./gradlew :copper2go-application:build :copper2go-application:jib
-        continue-on-error: true
       - name: Systemtest
         run: |
           ./gradlew systemTest
