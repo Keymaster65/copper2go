@@ -357,10 +357,14 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "Binding" Release Application API 4.5
+### "crac ready" Release Application API 4.5
 
 * [x] Update netty-handler to 4.1.100.Final (Continue suppressing CVE-2023-4586)
 * [x] Fix race condition in WorkflowHandler for oneway requests
+* [ ] Support faster startup (may be graal, may be crac)
+
+### "Binding" Release Application API 4.6
+
 * [ ] Workflow with Json binding
 
 #### "slf4j-api and jackson-databind" Workflow API 3.2.1
@@ -370,13 +374,12 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ## Planning
 
-### "State Pattern" Release Application API 4.6
+### "State Pattern" Release Application API 4.7
 
 * [ ] Spike: Workflow using State Pattern or other defined strategy in copper2go-engine
 
 ### Backlog
 
-* Support faster startup (may be graal, may be crac)0
 * Workflow with XML binding (may be not ;-)
 * Split copper2go-workflows
 * Add new Workflow Repository for Performancetest
