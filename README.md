@@ -157,6 +157,10 @@ simple as blocking code. There is no "callback hell" in your project. You might 
 Loom Project in
 https://cr.openjdk.java.net/~rpressler/loom/Loom-Proposal.html.
 
+### crac Support
+
+TODO
+
 ### Long Running Workflows
 
 Last but not least, COPPER workflows can be executed for an unlimited time. It depends on the resources you add to the

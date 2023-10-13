@@ -44,16 +44,12 @@ jobs:
       - name: Integration Test
         run: ./gradlew integrationTest
       - name: Deploy
-        env:
-          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         run: |
+          docker login -u keymaster65 -p ${{ secrets.DOCKER_HUB_SECRET }}
           ./gradlew :copper2go-application:build :copper2go-application:jib
-        if: github.ref == 'refs/heads/master'
-        continue-on-error: true
       - name: Systemtest
         run: |
           ./gradlew systemTest
-        if: github.ref == 'refs/heads/master'
       - name: Archive reports
         uses: actions/upload-artifact@v3
         if: always()
