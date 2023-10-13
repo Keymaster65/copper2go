@@ -1,7 +1,6 @@
 import com.github.jk1.license.filter.DependencyFilter
 import com.github.jk1.license.filter.LicenseBundleNormalizer
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import kotlin.math.log
 
 plugins {
     java
@@ -117,7 +116,7 @@ allprojects {
 
     // https://github.com/ben-manes/gradle-versions-plugin
     fun isNonStable(version: String): Boolean {
-        val nonStable = listOf("RC").any { version.toUpperCase().contains(it) }
+        val nonStable = listOf("RC").any { version.uppercase().contains(it) }
         return nonStable
     }
     tasks.withType<DependencyUpdatesTask> {
@@ -178,7 +177,7 @@ allprojects {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
             implementation("org.xerial.snappy:snappy-java:1.1.10.5")
-            implementation("io.netty:netty-handler:4.1.99.Final")
+            implementation("io.netty:netty-handler:4.1.100.Final")
         }
     }
 
