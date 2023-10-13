@@ -50,7 +50,6 @@ jobs:
       - name: Systemtest
         run: |
           ./gradlew systemTest
-        if: github.ref == 'refs/heads/master'
       - name: Archive reports
         uses: actions/upload-artifact@v3
         if: always()
