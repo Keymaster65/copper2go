@@ -44,10 +44,8 @@ jobs:
       - name: Integration Test
         run: ./gradlew integrationTest
       - name: Deploy
-        env:
-          DOCKER_HUB_SECRET: ${{ secrets.DOCKER_HUB_SECRET }}
         run: |
-          docker login -u keymaster65 -p $DOCKER_HUB_SECRET
+          docker login -u keymaster65 -p ${{ secrets.DOCKER_HUB_SECRET }}
           ./gradlew :copper2go-application:build :copper2go-application:jib
         continue-on-error: true
       - name: Systemtest
