@@ -20,8 +20,6 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=alert_status)](https://sonarcloud.io/dashboard?id=Keymaster65_copper2go)
 
-![Sonar Lift Status](https://lift.sonatype.com/api/badge/github.com/Keymaster65/copper2go)
-
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api)
 [![GitHub release](https://img.shields.io/github/release/Keymaster65/copper2go)](https://GitHub.com/Keymaster65/copper2go/releases/)
 [![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
@@ -355,9 +353,19 @@ Issues are very welcome, too.
 * https://copper-engine.org/blog/2019-12-09-/copper-5.1-released/
 * https://github.com/factoryfx
 
-## Ongoing
+## Ongoing in latest
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
+
+### "crac ready" Release Application API 4.5
+
+* [x] Update netty-handler to 4.1.100.Final (Continue suppressing CVE-2023-4586)
+* [x] Fix race condition in WorkflowHandler for oneway requests
+* [ ] Support faster startup (may be graal, may be crac)
+
+### "Binding" Release Application API 4.6
+
+* [ ] Workflow with Json binding
 
 #### "slf4j-api and jackson-databind" Workflow API 3.2.1
 
@@ -366,25 +374,20 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ## Planning
 
-### "Binding" Release Application API 4.5
-
-* [ ] Workflow with Json binding
-* [ ] Workflow with XML binding (may be not ;-)
-* [ ] Split copper2go-workflows
-* [ ] Add new Workflow Repository for Performancetest
-
-### "State Pattern" Release Application API 4.6
+### "State Pattern" Release Application API 4.7
 
 * [ ] Spike: Workflow using State Pattern or other defined strategy in copper2go-engine
 
 ### Backlog
 
+* Workflow with XML binding (may be not ;-)
+* Split copper2go-workflows
+* Add new Workflow Repository for Performancetest
 * Add new Repository Performancetest
 * configure thread pool size, client pool size and more
 * Add some performance analysis
 * Remove version 2 of HTTP Receiver API
 * Finish support kafka events
-* Support faster startup (may be graal, may be crac)
 * Replace vertx HTTP components with simpler implementation
 * Replace vertx Kafka components with simpler implementation
 * STDIN/OUT support in config and container (or remove it)

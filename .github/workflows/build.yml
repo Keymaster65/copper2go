@@ -43,7 +43,6 @@ jobs:
         run: ./gradlew dependencyCheckAnalyze --info
       - name: Integration Test
         run: ./gradlew integrationTest
-        continue-on-error: true
       - name: Deploy
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
@@ -53,7 +52,7 @@ jobs:
         continue-on-error: true
       - name: Systemtest
         run: |
-          ./gradlew :systemTest
+          ./gradlew systemTest
         if: github.ref == 'refs/heads/master'
       - name: Archive reports
         uses: actions/upload-artifact@v3
