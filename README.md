@@ -355,7 +355,7 @@ Issues are very welcome, too.
 * https://copper-engine.org/blog/2019-12-09-/copper-5.1-released/
 * https://github.com/factoryfx
 
-## Ongoing
+## Ongoing in latest
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
@@ -379,12 +379,12 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ### Backlog
 
+* Support faster startup (may be graal, may be crac)0
 * Add new Repository Performancetest
 * configure thread pool size, client pool size and more
 * Add some performance analysis
 * Remove version 2 of HTTP Receiver API
 * Finish support kafka events
-* Support faster startup (may be graal, may be crac)
 * Replace vertx HTTP components with simpler implementation
 * Replace vertx Kafka components with simpler implementation
 * STDIN/OUT support in config and container (or remove it)
