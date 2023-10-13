@@ -52,7 +52,7 @@ jobs:
         continue-on-error: true
       - name: Systemtest
         run: |
-          ./gradlew :systemTest
+          ./gradlew systemTest
         if: github.ref == 'refs/heads/master'
       - name: Archive reports
         uses: actions/upload-artifact@v3
