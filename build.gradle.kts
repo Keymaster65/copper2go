@@ -153,7 +153,7 @@ allprojects {
         testImplementation("org.mockito:mockito-core:5.6.0")
 
         constraints {
-            implementation("commons-io:commons-io:2.11.0") {
+            implementation("commons-io:commons-io:2.14.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
             implementation("net.minidev:accessors-smart:2.4.9") {
