@@ -7,11 +7,11 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.4.0"
 }
 
-var copper2goVersion = "tmp"
-
 tasks.withType<Test> {
     jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,21,-source,21")
 }
+
+val copper2goVersion : String = project.property("copper2goVersion").toString()
 
 tasks.jar {
     dependsOn(tasks.findByName("checkLicense"))
