@@ -156,7 +156,7 @@ allprojects {
             implementation("commons-io:commons-io:2.14.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
-            implementation("net.minidev:accessors-smart:2.4.9") {
+            implementation("net.minidev:accessors-smart:2.5.0") {
                 because("Security scan found 1.2")
             }
             implementation("org.apache.httpcomponents:httpclient:4.5.14") {
