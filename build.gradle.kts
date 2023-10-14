@@ -145,7 +145,7 @@ allprojects {
         implementation("org.slf4j:slf4j-api:2.0.9")
         implementation("ch.qos.logback:logback-classic:1.4.11")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.15.3")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
         testImplementation("net.jqwik:jqwik:1.8.0")
@@ -153,10 +153,10 @@ allprojects {
         testImplementation("org.mockito:mockito-core:5.6.0")
 
         constraints {
-            implementation("commons-io:commons-io:2.11.0") {
+            implementation("commons-io:commons-io:2.14.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
-            implementation("net.minidev:accessors-smart:2.4.9") {
+            implementation("net.minidev:accessors-smart:2.5.0") {
                 because("Security scan found 1.2")
             }
             implementation("org.apache.httpcomponents:httpclient:4.5.14") {

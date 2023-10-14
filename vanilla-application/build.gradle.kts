@@ -23,7 +23,7 @@ dependencies {
     implementation(project(":vanilla-engine"))
 
     implementation(project(":connector-http-vertx"))
-    implementation("io.vertx:vertx-core:4.4.5")
+    implementation("io.vertx:vertx-core:4.4.6")
 }
 
 application {
