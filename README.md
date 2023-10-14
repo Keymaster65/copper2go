@@ -365,6 +365,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 * [x] Update netty-handler to 4.1.100.Final (Continue suppressing CVE-2023-4586)
 * [x] Fix race condition in WorkflowHandler for oneway requests
+* [x] Dependabot updates 14.10.2023
 * [ ] Support faster startup (may be graal, may be crac)
 
 ### "Binding" Release Application API 4.6
