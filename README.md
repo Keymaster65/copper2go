@@ -277,6 +277,8 @@ There you can find the environment variables, that can be used to control loggin
 
 ###### HTTP Receiver API
 
+**Is CRaC ready**
+
 URLs path should be "/copper2go/3/api/TYPE/MAJOR.MINOR/WORKFLOW-NAME
 
 where

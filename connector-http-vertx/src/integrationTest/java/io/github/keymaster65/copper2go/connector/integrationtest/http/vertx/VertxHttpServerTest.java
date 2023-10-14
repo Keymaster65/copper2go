@@ -24,6 +24,8 @@ import io.github.keymaster65.copper2go.connector.http.vertx.receiver.VertxHttpSe
 import io.vertx.core.Vertx;
 import net.jqwik.api.Example;
 import org.assertj.core.api.Assertions;
+import org.crac.Context;
+import org.crac.Resource;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
@@ -43,7 +45,7 @@ class VertxHttpServerTest {
         try {
             Assertions
                     .assertThatNoException()
-                            .isThrownBy(vertxHttpServer::start);
+                    .isThrownBy(vertxHttpServer::start);
         } finally {
             Assertions
                     .assertThatNoException()
@@ -60,7 +62,7 @@ class VertxHttpServerTest {
                 .when(payloadReceiver)
                 .receive(
                         ArgumentMatchers.any(),
-                        ArgumentMatchers.any (),
+                        ArgumentMatchers.any(),
                         ArgumentMatchers.any(),
                         eq("Hello"),
                         eq(1L),
@@ -82,5 +84,23 @@ class VertxHttpServerTest {
                 eq("Hello"),
                 eq(1L),
                 eq(0L));
+    }
+
+    @Example
+    void cracBeforeAfter() {
+        final PayloadReceiver payloadReceiver = Mockito.mock(PayloadReceiver.class);
+        @SuppressWarnings("unchecked")
+        final Context<? extends Resource> context = Mockito.mock(Context.class);
+
+        final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, new RequestHandler(payloadReceiver));
+        try {
+            Assertions
+                    .assertThatNoException()
+                    .isThrownBy(() -> vertxHttpServer.afterRestore(context));
+        } finally {
+            Assertions
+                    .assertThatNoException()
+                    .isThrownBy(() -> vertxHttpServer.beforeCheckpoint(context));
+        }
     }
 }
