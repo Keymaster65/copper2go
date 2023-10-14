@@ -10,46 +10,80 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           distribution: zulu
           java-version: 21
+
+
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+
+
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
+
+
       - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         run: ./gradlew clean build --info
+
+
       - name: Test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew test jacocoTestReport sonarqube --info
+
+
       - name: OWASP dependencyCheckAnalyze
         run: ./gradlew dependencyCheckAnalyze --info
+
+
       - name: Integration Test
         run: ./gradlew integrationTest
+
+
       - name: Deploy
         run: |
           docker login -u keymaster65 -p ${{ secrets.DOCKER_HUB_SECRET }}
-          ./gradlew :copper2go-application:build :copper2go-application:jib
+          ./gradlew -Pcopper2goVersion=$GITHUB_SHA :copper2go-application:build :copper2go-application:jib
+          
+
       - name: Systemtest
         run: |
-          ./gradlew systemTest
+          ./gradlew -Pcopper2goVersion=$GITHUB_SHA systemTest
+      
+
+      - name: Deploy Latest
+        if: github.ref == 'refs/heads/master'
+        run: |
+          docker login -u keymaster65 -p ${{ secrets.DOCKER_HUB_SECRET }}
+          ./gradlew -Pcopper2goVersion=latest :copper2go-application:build :copper2go-application:jib
+
+
+      - name: Systemtest Latest
+        if: github.ref == 'refs/heads/master'
+        run: |
+          ./gradlew -Pcopper2goVersion=latest systemTest          
+
+
       - name: Archive reports
         uses: actions/upload-artifact@v3
         if: always()
