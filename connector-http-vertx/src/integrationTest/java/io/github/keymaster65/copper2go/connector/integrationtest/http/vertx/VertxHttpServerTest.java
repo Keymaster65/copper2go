@@ -22,7 +22,8 @@ import io.github.keymaster65.copper2go.connector.http.vertx.receiver.ApiPath;
 import io.github.keymaster65.copper2go.connector.http.vertx.receiver.RequestHandler;
 import io.github.keymaster65.copper2go.connector.http.vertx.receiver.VertxHttpServer;
 import io.vertx.core.Vertx;
-import org.junit.jupiter.api.Test;
+import net.jqwik.api.Example;
+import org.assertj.core.api.Assertions;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
@@ -35,18 +36,22 @@ class VertxHttpServerTest {
 
     public static final int SERVER_PORT = 8024;
 
-    @Test
+    @Example
     void startStop() {
         PayloadReceiver payloadReceiver = Mockito.mock(PayloadReceiver.class);
         final VertxHttpServer vertxHttpServer = new VertxHttpServer(SERVER_PORT, new RequestHandler(payloadReceiver));
         try {
-            vertxHttpServer.start();
+            Assertions
+                    .assertThatNoException()
+                            .isThrownBy(vertxHttpServer::start);
         } finally {
-            vertxHttpServer.stop();
+            Assertions
+                    .assertThatNoException()
+                    .isThrownBy(vertxHttpServer::stop);
         }
     }
 
-    @Test
+    @Example
     void post() throws InterruptedException, EngineException, IOException {
         PayloadReceiver payloadReceiver = Mockito.mock(PayloadReceiver.class);
 
