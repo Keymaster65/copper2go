@@ -63,13 +63,26 @@ jobs:
       - name: Deploy
         run: |
           docker login -u keymaster65 -p ${{ secrets.DOCKER_HUB_SECRET }}
-          ./gradlew :copper2go-application:build :copper2go-application:jib
+          ./gradlew -Pcopper2goVersion=$GITHUB_SHA :copper2go-application:build :copper2go-application:jib
           
 
       - name: Systemtest
         run: |
-          ./gradlew systemTest
-          
+          ./gradlew -Pcopper2goVersion=$GITHUB_SHA systemTest
+      
+
+      - name: Deploy Latest
+        if: github.ref == 'refs/heads/master'
+        run: |
+          docker login -u keymaster65 -p ${{ secrets.DOCKER_HUB_SECRET }}
+          ./gradlew -Pcopper2goVersion=latest :copper2go-application:build :copper2go-application:jib
+
+
+      - name: Systemtest Latest
+        if: github.ref == 'refs/heads/master'
+        run: |
+          ./gradlew -Pcopper2goVersion=latest systemTest          
+
 
       - name: Archive reports
         uses: actions/upload-artifact@v3
