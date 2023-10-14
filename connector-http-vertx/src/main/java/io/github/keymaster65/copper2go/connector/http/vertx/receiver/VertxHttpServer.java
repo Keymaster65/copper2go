@@ -63,10 +63,10 @@ public class VertxHttpServer implements Copper2GoHttpServer, Resource {
     public void stop() {
         log.info("Stopping server.");
         final Future<Void> closeHttpServerFuture = httpServer.close();
-        log.info("Stopped httpServer with result {}", closeHttpServerFuture.result());
+        log.info("Stopped httpServer with result {}", closeHttpServerFuture);
 
         final Future<Void> closeVertxFuture = vertx.close();
-        log.info("Stopped vertx with result {}", closeVertxFuture.result());
+        log.info("Stopped vertx with result {}", closeVertxFuture);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class VertxHttpServer implements Copper2GoHttpServer, Resource {
         log.info("Stop httpServer in beforeCheckpoint.");
 
         final Future<Void> closeFuture = httpServer.close();
-        log.info("Stopped httpServer with result {}", closeFuture.result());
+        log.info("Stopped httpServer with result {}", closeFuture);
     }
 
     @Override
