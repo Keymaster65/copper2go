@@ -22,7 +22,6 @@ import org.copperengine.core.common.TicketPoolManager;
 import org.copperengine.core.common.WorkflowRepository;
 import org.copperengine.core.tranzient.TransientEngineFactory;
 import org.copperengine.core.tranzient.TransientScottyEngine;
-import org.copperengine.ext.wfrepo.git.GitWorkflowRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,13 +57,14 @@ public class ScottyFactory {
                     if (!new File("workDir").mkdirs()) {
                         log.info("Could not create dir {}", "workDir");
                     }
-                    var repo = new GitWorkflowRepository();
+                    var repo = new Copper2GoGitWorkflowRepository();
 
                     repo.setGitRepositoryDir(getWorkflowSourceDirectory());
                     repo.addSourceDir(getWorkflowSourceDirectory().getAbsolutePath() + workflowRepositoryConfig.workflowBase);
                     repo.setTargetDir(workDir + "/target");
                     repo.setBranch(workflowRepositoryConfig.branch);
                     repo.setOriginURI(workflowRepositoryConfig.workflowGitURI);
+                    repo.setCheckIntervalMSec(workflowRepositoryConfig.checkIntervalMSec);
                     return repo;
                 } catch (Exception createException) {
                     throw new EngineRuntimeException("Exception while creating workflow rfepository.", createException);
