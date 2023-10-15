@@ -22,8 +22,6 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import org.assertj.core.api.Assertions;
-import org.crac.Context;
-import org.crac.Resource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.mockito.Mockito;
@@ -133,26 +131,6 @@ class VertxHttpClientTest {
 
 
         final VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, SERVER_PORT, "/", responseReceiver);
-
-
-        Assertions
-                .assertThatCode(vertxHttpClient::close)
-                .doesNotThrowAnyException();
-    }
-
-    @Test
-    void cracBeforeAfter() {
-        ResponseReceiver responseReceiver = Mockito.mock(ResponseReceiver.class);
-        @SuppressWarnings("unchecked") final Context<? extends Resource> context = Mockito.mock(Context.class);
-        final VertxHttpClient vertxHttpClient = new VertxHttpClient(LOCALHOST, SERVER_PORT, "/", responseReceiver);
-
-
-        Assertions
-                .assertThatCode(() -> vertxHttpClient.beforeCheckpoint(context))
-                .doesNotThrowAnyException();
-        Assertions
-                .assertThatCode(() -> vertxHttpClient.afterRestore(context))
-                .doesNotThrowAnyException();
 
 
         Assertions

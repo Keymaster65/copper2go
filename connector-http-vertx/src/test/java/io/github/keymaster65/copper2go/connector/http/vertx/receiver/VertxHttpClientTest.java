@@ -28,6 +28,8 @@ import net.jqwik.api.Example;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import org.assertj.core.api.Assertions;
+import org.crac.Context;
+import org.crac.Resource;
 import org.mockito.Mockito;
 import org.slf4j.LoggerFactory;
 
@@ -138,6 +140,29 @@ class VertxHttpClientTest {
         Mockito.verify(onSuccessFuture).onSuccess(Mockito.any());
     }
 
+    @Example
+    void cracBeforeAfter() {
+        @SuppressWarnings("unchecked") final Context<? extends Resource> context = Mockito.mock(Context.class);
+        final WebClient webClient = Mockito.mock(WebClient.class);
+        final Vertx vertx = Mockito.mock(Vertx.class);
+        @SuppressWarnings("unchecked")
+        final Future<Void> closeFuture = Mockito.mock(Future.class);
+        Mockito.when(vertx.close()).thenReturn(closeFuture);
+        final VertxHttpClient vertxHttpClient = createVertxHttpClient(webClient, vertx);
+
+
+        Assertions
+                .assertThatCode(() -> vertxHttpClient.beforeCheckpoint(context))
+                .doesNotThrowAnyException();
+        Assertions
+                .assertThatCode(() -> vertxHttpClient.afterRestore(context))
+                .doesNotThrowAnyException();
+
+
+        Assertions
+                .assertThatCode(vertxHttpClient::close)
+                .doesNotThrowAnyException();
+    }
     /**
      * Enables "debug" logging.
      */
