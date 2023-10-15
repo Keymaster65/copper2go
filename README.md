@@ -355,7 +355,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### "crac ready" Release Application API 4.5
 
 * [x] CRaC integration in VertxHttpClient
-* [ ] CRaC integration in Copper2GoGitWorkflowRepository
+* [x] CRaC integration in Copper2GoGitWorkflowRepository
 * [ ] Support faster startup using CRaC (https://openjdk.org/projects/crac/)
 
 ### "Binding" Release Application API 4.6

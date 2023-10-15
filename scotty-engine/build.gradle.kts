@@ -20,4 +20,5 @@ dependencies {
         // needed for needed for GitAPIException
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.7.0.202309050840-r")
 
+    implementation("io.github.crac:org-crac:0.1.3")
 }
