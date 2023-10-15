@@ -23,16 +23,19 @@ public final class WorkflowRepositoryConfig {
     public final String branch;
     public final String workflowGitURI;
     public final String workflowBase;
+    public final int checkIntervalMSec;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public WorkflowRepositoryConfig(
             @JsonProperty(required = true, value = "branch") final String branch,
             @JsonProperty(required = true, value = "workflowGitURI") final String workflowGitURI,
-            @JsonProperty(required = true, value = "workflowBase") final String workflowBase
+            @JsonProperty(required = true, value = "workflowBase") final String workflowBase,
+            @JsonProperty(required = true, value = "checkIntervalMSec") final int checkIntervalMSec
 
     ) {
         this.branch = branch;
         this.workflowGitURI = workflowGitURI;
         this.workflowBase = workflowBase;
+        this.checkIntervalMSec = checkIntervalMSec;
     }
 }

@@ -65,6 +65,7 @@ public class ScottyFactory {
                     repo.setTargetDir(workDir + "/target");
                     repo.setBranch(workflowRepositoryConfig.branch);
                     repo.setOriginURI(workflowRepositoryConfig.workflowGitURI);
+                    repo.setCheckIntervalMSec(workflowRepositoryConfig.checkIntervalMSec);
                     return repo;
                 } catch (Exception createException) {
                     throw new EngineRuntimeException("Exception while creating workflow rfepository.", createException);
