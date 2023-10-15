@@ -7,11 +7,11 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.4.0"
 }
 
-var copper2goVersion = "4.4.0"
-
 tasks.withType<Test> {
     jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,21,-source,21")
 }
+
+val copper2goVersion : String = project.property("copper2goVersion").toString()
 
 tasks.jar {
     dependsOn(tasks.findByName("checkLicense"))
@@ -32,8 +32,8 @@ dependencies {
 
     implementation("org.copper-engine:copper-coreengine:5.4.2")
 
-    implementation("io.vertx:vertx-core:4.4.5")
-    implementation("io.vertx:vertx-kafka-client:4.4.5")
+    implementation("io.vertx:vertx-core:4.4.6")
+    implementation("io.vertx:vertx-kafka-client:4.4.6")
 
     testImplementation("org.testcontainers:testcontainers:1.19.1")
     testImplementation("org.testcontainers:kafka:1.19.1")

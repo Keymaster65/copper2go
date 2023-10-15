@@ -27,8 +27,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpResponse;
-import java.time.Duration;
-import java.util.concurrent.locks.LockSupport;
 
 class ApplicationHttpTest {
 
@@ -44,11 +42,16 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
-            LockSupport.parkNanos(Duration.ofSeconds(10).toNanos());
+
+
             response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + HELLO_1), name);
+
+
         } finally {
             application.stop();
         }
+
+
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_OK); // NOSONAR
         Assertions.assertThat(response.body()).contains(Data.getExpectedHello(name));
     }
@@ -62,12 +65,17 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
-            LockSupport.parkNanos(Duration.ofSeconds(5).toNanos());
+
+
             response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + HELLO_2), name);
+
+
         } finally {
 
             application.stop();
         }
+
+
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_OK);
         Assertions.assertThat(response.body()).contains(Data.getExpectedHello2Mapping(name));
     }
@@ -80,10 +88,16 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
+
+
             response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.TWOWAY_PATH + HELLO_2), name);
+
+
         } finally {
             application.stop();
         }
+
+
         SoftAssertions.assertSoftly(
                 softAssertions -> {
                     softAssertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_INTERNAL_ERROR);
@@ -100,10 +114,16 @@ class ApplicationHttpTest {
         HttpResponse<String> response;
         try {
             application.start();
+
+
             response = TestHttpClient.post(URI.create(HTTP_LOCALHOST + config.httpPort + ApiPath.ONEWAY_PATH + HELLO_2), name);
+
+
         } finally {
             application.stop();
         }
+
+
         SoftAssertions.assertSoftly(
                 softAssertions -> {
                     softAssertions.assertThat(response.statusCode()).isEqualTo(HttpURLConnection.HTTP_ACCEPTED);
