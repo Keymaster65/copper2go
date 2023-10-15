@@ -17,8 +17,8 @@ package io.github.keymaster65.copper2go.clientsimulator;
 
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
-        new Client().start(args);
+    public static void main(String[] args) {
+        new Client().start();
     }
 
 
