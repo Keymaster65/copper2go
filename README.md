@@ -49,7 +49,7 @@ in  https://github.com/Keymaster65/copper2go-workflows.
 ### Demo
 
 * Start container with `hello` and `pricing` workflow 
-    * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.4.0`
+    * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.4.1`
 * In Browser `client` you can see the used licenses
     * `http://localhost:59665/`
     * `http://localhost:59665/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name must be
@@ -79,14 +79,14 @@ You want to develop your own workflows? You may start with the existing ones.
     * store it in your local docker host `config.json`
     * Typically, modify workflowGitURI location
 * Start Container with your configuration:
-    * `docker run -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.4.0`
+    * `docker run -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.4.1`
 
 ### Starting with JMX and copper-monitoring Web Application
 
 `host.docker.internal` works for windows.
 
 * Start container with JMX on port 19665
-  * `docker run -d -e JAVA_TOOL_OPTIONS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=19665 -Dcom.sun.management.jmxremote.rmi.port=19665 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=host.docker.internal" -p 19665:19665 -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.4.0`
+  * `docker run -d -e JAVA_TOOL_OPTIONS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=19665 -Dcom.sun.management.jmxremote.rmi.port=19665 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=host.docker.internal" -p 19665:19665 -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.4.1`
   * Now you can visit the copper MBeas in tools like visualVM, JConsole etc.
 * Start the copper-monitoring Web Application on port 29665 using same JMX port
   * `docker run -e JMX_HOST="host.docker.internal" -e JMX_PORT="19665" --name copperGui --rm -p 29665:8080 -d copperengine/copper-monitoring`
@@ -314,40 +314,29 @@ Issues are very welcome, too.
 
 ### Releasing and Maintenance
 
-* The master branch is maintained and released as "latest" image.
-* The newest version branch is maintained and released as a tagged image for example "4.4.0"
+* The "master" branch is maintained and released as "latest" image on dockerhub. 
+* The newest "release" branch is maintained and released as a tagged image for example "4.4.0"
+* Because build pipeline is completely automated after committing to "master" or "release", these branches are protected on github and commits must be siged "verified". 
 * The newest Workflow API is maintained
+* For a "release", the following manual activities mst be done
+  1) Update README version and move "Ongoing" block in "master"
+  1) Change "release" version in `.github/workflows/build.yml` in "master" on github (with a PR)
+  1) merge "master" to "release" branch on github (with a PR)
+  1) "Draft a new release on github" on "release" branch with a copy of the moved "Ongoing" block (look at older releases for details)
 
-#### Release Tasks
+#### Helpful Tasks
 
-1) Optional: `gradle dependencyUpdates`
-1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks`
+1) `gradle dependencyUpdates`
+1) `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks`
 1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks --refresh-dependencies`
 1) `gradle dependencyCheckAnalyze --info`
 1) `gradle clean build`
 1) `gradle clean integrationTest`
-1) Change copper2goVersion to "latest"
 1) `gradle -Pcopper2goVersion=tmp2 :copper2go-application:build :copper2go-application:jib `
 1) `gradle systemTest`
-1) Optional: `gradle :vanilla-application:build :vanilla-application:jib`
-1) Optional: `gradle :sync-application:build :sync-application:jib`
-1) Optional: `docker scout cves keymaster65/copper2go:latest`
-
-#### master
-
-1) Release Tasks
-1) push master
-
-#### newest version branch
-
-1) Update README version in master and push
-1) release master
-1) checkout version branch
-1) merge master to version branch
-1) update and commit version for jib (in copper2go-appliction/build.gradle.kts)
-1) execute "Release Tasks"
-1) push version branch
-1) "Draft a new release on github" on version branch (look at older releases for details)
+1) `gradle :vanilla-application:build :vanilla-application:jib`
+1) `gradle :sync-application:build :sync-application:jib`
+1) `docker scout cves keymaster65/copper2go:latest`
 
 ### Links
 
@@ -359,15 +348,14 @@ Issues are very welcome, too.
 * https://copper-engine.org/blog/2019-12-09-/copper-5.1-released/
 * https://github.com/factoryfx
 
-## Ongoing in latest
+## Ongoing in latest/master
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
 ### "crac ready" Release Application API 4.5
 
-* [x] Update netty-handler to 4.1.100.Final (Continue suppressing CVE-2023-4586)
-* [x] Fix race condition in WorkflowHandler for oneway requests
-* [x] Dependabot updates 14.10.2023
+* [ ] CRaC integration in VertxHttpClient
+* [ ] CRaC integration in Copper2GoGitWorkflowRepository
 * [ ] Support faster startup using CRaC (https://openjdk.org/projects/crac/)
 
 ### "Binding" Release Application API 4.6
@@ -377,7 +365,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 #### "slf4j-api and jackson-databind" Workflow API 3.2.1
 
 * [x] Update slf4j-api from 2.0.6 to 2.0.9
-* [x] Update jackson-databind from 2.14.2 to 2.15.2
+* [x] Update jackson-databind from 2.14.2 to 2.15.3
 
 ## Planning
 
@@ -387,11 +375,11 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ### Backlog
 
+* configure thread pool size, client pool size and more
 * Workflow with XML binding (may be not ;-)
 * Split copper2go-workflows
 * Add new Workflow Repository for Performancetest
 * Add new Repository Performancetest
-* configure thread pool size, client pool size and more
 * Add some performance analysis
 * Remove version 2 of HTTP Receiver API
 * Finish support kafka events
@@ -433,6 +421,14 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ## Released
 
+### "Service" Release Application API 4.4.1
+
+* [x] Update netty-handler to 4.1.100.Final (Continue suppressing CVE-2023-4586)
+* [x] Fix race condition in WorkflowHandler for oneway requests
+* [x] Dependabot updates 14.10.2023
+* [x] Full automated build pipelines into dockerhub releases for "latest/master" and "release"
+* [x] CRaC integration in VertxHttpServer
+* 
 ### "Operator" Release Application API 4.4
 
 * [x] JMX usage in Container

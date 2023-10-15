@@ -84,6 +84,19 @@ jobs:
           ./gradlew -Pcopper2goVersion=latest systemTest          
 
 
+      - name: Deploy Release
+        if: github.ref == 'refs/heads/release/4'
+        run: |
+          docker login -u keymaster65 -p ${{ secrets.DOCKER_HUB_SECRET }}
+          ./gradlew -Pcopper2goVersion=4.4.1 :copper2go-application:build :copper2go-application:jib
+
+
+      - name: Systemtest Release
+        if: github.ref == 'refs/heads/release/4'
+        run: |
+          ./gradlew -Pcopper2goVersion=4.4.1 systemTest          
+
+
       - name: Archive reports
         uses: actions/upload-artifact@v3
         if: always()
