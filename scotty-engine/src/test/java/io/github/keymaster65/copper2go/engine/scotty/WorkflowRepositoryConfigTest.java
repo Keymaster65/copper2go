@@ -25,12 +25,14 @@ class WorkflowRepositoryConfigTest {
     public static final String BRANCH = "/branch";
     public static final String WORKFLOW_GIT_URI = "/workflowGitURI";
     public static final String WORKFLOW_BASE = "/workflowBase";
+    public static final int CHECK_INTERVAL_MSEC = 5000;
 
     public static final String WORKFLOW_REPOSITORY_CONFIG = """
             {
                 "branch": "%s",
                 "workflowGitURI": "%s",
-                "workflowBase": "%s"
+                "workflowBase": "%s",
+                "checkIntervalMSec": "%d"
             }
                         """;
 
@@ -41,13 +43,14 @@ class WorkflowRepositoryConfigTest {
 
 
         final WorkflowRepositoryConfig workflowRepositoryConfig = objectMapper.readValue(
-                String.format(WORKFLOW_REPOSITORY_CONFIG, BRANCH, WORKFLOW_GIT_URI, WORKFLOW_BASE),
+                String.format(WORKFLOW_REPOSITORY_CONFIG, BRANCH, WORKFLOW_GIT_URI, WORKFLOW_BASE, CHECK_INTERVAL_MSEC),
                 WorkflowRepositoryConfig.class
         );
 
         Assertions.assertThat(workflowRepositoryConfig.branch).isEqualTo(BRANCH);
         Assertions.assertThat(workflowRepositoryConfig.workflowGitURI).isEqualTo(WORKFLOW_GIT_URI);
         Assertions.assertThat(workflowRepositoryConfig.workflowBase).isEqualTo(WORKFLOW_BASE);
+        Assertions.assertThat(workflowRepositoryConfig.checkIntervalMSec).isEqualTo(CHECK_INTERVAL_MSEC);
     }
 
     @Example
