@@ -49,7 +49,7 @@ in  https://github.com/Keymaster65/copper2go-workflows.
 ### Demo
 
 * Start container with `hello` and `pricing` workflow 
-    * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.4.1`
+    * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.5.0`
 * In Browser `client` you can see the used licenses
     * `http://localhost:59665/`
     * `http://localhost:59665/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name must be
@@ -79,14 +79,14 @@ You want to develop your own workflows? You may start with the existing ones.
     * store it in your local docker host `config.json`
     * Typically, modify workflowGitURI location
 * Start Container with your configuration:
-    * `docker run -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.4.1`
+    * `docker run -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.5.0`
 
 ### Starting with JMX and copper-monitoring Web Application
 
 `host.docker.internal` works for windows.
 
 * Start container with JMX on port 19665
-  * `docker run -d -e JAVA_TOOL_OPTIONS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=19665 -Dcom.sun.management.jmxremote.rmi.port=19665 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=host.docker.internal" -p 19665:19665 -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.4.1`
+  * `docker run -d -e JAVA_TOOL_OPTIONS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=19665 -Dcom.sun.management.jmxremote.rmi.port=19665 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=host.docker.internal" -p 19665:19665 -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.5.0`
   * Now you can visit the copper MBeas in tools like visualVM, JConsole etc.
 * Start the copper-monitoring Web Application on port 29665 using same JMX port
   * `docker run -e JMX_HOST="host.docker.internal" -e JMX_PORT="19665" --name copperGui --rm -p 29665:8080 -d copperengine/copper-monitoring`
@@ -356,12 +356,6 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "CRaC ready" Release Application API 4.5.0
-
-* [x] CRaC integration in VertxHttpClient
-* [x] CRaC integration in Copper2GoGitWorkflowRepository
-* [x] Support faster startup using CRaC (https://openjdk.org/projects/crac/)
-
 ### "slf4j-api and jackson-databind" Workflow API 3.2.1
 
 * [x] Update slf4j-api from 2.0.6 to 2.0.9
@@ -426,6 +420,12 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Withdrawn: Vertx Bus Connector
 
 ## Released
+
+### "CRaC ready" Release Application API 4.5.0
+
+* [x] CRaC integration in VertxHttpClient
+* [x] CRaC integration in Copper2GoGitWorkflowRepository
+* [x] Support faster startup using CRaC (https://openjdk.org/projects/crac/)
 
 ### "Service" Release Application API 4.4.1
 
