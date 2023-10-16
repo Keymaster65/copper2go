@@ -157,15 +157,20 @@ simple as blocking code. There is no "callback hell" in your project. You might 
 Loom Project in
 https://cr.openjdk.java.net/~rpressler/loom/Loom-Proposal.html.
 
-### crac Support
-
-TODO
-
 ### Long Running Workflows
 
 Last but not least, COPPER workflows can be executed for an unlimited time. It depends on the resources you add to the
 application. Transient workflows are supported in copper2go since release 0.1. Persistent workflows are supported by
 COPPER and currently in the Backlog of copper2go.
+
+### CRaC Support
+
+It is possible to start copper2go at CRaC (https://openjdk.org/projects/crac/) checkpoints. If you want to use it, you
+must create a fitting pipeline to create images containing a checkpoint. To see how this can be done,
+there are some files in the `crac` directory.
+
+The CRaC API is integrated in the HTTP connectors. Requirements to support Kafka and STDIN/STDOUT/STDERR can be found in
+the Backlog.
 
 ### COPPER Details
 
@@ -208,7 +213,7 @@ TO DO
 
 https://github.com/Keymaster65/copper2go-tools-bridge
 
-#### Versioning and API
+#### API and Versioning
 
 ##### Workflow API
 
@@ -277,8 +282,6 @@ There you can find the environment variables, that can be used to control loggin
 
 ###### HTTP Receiver API
 
-**Is CRaC ready**
-
 URLs path should be "/copper2go/3/api/TYPE/MAJOR.MINOR/WORKFLOW-NAME
 
 where
@@ -338,7 +341,7 @@ Issues are very welcome, too.
 1) `gradle :sync-application:build :sync-application:jib`
 1) `docker scout cves keymaster65/copper2go:latest`
 
-### Links
+## Links
 
 * https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
 * https://hub.docker.com/r/keymaster65/copper2go
@@ -346,34 +349,35 @@ Issues are very welcome, too.
 * https://github.com/copper-engine
 * https://copper-engine.org/
 * https://copper-engine.org/blog/2019-12-09-/copper-5.1-released/
+* https://openjdk.org/projects/crac/
 * https://github.com/factoryfx
 
 ## Ongoing in latest/master
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "crac ready" Release Application API 4.5
+### "CRaC ready" Release Application API 4.5.0
 
 * [x] CRaC integration in VertxHttpClient
 * [x] CRaC integration in Copper2GoGitWorkflowRepository
-* [ ] Support faster startup using CRaC (https://openjdk.org/projects/crac/)
+* [x] Support faster startup using CRaC (https://openjdk.org/projects/crac/)
 
-### "Binding" Release Application API 4.6
-
-* [ ] Workflow with Json binding
-
-#### "slf4j-api and jackson-databind" Workflow API 3.2.1
+### "slf4j-api and jackson-databind" Workflow API 3.2.1
 
 * [x] Update slf4j-api from 2.0.6 to 2.0.9
 * [x] Update jackson-databind from 2.14.2 to 2.15.3
 
 ## Planning
 
-### "State Pattern" Release Application API 4.7
+### "Binding" Release Application API 4.6.0
+
+* [ ] Workflow with Json binding
+
+### "State Pattern" Release Application API 4.7.0
 
 * [ ] Spike: Workflow using State Pattern or other defined strategy in copper2go-engine
 
-### Backlog
+## Backlog
 
 * configure thread pool size, client pool size and more
 * Workflow with XML binding (may be not ;-)
@@ -385,9 +389,11 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * Finish support kafka events
 * Replace vertx HTTP components with simpler implementation
 * Replace vertx Kafka components with simpler implementation
+* CRaC Support for Kafka
+* CRaC Support for STDIN/STDOUT/STDERR
 * STDIN/OUT support in config and container (or remove it)
 * Redesign DefaultRequestChannel (like Kafka). Use WARN instead of ERROR?
-* Redesign RequestChannel/EventChannel: Is the difference needed? Why 2 errorEvent (was inspired by STDOUR/ERR)?
+* Redesign RequestChannel/EventChannel: Is the difference needed? Why 2 errorEvent (was inspired by STDOUT/ERR)?
 * Collect Statistics and other (may be useful for Tests like Bridge-Test)
 * Add test coverage for workflows to copper2go-workflows
 * Release internet workflow application as copper2go-webapp (see branch experiment/webapp)
@@ -429,7 +435,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Full automated build pipelines into dockerhub releases for "latest/master" and "release"
 * [x] CRaC integration in VertxHttpServer
 * 
-### "Operator" Release Application API 4.4
+### "Operator" Release Application API 4.4.0
 
 * [x] JMX usage in Container
 * [x] Support of COPPER core GUI
@@ -451,7 +457,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Add licenses to sync-application
 * [x] Do not use root as user to run copper2go
 
-### "Vanilla" Release Application API 4.2
+### "Vanilla" Release Application API 4.2.0
 
 * [x] Add license info "vanilla" engine implementation
 * [x] Add "vanilla" engine implementation
