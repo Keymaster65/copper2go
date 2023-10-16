@@ -162,7 +162,7 @@ allprojects {
             implementation("org.apache.httpcomponents:httpclient:4.5.14") {
                 because("Security scan found 4.5.2")
             }
-            implementation("net.minidev:json-smart:2.4.10") {
+            implementation("net.minidev:json-smart:2.5.0") {
                 because("Security scan found 2.3")
             }
             implementation("org.apache.velocity:velocity-engine-core:2.3") {
