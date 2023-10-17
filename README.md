@@ -358,12 +358,13 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ### "Binding" Release Application API 4.6.0
 
-* [ ] Workflow with Json binding
+* [x] Workflow with Json binding
 
-### "slf4j-api and jackson-databind" Workflow API 3.2.1
+### "copper-coreengine, slf4j-api and jackson-databind" Workflow API 3.2.1
 
+* [x] Update copper-coreengine from 5.4.1 to 5.4.2
 * [x] Update slf4j-api from 2.0.6 to 2.0.9
-* [x] Update jackson-databind from 2.14.2 to 2.15.3
+* [x] Update jackson-databind from 2.14.1 to 2.15.3
 
 ## Planning
 
