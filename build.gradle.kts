@@ -162,7 +162,7 @@ allprojects {
             implementation("org.apache.httpcomponents:httpclient:4.5.14") {
                 because("Security scan found 4.5.2")
             }
-            implementation("net.minidev:json-smart:2.4.10") {
+            implementation("net.minidev:json-smart:2.5.0") {
                 because("Security scan found 2.3")
             }
             implementation("org.apache.velocity:velocity-engine-core:2.3") {
@@ -171,9 +171,9 @@ allprojects {
             implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.kafka:kafka-clients:3.4.0")
+            implementation("org.apache.kafka:kafka-clients:3.6.0")
 
-            implementation("com.google.guava:guava:32.1.2-jre") {
+            implementation("com.google.guava:guava:32.1.3-jre") {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
             implementation("org.xerial.snappy:snappy-java:1.1.10.5")
