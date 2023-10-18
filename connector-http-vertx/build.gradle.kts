@@ -6,7 +6,7 @@ dependencies {
     implementation(project(":connector-api"))
     implementation(project(":copper2go-api"))
 
-    implementation("io.github.crac:org-crac:0.1.3")
+    implementation("org.crac:crac:1.4.0")
 
     implementation("io.vertx:vertx-core:4.4.6")
     implementation("io.vertx:vertx-web:4.4.6")

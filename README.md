@@ -359,6 +359,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### "Binding" Release Application API 4.6.0
 
 * [x] Workflow with Json binding
+* [x] Use org.crac:crac instead of io.github.crac:org-crac
 
 ### "copper-coreengine, slf4j-api and jackson-databind" Workflow API 3.2.1
 
