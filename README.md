@@ -359,6 +359,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### "Binding" Release Application API 4.6.0
 
 * [x] Workflow with Json binding
+* [x] Use org.crac:crac instead of io.github.crac:org-crac
 
 ### "copper-coreengine, slf4j-api and jackson-databind" Workflow API 3.2.1
 
@@ -370,31 +371,26 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ### "State Pattern" Release Application API 4.7.0
 
+* [ ] Spike: BPMN Support
+* [ ] Spike: Multi workflow support and REST level
 * [ ] Spike: Workflow using State Pattern or other defined strategy in copper2go-engine
 
 ## Backlog
 
-* configure thread pool size, client pool size and more
-* Workflow with XML binding (may be not ;-)
-* Split copper2go-workflows
-* Add new Workflow Repository for Performancetest
-* Add new Repository Performancetest
-* Add some performance analysis
-* Remove version 2 of HTTP Receiver API
-* Finish support kafka events
-* Replace vertx HTTP components with simpler implementation
-* Replace vertx Kafka components with simpler implementation
-* CRaC Support for Kafka
-* CRaC Support for STDIN/STDOUT/STDERR
 * STDIN/OUT support in config and container (or remove it)
+* Load workflow subtree only from git
+* Operating
+  * configure thread pool size, client pool size and more
+  * Add some performance analysis
+  * Collect Statistics and other (may be useful for Tests like Bridge-Test)
+* Remove version 2 of HTTP Receiver API
+* Extract WorkflowTestRunner.java and Copper2goDependencyInjector.java
+* Split copper2go-workflows; extract systemtest
 * Redesign DefaultRequestChannel (like Kafka). Use WARN instead of ERROR?
 * Redesign RequestChannel/EventChannel: Is the difference needed? Why 2 errorEvent (was inspired by STDOUT/ERR)?
-* Collect Statistics and other (may be useful for Tests like Bridge-Test)
 * Add test coverage for workflows to copper2go-workflows
 * Release internet workflow application as copper2go-webapp (see branch experiment/webapp)
-* Multi workflow support and REST level
-* HTTP Security
-* Kafka Security
+* Finish support kafka events
 * Add information "How Tos" to developer's guide
   * Overview
   * Request Channel Stores
@@ -402,23 +398,33 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
   * Configuration Reply Channel Store
   * Tickets
   * Workflow Development/Test
-* Load workflow subtree only from git
+* Support of HTTP callbacks
+* Add callback in WorkflowData ("replychannel")
 * Use vanilla-engine without a github fork
 * Extend connectors without a github fork
 * Extend copper2go image without a github fork
-* Delete .copper on start (if still problems occurs)
-* Kafka choreography example
-* Support Binary data
-* Binary Binding
-* JMS support (may be IBM MQ, ActiveMQ or ...)
-* PostgreSQL for workflow persistent instances
-    * Add callback in WorkflowData ("replychannel")
-    * Support of callbacks
-* PostgreSQL support for business resources
-* Async idempotent DB API
-* On demand only: factoryfx integration
-* On demand only: extend workflow attributes to a MultiMap
-* Withdrawn: Vertx Bus Connector
+* Retire vertx
+  * Replace vertx HTTP components with simpler implementation
+  * Replace vertx Kafka components with simpler implementation
+* On demand only
+  * CRaC Support for STDIN/STDOUT/STDERR
+  * Support Binary data
+  * Binary Binding
+  * Kafka choreography example
+  * CRaC Support for Kafka
+  * PostgreSQL for workflow persistent instances
+  * Async idempotent DB API
+  * PostgreSQL support for business resources
+  * JMS support (may be IBM MQ, ActiveMQ or ...)
+  * HTTP Security
+  * Kafka Security
+  * factoryfx integration
+  * extend workflow attributes to a MultiMap
+* Withdrawn
+  * Add new Workflow Repository for Performancetest
+  * Delete .copper on start (if still problems occurs)
+  * Workflow with XML binding (may be not ;-)
+  * Vertx Bus Connector
 
 ## Released
 
