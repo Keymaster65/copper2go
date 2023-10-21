@@ -361,6 +361,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Workflow with Json binding
 * [x] Use org.crac:crac instead of io.github.crac:org-crac
 * [x] New ENV for logback $LOG_LEVEL_ROOT
+* [x] Dependabot updates 21.10.2023
 
 ## Planning
 
