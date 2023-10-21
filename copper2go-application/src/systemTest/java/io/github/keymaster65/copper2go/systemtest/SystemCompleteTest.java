@@ -100,6 +100,9 @@ class SystemCompleteTest {
                     .withNetwork(network)
                     .withEnv(Main.ENV_C2G_CONFIG, config);
             copper2GoContainer.start();
+
+            log.info("copper2go server started with port {}. Exposed: {}", copper2GoContainer.getFirstMappedPort(), copper2GoContainer.getExposedPorts());
+
         }
     }
 }

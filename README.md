@@ -49,7 +49,7 @@ in  https://github.com/Keymaster65/copper2go-workflows.
 ### Demo
 
 * Start container with `hello` and `pricing` workflow 
-    * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:latest`
+    * `docker run -d -p 59665:59665 --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:latest`
 * In Browser `client` you can see the used licenses
     * `http://localhost:59665/`
     * `http://localhost:59665/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name must be
@@ -79,7 +79,7 @@ You want to develop your own workflows? You may start with the existing ones.
     * store it in your local docker host `config.json`
     * Typically, modify workflowGitURI location
 * Start Container with your configuration:
-    * `docker run -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:latest`
+    * `docker run -d -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:latest`
 
 ### Starting with JMX and copper-monitoring Web Application
 
@@ -360,6 +360,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 * [x] Workflow with Json binding
 * [x] Use org.crac:crac instead of io.github.crac:org-crac
+* [x] New ENV for logback $LOG_LEVEL_ROOT
+* [x] Dependabot updates 21.10.2023
 
 ## Planning
 
