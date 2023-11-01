@@ -374,6 +374,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ## Backlog
 
+* Use a Registered Ports in Applications
 * STDIN/OUT support in config and container (or remove it)
 * Load workflow subtree only from git
 * Operating
