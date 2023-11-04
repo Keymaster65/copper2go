@@ -363,6 +363,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] New ENV for logback $LOG_LEVEL_ROOT
 * [x] Dependabot updates 21.10.2023
 * [x] Dependabot updates 01.11.2023
+* [x] Dependabot updates 04.11.2023
 
 ## Planning
 
