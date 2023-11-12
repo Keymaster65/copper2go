@@ -149,7 +149,7 @@ allprojects {
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
         testImplementation("net.jqwik:jqwik:1.8.1")
-        testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.10.1")
         testImplementation("org.mockito:mockito-core:5.7.0")
 
         constraints {
@@ -177,7 +177,9 @@ allprojects {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
             implementation("org.xerial.snappy:snappy-java:1.1.10.5")
-            implementation("io.netty:netty-handler:4.1.100.Final")
+            implementation("io.netty:netty-handler:4.1.101.Final")
+
+            pitest("org.pitest:pitest-command-line:1.15.3")
         }
     }
 
