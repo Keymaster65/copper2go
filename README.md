@@ -356,20 +356,6 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "Binding" Release Application API 4.6.0
-
-* [x] Workflow with Json binding
-* [x] Use org.crac:crac instead of io.github.crac:org-crac
-* [x] New ENV for logback $LOG_LEVEL_ROOT
-* [x] Dependabot updates 21.10.2023
-* [x] Dependabot updates 01.11.2023
-* [x] Dependabot updates 04.11.2023
-* [x] Dependabot updates 12.11.2023
-* [x] Dependabot updates 18.11.2023
-* [x] Build with gradle 8.5 and use JDK 21 for gradle 
-* [x] Much faster gradle INIT on Windows with org.gradle.vfs.watch=true
-* [x] Separate OWASP github workflow
-
 ### "jackson-databind" Workflow API 3.2.2
 
 * [x] Update jackson-databind from 2.15.3 to 2.16.0
@@ -434,6 +420,20 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
   * Vertx Bus Connector
 
 ## Released
+
+### "Binding" Release Application API 4.6.0
+
+* [x] Workflow with Json binding
+* [x] Use org.crac:crac instead of io.github.crac:org-crac
+* [x] New ENV for logback $LOG_LEVEL_ROOT
+* [x] Dependabot updates 21.10.2023
+* [x] Dependabot updates 01.11.2023
+* [x] Dependabot updates 04.11.2023
+* [x] Dependabot updates 12.11.2023
+* [x] Dependabot updates 18.11.2023
+* [x] Build with gradle 8.5 and use JDK 21 for gradle
+* [x] Much faster gradle INIT on Windows with org.gradle.vfs.watch=true
+* [x] Separate OWASP github workflow
 
 ### "copper-coreengine, slf4j-api and jackson-databind" Workflow API 3.2.1
 
