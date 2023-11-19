@@ -28,7 +28,7 @@ class Copper2GoEngineTest {
 
     @Test
     void startStop() throws EngineException {
-        Copper2GoEngine engine = createStartedEngine("release/3");
+        Copper2GoEngine engine = createStartedEngine("release/4");
         Assertions
                 .assertThatNoException()
                 .isThrownBy(() -> engine.engineControl().close());

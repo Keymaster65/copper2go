@@ -49,7 +49,7 @@ in  https://github.com/Keymaster65/copper2go-workflows.
 ### Demo
 
 * Start container with `hello` and `pricing` workflow 
-    * `docker run -d -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.5.0`
+    * `docker run -d -p 59665:59665 --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:latest`
 * In Browser `client` you can see the used licenses
     * `http://localhost:59665/`
     * `http://localhost:59665/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name must be
@@ -79,14 +79,14 @@ You want to develop your own workflows? You may start with the existing ones.
     * store it in your local docker host `config.json`
     * Typically, modify workflowGitURI location
 * Start Container with your configuration:
-    * `docker run -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.5.0`
+    * `docker run -d -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:latest`
 
 ### Starting with JMX and copper-monitoring Web Application
 
 `host.docker.internal` works for windows.
 
 * Start container with JMX on port 19665
-  * `docker run -d -e JAVA_TOOL_OPTIONS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=19665 -Dcom.sun.management.jmxremote.rmi.port=19665 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=host.docker.internal" -p 19665:19665 -p 59665:59665 -d --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:4.5.0`
+  * `docker run -d -e JAVA_TOOL_OPTIONS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=19665 -Dcom.sun.management.jmxremote.rmi.port=19665 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=host.docker.internal" -p 19665:19665 -p 59665:59665 --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:latest`
   * Now you can visit the copper MBeas in tools like visualVM, JConsole etc.
 * Start the copper-monitoring Web Application on port 29665 using same JMX port
   * `docker run -e JMX_HOST="host.docker.internal" -e JMX_PORT="19665" --name copperGui --rm -p 29665:8080 -d copperengine/copper-monitoring`
@@ -322,7 +322,7 @@ Issues are very welcome, too.
 * Because build pipeline is completely automated after committing to "master" or "release", these branches are protected on github and commits must be siged "verified". 
 * The newest Workflow API is maintained
 * For a "release", the following manual activities mst be done
-  1) Update README version and move "Ongoing" block in "master"
+  1) Move "Ongoing" block in "master"
   1) Change "release" version in `.github/workflows/build.yml` in "master" on github (with a PR)
   1) merge "master" to "release" branch on github (with a PR)
   1) "Draft a new release on github" on "release" branch with a copy of the moved "Ongoing" block (look at older releases for details)
@@ -356,44 +356,34 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "slf4j-api and jackson-databind" Workflow API 3.2.1
+### "jackson-databind" Workflow API 3.2.2
 
-* [x] Update slf4j-api from 2.0.6 to 2.0.9
-* [x] Update jackson-databind from 2.14.2 to 2.15.3
+* [x] Update jackson-databind from 2.15.3 to 2.16.0
 
 ## Planning
 
-### "Binding" Release Application API 4.6.0
-
-* [ ] Workflow with Json binding
-
 ### "State Pattern" Release Application API 4.7.0
 
+* [ ] Spike: BPMN Support
+* [ ] Spike: Multi workflow support and REST level
 * [ ] Spike: Workflow using State Pattern or other defined strategy in copper2go-engine
 
 ## Backlog
 
-* configure thread pool size, client pool size and more
-* Workflow with XML binding (may be not ;-)
-* Split copper2go-workflows
-* Add new Workflow Repository for Performancetest
-* Add new Repository Performancetest
-* Add some performance analysis
-* Remove version 2 of HTTP Receiver API
-* Finish support kafka events
-* Replace vertx HTTP components with simpler implementation
-* Replace vertx Kafka components with simpler implementation
-* CRaC Support for Kafka
-* CRaC Support for STDIN/STDOUT/STDERR
 * STDIN/OUT support in config and container (or remove it)
+* Load workflow subtree only from git
+* Operating
+  * configure thread pool size, client pool size and more
+  * Add some performance analysis
+  * Collect Statistics and other (may be useful for Tests like Bridge-Test)
+* Remove version 2 of HTTP Receiver API
+* Extract WorkflowTestRunner.java and Copper2goDependencyInjector.java
+* Split copper2go-workflows; extract systemtest
 * Redesign DefaultRequestChannel (like Kafka). Use WARN instead of ERROR?
 * Redesign RequestChannel/EventChannel: Is the difference needed? Why 2 errorEvent (was inspired by STDOUT/ERR)?
-* Collect Statistics and other (may be useful for Tests like Bridge-Test)
 * Add test coverage for workflows to copper2go-workflows
 * Release internet workflow application as copper2go-webapp (see branch experiment/webapp)
-* Multi workflow support and REST level
-* HTTP Security
-* Kafka Security
+* Finish support kafka events
 * Add information "How Tos" to developer's guide
   * Overview
   * Request Channel Stores
@@ -401,25 +391,55 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
   * Configuration Reply Channel Store
   * Tickets
   * Workflow Development/Test
-* Load workflow subtree only from git
+* Support of HTTP callbacks
+* Add callback in WorkflowData ("replychannel")
 * Use vanilla-engine without a github fork
 * Extend connectors without a github fork
 * Extend copper2go image without a github fork
-* Delete .copper on start (if still problems occurs)
-* Kafka choreography example
-* Support Binary data
-* Binary Binding
-* JMS support (may be IBM MQ, ActiveMQ or ...)
-* PostgreSQL for workflow persistent instances
-    * Add callback in WorkflowData ("replychannel")
-    * Support of callbacks
-* PostgreSQL support for business resources
-* Async idempotent DB API
-* On demand only: factoryfx integration
-* On demand only: extend workflow attributes to a MultiMap
-* Withdrawn: Vertx Bus Connector
+* Retire vertx
+  * Replace vertx HTTP components with simpler implementation
+  * Replace vertx Kafka components with simpler implementation
+* On demand only
+  * CRaC Support for STDIN/STDOUT/STDERR
+  * Support Binary data
+  * Binary Binding
+  * Kafka choreography example
+  * CRaC Support for Kafka
+  * PostgreSQL for workflow persistent instances
+  * Async idempotent DB API
+  * PostgreSQL support for business resources
+  * JMS support (may be IBM MQ, ActiveMQ or ...)
+  * HTTP Security
+  * Kafka Security
+  * factoryfx integration
+  * extend workflow attributes to a MultiMap
+* Withdrawn
+  * Add new Workflow Repository for Performancetest
+  * Delete .copper on start (if still problems occurs)
+  * Workflow with XML binding (may be not ;-)
+  * Vertx Bus Connector
 
 ## Released
+
+### "Binding" Release Application API 4.6.0
+
+* [x] Workflow with Json binding
+* [x] Use org.crac:crac instead of io.github.crac:org-crac
+* [x] New ENV for logback $LOG_LEVEL_ROOT
+* [x] Dependabot updates 21.10.2023
+* [x] Dependabot updates 01.11.2023
+* [x] Dependabot updates 04.11.2023
+* [x] Dependabot updates 12.11.2023
+* [x] Dependabot updates 18.11.2023
+* [x] Build with gradle 8.5 and use JDK 21 for gradle
+* [x] Much faster gradle INIT on Windows with org.gradle.vfs.watch=true
+* [x] Separate OWASP github workflow
+
+### "copper-coreengine, slf4j-api and jackson-databind" Workflow API 3.2.1
+
+* [x] Update copper-coreengine from 5.4.1 to 5.4.2
+* [x] Update slf4j-api from 2.0.6 to 2.0.9
+* [x] Update jackson-databind from 2.14.1 to 2.15.3
 
 ### "CRaC ready" Release Application API 4.5.0
 

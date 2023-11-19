@@ -3,7 +3,7 @@ pitest {
 }
 
 tasks.withType<Test> {
-    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,17,-source,17")
+    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,21,-source,21")
 }
 
 dependencies {
@@ -17,8 +17,8 @@ dependencies {
         exclude(group = "org.yaml", module = "snakeyaml")
     }
 
-        // needed for needed for GitAPIException
+    // needed for needed for GitAPIException
     implementation("org.eclipse.jgit:org.eclipse.jgit:6.7.0.202309050840-r")
 
-    implementation("io.github.crac:org-crac:0.1.3")
+    implementation("org.crac:crac:1.4.0")
 }

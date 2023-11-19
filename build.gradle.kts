@@ -12,8 +12,8 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.4.0" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
-    id("org.owasp.dependencycheck") version "8.4.0"
-    id("com.github.ben-manes.versions") version "0.49.0"
+    id("org.owasp.dependencycheck") version "8.4.3"
+    id("com.github.ben-manes.versions") version "0.50.0"
     id("info.solidsoft.pitest") version "1.15.0"
 }
 
@@ -85,10 +85,6 @@ allprojects {
     }
 
     java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(21)
-        }
-
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
@@ -145,15 +141,15 @@ allprojects {
         implementation("org.slf4j:slf4j-api:2.0.9")
         implementation("ch.qos.logback:logback-classic:1.4.11")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.15.3")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.16.0")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
-        testImplementation("net.jqwik:jqwik:1.8.0")
-        testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
-        testImplementation("org.mockito:mockito-core:5.6.0")
+        testImplementation("net.jqwik:jqwik:1.8.1")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.10.1")
+        testImplementation("org.mockito:mockito-core:5.7.0")
 
         constraints {
-            implementation("commons-io:commons-io:2.14.0") {
+            implementation("commons-io:commons-io:2.15.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
             implementation("net.minidev:accessors-smart:2.5.0") {
@@ -162,7 +158,7 @@ allprojects {
             implementation("org.apache.httpcomponents:httpclient:4.5.14") {
                 because("Security scan found 4.5.2")
             }
-            implementation("net.minidev:json-smart:2.4.10") {
+            implementation("net.minidev:json-smart:2.5.0") {
                 because("Security scan found 2.3")
             }
             implementation("org.apache.velocity:velocity-engine-core:2.3") {
@@ -171,13 +167,15 @@ allprojects {
             implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.kafka:kafka-clients:3.4.0")
+            implementation("org.apache.kafka:kafka-clients:3.6.0")
 
-            implementation("com.google.guava:guava:32.1.2-jre") {
+            implementation("com.google.guava:guava:32.1.3-jre") {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
             implementation("org.xerial.snappy:snappy-java:1.1.10.5")
-            implementation("io.netty:netty-handler:4.1.100.Final")
+            implementation("io.netty:netty-handler:4.1.101.Final")
+
+            pitest("org.pitest:pitest-command-line:1.15.3")
         }
     }
 

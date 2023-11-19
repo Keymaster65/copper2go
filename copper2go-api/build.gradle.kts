@@ -3,7 +3,7 @@ pitest {
 }
 
 group = "io.github.keymaster65"
-version = "3.2.0"
+version = "3.2.1"
 
 plugins {
     `maven-publish`
@@ -16,7 +16,7 @@ java {
 }
 
 tasks.withType<Test> {
-    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,17,-source,17")
+    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,21,-source,21")
 }
 
 publishing {
@@ -53,7 +53,7 @@ publishing {
 dependencies {
     api("org.copper-engine:copper-coreengine:5.4.2")
     api("org.slf4j:slf4j-api:2.0.9")
-    api("com.fasterxml.jackson.core:jackson-databind:2.15.3")
+    api("com.fasterxml.jackson.core:jackson-databind:2.16.0")
 
     testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
 }
