@@ -16,7 +16,7 @@ java {
 }
 
 tasks.withType<Test> {
-    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,17,-source,17")
+    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,21,-source,21")
 }
 
 publishing {
