@@ -99,11 +99,15 @@ allprojects {
         exclude("**/test.html")
     }
 
+    val nvdApiKey : String = project.properties.getValue("nvdApiKey") as String
+
     // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/index.html
     dependencyCheck {
         analyzers.assemblyEnabled = false
         failBuildOnCVSS = 0F
         suppressionFile = "./cveSuppressionFile.xml"
+        nvd.apiKey = nvdApiKey
+        nvd.delay = 8000
     }
 
     dependencyLocking {
