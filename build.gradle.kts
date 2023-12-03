@@ -107,7 +107,7 @@ allprojects {
         failBuildOnCVSS = 0F
         suppressionFile = "./cveSuppressionFile.xml"
         nvd.apiKey = nvdApiKey
-        nvd.delay = 2000
+        nvd.delay = 8000
     }
 
     dependencyLocking {
