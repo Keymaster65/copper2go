@@ -18,8 +18,8 @@ tasks.jar {
 dependencies {
     implementation(project(":application-framework"))
     implementation(project(":sync-engine"))
-    implementation("io.dropwizard.metrics:metrics-core:4.2.22")
-    implementation("io.dropwizard.metrics:metrics-jmx:4.2.22")
+    implementation("io.dropwizard.metrics:metrics-core:4.2.23")
+    implementation("io.dropwizard.metrics:metrics-jmx:4.2.23")
 }
 
 application {

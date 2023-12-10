@@ -12,7 +12,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.4.0" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
-    id("org.owasp.dependencycheck") version "9.0.2"
+    id("org.owasp.dependencycheck") version "9.0.4"
     id("com.github.ben-manes.versions") version "0.50.0"
     id("info.solidsoft.pitest") version "1.15.0"
 }
@@ -85,8 +85,9 @@ allprojects {
     }
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
     }
 
     // see https://github.com/hierynomus/license-gradle-plugin
@@ -153,7 +154,7 @@ allprojects {
         testImplementation("org.mockito:mockito-core:5.8.0")
 
         constraints {
-            implementation("commons-io:commons-io:2.15.0") {
+            implementation("commons-io:commons-io:2.15.1") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
             implementation("net.minidev:accessors-smart:2.5.0") {
@@ -171,7 +172,7 @@ allprojects {
             implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.kafka:kafka-clients:3.6.0")
+            implementation("org.apache.kafka:kafka-clients:3.6.1")
 
             implementation("com.google.guava:guava:32.1.3-jre") {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
