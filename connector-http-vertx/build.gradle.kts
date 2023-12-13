@@ -10,5 +10,5 @@ dependencies {
 
     implementation("io.vertx:vertx-core:4.5.0")
     implementation("io.vertx:vertx-web:4.5.0")
-    implementation("io.vertx:vertx-web-client:4.5.0")
+    implementation("io.vertx:vertx-web-client:4.5.1")
 }
