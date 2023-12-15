@@ -12,7 +12,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.4.0" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
-    id("org.owasp.dependencycheck") version "9.0.4"
+    id("org.owasp.dependencycheck") version "9.0.6"
     id("com.github.ben-manes.versions") version "0.50.0"
     id("info.solidsoft.pitest") version "1.15.0"
 }
@@ -178,7 +178,7 @@ allprojects {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
             implementation("org.xerial.snappy:snappy-java:1.1.10.5")
-            implementation("io.netty:netty-handler:4.1.101.Final")
+            implementation("io.netty:netty-handler:4.1.103.Final")
 
             pitest("org.pitest:pitest-command-line:1.15.3")
         }

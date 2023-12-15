@@ -8,7 +8,7 @@ dependencies {
 
     implementation("org.crac:crac:1.4.0")
 
-    implementation("io.vertx:vertx-core:4.5.0")
-    implementation("io.vertx:vertx-web:4.5.0")
-    implementation("io.vertx:vertx-web-client:4.5.0")
+    implementation("io.vertx:vertx-core:4.5.1")
+    implementation("io.vertx:vertx-web:4.5.1")
+    implementation("io.vertx:vertx-web-client:4.5.1")
 }
