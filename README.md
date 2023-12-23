@@ -359,7 +359,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Dependabot updates 02.12.2023
 * [x] Dependabot updates 10.12.2023
 * [x] Dependabot updates 15.12.2023
-* [ ] Dependabot updates 23.12.2023
+* [x] Dependabot updates 23.12.2023
 
 ### "jackson-databind" Workflow API 3.2.2
 
