@@ -1,4 +1,4 @@
-FROM ubuntu:focal AS builder
+FROM ubuntu:jammy AS builder
 
 RUN apt-get update && apt-get install git curl -y procps&& rm -rf /var/lib/apt/lists/*
 
@@ -21,7 +21,7 @@ RUN cd src && git pull && git log && ./gradlew :copper2go-application:assemble
 RUN    tar -xvf src/copper2go-application/build/distributions/copper2go-application.tar
 COPY entrypoint.sh ./
 
-FROM ubuntu:focal AS app
+FROM ubuntu:jammy AS app
 
 RUN apt-get update && apt-get install curl -y procps&& rm -rf /var/lib/apt/lists/*
 
