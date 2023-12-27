@@ -36,11 +36,10 @@ One of the basic ideas of COPPER is to be able to perform software changes in bu
 release 5.1 this now can be done by using git repositories.
 
 copper2go makes use of this feature and should help to use COPPER in your project. All you need to do is, to start the
-copper2go container with your configuration, that support your business workflow.
+copper2go container with your configuration, that support your business workflows.
 
-As one of the future steps, there might follow a factoryfx integration. This will enable copper2go to make runtime
-changes in the technical part of the application outside the business workflows without usage of the traditional
-pipeline.
+Changes in the technical part of the application in addition to the business workflows can be deployed by the using
+traditional CI/CD pipelines.
 
 This picture shows a first overview:
 ![This picture shows a first overview](copper2goOverview.svg)
@@ -235,7 +234,7 @@ Starting with Workflow API 3.1.0 it also contains some dependencies, that extend
 
 Changes will be listed here in the "Released" chapter. In addition, you have the API to the COPPER framework.
 
-Last but not least, the Java 17 API can be used and is contained in the copper2go container.
+Last but not least, the Java API can be used and is contained in the copper2go container.
 
 ##### Workflow's API Detail
 
@@ -356,7 +355,6 @@ Issues are very welcome, too.
 * https://copper-engine.org/
 * https://copper-engine.org/blog/2019-12-09-/copper-5.1-released/
 * https://openjdk.org/projects/crac/
-* https://github.com/factoryfx
 
 ## Ongoing in latest/master
 
