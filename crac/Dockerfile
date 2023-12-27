@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 AS builder
+FROM ubuntu:focal AS builder
 
 RUN apt-get update && apt-get install git curl -y procps&& rm -rf /var/lib/apt/lists/*
 
@@ -21,7 +21,7 @@ RUN cd src && git pull && git log && ./gradlew :copper2go-application:assemble
 RUN    tar -xvf src/copper2go-application/build/distributions/copper2go-application.tar
 COPY entrypoint.sh ./
 
-FROM ubuntu:18.04 AS app
+FROM ubuntu:focal AS app
 
 RUN apt-get update && apt-get install curl -y procps&& rm -rf /var/lib/apt/lists/*
 
