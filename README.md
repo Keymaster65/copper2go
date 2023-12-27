@@ -1,9 +1,11 @@
 # copper2go
 
+## Open
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/Keymaster65/copper2go/blob/master/LICENSE)
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
+## Quality and Security
 [![Build](https://github.com/Keymaster65/copper2go/actions/workflows/build.yml/badge.svg)](https://github.com/Keymaster65/copper2go/actions/workflows/build.yml)
 [![CodeQL](https://github.com/Keymaster65/copper2go/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Keymaster65/copper2go/actions/workflows/codeql-analysis.yml)
 
@@ -20,10 +22,14 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=alert_status)](https://sonarcloud.io/dashboard?id=Keymaster65_copper2go)
 
+## API
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api)
+
+## Application
 [![GitHub release](https://img.shields.io/github/release/Keymaster65/copper2go)](https://GitHub.com/Keymaster65/copper2go/releases/)
 [![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
 
+## Introduction
 Implementation of a lightweight CI/CD pipeline using git repositories for changes in COPPER workflows.
 
 One of the basic ideas of COPPER is to be able to perform software changes in business workflows at runtime. With
