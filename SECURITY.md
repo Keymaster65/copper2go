@@ -10,4 +10,4 @@
 
 ## Reporting a Vulnerability
 
-Please report vulnerabilities as an issue in github. It will be fix with highest priority.
+Please report vulnerabilities as an issue in github. It will be fixed with the highest priority.
