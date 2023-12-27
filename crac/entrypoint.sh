@@ -3,6 +3,7 @@
 export PATH="$PATH:$JAVA_HOME/bin"
 typeset logPrefix="============================="
 
+
 _checkPoint(){
   export PATH="$PATH:$JAVA_HOME/bin"
   jcmd io.github.keymaster65.copper2go.Main JDK.checkpoint
