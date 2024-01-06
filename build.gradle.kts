@@ -117,7 +117,7 @@ allprojects {
 
     // https://github.com/ben-manes/gradle-versions-plugin
     fun isNonStable(version: String): Boolean {
-        val nonStable = listOf("RC").any { version.uppercase().contains(it) }
+        val nonStable = listOf("-ALPHA").any { version.uppercase().contains(it) }
         return nonStable
     }
     tasks.withType<DependencyUpdatesTask> {
