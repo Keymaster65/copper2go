@@ -2,11 +2,11 @@
 
 ## Supported Versions
 
-| Version | Supported          |
-|---------| ------------------ |
-| 4       | :white_check_mark: |
-| latest  | :white_check_mark: |
-| < 4     | :x:                |
+| Application Version | API Version | Supported          |
+|---------------------|-------------|--------------------|
+| 4                   | 3           | :white_check_mark: |
+| latest              | 3           | :white_check_mark: |
+| < 4                 | any         | :x:                |
 
 ## Reporting a Vulnerability
 
