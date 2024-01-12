@@ -59,7 +59,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./gradlew -Pcopper2goVersion=$GITHUB_SHA systemTest test integrationTest jacocoTestReport sonarqube --info 
+          ./gradlew -Pcopper2goVersion=$GITHUB_SHA test integrationTest systemTest jacocoTestReport sonarqube --info 
       
 
       - name: Deploy Latest
