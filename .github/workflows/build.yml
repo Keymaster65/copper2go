@@ -48,22 +48,15 @@ jobs:
         run: ./gradlew clean build -x test --info
 
 
-      - name: Test
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew test integrationTest jacocoTestReport sonarqube --info
-
-
       - name: Deploy
         run: |
           docker login -u keymaster65 -p ${{ secrets.DOCKER_HUB_SECRET }}
           ./gradlew -Pcopper2goVersion=$GITHUB_SHA :copper2go-application:build :copper2go-application:jib
           
 
-      - name: Systemtest
+      - name: Test
         run: |
-          ./gradlew -Pcopper2goVersion=$GITHUB_SHA systemTest
+          ./gradlew -Pcopper2goVersion=$GITHUB_SHA systemTest test integrationTest jacocoTestReport sonarqube --info 
       
 
       - name: Deploy Latest
