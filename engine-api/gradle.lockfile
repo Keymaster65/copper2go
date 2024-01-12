@@ -74,5 +74,5 @@ org.pitest:pitest-entry:1.15.3=pitest
 org.pitest:pitest-junit5-plugin:1.0.0=pitest
 org.pitest:pitest:1.15.3=pitest
 org.slf4j:slf4j-api:1.7.25=tmpTestImplementation
-org.slf4j:slf4j-api:2.0.10=compileClasspath,integrationTestCompileClasspath,integrationTestRuntimeClasspath,runtimeClasspath,systemTestCompileClasspath,systemTestRuntimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.slf4j:slf4j-api:2.0.11=compileClasspath,integrationTestCompileClasspath,integrationTestRuntimeClasspath,runtimeClasspath,systemTestCompileClasspath,systemTestRuntimeClasspath,testCompileClasspath,testRuntimeClasspath
 empty=annotationProcessor,integrationTestAnnotationProcessor,systemTestAnnotationProcessor,testAnnotationProcessor
