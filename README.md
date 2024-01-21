@@ -106,7 +106,7 @@ in production. The online configuration capability of this workflow engine is us
 this feature as a main concept, copper2go was developed. By adding connectors, the development of Orchestration Services
 will become easier for Java developers.
 
-You can see copper2go as a "Plattform as a Service", if you want to enable your clients to write and support their own
+You can run copper2go as a "Plattform as a Service", if you want to enable your clients to write and support their own
 COPPER workflows.
 
 With an existing git repository, that contains all COPPER workflows of your orchestration services, copper2go is the
@@ -121,28 +121,29 @@ Of course, copper2go containers can be run wherever you want. So the container m
 In times of automated build pipelines the needs for workflow systems are reduced, but a more lightweight **git** based
 pipeline might even better fit your needs. Here are some more advantages:
 
-* If the developers want to break the limits, they can use the vanilla-engines as forks on github
-* Using git and git workflows in the development teams
-* Additional quality steps can be integrated into the git workflow
 * Lightweight pipeline form source code to deployment, because build is inside the copper2go container
+* Additional quality steps can be integrated into the git workflow
+* Using git and git workflows in the development teams
 * Reuse of copper2go images might reduce costs for images in the cloud
 * Unified copper2go images
 * Secure copper2go images
 * Easy extensions of copper2go images as forks on github
 * Easy extensions of copper2go connectors as forks on github
+* If the developers want to break the limits, they can use the vanilla-engines as forks on github
 
-## Vulnerability
+### Security and Quality
 
-The copper2go application is checked using the https://plugins.gradle.org/plugin/org.owasp.dependencycheck, so engine do
-not contain any open known security issue. As workflows can not extend the used jars this check is sufficient for all
-workflow use cases.
+The copper2go application is checked using the https://plugins.gradle.org/plugin/org.owasp.dependencycheck, so engine 
+does not contain any open known security issue, if a secure release of used 3rd party components are available.
+The Dependabot helps to keep the 3rd party components up to date (see https://github.com/dependabot).
+As workflows can not extend the used jars this check is sufficient for all workflow use cases.
 
-## Developer's Guide
+High quality gates are define and used in sonarcloud. This is an important fact, if you want to stay on the secure side
+using copper2go. Version 4 of copper2go does not support secure connectors, but they can easily be added on demand.
 
-copper2go bases on the COPPER (COmmon Persistable Process Excecution Runtime). To get more information about COPPER, you
-might visit https://github.com/copper-engine or https://github.com/copper-engine.
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=alert_status)](https://sonarcloud.io/dashboard?id=Keymaster65_copper2go)
 
-### Online Configuration
+### Online Configuration and Revert
 
 Using git only, and compiling the workflow inside the container, you can very easy change your system's behaviour
 "online". That is what want many people dream of, if they talk about "configuration". As one use case you can simply
@@ -162,12 +163,6 @@ simple as blocking code. There is no "callback hell" in your project. You might 
 Loom Project in
 https://cr.openjdk.java.net/~rpressler/loom/Loom-Proposal.html.
 
-### Long Running Workflows
-
-Last but not least, COPPER workflows can be executed for an unlimited time. It depends on the resources you add to the
-application. Transient workflows are supported in copper2go since release 0.1. Persistent workflows are supported by
-COPPER and currently in the Backlog of copper2go.
-
 ### CRaC Support
 
 It is possible to start copper2go at CRaC (https://openjdk.org/projects/crac/) checkpoints. If you want to use it, you
@@ -176,6 +171,17 @@ there are some files in the `crac` directory.
 
 The CRaC API is integrated in the HTTP connectors. Requirements to support Kafka and STDIN/STDOUT/STDERR can be found in
 the Backlog.
+
+### Long Running Workflows
+
+Last but not least, COPPER workflows can be executed for an unlimited time. It depends on the resources you add to the
+application. Transient workflows are supported in copper2go since release 0.1. Persistent workflows are supported by
+COPPER and currently in the Backlog of copper2go and will be added on demand.
+
+## Developer's Guide
+
+copper2go bases on the COPPER (COmmon Persistable Process Excecution Runtime). To get more information about COPPER, you
+might visit https://github.com/copper-engine or https://github.com/copper-engine.
 
 ### COPPER Details
 
@@ -379,7 +385,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### "State Pattern" Release Application API 4.7.0
 
 * [ ] Spike: BPMN Support
-* [ ] Spike: Multi workflow support and REST level
+* [ ] Spike: Multi workflow repository support and REST level
 * [ ] Spike: Workflow using State Pattern or other defined strategy in copper2go-engine
 
 ## Backlog
@@ -415,6 +421,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
   * Replace vertx HTTP components with simpler implementation
   * Replace vertx Kafka components with simpler implementation
 * On demand only
+  * HTTP Security
+  * Kafka Security
   * CRaC Support for STDIN/STDOUT/STDERR
   * Support Binary data
   * Binary Binding
@@ -424,8 +432,6 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
   * Async idempotent DB API
   * PostgreSQL support for business resources
   * JMS support (may be IBM MQ, ActiveMQ or ...)
-  * HTTP Security
-  * Kafka Security
   * factoryfx integration
   * extend workflow attributes to a MultiMap
 * Withdrawn
