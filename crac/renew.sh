@@ -1,4 +1,4 @@
-#!/bin/bash
+##!/usr/bin/bash
 
 #set -x
 
@@ -8,6 +8,7 @@ _buildImage(){
     exit 1
   fi
   echo "Build image"
+  dos2unix.exe entrypoint.sh
   docker build . --target app -t crac-demo
 }
 
