@@ -143,13 +143,13 @@ allprojects {
 //    }
 
     dependencies {
-        implementation("org.slf4j:slf4j-api:2.0.11")
+        implementation("org.slf4j:slf4j-api:2.0.12")
         implementation("ch.qos.logback:logback-classic:1.4.14")
 
         implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
-        testImplementation("net.jqwik:jqwik:1.8.2")
+        testImplementation("net.jqwik:jqwik:1.8.3")
         testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
         testImplementation("org.mockito:mockito-core:5.10.0")
 
