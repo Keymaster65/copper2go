@@ -9,7 +9,7 @@ plugins {
     jacoco
     id("org.sonarqube") version "4.4.1.3373"
     id("com.github.jk1.dependency-license-report") version "2.5"
-    id("com.google.cloud.tools.jib") version "3.4.0" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
+    id("com.google.cloud.tools.jib") version "3.4.1" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
     id("org.owasp.dependencycheck") version "9.0.9"
