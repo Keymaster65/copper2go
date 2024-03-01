@@ -151,7 +151,7 @@ allprojects {
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
         testImplementation("net.jqwik:jqwik:1.8.3")
         testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
-        testImplementation("org.mockito:mockito-core:5.10.0")
+        testImplementation("org.mockito:mockito-core:5.11.0")
 
         constraints {
             implementation("commons-io:commons-io:2.15.1") {
