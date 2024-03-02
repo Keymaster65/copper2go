@@ -9,7 +9,7 @@ plugins {
     jacoco
     id("org.sonarqube") version "4.4.1.3373"
     id("com.github.jk1.dependency-license-report") version "2.5"
-    id("com.google.cloud.tools.jib") version "3.4.0" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
+    id("com.google.cloud.tools.jib") version "3.4.1" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
     id("org.owasp.dependencycheck") version "9.0.9"
@@ -117,7 +117,7 @@ allprojects {
 
     // https://github.com/ben-manes/gradle-versions-plugin
     fun isNonStable(version: String): Boolean {
-        val nonStable = listOf("-ALPHA").any { version.uppercase().contains(it) }
+        val nonStable = listOf("-ALPHA", "-RC").any { version.uppercase().contains(it) }
         return nonStable
     }
     tasks.withType<DependencyUpdatesTask> {
@@ -144,14 +144,14 @@ allprojects {
 
     dependencies {
         implementation("org.slf4j:slf4j-api:2.0.12")
-        implementation("ch.qos.logback:logback-classic:1.4.14")
+        implementation("ch.qos.logback:logback-classic:1.5.1")
 
         implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
         testImplementation("net.jqwik:jqwik:1.8.3")
         testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
-        testImplementation("org.mockito:mockito-core:5.10.0")
+        testImplementation("org.mockito:mockito-core:5.11.0")
 
         constraints {
             implementation("commons-io:commons-io:2.15.1") {
@@ -172,13 +172,13 @@ allprojects {
             implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.kafka:kafka-clients:3.6.1")
+            implementation("org.apache.kafka:kafka-clients:3.7.0")
 
             implementation("com.google.guava:guava:33.0.0-jre") {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
             implementation("org.xerial.snappy:snappy-java:1.1.10.5")
-            implementation("io.netty:netty-handler:4.1.106.Final")
+            implementation("io.netty:netty-handler:4.1.107.Final")
 
             pitest("org.pitest:pitest-command-line:1.15.8")
         }
