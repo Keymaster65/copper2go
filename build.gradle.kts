@@ -12,7 +12,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.4.1" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
-    id("org.owasp.dependencycheck") version "9.0.9"
+    id("org.owasp.dependencycheck") version "9.0.10"
     id("com.github.ben-manes.versions") version "0.51.0"
     id("info.solidsoft.pitest") version "1.15.0"
 }
@@ -144,12 +144,12 @@ allprojects {
 
     dependencies {
         implementation("org.slf4j:slf4j-api:2.0.12")
-        implementation("ch.qos.logback:logback-classic:1.5.1")
+        implementation("ch.qos.logback:logback-classic:1.5.3")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
-        testImplementation("net.jqwik:jqwik:1.8.3")
+        testImplementation("net.jqwik:jqwik:1.8.4")
         testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
         testImplementation("org.mockito:mockito-core:5.11.0")
 
