@@ -36,7 +36,7 @@ dependencies {
     implementation("io.vertx:vertx-kafka-client:4.5.4")
 
     testImplementation("org.testcontainers:testcontainers:1.19.6")
-    testImplementation("org.testcontainers:kafka:1.19.6")
+    testImplementation("org.testcontainers:kafka:1.19.7")
 }
 
 application {
