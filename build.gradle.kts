@@ -8,7 +8,7 @@ plugins {
     `maven-publish`
     jacoco
     id("org.sonarqube") version "4.4.1.3373"
-    id("com.github.jk1.dependency-license-report") version "2.5"
+    id("com.github.jk1.dependency-license-report") version "2.6"
     id("com.google.cloud.tools.jib") version "3.4.1" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
@@ -157,13 +157,13 @@ allprojects {
             implementation("commons-io:commons-io:2.15.1") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
-            implementation("net.minidev:accessors-smart:2.5.0") {
+            implementation("net.minidev:accessors-smart:2.5.1") {
                 because("Security scan found 1.2")
             }
             implementation("org.apache.httpcomponents:httpclient:4.5.14") {
                 because("Security scan found 4.5.2")
             }
-            implementation("net.minidev:json-smart:2.5.0") {
+            implementation("net.minidev:json-smart:2.5.1") {
                 because("Security scan found 2.3")
             }
             implementation("org.apache.velocity:velocity-engine-core:2.3") {
@@ -174,11 +174,11 @@ allprojects {
             }
             implementation("org.apache.kafka:kafka-clients:3.7.0")
 
-            implementation("com.google.guava:guava:33.0.0-jre") {
+            implementation("com.google.guava:guava:33.1.0-jre") {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
             implementation("org.xerial.snappy:snappy-java:1.1.10.5")
-            implementation("io.netty:netty-handler:4.1.107.Final")
+            implementation("io.netty:netty-handler:4.1.108.Final")
 
             pitest("org.pitest:pitest-command-line:1.15.8")
         }
