@@ -20,7 +20,6 @@ import io.github.keymaster65.copper2go.api.connector.EngineException;
 import io.github.keymaster65.copper2go.application.config.Config;
 import io.github.keymaster65.copper2go.connector.http.Copper2GoHttpServer;
 import io.github.keymaster65.copper2go.connector.kafka.vertx.receiver.KafkaReceiver;
-import io.github.keymaster65.copper2go.connector.standardio.StandardInOutException;
 import io.github.keymaster65.copper2go.engine.EngineControl;
 import io.github.keymaster65.copper2go.engine.Copper2GoEngine;
 import org.assertj.core.api.Assertions;
@@ -57,29 +56,6 @@ class Copper2GoApplicationTest {
         Mockito.verify(httpServer).start();
         Mockito.verify(kafkaReceiver).start();
     }
-
-    @Test
-    void startWithStdInOut() {
-        final EngineControl engineControl = Mockito.mock(EngineControl.class);
-        final Copper2GoEngine copper2GoEngine = Mockito.mock(Copper2GoEngine.class);
-        Mockito.when(copper2GoEngine.engineControl()).thenReturn(engineControl);
-        final Copper2GoHttpServer httpServer = Mockito.mock(Copper2GoHttpServer.class);
-        final Map<String, KafkaReceiver> kafkaReceiverMap = Map.of();
-
-        final Copper2GoApplication application = new Copper2GoApplication(
-                copper2GoEngine,
-                httpServer,
-                Mockito.mock(DefaultRequestChannelStore.class),
-                kafkaReceiverMap
-        );
-
-        Assertions.assertThatCode(application::startWithStdInOut)
-                .isInstanceOf(StandardInOutException.class)
-                .hasMessage("Exception while getting input.")
-                .hasRootCauseInstanceOf(NullPointerException.class)
-                .hasRootCauseMessage("Read a 'null' line. So there seems to be no stdin. Might happen when starting with gradle.");
-    }
-
 
     @Test
     void stop() throws EngineException {

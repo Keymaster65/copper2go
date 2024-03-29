@@ -17,6 +17,8 @@ plugins {
     id("info.solidsoft.pitest") version "1.15.0"
 }
 
+apply(plugin = "info.solidsoft.pitest.aggregator")
+
 group = "io.github.keymaster65"
 
 publishing {
@@ -56,8 +58,18 @@ allprojects {
 
     // https://github.com/szpak/gradle-pitest-plugin
     pitest {
-        junit5PluginVersion.set("1.0.0")
+        // check this in case of errors: https://mvnrepository.com/artifact/org.pitest/pitest-junit5-plugin
+        junit5PluginVersion.set("1.2.1")
         timestampedReports.set(false)
+        outputFormats.set(setOf("HTML","XML"))
+        exportLineCoverage.set(true)
+        verbose = true
+
+        reportAggregator {
+            testStrengthThreshold.set(77)
+            mutationThreshold.set(75)
+            maxSurviving.set(105)
+        }
     }
 
     // https://github.com/jk1/Gradle-License-Report
