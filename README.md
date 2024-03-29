@@ -351,6 +351,8 @@ Issues are very welcome, too.
 1) `gradle :vanilla-application:build :vanilla-application:jib`
 1) `gradle :sync-application:build :sync-application:jib`
 1) `docker scout cves keymaster65/copper2go:latest`
+1) Optional: `gradle pitest -x :pitest`
+1) Optional: `gradle pitestReportAggregate`
 
 ## Links
 
