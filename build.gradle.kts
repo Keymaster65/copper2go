@@ -56,8 +56,11 @@ allprojects {
 
     // https://github.com/szpak/gradle-pitest-plugin
     pitest {
-        junit5PluginVersion.set("1.0.0")
+        // check this in case of errors: https://mvnrepository.com/artifact/org.pitest/pitest-junit5-plugin
+        junit5PluginVersion.set("1.2.1")
         timestampedReports.set(false)
+        outputFormats.set(setOf("HTML"))
+        verbose = true
     }
 
     // https://github.com/jk1/Gradle-License-Report
