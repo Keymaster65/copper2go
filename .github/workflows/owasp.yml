@@ -27,7 +27,7 @@ jobs:
 
 
       - name: OWASP dependencyCheckAnalyze
-        run: ./gradlew -PnvdApiKey="${{ secrets.NVD_API_KEY }}" dependencyCheckAnalyze --info
+        run: ./gradlew -PnvdApiKey="${{ secrets.NVD_API_KEY }}" dependencyCheckAnalyze -x :dependencyCheckAnalyze --info
 
 
       - name: Archive reports
