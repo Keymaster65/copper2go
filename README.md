@@ -382,7 +382,6 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Dependabot updates 24.03.2024
 * [x] Dependabot updates 26.03.2024
 * [x] Dependabot updates 29.03.2024
-* [x] add github workflow with pitest
 
 ### "jackson-databind" Workflow API 3.2.2
 
