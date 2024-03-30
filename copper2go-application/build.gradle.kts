@@ -5,7 +5,7 @@ pitest {
 
 plugins {
     application
-    id("com.google.cloud.tools.jib") version "3.4.1"
+    id("com.google.cloud.tools.jib") version "3.4.2"
 }
 
 tasks.withType<Test> {

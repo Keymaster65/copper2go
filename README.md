@@ -341,8 +341,8 @@ Issues are very welcome, too.
 #### Helpful Tasks
 
 1) `gradle dependencyUpdates`
-1) `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks`
-1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks --refresh-dependencies`
+1) Deprecated: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks`
+1) Deprecated: Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks --refresh-dependencies`
 1) `gradle dependencyCheckAnalyze -x :dependencyCheckAnalyze --info`
 1) `gradle clean build`
 1) `gradle clean integrationTest`
@@ -382,6 +382,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Dependabot updates 24.03.2024
 * [x] Dependabot updates 26.03.2024
 * [x] Dependabot updates 29.03.2024
+* [x] Dependabot updates 30.03.2024
+* [x] No more gradle.lockfile usage
 
 ### "jackson-databind" Workflow API 3.2.2
 

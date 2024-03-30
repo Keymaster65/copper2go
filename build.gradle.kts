@@ -9,7 +9,7 @@ plugins {
     jacoco
     id("org.sonarqube") version "5.0.0.4638"
     id("com.github.jk1.dependency-license-report") version "2.6"
-    id("com.google.cloud.tools.jib") version "3.4.1" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
+    id("com.google.cloud.tools.jib") version "3.4.2" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
     id("org.owasp.dependencycheck") version "9.0.10"
@@ -166,7 +166,7 @@ allprojects {
         testImplementation("org.mockito:mockito-core:5.11.0")
 
         constraints {
-            implementation("commons-io:commons-io:2.15.1") {
+            implementation("commons-io:commons-io:2.16.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
             implementation("net.minidev:accessors-smart:2.5.1") {
