@@ -8,11 +8,11 @@ plugins {
     `maven-publish`
     jacoco
     id("org.sonarqube") version "5.0.0.4638"
-    id("com.github.jk1.dependency-license-report") version "2.6"
+    id("com.github.jk1.dependency-license-report") version "2.7"
     id("com.google.cloud.tools.jib") version "3.4.2" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
-    id("org.owasp.dependencycheck") version "9.0.10"
+    id("org.owasp.dependencycheck") version "9.1.0"
     id("com.github.ben-manes.versions") version "0.51.0"
     id("info.solidsoft.pitest") version "1.15.0"
 }
@@ -155,8 +155,8 @@ allprojects {
 //    }
 
     dependencies {
-        implementation("org.slf4j:slf4j-api:2.0.12")
-        implementation("ch.qos.logback:logback-classic:1.5.3")
+        implementation("org.slf4j:slf4j-api:2.0.13")
+        implementation("ch.qos.logback:logback-classic:1.5.5")
 
         implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
 
@@ -166,7 +166,7 @@ allprojects {
         testImplementation("org.mockito:mockito-core:5.11.0")
 
         constraints {
-            implementation("commons-io:commons-io:2.16.0") {
+            implementation("commons-io:commons-io:2.16.1") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
             implementation("net.minidev:accessors-smart:2.5.1") {
@@ -192,7 +192,7 @@ allprojects {
             implementation("org.xerial.snappy:snappy-java:1.1.10.5")
             implementation("io.netty:netty-handler:4.1.108.Final")
 
-            pitest("org.pitest:pitest-command-line:1.15.8")
+            pitest("org.pitest:pitest-command-line:1.16.0")
         }
     }
 
