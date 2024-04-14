@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-    <suppress until="2024-04-01">
-        <notes>pitest-command-line-1.15.3.jar no fixed version</notes>
+    <suppress until="2024-07-01">
+        <notes>pitest-command-line-1.15.8.jar no fixed version</notes>
         <packageUrl regex="true">^pkg:maven/org\.pitest/pitest\-command\-line@.*$</packageUrl>
         <cve>CVE-2015-0897</cve>
     </suppress>
