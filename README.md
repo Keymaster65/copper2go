@@ -385,6 +385,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Dependabot updates 30.03.2024
 * [x] No more gradle.lockfile usage
 * [x] Dependabot updates 14.04.2024
+* [ ] Dependabot updates 20.04.2024
 
 ### "jackson-databind" Workflow API 3.2.2
 
