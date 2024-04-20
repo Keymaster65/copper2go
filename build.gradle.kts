@@ -156,7 +156,7 @@ allprojects {
 
     dependencies {
         implementation("org.slf4j:slf4j-api:2.0.13")
-        implementation("ch.qos.logback:logback-classic:1.5.5")
+        implementation("ch.qos.logback:logback-classic:1.5.6")
 
         implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
 
@@ -190,7 +190,7 @@ allprojects {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
             implementation("org.xerial.snappy:snappy-java:1.1.10.5")
-            implementation("io.netty:netty-handler:4.1.108.Final")
+            implementation("io.netty:netty-handler:4.1.109.Final")
 
             pitest("org.pitest:pitest-command-line:1.16.0")
         }
