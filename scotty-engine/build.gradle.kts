@@ -11,9 +11,9 @@ dependencies {
     implementation(project(":connector-api"))
     implementation(project(":engine-api"))
 
-    implementation("org.copper-engine:copper-coreengine:5.4.2")
-    implementation("org.copper-engine:copper-jmx-interface:5.4.2")
-    implementation("org.copper-engine:copper-ext:5.4.2") {
+    implementation("org.copper-engine:copper-coreengine:5.5.0")
+    implementation("org.copper-engine:copper-jmx-interface:5.5.0")
+    implementation("org.copper-engine:copper-ext:5.5.0") {
         exclude(group = "org.yaml", module = "snakeyaml")
     }
 
