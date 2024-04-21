@@ -31,7 +31,7 @@ dependencies {
     implementation(project(":connector-kafka-vertx"))
     implementation(project(":connector-standardio"))
 
-    implementation("org.copper-engine:copper-coreengine:5.4.2")
+    implementation("org.copper-engine:copper-coreengine:5.5.0")
 
     implementation("io.vertx:vertx-core:4.5.7")
     implementation("io.vertx:vertx-kafka-client:4.5.7")

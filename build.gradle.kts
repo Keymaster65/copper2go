@@ -44,6 +44,9 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven(
+            url = "https://oss.sonatype.org/content/groups/staging",
+        )
     }
 
     // https://docs.gradle.org/current/userguide/jacoco_plugin.html
