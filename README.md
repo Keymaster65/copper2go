@@ -353,6 +353,7 @@ Issues are very welcome, too.
 1) `docker scout cves keymaster65/copper2go:latest`
 1) Optional: `gradle pitest -x :pitest`
 1) Optional: `gradle pitestReportAggregate`
+1) Optional: `gradle :copper2go-api:publish`
 
 ## Links
 

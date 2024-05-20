@@ -31,3 +31,4 @@ crac/temp
 hs_err_pid*
 
 **/.jqwik-database
+**/*.gpg
