@@ -332,13 +332,25 @@ Issues are very welcome, too.
 * The newest "release" branch is maintained and released as a tagged image for example "4.4.0"
 * Because build pipeline is completely automated after committing to "master" or "release", these branches are protected on github and commits must be siged "verified". 
 * The newest Workflow API is maintained
-* For a "release", the following manual activities mst be done
+* For a "release", the following manual activities must be done
   1) Move "Ongoing" block in "master"
   1) Change "release" version in `.github/workflows/build.yml` in "master" on github (with a PR)
   1) merge "master" to "release" branch on github (with a PR)
   1) "Draft a new release on github" on "release" branch with a copy of the moved "Ongoing" block (look at older releases for details)
 
-#### Helpful Tasks
+### Release a copper2go-api Library
+
+1) Move "Ongoing" block in "master"
+1) Update "version" in copper2go-api/build.gradle.kts
+1) Push release branch
+1) Publish artifact: `gradle :copper2go-api:publish`
+1) Login to https://oss.sonatype.org/
+1) Find artifact in "Staging Repositories" and "Close" it and "Release" it
+1) "Draft a new release on github" on "release" branch with a copy of the moved "Ongoing" block (look at older releases for details)
+1) Update SNAPSHOT "version" in copper2go-api/build.gradle.kts
+1) Push release branch
+
+#### More Helpful Tasks
 
 1) `gradle dependencyUpdates`
 1) Deprecated: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks`
@@ -353,7 +365,6 @@ Issues are very welcome, too.
 1) `docker scout cves keymaster65/copper2go:latest`
 1) Optional: `gradle pitest -x :pitest`
 1) Optional: `gradle pitestReportAggregate`
-1) Optional: `gradle :copper2go-api:publish`
 
 ## Links
 
