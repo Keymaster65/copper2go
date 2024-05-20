@@ -387,11 +387,11 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] No more gradle.lockfile usage
 * [x] Dependabot updates 14.04.2024
 * [x] Dependabot updates 20.04.2024
-* [ ] Dependabot updates 20.05.2024
+* [x] Dependabot updates 20.05.2024
 
 ### "jackson-databind" Workflow API 3.3.0
 
-* [x] Update jackson-databind from 2.15.3 to 2.17.0
+* [x] Update jackson-databind from 2.15.3 to 2.17.1
 * [x] Update slf4j-api from 2.0.10 to 2.0.13
 * [x] Update copper-coreengine from 5.4.2 to 5.5.0
 
