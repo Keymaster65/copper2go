@@ -76,10 +76,8 @@ publishing {
                 password = "W0lf-S0n1r12"
             }
             if (version.toString().endsWith("-SNAPSHOT")) {
-                println("XXX=" + version)
                 url = URI("https://oss.sonatype.org/content/repositories/snapshots/")
             } else {
-                println("YYY=" + version)
                 url = URI("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
             }
         }
