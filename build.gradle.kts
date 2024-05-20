@@ -12,7 +12,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.4.2" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
-    id("org.owasp.dependencycheck") version "9.1.0"
+    id("org.owasp.dependencycheck") version "9.2.0"
     id("com.github.ben-manes.versions") version "0.51.0"
     id("info.solidsoft.pitest") version "1.15.0"
 }
@@ -161,12 +161,12 @@ allprojects {
         implementation("org.slf4j:slf4j-api:2.0.13")
         implementation("ch.qos.logback:logback-classic:1.5.6")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
         testImplementation("net.jqwik:jqwik:1.8.4")
         testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
-        testImplementation("org.mockito:mockito-core:5.11.0")
+        testImplementation("org.mockito:mockito-core:5.12.0")
 
         constraints {
             implementation("commons-io:commons-io:2.16.1") {
@@ -195,7 +195,7 @@ allprojects {
             implementation("org.xerial.snappy:snappy-java:1.1.10.5")
             implementation("io.netty:netty-handler:4.1.109.Final")
 
-            pitest("org.pitest:pitest-command-line:1.16.0")
+            pitest("org.pitest:pitest-command-line:1.16.1")
         }
     }
 

@@ -76,10 +76,8 @@ publishing {
                 password = "W0lf-S0n1r12"
             }
             if (version.toString().endsWith("-SNAPSHOT")) {
-                println("XXX=" + version)
                 url = URI("https://oss.sonatype.org/content/repositories/snapshots/")
             } else {
-                println("YYY=" + version)
                 url = URI("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
             }
         }
@@ -90,7 +88,7 @@ publishing {
 dependencies {
     api("org.copper-engine:copper-coreengine:5.5.0")
     api("org.slf4j:slf4j-api:2.0.13")
-    api("com.fasterxml.jackson.core:jackson-databind:2.17.0")
+    api("com.fasterxml.jackson.core:jackson-databind:2.17.1")
 
     testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
 }
