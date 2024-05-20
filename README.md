@@ -232,9 +232,9 @@ https://github.com/Keymaster65/copper2go-tools-bridge
 
 The copper2go Workflow's API is hosted in the Maven Central. It can be found at several places
 
-* https://mvnrepository.com/artifact/io.github.keymaster65/copper2go-api
-* https://search.maven.org/search?q=copper2go
 * https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
+* https://search.maven.org/search?q=copper2go
+* https://mvnrepository.com/artifact/io.github.keymaster65/copper2go-api
 
 Starting with Workflow API 3.1.0 it also contains some dependencies, that extend the API.
 
