@@ -5,7 +5,7 @@ pitest {
 }
 
 group = "io.github.keymaster65"
-version = "3.3.0-SNAPSHOT"
+version = "3.3.0"
 
 plugins {
     `maven-publish`
