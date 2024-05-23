@@ -218,7 +218,7 @@ aware of the connector capabilities.
 
 #### Connector Capabilities
 
-TO DO
+TO DO ...
 
 #### More Samples
 
