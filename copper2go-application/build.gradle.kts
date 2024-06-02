@@ -38,6 +38,10 @@ dependencies {
 
     testImplementation("org.testcontainers:testcontainers:1.19.8")
     testImplementation("org.testcontainers:kafka:1.19.8")
+
+    constraints  {
+        testImplementation("org.apache.commons:commons-compress:1.26.2")
+    }
 }
 
 application {
