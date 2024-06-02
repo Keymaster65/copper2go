@@ -15,7 +15,6 @@
  */
 package io.github.keymaster65.copper2go.api.connector;
 
-import net.jqwik.api.Example;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

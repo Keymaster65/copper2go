@@ -15,7 +15,6 @@
  */
 package io.github.keymaster65.copper2go.api.workflow;
 
-import io.github.keymaster65.copper2go.api.workflow.RequestChannelStore;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

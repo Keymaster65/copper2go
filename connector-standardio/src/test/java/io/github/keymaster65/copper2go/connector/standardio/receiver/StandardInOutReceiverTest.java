@@ -20,7 +20,6 @@ import io.github.keymaster65.copper2go.connector.standardio.StandardInOutExcepti
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.stubbing.OngoingStubbing;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,7 +31,7 @@ class StandardInOutReceiverTest {
         final BufferedReader bufferedReader = Mockito.mock(BufferedReader.class);
         final PayloadReceiver payloadReceiver = Mockito.mock(PayloadReceiver.class);
         final StandardInOutReceiver standardInOutReceiver = new StandardInOutReceiver(bufferedReader);
-        final OngoingStubbing<String> when = Mockito.when(bufferedReader.readLine())
+        Mockito.when(bufferedReader.readLine())
                 .thenReturn("line1")
                 .thenReturn("exit");
 
