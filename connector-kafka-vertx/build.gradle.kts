@@ -8,7 +8,7 @@ dependencies {
 
     implementation("io.vertx:vertx-core:4.5.8")
     implementation("io.vertx:vertx-web:4.5.7")
-    implementation("io.vertx:vertx-kafka-client:4.5.7")
+    implementation("io.vertx:vertx-kafka-client:4.5.8")
 
     testImplementation("org.testcontainers:kafka:1.19.8")
 }
