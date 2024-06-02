@@ -8,8 +8,8 @@ plugins {
     `maven-publish`
     jacoco
     id("org.sonarqube") version "5.0.0.4638"
-    id("com.github.jk1.dependency-license-report") version "2.7"
-    id("com.google.cloud.tools.jib") version "3.4.2" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
+    id("com.github.jk1.dependency-license-report") version "2.8"
+    id("com.google.cloud.tools.jib") version "3.4.3" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
     id("org.owasp.dependencycheck") version "9.2.0"
@@ -164,7 +164,7 @@ allprojects {
         implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
-        testImplementation("net.jqwik:jqwik:1.8.4")
+        testImplementation("net.jqwik:jqwik:1.8.5")
         testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
         testImplementation("org.mockito:mockito-core:5.12.0")
 

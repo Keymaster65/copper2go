@@ -5,7 +5,7 @@ pitest {
 
 plugins {
     application
-    id("com.google.cloud.tools.jib") version "3.4.2"
+    id("com.google.cloud.tools.jib") version "3.4.3"
 }
 
 tasks.withType<Test> {
@@ -33,8 +33,8 @@ dependencies {
 
     implementation("org.copper-engine:copper-coreengine:5.5.0")
 
-    implementation("io.vertx:vertx-core:4.5.7")
-    implementation("io.vertx:vertx-kafka-client:4.5.7")
+    implementation("io.vertx:vertx-core:4.5.8")
+    implementation("io.vertx:vertx-kafka-client:4.5.8")
 
     testImplementation("org.testcontainers:testcontainers:1.19.8")
     testImplementation("org.testcontainers:kafka:1.19.8")
