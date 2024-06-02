@@ -251,7 +251,7 @@ Visit the sources, tests, examples and JavaDocs:
 | core      | [copper2go-api](https://www.javadoc.io/doc/io.github.keymaster65/copper2go-api/latest/index.html)     |
 | extension | [copper-coreengine](https://www.javadoc.io/doc/org.copper-engine/copper-coreengine/latest/index.html) |
 | extension | [slf4j-api](https://www.javadoc.io/doc/org.slf4j/slf4j-api/latest/org.slf4j/module-summary.html)      |
-| JDK       | [Java 21 API](https://docs.oracle.com/en/java/javase/17/docs/api/index.html)                          |
+| JDK       | [Java 21 API](https://docs.oracle.com/en/java/javase/21/docs/api/index.html)                          |
 
 ##### Application API
 
@@ -330,7 +330,7 @@ Issues are very welcome, too.
 
 * The "master" branch is maintained and released as "latest" image on dockerhub. 
 * The newest "release" branch is maintained and released as a tagged image for example "4.4.0"
-* Because build pipeline is completely automated after committing to "master" or "release", these branches are protected on github and commits must be siged "verified". 
+* Because build pipeline is completely automated after committing to "master" or "release", these branches are protected on github and commits must be signed "verified". 
 * The newest Workflow API is maintained
 * For a "release", the following manual activities must be done
   1) Move "Ongoing" block in "master"
