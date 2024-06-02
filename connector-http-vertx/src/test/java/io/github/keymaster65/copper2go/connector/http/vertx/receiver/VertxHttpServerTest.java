@@ -15,7 +15,6 @@
  */
 package io.github.keymaster65.copper2go.connector.http.vertx.receiver;
 
-import io.github.keymaster65.copper2go.api.connector.PayloadReceiver;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
