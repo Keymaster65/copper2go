@@ -59,7 +59,7 @@ distributions {
 
 jib {
     from {
-        image = "azul/zulu-openjdk-alpine:21.0.0"
+        image = "azul/zulu-openjdk-alpine:22.0.1"
         auth {
             username = "keymaster65"
             password = System.getenv("DOCKER_HUB_PASSWORD")
