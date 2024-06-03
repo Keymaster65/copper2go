@@ -29,7 +29,7 @@ class ConfigTest {
 
     @Test
     void createDefault() throws IOException {
-        Config config = Config.createDefault();//ofResource("/io/github/keymaster65/copper2go/application/config/config.json");
+        Config config = Config.createDefault();
         assertThat(config.httpPort).isEqualTo(59665);
         assertThat(config.maxTickets).isEqualTo(10000);
 

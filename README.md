@@ -1,9 +1,11 @@
 # copper2go
 
+## Open
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/Keymaster65/copper2go/blob/master/LICENSE)
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
+## Quality and Security
 [![Build](https://github.com/Keymaster65/copper2go/actions/workflows/build.yml/badge.svg)](https://github.com/Keymaster65/copper2go/actions/workflows/build.yml)
 [![CodeQL](https://github.com/Keymaster65/copper2go/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Keymaster65/copper2go/actions/workflows/codeql-analysis.yml)
 
@@ -20,21 +22,24 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=alert_status)](https://sonarcloud.io/dashboard?id=Keymaster65_copper2go)
 
+## API
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.keymaster65/copper2go-api)
+
+## Application
 [![GitHub release](https://img.shields.io/github/release/Keymaster65/copper2go)](https://GitHub.com/Keymaster65/copper2go/releases/)
 [![Docker Hub](https://shields.io/docker/pulls/keymaster65/copper2go)](https://hub.docker.com/r/keymaster65/copper2go/)
 
+## Introduction
 Implementation of a lightweight CI/CD pipeline using git repositories for changes in COPPER workflows.
 
 One of the basic ideas of COPPER is to be able to perform software changes in business workflows at runtime. With
 release 5.1 this now can be done by using git repositories.
 
 copper2go makes use of this feature and should help to use COPPER in your project. All you need to do is, to start the
-copper2go container with your configuration, that support your business workflow.
+copper2go container with your configuration, that support your business workflows.
 
-As one of the future steps, there might follow a factoryfx integration. This will enable copper2go to make runtime
-changes in the technical part of the application outside the business workflows without usage of the traditional
-pipeline.
+Changes in the technical part of the application in addition to the business workflows can be deployed by the using
+traditional CI/CD pipelines.
 
 This picture shows a first overview:
 ![This picture shows a first overview](copper2goOverview.svg)
@@ -101,7 +106,7 @@ in production. The online configuration capability of this workflow engine is us
 this feature as a main concept, copper2go was developed. By adding connectors, the development of Orchestration Services
 will become easier for Java developers.
 
-You can see copper2go as a "Plattform as a Service", if you want to enable your clients to write and support their own
+You can run copper2go as a "Plattform as a Service", if you want to enable your clients to write and support their own
 COPPER workflows.
 
 With an existing git repository, that contains all COPPER workflows of your orchestration services, copper2go is the
@@ -116,28 +121,29 @@ Of course, copper2go containers can be run wherever you want. So the container m
 In times of automated build pipelines the needs for workflow systems are reduced, but a more lightweight **git** based
 pipeline might even better fit your needs. Here are some more advantages:
 
-* If the developers want to break the limits, they can use the vanilla-engines as forks on github
-* Using git and git workflows in the development teams
-* Additional quality steps can be integrated into the git workflow
 * Lightweight pipeline form source code to deployment, because build is inside the copper2go container
+* Additional quality steps can be integrated into the git workflow
+* Using git and git workflows in the development teams
 * Reuse of copper2go images might reduce costs for images in the cloud
 * Unified copper2go images
 * Secure copper2go images
 * Easy extensions of copper2go images as forks on github
 * Easy extensions of copper2go connectors as forks on github
+* If the developers want to break the limits, they can use the vanilla-engines as forks on github
 
-## Vulnerability
+### Security and Quality
 
-The copper2go application is checked using the https://plugins.gradle.org/plugin/org.owasp.dependencycheck, so engine do
-not contain any open known security issue. As workflows can not extend the used jars this check is sufficient for all
-workflow use cases.
+The copper2go application is checked using the https://plugins.gradle.org/plugin/org.owasp.dependencycheck, so engine 
+does not contain any open known security issue, if a secure release of used 3rd party components are available.
+The Dependabot helps to keep the 3rd party components up to date (see https://github.com/dependabot).
+As workflows can not extend the used jars this check is sufficient for all workflow use cases.
 
-## Developer's Guide
+High quality gates are define and used in sonarcloud. This is an important fact, if you want to stay on the secure side
+using copper2go. Version 4 of copper2go does not support secure connectors, but they can easily be added on demand.
 
-copper2go bases on the COPPER (COmmon Persistable Process Excecution Runtime). To get more information about COPPER, you
-might visit https://github.com/copper-engine or https://github.com/copper-engine.
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=alert_status)](https://sonarcloud.io/dashboard?id=Keymaster65_copper2go)
 
-### Online Configuration
+### Online Configuration and Revert
 
 Using git only, and compiling the workflow inside the container, you can very easy change your system's behaviour
 "online". That is what want many people dream of, if they talk about "configuration". As one use case you can simply
@@ -157,12 +163,6 @@ simple as blocking code. There is no "callback hell" in your project. You might 
 Loom Project in
 https://cr.openjdk.java.net/~rpressler/loom/Loom-Proposal.html.
 
-### Long Running Workflows
-
-Last but not least, COPPER workflows can be executed for an unlimited time. It depends on the resources you add to the
-application. Transient workflows are supported in copper2go since release 0.1. Persistent workflows are supported by
-COPPER and currently in the Backlog of copper2go.
-
 ### CRaC Support
 
 It is possible to start copper2go at CRaC (https://openjdk.org/projects/crac/) checkpoints. If you want to use it, you
@@ -171,6 +171,17 @@ there are some files in the `crac` directory.
 
 The CRaC API is integrated in the HTTP connectors. Requirements to support Kafka and STDIN/STDOUT/STDERR can be found in
 the Backlog.
+
+### Long Running Workflows
+
+Last but not least, COPPER workflows can be executed for an unlimited time. It depends on the resources you add to the
+application. Transient workflows are supported in copper2go since release 0.1. Persistent workflows are supported by
+COPPER and currently in the Backlog of copper2go and will be added on demand.
+
+## Developer's Guide
+
+copper2go bases on the COPPER (COmmon Persistable Process Excecution Runtime). To get more information about COPPER, you
+might visit https://github.com/copper-engine or https://github.com/copper-engine.
 
 ### COPPER Details
 
@@ -207,7 +218,7 @@ aware of the connector capabilities.
 
 #### Connector Capabilities
 
-TO DO
+TO DO ...
 
 #### More Samples
 
@@ -221,15 +232,15 @@ https://github.com/Keymaster65/copper2go-tools-bridge
 
 The copper2go Workflow's API is hosted in the Maven Central. It can be found at several places
 
-* https://mvnrepository.com/artifact/io.github.keymaster65/copper2go-api
-* https://search.maven.org/search?q=copper2go
 * https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
+* https://search.maven.org/search?q=copper2go
+* https://mvnrepository.com/artifact/io.github.keymaster65/copper2go-api
 
 Starting with Workflow API 3.1.0 it also contains some dependencies, that extend the API.
 
 Changes will be listed here in the "Released" chapter. In addition, you have the API to the COPPER framework.
 
-Last but not least, the Java 17 API can be used and is contained in the copper2go container.
+Last but not least, the Java API can be used and is contained in the copper2go container.
 
 ##### Workflow's API Detail
 
@@ -240,7 +251,7 @@ Visit the sources, tests, examples and JavaDocs:
 | core      | [copper2go-api](https://www.javadoc.io/doc/io.github.keymaster65/copper2go-api/latest/index.html)     |
 | extension | [copper-coreengine](https://www.javadoc.io/doc/org.copper-engine/copper-coreengine/latest/index.html) |
 | extension | [slf4j-api](https://www.javadoc.io/doc/org.slf4j/slf4j-api/latest/org.slf4j/module-summary.html)      |
-| JDK       | [Java 21 API](https://docs.oracle.com/en/java/javase/17/docs/api/index.html)                          |
+| JDK       | [Java 21 API](https://docs.oracle.com/en/java/javase/21/docs/api/index.html)                          |
 
 ##### Application API
 
@@ -319,20 +330,32 @@ Issues are very welcome, too.
 
 * The "master" branch is maintained and released as "latest" image on dockerhub. 
 * The newest "release" branch is maintained and released as a tagged image for example "4.4.0"
-* Because build pipeline is completely automated after committing to "master" or "release", these branches are protected on github and commits must be siged "verified". 
-* The newest Workflow API is maintained
-* For a "release", the following manual activities mst be done
+* Because build pipeline is completely automated after committing to "master" or "release", these branches are protected on github and commits must be signed "verified". 
+* The newest Application API should be used in this document
+* For a "release", the following manual activities must be done
   1) Move "Ongoing" block in "master"
   1) Change "release" version in `.github/workflows/build.yml` in "master" on github (with a PR)
   1) merge "master" to "release" branch on github (with a PR)
   1) "Draft a new release on github" on "release" branch with a copy of the moved "Ongoing" block (look at older releases for details)
 
-#### Helpful Tasks
+### Release a copper2go-api Library
+
+1) Move "Ongoing" block in "master"
+1) Update "version" in copper2go-api/build.gradle.kts
+1) Push release branch
+1) Publish artifact: `gradle :copper2go-api:publish`
+1) Login to https://oss.sonatype.org/
+1) Find artifact in "Staging Repositories" and "Close" it and "Release" it
+1) "Draft a new release on github" on "release" branch with a copy of the moved "Ongoing" block (look at older releases for details)
+1) Update SNAPSHOT "version" in copper2go-api/build.gradle.kts
+1) Push release branch
+
+#### More Helpful Tasks
 
 1) `gradle dependencyUpdates`
-1) `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks`
-1) Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks --refresh-dependencies`
-1) `gradle dependencyCheckAnalyze --info`
+1) Deprecated: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks`
+1) Deprecated: Optional: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks --refresh-dependencies`
+1) `gradle dependencyCheckAnalyze -x :dependencyCheckAnalyze --info`
 1) `gradle clean build`
 1) `gradle clean integrationTest`
 1) `gradle -Pcopper2goVersion=tmp2 :copper2go-application:build :copper2go-application:jib `
@@ -340,6 +363,8 @@ Issues are very welcome, too.
 1) `gradle :vanilla-application:build :vanilla-application:jib`
 1) `gradle :sync-application:build :sync-application:jib`
 1) `docker scout cves keymaster65/copper2go:latest`
+1) Optional: `gradle pitest -x :pitest`
+1) Optional: `gradle pitestReportAggregate`
 
 ## Links
 
@@ -350,26 +375,28 @@ Issues are very welcome, too.
 * https://copper-engine.org/
 * https://copper-engine.org/blog/2019-12-09-/copper-5.1-released/
 * https://openjdk.org/projects/crac/
-* https://github.com/factoryfx
 
 ## Ongoing in latest/master
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-### "jackson-databind" Workflow API 3.2.2
-
-* [x] Update jackson-databind from 2.15.3 to 2.16.0
+* [ ] Update to JDK 22
 
 ## Planning
 
-### "State Pattern" Release Application API 4.7.0
+### "State Pattern" Release Application API 5.0.0
+
+* [ ] Update to JDK 22
+
+### "State Pattern" Release Application API 5.1.0
 
 * [ ] Spike: BPMN Support
-* [ ] Spike: Multi workflow support and REST level
+* [ ] Spike: Multi workflow repository support and REST level
 * [ ] Spike: Workflow using State Pattern or other defined strategy in copper2go-engine
 
 ## Backlog
 
+* Use a Registered Ports in Applications
 * STDIN/OUT support in config and container (or remove it)
 * Load workflow subtree only from git
 * Operating
@@ -400,6 +427,8 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
   * Replace vertx HTTP components with simpler implementation
   * Replace vertx Kafka components with simpler implementation
 * On demand only
+  * HTTP Security
+  * Kafka Security
   * CRaC Support for STDIN/STDOUT/STDERR
   * Support Binary data
   * Binary Binding
@@ -409,8 +438,6 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
   * Async idempotent DB API
   * PostgreSQL support for business resources
   * JMS support (may be IBM MQ, ActiveMQ or ...)
-  * HTTP Security
-  * Kafka Security
   * factoryfx integration
   * extend workflow attributes to a MultiMap
 * Withdrawn
@@ -420,6 +447,37 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
   * Vertx Bus Connector
 
 ## Released
+
+### "Maintenance" Release Application API 4.7.0
+
+* [x] Dependabot updates 02.12.2023
+* [x] Dependabot updates 10.12.2023
+* [x] Dependabot updates 15.12.2023
+* [x] Dependabot updates 23.12.2023
+* [x] Dependabot updates 27.12.2023
+* [x] Dependabot updates 06.01.2024
+* [x] Dependabot updates 12.01.2024
+* [x] Dependabot updates 20.01.2024
+* [x] Dependabot updates 05.02.2024
+* [x] Dependabot updates 24.02.2024
+* [x] Dependabot updates 02.03.2024
+* [x] Dependabot updates 24.03.2024
+* [x] Dependabot updates 26.03.2024
+* [x] Dependabot updates 29.03.2024
+* [x] Dependabot updates 30.03.2024
+* [x] No more gradle.lockfile usage
+* [x] Dependabot updates 14.04.2024
+* [x] Dependabot updates 20.04.2024
+* [x] Dependabot updates 20.05.2024
+* [x] Dependabot updates 23.05.2024
+* [x] Dependabot updates 02.06.2024
+* [x] Toolchain Update to JDK 22
+
+### "Update copper-coreengine, slf4j-api and jackson-databind" Workflow API 3.3.0
+
+* [x] Update jackson-databind from 2.15.3 to 2.17.1
+* [x] Update slf4j-api from 2.0.10 to 2.0.13
+* [x] Update copper-coreengine from 5.4.2 to 5.5.0
 
 ### "Binding" Release Application API 4.6.0
 

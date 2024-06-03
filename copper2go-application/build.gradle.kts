@@ -1,10 +1,11 @@
 pitest {
     targetClasses.set(setOf<String>("io.github.keymaster65.copper2go.*"))
+    excludedTestClasses.set(setOf<String>("io.github.keymaster65.copper2go.application.Copper2GoApplicationStdInOutTest*"))
 }
 
 plugins {
     application
-    id("com.google.cloud.tools.jib") version "3.4.0"
+    id("com.google.cloud.tools.jib") version "3.4.3"
 }
 
 tasks.withType<Test> {
@@ -30,13 +31,17 @@ dependencies {
     implementation(project(":connector-kafka-vertx"))
     implementation(project(":connector-standardio"))
 
-    implementation("org.copper-engine:copper-coreengine:5.4.2")
+    implementation("org.copper-engine:copper-coreengine:5.5.0")
 
-    implementation("io.vertx:vertx-core:4.5.0")
-    implementation("io.vertx:vertx-kafka-client:4.5.0")
+    implementation("io.vertx:vertx-core:4.5.8")
+    implementation("io.vertx:vertx-kafka-client:4.5.8")
 
-    testImplementation("org.testcontainers:testcontainers:1.19.2")
-    testImplementation("org.testcontainers:kafka:1.19.2")
+    testImplementation("org.testcontainers:testcontainers:1.19.8")
+    testImplementation("org.testcontainers:kafka:1.19.8")
+
+    constraints  {
+        testImplementation("org.apache.commons:commons-compress:1.26.2")
+    }
 }
 
 application {
@@ -58,7 +63,7 @@ distributions {
 
 jib {
     from {
-        image = "azul/zulu-openjdk-alpine:21.0.0"
+        image = "azul/zulu-openjdk-alpine:22.0.1"
         auth {
             username = "keymaster65"
             password = System.getenv("DOCKER_HUB_PASSWORD")

@@ -15,7 +15,6 @@
  */
 package io.github.keymaster65.copper2go.api.util;
 
-import io.github.keymaster65.copper2go.api.util.WorkflowTestRunner;
 import io.github.keymaster65.copper2go.api.workflow.ReplyChannelStore;
 import io.github.keymaster65.copper2go.api.workflow.WorkflowData;
 import org.copperengine.core.CopperException;
