@@ -55,8 +55,9 @@ in  https://github.com/Keymaster65/copper2go-workflows.
 
 * Start container with `hello` and `pricing` workflow 
     * `docker run -d -p 19666:19666 --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:latest`
-* In Browser `client` you can see the used licenses
+* In Browser `client` you can GET and see the used licenses
     * `http://localhost:19666/`
+*  In Browser `client` you can GET and see an exception
     * `http://localhost:19666/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name must be
       specified."
 * Use any other HTTP `client` and POST your name to the URL
