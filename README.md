@@ -331,7 +331,7 @@ Issues are very welcome, too.
 * The "master" branch is maintained and released as "latest" image on dockerhub. 
 * The newest "release" branch is maintained and released as a tagged image for example "4.4.0"
 * Because build pipeline is completely automated after committing to "master" or "release", these branches are protected on github and commits must be signed "verified". 
-* The newest Workflow API is maintained
+* The newest Application API should be used in this document
 * For a "release", the following manual activities must be done
   1) Move "Ongoing" block in "master"
   1) Change "release" version in `.github/workflows/build.yml` in "master" on github (with a PR)
@@ -380,32 +380,15 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-* [x] Dependabot updates 02.12.2023
-* [x] Dependabot updates 10.12.2023
-* [x] Dependabot updates 15.12.2023
-* [x] Dependabot updates 23.12.2023
-* [x] Dependabot updates 27.12.2023
-* [x] Dependabot updates 06.01.2024
-* [x] Dependabot updates 12.01.2024
-* [x] Dependabot updates 20.01.2024
-* [x] Dependabot updates 05.02.2024
-* [x] Dependabot updates 24.02.2024
-* [x] Dependabot updates 02.03.2024
-* [x] Dependabot updates 24.03.2024
-* [x] Dependabot updates 26.03.2024
-* [x] Dependabot updates 29.03.2024
-* [x] Dependabot updates 30.03.2024
-* [x] No more gradle.lockfile usage
-* [x] Dependabot updates 14.04.2024
-* [x] Dependabot updates 20.04.2024
-* [x] Dependabot updates 20.05.2024
-* [x] Dependabot updates 23.05.2024
-* [x] Dependabot updates 02.06.2024
-* [x] Toolchain Update to JDK 22
+* [ ] Update to JDK 22
 
 ## Planning
 
-### "State Pattern" Release Application API 4.7.0
+### "State Pattern" Release Application API 5.0.0
+
+* [ ] Update to JDK 22
+
+### "State Pattern" Release Application API 5.1.0
 
 * [ ] Spike: BPMN Support
 * [ ] Spike: Multi workflow repository support and REST level
@@ -413,7 +396,6 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ## Backlog
 
-* Update to JDK 22
 * Use a Registered Ports in Applications
 * STDIN/OUT support in config and container (or remove it)
 * Load workflow subtree only from git
@@ -465,6 +447,31 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
   * Vertx Bus Connector
 
 ## Released
+
+### "Maintenance" Release Application API 4.7.0
+
+* [x] Dependabot updates 02.12.2023
+* [x] Dependabot updates 10.12.2023
+* [x] Dependabot updates 15.12.2023
+* [x] Dependabot updates 23.12.2023
+* [x] Dependabot updates 27.12.2023
+* [x] Dependabot updates 06.01.2024
+* [x] Dependabot updates 12.01.2024
+* [x] Dependabot updates 20.01.2024
+* [x] Dependabot updates 05.02.2024
+* [x] Dependabot updates 24.02.2024
+* [x] Dependabot updates 02.03.2024
+* [x] Dependabot updates 24.03.2024
+* [x] Dependabot updates 26.03.2024
+* [x] Dependabot updates 29.03.2024
+* [x] Dependabot updates 30.03.2024
+* [x] No more gradle.lockfile usage
+* [x] Dependabot updates 14.04.2024
+* [x] Dependabot updates 20.04.2024
+* [x] Dependabot updates 20.05.2024
+* [x] Dependabot updates 23.05.2024
+* [x] Dependabot updates 02.06.2024
+* [x] Toolchain Update to JDK 22
 
 ### "Update copper-coreengine, slf4j-api and jackson-databind" Workflow API 3.3.0
 
