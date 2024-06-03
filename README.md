@@ -381,6 +381,7 @@ Issues are very welcome, too.
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
 * [x] Update Application API to JDK 22
+* [ ] Use a Registered Ports in Applications
 
 ## Planning
 
@@ -396,7 +397,6 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ## Backlog
 
-* Use a Registered Ports in Applications
 * STDIN/OUT support in config and container (or remove it)
 * Load workflow subtree only from git
 * Operating
