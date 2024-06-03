@@ -80,7 +80,7 @@ You want to develop your own workflows? You may start with the existing ones.
 
 * Clone or fork the copper2go-workflows **gradle** project: https://github.com/Keymaster65/copper2go-workflows
 * Modify configuration and store it into environment variable C2G_CONFIG.
-    * Start with file: https://github.com/Keymaster65/copper2go/blob/release/4/copper2go-application/src/main/resources/io/github/keymaster65/copper2go/application/config/config.json
+    * Start with file: https://github.com/Keymaster65/copper2go/blob/master/copper2go-application/src/main/resources/io/github/keymaster65/copper2go/application/config/config.json
     * store it in your local docker host `config.json`
     * Typically, modify workflowGitURI location
 * Start Container with your configuration:
@@ -139,7 +139,7 @@ The Dependabot helps to keep the 3rd party components up to date (see https://gi
 As workflows can not extend the used jars this check is sufficient for all workflow use cases.
 
 High quality gates are define and used in sonarcloud. This is an important fact, if you want to stay on the secure side
-using copper2go. Version 4 of copper2go does not support secure connectors, but they can easily be added on demand.
+using copper2go. Version 5 of copper2go does not support secure connectors, but they can easily be added on demand.
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=alert_status)](https://sonarcloud.io/dashboard?id=Keymaster65_copper2go)
 
@@ -273,7 +273,7 @@ Docker images can be found here: https://hub.docker.com/r/keymaster65/copper2go
 
 ###### Main Configuration
 
-https://github.com/Keymaster65/copper2go/blob/release/4/src/main/resources/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json
+https://github.com/Keymaster65/copper2go/blob/master/copper2go-application/src/main/resources/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json
 
 you find examples for the configuration of
 
@@ -287,7 +287,7 @@ you find examples for the configuration of
 ###### Logging Configuration
 
 The logback logging is defined in
-https://github.com/Keymaster65/copper2go/blob/release/4/src/main/resources/logback.xml
+https://github.com/Keymaster65/copper2go/blob/master/copper2go-application/src/main/resources/logback.xml
 
 There you can find the environment variables, that can be used to control logging at container start.
 
@@ -380,11 +380,11 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-* [ ] Update to JDK 22
+* [x] Update Application API to JDK 22
 
 ## Planning
 
-### "State Pattern" Release Application API 5.0.0
+### "Java 22" Release Application API 5.0.0
 
 * [ ] Update to JDK 22
 

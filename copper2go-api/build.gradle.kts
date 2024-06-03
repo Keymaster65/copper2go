@@ -30,7 +30,7 @@ signing {
 }
 
 tasks.withType<Test> {
-    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,21,-source,21")
+    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,22,-source,22")
 }
 
 publishing {
