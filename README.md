@@ -331,7 +331,7 @@ Issues are very welcome, too.
 * The "master" branch is maintained and released as "latest" image on dockerhub. 
 * The newest "release" branch is maintained and released as a tagged image for example "4.4.0"
 * Because build pipeline is completely automated after committing to "master" or "release", these branches are protected on github and commits must be signed "verified". 
-* The newest Workflow API is maintained
+* The newest Application API should be used in this document
 * For a "release", the following manual activities must be done
   1) Move "Ongoing" block in "master"
   1) Change "release" version in `.github/workflows/build.yml` in "master" on github (with a PR)
