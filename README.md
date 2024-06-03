@@ -380,7 +380,7 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-* [ ] Update to JDK 22
+* [x] Update Application API to JDK 22
 
 ## Planning
 
