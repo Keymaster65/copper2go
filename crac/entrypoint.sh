@@ -13,7 +13,7 @@ _wait(){
   typeset RC="1"
   echo "Waiting for service ..."
   while [ "$RC" != "0" ]; do
-    curl --data Wolf http://localhost:59665/copper2go/3/api/twoway/2.0/Hello 2>&1 | fgrep "Hello Wolf"
+    curl --data Wolf http://localhost:19666/copper2go/3/api/twoway/2.0/Hello 2>&1 | fgrep "Hello Wolf"
     RC="$?"
   done
   echo "$logPrefix Service found at  $(date +%H:%M:%S.%N)"
@@ -28,7 +28,7 @@ if [ ! -f "cr/cppath" ]; then
   typeset noOfRequest="100"
   echo "Now warming up with $noOfRequest requests"
   for i in {1..$noOfRequest}; do
-    curl --data Wolf http://localhost:59665/copper2go/3/api/twoway/2.0/Hello 2>&1 | fgrep -q "Hello Wolf"
+    curl --data Wolf http://localhost:19666/copper2go/3/api/twoway/2.0/Hello 2>&1 | fgrep -q "Hello Wolf"
   done
   sleep 1 # wait for warmup finished
   _checkPoint

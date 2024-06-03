@@ -41,7 +41,7 @@ class MainTest {
         localHttpServer.start();
 
 
-        Main.main(new String[]{"http://localhost:59665/copper2go/3/api/twoway/2.0/Hello"});
+        Main.main(new String[]{"http://localhost:19666/copper2go/3/api/twoway/2.0/Hello"});
 
 
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();

@@ -28,7 +28,7 @@ class MainTest {
     void createDefaultConfig() throws IOException {
         final Config config = Main.createConfig();
 
-        Assertions.assertThat(config.httpPort).isEqualTo(59665);
+        Assertions.assertThat(config.httpPort).isEqualTo(19666);
     }
 
 
@@ -40,7 +40,7 @@ class MainTest {
 
         final Config configClone = Main.createConfig(defaultConfig);
 
-        Assertions.assertThat(configClone.httpPort).isEqualTo(59665);
+        Assertions.assertThat(configClone.httpPort).isEqualTo(19666);
     }
 
     @Test

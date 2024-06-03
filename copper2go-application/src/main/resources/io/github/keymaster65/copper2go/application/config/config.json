@@ -1,11 +1,11 @@
 {
-  "httpPort": "59665",
+  "httpPort": "19666",
   "maxTickets": "10000",
   "httpRequestChannelConfigs": {
     "Pricing.centPerMinute": {
       "method": "GET",
       "host": "localhost",
-      "port": "59665",
+      "port": "19666",
       "path": "/copper2go/3/api/twoway/1.0/Pricing"
     }
   },
