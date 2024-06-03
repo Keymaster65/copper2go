@@ -16,7 +16,6 @@
 package io.github.keymaster65.copper2go.engine;
 
 import io.github.keymaster65.copper2go.api.connector.EngineException;
-import org.copperengine.core.DependencyInjector;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

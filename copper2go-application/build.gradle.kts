@@ -5,11 +5,11 @@ pitest {
 
 plugins {
     application
-    id("com.google.cloud.tools.jib") version "3.4.2"
+    id("com.google.cloud.tools.jib") version "3.4.3"
 }
 
 tasks.withType<Test> {
-    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,21,-source,21")
+    jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,22,-source,22")
 }
 
 val copper2goVersion : String = project.property("copper2goVersion").toString()
@@ -31,13 +31,17 @@ dependencies {
     implementation(project(":connector-kafka-vertx"))
     implementation(project(":connector-standardio"))
 
-    implementation("org.copper-engine:copper-coreengine:5.4.2")
+    implementation("org.copper-engine:copper-coreengine:5.5.0")
 
-    implementation("io.vertx:vertx-core:4.5.7")
-    implementation("io.vertx:vertx-kafka-client:4.5.7")
+    implementation("io.vertx:vertx-core:4.5.8")
+    implementation("io.vertx:vertx-kafka-client:4.5.8")
 
-    testImplementation("org.testcontainers:testcontainers:1.19.7")
-    testImplementation("org.testcontainers:kafka:1.19.7")
+    testImplementation("org.testcontainers:testcontainers:1.19.8")
+    testImplementation("org.testcontainers:kafka:1.19.8")
+
+    constraints  {
+        testImplementation("org.apache.commons:commons-compress:1.26.2")
+    }
 }
 
 application {
@@ -59,7 +63,7 @@ distributions {
 
 jib {
     from {
-        image = "azul/zulu-openjdk-alpine:21.0.0"
+        image = "azul/zulu-openjdk-alpine:22.0.1"
         auth {
             username = "keymaster65"
             password = System.getenv("DOCKER_HUB_PASSWORD")

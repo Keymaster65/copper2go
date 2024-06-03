@@ -94,7 +94,7 @@ class SystemCompleteTest {
                     .lines()
                     .collect(Collectors.joining("\n"));
             copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:%s".formatted(System.getProperty(SYSTEM_PROPERTY_COPPER2GO_VERSION)))) // NOSONAR
-                    .withExposedPorts(59665)
+                    .withExposedPorts(19666)
                     .withImagePullPolicy(imageName -> true)
                     .withNetworkAliases("copper2go")
                     .withNetwork(network)

@@ -81,7 +81,7 @@ class SystemDefaultTest {
     static void startContainer() {
         //noinspection resource is in stopContainer
         copper2GoContainer = new GenericContainer<>(DockerImageName.parse("keymaster65/copper2go:%s".formatted(System.getProperty(SYSTEM_PROPERTY_COPPER2GO_VERSION))))
-                .withExposedPorts(59665)
+                .withExposedPorts(19666)
                 .withImagePullPolicy(imageName -> true);
         copper2GoContainer.start();
         log.info("TestContainer started.");

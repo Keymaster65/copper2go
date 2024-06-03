@@ -58,7 +58,7 @@ public class VanillaApplicationFactory implements ApplicationFactory {
         );
 
         Copper2GoHttpServer httpServer = new VertxHttpServer(
-                59665,
+                19666,
                 new RequestHandler(copper2GoEngine.payloadReceiver()));
 
         return new VanillaApplication(
@@ -71,7 +71,7 @@ public class VanillaApplicationFactory implements ApplicationFactory {
     private Map<String, HttpRequestChannelConfig> createHttpRequestChannelConfigs() {
         final HttpRequestChannelConfig pricingChannel = new HttpRequestChannelConfig(
                 "localhost",
-                59665,
+                19666,
                 "/copper2go/3/api/twoway/1.0/Pricing",
                 "GET"
         );

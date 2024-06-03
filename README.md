@@ -54,13 +54,14 @@ in  https://github.com/Keymaster65/copper2go-workflows.
 ### Demo
 
 * Start container with `hello` and `pricing` workflow 
-    * `docker run -d -p 59665:59665 --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:latest`
-* In Browser `client` you can see the used licenses
-    * `http://localhost:59665/`
-    * `http://localhost:59665/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name must be
+    * `docker run -d -p 19666:19666 --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:latest`
+* In Browser `client` you can GET and see the used licenses
+    * `http://localhost:19666/`
+*  In Browser `client` you can GET and see an exception
+    * `http://localhost:19666/copper2go/3/api/twoway/2.0/Hello` will deliver a "IllegalArgumentException: A name must be
       specified."
 * Use any other HTTP `client` and POST your name to the URL
-    * Example: `curl --data Wolf http://localhost:59665/copper2go/3/api/twoway/2.0/Hello`
+    * Example: `curl --data Wolf http://localhost:19666/copper2go/3/api/twoway/2.0/Hello`
         * Will produce someting like `Hello Wolf! Please transfer 4 cent`
 
 ### Demo Diagram
@@ -80,18 +81,18 @@ You want to develop your own workflows? You may start with the existing ones.
 
 * Clone or fork the copper2go-workflows **gradle** project: https://github.com/Keymaster65/copper2go-workflows
 * Modify configuration and store it into environment variable C2G_CONFIG.
-    * Start with file: https://github.com/Keymaster65/copper2go/blob/release/4/copper2go-application/src/main/resources/io/github/keymaster65/copper2go/application/config/config.json
+    * Start with file: https://github.com/Keymaster65/copper2go/blob/master/copper2go-application/src/main/resources/io/github/keymaster65/copper2go/application/config/config.json
     * store it in your local docker host `config.json`
     * Typically, modify workflowGitURI location
 * Start Container with your configuration:
-    * `docker run -d -p 59665:59665 -e C2G_CONFIG="$(cat config.json)" --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:latest`
+    * `docker run -d -p 19666:19666 -e C2G_CONFIG="$(cat config.json)" --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:latest`
 
 ### Starting with JMX and copper-monitoring Web Application
 
 `host.docker.internal` works for windows.
 
 * Start container with JMX on port 19665
-  * `docker run -d -e JAVA_TOOL_OPTIONS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=19665 -Dcom.sun.management.jmxremote.rmi.port=19665 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=host.docker.internal" -p 19665:19665 -p 59665:59665 --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:latest`
+  * `docker run -d -e JAVA_TOOL_OPTIONS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=19665 -Dcom.sun.management.jmxremote.rmi.port=19665 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=host.docker.internal" -p 19665:19665 -p 19666:19666 --pull always --name copper2go --rm registry.hub.docker.com/keymaster65/copper2go:latest`
   * Now you can visit the copper MBeas in tools like visualVM, JConsole etc.
 * Start the copper-monitoring Web Application on port 29665 using same JMX port
   * `docker run -e JMX_HOST="host.docker.internal" -e JMX_PORT="19665" --name copperGui --rm -p 29665:8080 -d copperengine/copper-monitoring`
@@ -139,7 +140,7 @@ The Dependabot helps to keep the 3rd party components up to date (see https://gi
 As workflows can not extend the used jars this check is sufficient for all workflow use cases.
 
 High quality gates are define and used in sonarcloud. This is an important fact, if you want to stay on the secure side
-using copper2go. Version 4 of copper2go does not support secure connectors, but they can easily be added on demand.
+using copper2go. Version 5 of copper2go does not support secure connectors, but they can easily be added on demand.
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Keymaster65_copper2go&metric=alert_status)](https://sonarcloud.io/dashboard?id=Keymaster65_copper2go)
 
@@ -218,7 +219,7 @@ aware of the connector capabilities.
 
 #### Connector Capabilities
 
-TO DO
+TO DO ...
 
 #### More Samples
 
@@ -232,9 +233,9 @@ https://github.com/Keymaster65/copper2go-tools-bridge
 
 The copper2go Workflow's API is hosted in the Maven Central. It can be found at several places
 
-* https://mvnrepository.com/artifact/io.github.keymaster65/copper2go-api
-* https://search.maven.org/search?q=copper2go
 * https://repo1.maven.org/maven2/io/github/keymaster65/copper2go-api/
+* https://search.maven.org/search?q=copper2go
+* https://mvnrepository.com/artifact/io.github.keymaster65/copper2go-api
 
 Starting with Workflow API 3.1.0 it also contains some dependencies, that extend the API.
 
@@ -251,7 +252,7 @@ Visit the sources, tests, examples and JavaDocs:
 | core      | [copper2go-api](https://www.javadoc.io/doc/io.github.keymaster65/copper2go-api/latest/index.html)     |
 | extension | [copper-coreengine](https://www.javadoc.io/doc/org.copper-engine/copper-coreengine/latest/index.html) |
 | extension | [slf4j-api](https://www.javadoc.io/doc/org.slf4j/slf4j-api/latest/org.slf4j/module-summary.html)      |
-| JDK       | [Java 21 API](https://docs.oracle.com/en/java/javase/17/docs/api/index.html)                          |
+| JDK       | [Java 21 API](https://docs.oracle.com/en/java/javase/21/docs/api/index.html)                          |
 
 ##### Application API
 
@@ -273,7 +274,7 @@ Docker images can be found here: https://hub.docker.com/r/keymaster65/copper2go
 
 ###### Main Configuration
 
-https://github.com/Keymaster65/copper2go/blob/release/4/src/main/resources/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json
+https://github.com/Keymaster65/copper2go/blob/master/copper2go-application/src/main/resources/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json
 
 you find examples for the configuration of
 
@@ -287,7 +288,7 @@ you find examples for the configuration of
 ###### Logging Configuration
 
 The logback logging is defined in
-https://github.com/Keymaster65/copper2go/blob/release/4/src/main/resources/logback.xml
+https://github.com/Keymaster65/copper2go/blob/master/copper2go-application/src/main/resources/logback.xml
 
 There you can find the environment variables, that can be used to control logging at container start.
 
@@ -330,15 +331,27 @@ Issues are very welcome, too.
 
 * The "master" branch is maintained and released as "latest" image on dockerhub. 
 * The newest "release" branch is maintained and released as a tagged image for example "4.4.0"
-* Because build pipeline is completely automated after committing to "master" or "release", these branches are protected on github and commits must be siged "verified". 
-* The newest Workflow API is maintained
-* For a "release", the following manual activities mst be done
+* Because build pipeline is completely automated after committing to "master" or "release", these branches are protected on github and commits must be signed "verified". 
+* The newest Application API should be used in this document
+* For a "release", the following manual activities must be done
   1) Move "Ongoing" block in "master"
   1) Change "release" version in `.github/workflows/build.yml` in "master" on github (with a PR)
   1) merge "master" to "release" branch on github (with a PR)
   1) "Draft a new release on github" on "release" branch with a copy of the moved "Ongoing" block (look at older releases for details)
 
-#### Helpful Tasks
+### Release a copper2go-api Library
+
+1) Move "Ongoing" block in "master"
+1) Update "version" in copper2go-api/build.gradle.kts
+1) Push release branch
+1) Publish artifact: `gradle :copper2go-api:publish`
+1) Login to https://oss.sonatype.org/
+1) Find artifact in "Staging Repositories" and "Close" it and "Release" it
+1) "Draft a new release on github" on "release" branch with a copy of the moved "Ongoing" block (look at older releases for details)
+1) Update SNAPSHOT "version" in copper2go-api/build.gradle.kts
+1) Push release branch
+
+#### More Helpful Tasks
 
 1) `gradle dependencyUpdates`
 1) Deprecated: `gradle dependencies :sync-application:dependencies :vanilla-application:dependencies :application-framework:dependencies :copper2go-app:dependencies :scotty-engine:dependencies :sync-engine:dependencies :vanilla-engine:dependencies  :copper2go-api:dependencies :connector-standardio:dependencies :connector-kafka-vertx:dependencies :connector-http-vertx:dependencies :connector-api:dependencies  :engine-api:dependencies :pricing-simulator:dependencies --write-locks`
@@ -368,31 +381,10 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-* [x] Dependabot updates 02.12.2023
-* [x] Dependabot updates 10.12.2023
-* [x] Dependabot updates 15.12.2023
-* [x] Dependabot updates 23.12.2023
-* [x] Dependabot updates 27.12.2023
-* [x] Dependabot updates 06.01.2024
-* [x] Dependabot updates 12.01.2024
-* [x] Dependabot updates 20.01.2024
-* [x] Dependabot updates 05.02.2024
-* [x] Dependabot updates 24.02.2024
-* [x] Dependabot updates 02.03.2024
-* [x] Dependabot updates 24.03.2024
-* [x] Dependabot updates 26.03.2024
-* [x] Dependabot updates 29.03.2024
-* [x] Dependabot updates 30.03.2024
-* [x] No more gradle.lockfile usage
-
-### "jackson-databind" Workflow API 3.2.2
-
-* [x] Update jackson-databind from 2.15.3 to 2.17.0
-* [x] Update slf4j-api from 2.0.10 to 2.0.12
 
 ## Planning
 
-### "State Pattern" Release Application API 4.7.0
+### "State Pattern" Release Application API 5.1.0
 
 * [ ] Spike: BPMN Support
 * [ ] Spike: Multi workflow repository support and REST level
@@ -400,7 +392,6 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ## Backlog
 
-* Use a Registered Ports in Applications
 * STDIN/OUT support in config and container (or remove it)
 * Load workflow subtree only from git
 * Operating
@@ -451,6 +442,42 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
   * Vertx Bus Connector
 
 ## Released
+
+### "Java 22" Release Application API 5.0.0
+
+* [x] Update Application API to JDK 22
+* [x] Use a Registered Ports in Applications
+
+### "Maintenance" Release Application API 4.7.0
+
+* [x] Dependabot updates 02.12.2023
+* [x] Dependabot updates 10.12.2023
+* [x] Dependabot updates 15.12.2023
+* [x] Dependabot updates 23.12.2023
+* [x] Dependabot updates 27.12.2023
+* [x] Dependabot updates 06.01.2024
+* [x] Dependabot updates 12.01.2024
+* [x] Dependabot updates 20.01.2024
+* [x] Dependabot updates 05.02.2024
+* [x] Dependabot updates 24.02.2024
+* [x] Dependabot updates 02.03.2024
+* [x] Dependabot updates 24.03.2024
+* [x] Dependabot updates 26.03.2024
+* [x] Dependabot updates 29.03.2024
+* [x] Dependabot updates 30.03.2024
+* [x] No more gradle.lockfile usage
+* [x] Dependabot updates 14.04.2024
+* [x] Dependabot updates 20.04.2024
+* [x] Dependabot updates 20.05.2024
+* [x] Dependabot updates 23.05.2024
+* [x] Dependabot updates 02.06.2024
+* [x] Toolchain Update to JDK 22
+
+### "Update copper-coreengine, slf4j-api and jackson-databind" Workflow API 3.3.0
+
+* [x] Update jackson-databind from 2.15.3 to 2.17.1
+* [x] Update slf4j-api from 2.0.10 to 2.0.13
+* [x] Update copper-coreengine from 5.4.2 to 5.5.0
 
 ### "Binding" Release Application API 4.6.0
 

@@ -4,14 +4,14 @@ pitest {
 
 plugins {
     application
-    id("com.google.cloud.tools.jib") version "3.4.2"
+    id("com.google.cloud.tools.jib") version "3.4.3"
 }
 
 var copper2goVersion = "sync-0.0.1"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_22
+    targetCompatibility = JavaVersion.VERSION_22
 }
 
 tasks.jar {
@@ -53,7 +53,7 @@ jib {
         workingDirectory = "/"
     }
     from {
-        image = "openjdk:21-jdk"
+        image = "zulu-openjdk-alpine:22.0.1"
     }
     to {
         image = "registry.hub.docker.com/keymaster65/copper2go:" + copper2goVersion
