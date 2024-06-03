@@ -384,7 +384,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 ## Planning
 
-### "State Pattern" Release Application API 5.0.0
+### "Java 22" Release Application API 5.0.0
 
 * [ ] Update to JDK 22
 
