@@ -381,14 +381,8 @@ Issues are very welcome, too.
 
 Of course, copper2go is ready use. Many more capabilities might be added. Here you find some of them ;-)
 
-* [x] Update Application API to JDK 22
-* [x] Use a Registered Ports in Applications
 
 ## Planning
-
-### "Java 22" Release Application API 5.0.0
-
-* [ ] Update to JDK 22
 
 ### "State Pattern" Release Application API 5.1.0
 
@@ -448,6 +442,11 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
   * Vertx Bus Connector
 
 ## Released
+
+### "Java 22" Release Application API 5.0.0
+
+* [x] Update Application API to JDK 22
+* [x] Use a Registered Ports in Applications
 
 ### "Maintenance" Release Application API 4.7.0
 
