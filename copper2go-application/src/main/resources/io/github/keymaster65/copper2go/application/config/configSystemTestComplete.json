@@ -1,5 +1,5 @@
 {
-  "httpPort": "59665",
+  "httpPort": "19666",
   "kafkaHost": "kafka",
   "kafkaPort": "9092",
   "maxTickets": "10000",
@@ -37,7 +37,7 @@
     "Pricing.centPerMinute": {
       "method": "GET",
       "host": "copper2go",
-      "port": "59665",
+      "port": "19666",
       "path": "/copper2go/3/api/twoway/1.0/Pricing"
     }
   },

@@ -38,7 +38,7 @@ _removeVolume() {
 _startContainer() {
   echo "Start container"
   docker run \
-    -p59665:59665 \
+    -p19666:19666 \
     -d \
     --name crac-demo \
     --privileged \

@@ -30,14 +30,14 @@ class ConfigTest {
     @Test
     void createDefault() throws IOException {
         Config config = Config.createDefault();
-        assertThat(config.httpPort).isEqualTo(59665);
+        assertThat(config.httpPort).isEqualTo(19666);
         assertThat(config.maxTickets).isEqualTo(10000);
 
         assertThat(config.httpRequestChannelConfigs).hasSize(1);
         HttpRequestChannelConfig httpRequestChannelConfig = config.httpRequestChannelConfigs.get("Pricing.centPerMinute");
         assertThat(httpRequestChannelConfig.method).isEqualTo(HttpMethod.GET);
         assertThat(httpRequestChannelConfig.host).isEqualTo("localhost");
-        assertThat(httpRequestChannelConfig.port).isEqualTo(59665);
+        assertThat(httpRequestChannelConfig.port).isEqualTo(19666);
         assertThat(httpRequestChannelConfig.path).isEqualTo("/copper2go/3/api/twoway/1.0/Pricing");
 
         assertThat(config.kafkaRequestChannelConfigs).isNull();
@@ -46,7 +46,7 @@ class ConfigTest {
     @Test
     void createFromResource() throws IOException {
         Config config = Config.createFromResource("/io/github/keymaster65/copper2go/application/config/configSystemTestComplete.json");
-        assertThat(config.httpPort).isEqualTo(59665);
+        assertThat(config.httpPort).isEqualTo(19666);
         assertThat(config.kafkaHost).isEqualTo("kafka");
         assertThat(config.kafkaPort).isEqualTo(9092);
         assertThat(config.maxTickets).isEqualTo(10000);
@@ -55,7 +55,7 @@ class ConfigTest {
         HttpRequestChannelConfig httpRequestChannelConfig = config.httpRequestChannelConfigs.get("Pricing.centPerMinute");
         assertThat(httpRequestChannelConfig.method).isEqualTo(HttpMethod.GET);
         assertThat(httpRequestChannelConfig.host).isEqualTo("copper2go");
-        assertThat(httpRequestChannelConfig.port).isEqualTo(59665);
+        assertThat(httpRequestChannelConfig.port).isEqualTo(19666);
         assertThat(httpRequestChannelConfig.path).isEqualTo("/copper2go/3/api/twoway/1.0/Pricing");
 
         assertKafka(config);

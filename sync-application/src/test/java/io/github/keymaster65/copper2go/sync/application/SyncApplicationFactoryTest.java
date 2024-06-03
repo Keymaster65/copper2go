@@ -31,10 +31,10 @@ class SyncApplicationFactoryTest {
     @Example
     void create() throws IOException, URISyntaxException {
         final SyncApplicationFactory syncApplicationFactory = new SyncApplicationFactory(
-                HttpServer.create(new InetSocketAddress(59665), 0),
+                HttpServer.create(new InetSocketAddress(19666), 0),
                 new SyncEngineImpl(),
                 Executors.newVirtualThreadPerTaskExecutor(),
-                new URI("http://localhost:59665/Pricing")
+                new URI("http://localhost:19666/Pricing")
         );
 
         Assertions.assertThatCode(syncApplicationFactory::create).doesNotThrowAnyException();
