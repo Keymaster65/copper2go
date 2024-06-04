@@ -2,6 +2,8 @@
 
 export PATH="$PATH:$JAVA_HOME/bin"
 typeset logPrefix="============================="
+
+# this might not be enough
 typeset lastDumpFile="cr/stats-dump"
 
 _checkPoint(){
