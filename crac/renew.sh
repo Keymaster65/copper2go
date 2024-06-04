@@ -3,8 +3,8 @@
 #set -x
 
 _buildImage(){
-  if [ ! -r temp/zulu21.28.89-ca-crac-jdk21.0.0-linux_x64.tar.gz ]; then
-    echo "Need JDK file temp/zulu21.28.89-ca-crac-jdk21.0.0-linux_x64.tar.gz."
+  if [ ! -r temp/zulu22.30.13-ca-crac-jdk22.0.1-linux_x64.tar.gz ]; then
+    echo "Need JDK file temp/zulu22.30.13-ca-crac-jdk22.0.1-linux_x64.tar.gz."
     exit 1
   fi
   echo "Build image"

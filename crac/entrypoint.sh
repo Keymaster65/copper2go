@@ -2,7 +2,7 @@
 
 export PATH="$PATH:$JAVA_HOME/bin"
 typeset logPrefix="============================="
-
+typeset lastDumpFile="cr/stats-dump"
 
 _checkPoint(){
   export PATH="$PATH:$JAVA_HOME/bin"
@@ -19,7 +19,7 @@ _wait(){
   echo "$logPrefix Service found at  $(date +%H:%M:%S.%N)"
 }
 
-if [ ! -f "cr/cppath" ]; then
+if [ ! -f "$lastDumpFile" ]; then
   echo "$logPrefix Starting to warm up container at $(date +%H:%M:%S.%N)"
   export COPPER2GO_APPLICATION_OPTS="-XX:CRaCCheckpointTo=cr"
   time _wait &
@@ -32,7 +32,7 @@ if [ ! -f "cr/cppath" ]; then
   done
   sleep 1 # wait for warmup finished
   _checkPoint
-  while [ ! -f "cr/cppath" ]; do
+  while [ ! -f "$lastDumpFile" ]; do
     echo "Wait for checkpoint"
     sleep 1
    done
