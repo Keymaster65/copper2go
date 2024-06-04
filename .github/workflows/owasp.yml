@@ -6,6 +6,7 @@ on:
       - 'release/**'
     paths-ignore:
       - '**/README.md'
+      - 'crac/**'
   pull_request:
     types: [ opened, synchronize, reopened ]
 
