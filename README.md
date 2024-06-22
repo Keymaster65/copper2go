@@ -384,7 +384,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Dependabot updates 04.06.2024
 * [x] Update crac to JDK 22
 * [x] Update to copper 5.5.2 
-* [ ] Dependabot updates 22.06.2024
+* [x] Dependabot updates 22.06.2024
 
 ## Planning
 
