@@ -450,7 +450,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 ### "Java 22" Release Application API 5.0.0
 
 * [x] Update Application API to JDK 22
-* [x] Use a Registered Ports in Applications
+* [x] Use a registered port in application
 
 ### "Maintenance" Release Application API 4.7.0
 
