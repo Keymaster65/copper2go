@@ -7,7 +7,7 @@ plugins {
     distribution
     `maven-publish`
     jacoco
-    id("org.sonarqube") version "5.0.0.4638"
+    id("org.sonarqube") version "5.1.0.4882"
     id("com.github.jk1.dependency-license-report") version "2.8"
     id("com.google.cloud.tools.jib") version "3.4.3" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
@@ -164,8 +164,8 @@ allprojects {
         implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
-        testImplementation("net.jqwik:jqwik:1.8.5")
-        testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+        testImplementation("net.jqwik:jqwik:1.9.0")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.10.3")
         testImplementation("org.mockito:mockito-core:5.12.0")
 
         constraints {
@@ -187,7 +187,7 @@ allprojects {
             implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.kafka:kafka-clients:3.7.0")
+            implementation("org.apache.kafka:kafka-clients:3.7.1")
 
             implementation("com.google.guava:guava:33.2.1-jre") {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")

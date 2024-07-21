@@ -393,6 +393,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Update to copper 5.5.2
 * [x] Dependabot updates 22.06.2024
 * [x] Use asciidoc instead of md
+* [x] Dependabot updates 21.07.2024
 
 == Planning
 
