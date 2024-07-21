@@ -394,6 +394,11 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Dependabot updates 22.06.2024
 * [x] Use asciidoc instead of md
 * [x] Dependabot updates 21.07.2024
+* [x] More updates 21.07.2024
+
+=== "Update jackson-databind" Workflow API 3.4.0
+
+* [x] Update jackson-databind from 2.17.1 to 2.17.2
 
 == Planning
 
