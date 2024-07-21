@@ -71,8 +71,8 @@ publishing {
     repositories {
         maven {
             credentials {
-                username = project.properties.getValue("SONA_TOKEN_USERNAME") as String
-                password = project.properties.getValue("SONA_TOKEN_PASSWORD") as String
+                username = project.properties.getOrDefault("SONA_TOKEN_USERNAME", "") as String
+                password = project.properties.getOrDefault("SONA_TOKEN_PASSWORD", "") as String
             }
             if (version.toString().endsWith("-SNAPSHOT")) {
                 url = URI("https://oss.sonatype.org/content/repositories/snapshots/")
