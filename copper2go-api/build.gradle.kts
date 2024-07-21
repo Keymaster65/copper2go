@@ -67,13 +67,12 @@ publishing {
 }
 
 
-
 publishing {
     repositories {
         maven {
             credentials {
-                username = "keymaster65"
-                password = "W0lf-S0n1r12"
+                username = project.properties.getValue("SONA_TOKEN_USERNAME") as String
+                password = project.properties.getValue("SONA_TOKEN_PASSWORD") as String
             }
             if (version.toString().endsWith("-SNAPSHOT")) {
                 url = URI("https://oss.sonatype.org/content/repositories/snapshots/")
