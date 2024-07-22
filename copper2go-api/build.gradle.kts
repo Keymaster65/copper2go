@@ -1,9 +1,5 @@
 import java.net.URI
 
-pitest {
-    targetClasses.set(setOf<String>("io.github.keymaster65.copper2go.api.*"))
-}
-
 group = "io.github.keymaster65"
 version = "3.4.0-SNAPSHOT"
 

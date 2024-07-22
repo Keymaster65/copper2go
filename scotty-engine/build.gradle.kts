@@ -1,7 +1,3 @@
-pitest {
-    targetClasses.set(setOf<String>("io.github.keymaster65.copper2go.engine.scotty.*"))
-}
-
 tasks.withType<Test> {
     jvmArgs = listOf("-Dorg.copperengine.workflow.compiler.options=-target,22,-source,22")
 }

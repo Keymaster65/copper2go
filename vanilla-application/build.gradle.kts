@@ -1,7 +1,3 @@
-pitest {
-    targetClasses.set(setOf<String>("io.github.keymaster65.copper2go.vanilla.application.*"))
-}
-
 plugins {
     application
     id("com.google.cloud.tools.jib") version "3.4.3"

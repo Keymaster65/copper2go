@@ -14,10 +14,7 @@ plugins {
     id("org.unbroken-dome.test-sets") version "4.1.0"
     id("org.owasp.dependencycheck") version "10.0.3"
     id("com.github.ben-manes.versions") version "0.51.0"
-    id("info.solidsoft.pitest") version "1.15.0"
 }
-
-apply(plugin = "info.solidsoft.pitest.aggregator")
 
 group = "io.github.keymaster65"
 
@@ -40,7 +37,6 @@ allprojects {
     apply(plugin = "jacoco")
     apply(plugin = "org.owasp.dependencycheck")
     apply(plugin = "com.github.jk1.dependency-license-report")
-    apply(plugin = "info.solidsoft.pitest")
 
     repositories {
         mavenCentral()
@@ -56,22 +52,6 @@ allprojects {
         reports {
             xml.getRequired().set(true)
             csv.getRequired().set(false)
-        }
-    }
-
-    // https://github.com/szpak/gradle-pitest-plugin
-    pitest {
-        // check this in case of errors: https://mvnrepository.com/artifact/org.pitest/pitest-junit5-plugin
-        junit5PluginVersion.set("1.2.1")
-        timestampedReports.set(false)
-        outputFormats.set(setOf("HTML","XML"))
-        exportLineCoverage.set(true)
-        verbose = true
-
-        reportAggregator {
-            testStrengthThreshold.set(77)
-            mutationThreshold.set(75)
-            maxSurviving.set(105)
         }
     }
 
@@ -194,8 +174,6 @@ allprojects {
             }
             implementation("org.xerial.snappy:snappy-java:1.1.10.5")
             implementation("io.netty:netty-handler:4.1.111.Final")
-
-            pitest("org.pitest:pitest-command-line:1.16.1")
         }
     }
 
