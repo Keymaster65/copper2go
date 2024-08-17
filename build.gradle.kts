@@ -1,7 +1,6 @@
 plugins {
     id("org.unbroken-dome.test-sets") version "4.1.0"
     id("info.solidsoft.pitest") version "1.15.0"
-    java
 }
 
 apply(plugin = "info.solidsoft.pitest.aggregator")
@@ -11,7 +10,6 @@ group = "io.github.keymaster65"
 allprojects {
     apply(plugin = "org.unbroken-dome.test-sets")
     apply(plugin = "info.solidsoft.pitest")
-    apply(plugin = "java")
 
     repositories {
         mavenCentral()
@@ -33,12 +31,6 @@ allprojects {
             testStrengthThreshold.set(77)
             mutationThreshold.set(75)
             maxSurviving.set(105)
-        }
-    }
-
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(22)
         }
     }
 
