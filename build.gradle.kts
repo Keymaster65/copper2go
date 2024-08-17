@@ -5,9 +5,9 @@ plugins {
 
 allprojects {
     // removing test-sets does not lead ConcurrentModificationException
+    // but to "Unresolved reference: implementation"
     apply(plugin = "org.unbroken-dome.test-sets")
 
-    // removing test-sets does not lead ConcurrentModificationException
-    // but to "Unresolved reference: implementation", which seems to be success
+    // removing info.solidsoft.pitest does not lead ConcurrentModificationException
     apply(plugin = "info.solidsoft.pitest")
 }
