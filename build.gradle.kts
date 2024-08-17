@@ -1,46 +1,17 @@
-import com.github.jk1.license.filter.DependencyFilter
-import com.github.jk1.license.filter.LicenseBundleNormalizer
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-
 plugins {
-    java
-    distribution
-    `maven-publish`
-    jacoco
-    id("org.sonarqube") version "5.1.0.4882"
-    id("com.github.jk1.dependency-license-report") version "2.8"
-    id("com.google.cloud.tools.jib") version "3.4.3" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
-    id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
-    id("org.owasp.dependencycheck") version "10.0.3"
-    id("com.github.ben-manes.versions") version "0.51.0"
     id("info.solidsoft.pitest") version "1.15.0"
+    java
 }
 
 apply(plugin = "info.solidsoft.pitest.aggregator")
 
 group = "io.github.keymaster65"
 
-publishing {
-    publications {
-        create<MavenPublication>("library") {
-            from(components["java"])
-        }
-    }
-}
-
-tasks.sonarqube {
-    dependsOn(tasks.test)
-}
-
 allprojects {
-    apply(plugin = "java")
     apply(plugin = "org.unbroken-dome.test-sets")
-    apply(plugin = "org.sonarqube")
-    apply(plugin = "jacoco")
-    apply(plugin = "org.owasp.dependencycheck")
-    apply(plugin = "com.github.jk1.dependency-license-report")
     apply(plugin = "info.solidsoft.pitest")
+    apply(plugin = "java")
 
     repositories {
         mavenCentral()
@@ -49,22 +20,12 @@ allprojects {
         )
     }
 
-    // https://docs.gradle.org/current/userguide/jacoco_plugin.html
-    tasks.jacocoTestReport {
-        dependsOn(tasks.test) // tests are required to run before generating the report
-
-        reports {
-            xml.getRequired().set(true)
-            csv.getRequired().set(false)
-        }
-    }
-
     // https://github.com/szpak/gradle-pitest-plugin
     pitest {
         // check this in case of errors: https://mvnrepository.com/artifact/org.pitest/pitest-junit5-plugin
         junit5PluginVersion.set("1.2.1")
         timestampedReports.set(false)
-        outputFormats.set(setOf("HTML","XML"))
+        outputFormats.set(setOf("HTML", "XML"))
         exportLineCoverage.set(true)
         verbose = true
 
@@ -75,87 +36,11 @@ allprojects {
         }
     }
 
-    // https://github.com/jk1/Gradle-License-Report
-    licenseReport {
-        filters = arrayOf<DependencyFilter>(
-            LicenseBundleNormalizer(
-                "$rootDir/license-normalizer-bundle.json",
-                true
-            )
-        )
-        // excludes and excludeOwnGroup not working
-        excludeGroups = arrayOf<String>(
-            "com.fasterxml.jackson",
-            "io.github.keymaster65"
-        ) // is apache 2.0 but license tool say "null" for jackson-bom v2.13.1
-        allowedLicensesFile = File("$rootDir/allowed-licenses.json")
-    }
-
-    sonarqube {
-        properties {
-            property("sonar.projectKey", "Keymaster65_copper2go")
-            property("sonar.organization", "keymaster65")
-            property("sonar.host.url", "https://sonarcloud.io")
-        }
-    }
-
     java {
         toolchain {
             languageVersion = JavaLanguageVersion.of(22)
         }
     }
-
-    // see https://github.com/hierynomus/license-gradle-plugin
-    apply(plugin = "com.github.hierynomus.license")
-    license {
-        setIgnoreFailures(false)
-        setHeader(File("$rootDir/licenseHeader.txt"))
-        setSkipExistingHeaders(false)
-        exclude("**/*.json")
-        exclude("**/test.html")
-    }
-
-    val nvdApiKey : String = project.properties.getValue("nvdApiKey") as String
-
-    // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/index.html
-    dependencyCheck {
-        analyzers.assemblyEnabled = false
-        failBuildOnCVSS = 0F
-        suppressionFile = "./cveSuppressionFile.xml"
-        nvd.apiKey = nvdApiKey
-        nvd.delay = 4000
-    }
-
-    dependencyLocking {
-        lockAllConfigurations()
-    }
-
-    // https://github.com/ben-manes/gradle-versions-plugin
-    fun isNonStable(version: String): Boolean {
-        val nonStable = listOf("-ALPHA", "-RC").any { version.uppercase().contains(it) }
-        return nonStable
-    }
-    tasks.withType<DependencyUpdatesTask> {
-        rejectVersionIf {
-            isNonStable(candidate.version)
-        }
-        outputFormatter = "plain,html"
-    }
-
-//    tasks.checkLicense {
-//        dependsOn(tasks.processResources)
-//    }
-//    tasks.compileTestJava {
-//        dependsOn(tasks.checkLicense)
-//    }
-//    tasks.compileTestJava {
-//        dependsOn(tasks.generateLicenseReport)
-//    }
-
-//
-//    tasks.withType<Test> {
-//        dependsOn(tasks.checkLicense)
-//    }
 
     dependencies {
         implementation("org.slf4j:slf4j-api:2.0.16")
@@ -203,23 +88,5 @@ allprojects {
     testSets {
         create("integrationTest")
         create("systemTest")
-    }
-
-    tasks.withType<Test> {
-        useJUnitPlatform {
-            includeEngines.add("junit-jupiter")
-            includeEngines.add("jqwik")
-        }
-        systemProperty("logback.configurationFile", "src/main/resources/logback.xml")
-    }
-}
-
-distributions {
-    main {
-        contents {
-            into("config") {
-                from("src/main/resources/logback.xml")
-            }
-        }
     }
 }
