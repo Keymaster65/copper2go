@@ -3,11 +3,11 @@ plugins {
     id("info.solidsoft.pitest") version "1.15.0"
 }
 
-apply(plugin = "info.solidsoft.pitest.aggregator")
-
-group = "io.github.keymaster65"
-
 allprojects {
+    // removing test-sets does not lead ConcurrentModificationException
     apply(plugin = "org.unbroken-dome.test-sets")
+
+    // removing test-sets does not lead ConcurrentModificationException
+    // but to "Unresolved reference: implementation", which seems to be success
     apply(plugin = "info.solidsoft.pitest")
 }
