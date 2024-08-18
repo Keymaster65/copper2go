@@ -10,4 +10,8 @@ allprojects {
 
     // removing info.solidsoft.pitest does not lead ConcurrentModificationException
     apply(plugin = "info.solidsoft.pitest")
+
+    pitest {
+        addJUnitPlatformLauncher = false
+    }
 }
