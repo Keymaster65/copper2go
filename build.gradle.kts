@@ -67,6 +67,7 @@ allprojects {
         outputFormats.set(setOf("HTML","XML"))
         exportLineCoverage.set(true)
         verbose = true
+        addJUnitPlatformLauncher = false
 
         reportAggregator {
             testStrengthThreshold.set(77)
@@ -167,6 +168,10 @@ allprojects {
         testImplementation("net.jqwik:jqwik:1.9.0")
         testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
         testImplementation("org.mockito:mockito-core:5.12.0")
+
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
+            because("required for pitest")
+        }
 
         constraints {
             implementation("commons-io:commons-io:2.16.1") {
