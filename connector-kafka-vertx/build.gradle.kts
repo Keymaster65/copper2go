@@ -12,6 +12,6 @@ dependencies {
 
     testImplementation("org.testcontainers:kafka:1.20.1")
     constraints {
-        testImplementation("org.apache.commons:commons-compress:1.26.2")
+        testImplementation("org.apache.commons:commons-compress:1.27.1")
     }
 }
