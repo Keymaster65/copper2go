@@ -200,7 +200,7 @@ allprojects {
             implementation("org.xerial.snappy:snappy-java:1.1.10.7")
             implementation("io.netty:netty-handler:4.1.112.Final")
 
-            pitest("org.pitest:pitest-command-line:1.16.3")
+            pitest("org.pitest:pitest-command-line:1.17.0")
         }
     }
 
