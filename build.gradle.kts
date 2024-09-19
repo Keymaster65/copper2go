@@ -174,7 +174,7 @@ allprojects {
         }
 
         constraints {
-            implementation("commons-io:commons-io:2.16.1") {
+            implementation("commons-io:commons-io:2.17.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
             implementation("net.minidev:accessors-smart:2.5.1") {
