@@ -174,7 +174,7 @@ allprojects {
         }
 
         constraints {
-            implementation("commons-io:commons-io:2.16.1") {
+            implementation("commons-io:commons-io:2.17.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
             implementation("net.minidev:accessors-smart:2.5.1") {
@@ -186,10 +186,10 @@ allprojects {
             implementation("net.minidev:json-smart:2.5.1") {
                 because("Security scan found 2.3")
             }
-            implementation("org.apache.velocity:velocity-engine-core:2.3") {
+            implementation("org.apache.velocity:velocity-engine-core:2.4") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.velocity:velocity-engine-scripting:2.3") {
+            implementation("org.apache.velocity:velocity-engine-scripting:2.4") {
                 because("Security scan found 2.2")
             }
             implementation("org.apache.kafka:kafka-clients:3.8.0")
@@ -198,9 +198,9 @@ allprojects {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
             implementation("org.xerial.snappy:snappy-java:1.1.10.7")
-            implementation("io.netty:netty-handler:4.1.112.Final")
+            implementation("io.netty:netty-handler:4.1.114.Final")
 
-            pitest("org.pitest:pitest-command-line:1.16.3")
+            pitest("org.pitest:pitest-command-line:1.17.0")
         }
     }
 
