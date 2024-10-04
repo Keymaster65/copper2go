@@ -162,12 +162,12 @@ allprojects {
         implementation("org.slf4j:slf4j-api:2.0.16")
         implementation("ch.qos.logback:logback-classic:1.5.8")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.18.0")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
-        testImplementation("net.jqwik:jqwik:1.9.0")
-        testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
-        testImplementation("org.mockito:mockito-core:5.13.0")
+        testImplementation("net.jqwik:jqwik:1.9.1")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.11.1")
+        testImplementation("org.mockito:mockito-core:5.14.1")
 
         testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
             because("required for pitest")
