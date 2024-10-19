@@ -9,7 +9,7 @@ plugins {
     jacoco
     id("org.sonarqube") version "5.1.0.4882"
     id("com.github.jk1.dependency-license-report") version "2.9"
-    id("com.google.cloud.tools.jib") version "3.4.3" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
+    id("com.google.cloud.tools.jib") version "3.4.4" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
     id("org.owasp.dependencycheck") version "10.0.4"
@@ -160,14 +160,14 @@ allprojects {
 
     dependencies {
         implementation("org.slf4j:slf4j-api:2.0.16")
-        implementation("ch.qos.logback:logback-classic:1.5.8")
+        implementation("ch.qos.logback:logback-classic:1.5.11")
 
         implementation("com.fasterxml.jackson.core:jackson-databind:2.18.0")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
         testImplementation("net.jqwik:jqwik:1.9.1")
-        testImplementation("org.junit.jupiter:junit-jupiter:5.11.1")
-        testImplementation("org.mockito:mockito-core:5.14.1")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.11.2")
+        testImplementation("org.mockito:mockito-core:5.14.2")
 
         testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
             because("required for pitest")
@@ -194,7 +194,7 @@ allprojects {
             }
             implementation("org.apache.kafka:kafka-clients:3.8.0")
 
-            implementation("com.google.guava:guava:33.3.0-jre") {
+            implementation("com.google.guava:guava:33.3.1-jre") {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
             implementation("org.xerial.snappy:snappy-java:1.1.10.7")

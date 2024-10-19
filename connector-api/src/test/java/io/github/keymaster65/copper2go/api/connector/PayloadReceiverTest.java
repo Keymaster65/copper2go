@@ -29,9 +29,9 @@ class PayloadReceiverTest {
     @Test
     void receive() throws EngineException {
         final PayloadReceiver mockedPayloadReceiver = Mockito.mock(PayloadReceiver.class);
-        final PayloadReceiver PayloadReceiver = createPayloadReceiver(mockedPayloadReceiver);
+        final PayloadReceiver payloadReceiver = createPayloadReceiver(mockedPayloadReceiver);
 
-        PayloadReceiver.receive(
+        payloadReceiver.receive(
                 PAYLOAD,
                 REPLY_CHANNEL,
                 WORKFLOW,
