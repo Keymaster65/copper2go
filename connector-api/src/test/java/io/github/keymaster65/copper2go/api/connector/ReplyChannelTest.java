@@ -27,9 +27,9 @@ class ReplyChannelTest {
     @Test
     void reply() {
         final ReplyChannel mockedReplyChannel = Mockito.mock(ReplyChannel.class);
-        final ReplyChannel ReplyChannel = createReplyChannel(mockedReplyChannel);
+        final ReplyChannel replyChannel = createReplyChannel(mockedReplyChannel);
 
-        ReplyChannel.reply(MESSAGE);
+        replyChannel.reply(MESSAGE);
 
         Mockito.verify(mockedReplyChannel).reply(MESSAGE, null);
     }
@@ -37,9 +37,9 @@ class ReplyChannelTest {
     @Test
     void replyError() {
         final ReplyChannel mockedReplyChannel = Mockito.mock(ReplyChannel.class);
-        final ReplyChannel ReplyChannel = createReplyChannel(mockedReplyChannel);
+        final ReplyChannel replyChannel = createReplyChannel(mockedReplyChannel);
 
-        ReplyChannel.replyError(MESSAGE);
+        replyChannel.replyError(MESSAGE);
 
         Mockito.verify(mockedReplyChannel).replyError(MESSAGE, null);
     }
