@@ -167,7 +167,7 @@ allprojects {
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
         testImplementation("net.jqwik:jqwik:1.9.1")
         testImplementation("org.junit.jupiter:junit-jupiter:5.11.2")
-        testImplementation("org.mockito:mockito-core:5.14.1")
+        testImplementation("org.mockito:mockito-core:5.14.2")
 
         testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
             because("required for pitest")
