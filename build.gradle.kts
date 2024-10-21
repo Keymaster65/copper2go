@@ -186,7 +186,7 @@ allprojects {
             implementation("net.minidev:json-smart:2.5.1") {
                 because("Security scan found 2.3")
             }
-            implementation("org.apache.velocity:velocity-engine-core:2.4") {
+            implementation("org.apache.velocity:velocity-engine-core:2.4.1") {
                 because("Security scan found 2.2")
             }
             implementation("org.apache.velocity:velocity-engine-scripting:2.4") {
