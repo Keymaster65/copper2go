@@ -12,7 +12,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.4.4" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
-    id("org.owasp.dependencycheck") version "11.0.0"
+    id("org.owasp.dependencycheck") version "11.1.0"
     id("com.github.ben-manes.versions") version "0.51.0"
     id("info.solidsoft.pitest") version "1.15.0"
 }
@@ -162,7 +162,7 @@ allprojects {
         implementation("org.slf4j:slf4j-api:2.0.16")
         implementation("ch.qos.logback:logback-classic:1.5.12")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.18.0")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.18.1")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
         testImplementation("net.jqwik:jqwik:1.9.1")
@@ -192,7 +192,7 @@ allprojects {
             implementation("org.apache.velocity:velocity-engine-scripting:2.4.1") {
                 because("Security scan found 2.2")
             }
-            implementation("org.apache.kafka:kafka-clients:3.8.0")
+            implementation("org.apache.kafka:kafka-clients:3.9.0")
 
             implementation("com.google.guava:guava:33.3.1-jre") {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
@@ -200,7 +200,7 @@ allprojects {
             implementation("org.xerial.snappy:snappy-java:1.1.10.7")
             implementation("io.netty:netty-handler:4.1.114.Final")
 
-            pitest("org.pitest:pitest-command-line:1.17.0")
+            pitest("org.pitest:pitest-command-line:1.17.1")
         }
     }
 
