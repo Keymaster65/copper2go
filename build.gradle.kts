@@ -198,7 +198,7 @@ allprojects {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
             implementation("org.xerial.snappy:snappy-java:1.1.10.7")
-            implementation("io.netty:netty-handler:4.1.114.Final")
+            implementation("io.netty:netty-handler:4.1.116.Final")
 
             pitest("org.pitest:pitest-command-line:1.17.1")
         }
