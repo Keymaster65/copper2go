@@ -403,6 +403,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Dependabot updates 19.10.2024
 * [x] Dependabot updates 27.10.2024
 * [x] Dependabot updates 16.11.2024
+* [x] Dependabot updates 27.02.2025
 
 === "Update jackson-databind" and "slf4j-api" Workflow API 3.4.0
 
