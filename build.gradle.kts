@@ -12,7 +12,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.4.4" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
-    id("org.owasp.dependencycheck") version "11.1.0"
+    id("org.owasp.dependencycheck") version "12.1.0"
     id("com.github.ben-manes.versions") version "0.51.0"
     id("info.solidsoft.pitest") version "1.15.0"
 }
