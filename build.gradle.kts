@@ -7,13 +7,13 @@ plugins {
     distribution
     `maven-publish`
     jacoco
-    id("org.sonarqube") version "5.1.0.4882"
+    id("org.sonarqube") version "6.0.1.5171"
     id("com.github.jk1.dependency-license-report") version "2.9"
     id("com.google.cloud.tools.jib") version "3.4.4" // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin
     id("com.github.hierynomus.license-base") version "0.16.1"
     id("org.unbroken-dome.test-sets") version "4.1.0"
-    id("org.owasp.dependencycheck") version "11.1.0"
-    id("com.github.ben-manes.versions") version "0.51.0"
+    id("org.owasp.dependencycheck") version "12.1.0"
+    id("com.github.ben-manes.versions") version "0.52.0"
     id("info.solidsoft.pitest") version "1.15.0"
 }
 
@@ -62,7 +62,7 @@ allprojects {
     // https://github.com/szpak/gradle-pitest-plugin
     pitest {
         // check this in case of errors: https://mvnrepository.com/artifact/org.pitest/pitest-junit5-plugin
-        junit5PluginVersion.set("1.2.1")
+        junit5PluginVersion.set("1.2.2")
         timestampedReports.set(false)
         outputFormats.set(setOf("HTML","XML"))
         exportLineCoverage.set(true)
@@ -159,22 +159,22 @@ allprojects {
 //    }
 
     dependencies {
-        implementation("org.slf4j:slf4j-api:2.0.16")
-        implementation("ch.qos.logback:logback-classic:1.5.12")
+        implementation("org.slf4j:slf4j-api:2.0.17")
+        implementation("ch.qos.logback:logback-classic:1.5.17")
 
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.18.1")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
-        testImplementation("net.jqwik:jqwik:1.9.1")
-        testImplementation("org.junit.jupiter:junit-jupiter:5.11.3")
-        testImplementation("org.mockito:mockito-core:5.14.2")
+        testImplementation("net.jqwik:jqwik:1.9.2")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.12.0")
+        testImplementation("org.mockito:mockito-core:5.15.2")
 
         testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
             because("required for pitest")
         }
 
         constraints {
-            implementation("commons-io:commons-io:2.17.0") {
+            implementation("commons-io:commons-io:2.18.0") {
                 because("Bug in 2.8.0 while deleting dirs on Windows 10; JDK11")
             }
             implementation("net.minidev:accessors-smart:2.5.1") {
@@ -198,9 +198,9 @@ allprojects {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
             implementation("org.xerial.snappy:snappy-java:1.1.10.7")
-            implementation("io.netty:netty-handler:4.1.114.Final")
+            implementation("io.netty:netty-handler:4.1.118.Final")
 
-            pitest("org.pitest:pitest-command-line:1.17.1")
+            pitest("org.pitest:pitest-command-line:1.18.2")
         }
     }
 
