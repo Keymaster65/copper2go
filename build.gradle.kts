@@ -62,7 +62,7 @@ allprojects {
     // https://github.com/szpak/gradle-pitest-plugin
     pitest {
         // check this in case of errors: https://mvnrepository.com/artifact/org.pitest/pitest-junit5-plugin
-        junit5PluginVersion.set("1.2.1")
+        junit5PluginVersion.set("1.2.2")
         timestampedReports.set(false)
         outputFormats.set(setOf("HTML","XML"))
         exportLineCoverage.set(true)
@@ -200,7 +200,7 @@ allprojects {
             implementation("org.xerial.snappy:snappy-java:1.1.10.7")
             implementation("io.netty:netty-handler:4.1.118.Final")
 
-            pitest("org.pitest:pitest-command-line:1.17.1")
+            pitest("org.pitest:pitest-command-line:1.18.2")
         }
     }
 
