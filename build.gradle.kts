@@ -194,7 +194,7 @@ allprojects {
             }
             implementation("org.apache.kafka:kafka-clients:3.9.0")
 
-            implementation("com.google.guava:guava:33.3.1-jre") {
+            implementation("com.google.guava:guava:33.4.6-jre") {
                 because("Security scan found 31.1-jre. Needed for assertj and copper.")
             }
             implementation("org.xerial.snappy:snappy-java:1.1.10.7")
