@@ -33,8 +33,8 @@ dependencies {
 
     implementation("org.copper-engine:copper-coreengine:5.5.2")
 
-    implementation("io.vertx:vertx-core:4.5.13")
-    implementation("io.vertx:vertx-kafka-client:4.5.13")
+    implementation("io.vertx:vertx-core:5.0.0")
+    implementation("io.vertx:vertx-kafka-client:5.0.0")
 
     testImplementation("org.testcontainers:testcontainers:1.21.1")
     testImplementation("org.testcontainers:kafka:1.21.1")
