@@ -4,7 +4,7 @@ pitest {
 
 plugins {
     application
-    id("com.google.cloud.tools.jib") version "3.3.5"
+    id("com.google.cloud.tools.jib") version "3.4.5"
 }
 
 var copper2goVersion = "vanilla-0.0.1"
