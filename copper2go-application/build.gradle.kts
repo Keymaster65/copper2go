@@ -36,8 +36,8 @@ dependencies {
     implementation("io.vertx:vertx-core:4.5.13")
     implementation("io.vertx:vertx-kafka-client:4.5.13")
 
-    testImplementation("org.testcontainers:testcontainers:1.20.5")
-    testImplementation("org.testcontainers:kafka:1.20.5")
+    testImplementation("org.testcontainers:testcontainers:1.21.1")
+    testImplementation("org.testcontainers:kafka:1.21.1")
 
     constraints  {
         testImplementation("org.apache.commons:commons-compress:1.27.1")
