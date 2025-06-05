@@ -18,7 +18,7 @@ dependencies {
     }
 
     // needed for needed for GitAPIException
-    implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
+    implementation("org.eclipse.jgit:org.eclipse.jgit:7.2.1.202505142326-r")
 
     implementation("org.crac:crac:1.5.0")
 }
