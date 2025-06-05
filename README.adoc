@@ -408,7 +408,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 
 === "Update jackson-databind" and "slf4j-api" Workflow API 3.4.0
 
-* [x] Update jackson-databind from 2.17.1 to 2.18.2
+* [x] Update jackson-databind from 2.17.1 to 2.19.0
 * [x] Update slf4j-api from 2.0.13 to 2.0.17
 
 == Planning
