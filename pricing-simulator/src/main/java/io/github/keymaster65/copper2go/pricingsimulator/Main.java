@@ -25,7 +25,7 @@ public class Main {
 
     public static void main(final String[] args) throws IOException {
         log.info("Starting HTTP Server");
-        try (final PricingServer ignored = new PricingServer().start(args)) {
+        try (final var _ = new PricingServer().start(args)) {
             log.info("Started HTTP Server");
         } catch (HelpException helpException) {
             log.error(helpException.getMessage());

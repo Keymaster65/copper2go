@@ -38,9 +38,7 @@ public class PricingServerTest {
     void givenStartedService_whenServiceCalled_thenResponseOk_andMBeanCounts() throws
             Exception {
         final int testPort = PricingServer.DEFAULT_HTTP_PORT + 1;
-        try (final PricingServer ignored =
-                     new PricingServer()
-                             .start(new String[]{"0", "SLEEP", "0", String.valueOf(testPort)})) {
+        try (final var _ = new PricingServer().start(new String[]{"0", "SLEEP", "0", String.valueOf(testPort)})) {
             MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
             final ObjectName timerName = new ObjectName("metrics:type=timers,name=responses");
             final Long timerCountBefore = (Long) mBeanServer.getAttribute(timerName, "Count");

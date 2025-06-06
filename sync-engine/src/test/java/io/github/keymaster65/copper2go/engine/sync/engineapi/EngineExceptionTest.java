@@ -30,7 +30,7 @@ class EngineExceptionTest {
         Assertions
                 .assertThat(engineException)
                 .hasMessage(message)
-                .hasCauseReference(cause);
+                .hasCause(cause);
     }
 
 }

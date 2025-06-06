@@ -47,7 +47,7 @@ public class SyncHandler implements HttpHandler {
         try {
             final Workflow workflow = getWorkflowFromUri(exchange.getRequestURI());
             handleWorkflow(workflow, exchange);
-        } catch (UnknownWorkflowException unknownWorkflowException) {
+        } catch (UnknownWorkflowException _) {
             handleLicense(exchange);
         }
     }

@@ -41,12 +41,12 @@ class FutureObserver {
                     scheduledFuture.get(3, TimeUnit.SECONDS);
                 } catch (ExecutionException e) {
                     logger.error("Ignore ExecutionException while getting scheduledFuture.", e);
-                } catch (TimeoutException e) {
+                } catch (TimeoutException _) {
                     logger.trace("Ignore TimeoutException while getting scheduledFuture.");
-                } catch (CancellationException e) {
+                } catch (CancellationException _) {
                     logger.info("Cancel scheduledFuture now due to cancellation.");
                     canceled = true;
-                } catch (InterruptedException e) {
+                } catch (InterruptedException _) {
                     logger.info("Cancel scheduledFuture now due to interruption.");
                     canceled = true;
                     Thread.currentThread().interrupt();

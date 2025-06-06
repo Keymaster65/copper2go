@@ -122,7 +122,7 @@ public class Client {
 
     void action(final String serverUrl) {
         actionMeter.mark();
-        try (final Timer.Context ignored = timer.time()) {
+        try (final var _ = timer.time()) {
             try {
                 final HttpResponse<String> httpResponse = callService(serverUrl);
                 final int statusCode = httpResponse.statusCode();

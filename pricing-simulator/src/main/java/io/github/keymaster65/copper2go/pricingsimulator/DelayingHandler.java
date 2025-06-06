@@ -53,7 +53,7 @@ public class DelayingHandler implements HttpHandler {
 
     @Override
     public void handle(final HttpExchange exchange) throws IOException {
-        try (final Timer.Context ignored = timer.time()) {
+        try (final var _ = timer.time()) {
             log.info("Received request.");
             activeRequestCount.incrementAndGet();
 
