@@ -86,7 +86,7 @@ class SyncEngineImplTest {
         Assertions
                 .assertThatCode(() -> syncEngineImpl.request("", "requestPayload"))
                 .isInstanceOf(EngineException.class)
-                .hasCauseReference(exception);
+                .hasCause(exception);
         Assertions
                 .assertThat(Thread.currentThread().isInterrupted())
                 .isEqualTo(exception instanceof InterruptedException);
