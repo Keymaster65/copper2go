@@ -407,6 +407,7 @@ Of course, copper2go is ready use. Many more capabilities might be added. Here y
 * [x] Dependabot updates 05.06.2025
 * [x] Update to gradle 8.14.2
 * [x] More updates 05.06.2025
+* [ ] Dependabot updates 06.06.2025
 
 === "Update jackson-databind" and "slf4j-api" Workflow API 3.4.0
 
