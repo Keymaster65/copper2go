@@ -165,7 +165,7 @@ allprojects {
         implementation("com.fasterxml.jackson.core:jackson-databind:2.19.0")
 
         testImplementation("org.assertj:assertj-assertions-generator:2.2.1")
-        testImplementation("net.jqwik:jqwik:1.9.2")
+        testImplementation("net.jqwik:jqwik:1.9.3")
         testImplementation("org.junit.jupiter:junit-jupiter:5.13.0")
         testImplementation("org.mockito:mockito-core:5.18.0")
 
